@@ -13,9 +13,19 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('booking_id')->constrained()->cascadeOnDelete();
+
+            $table->enum('payment_type', ['dp', 'pelunasan', 'denda']);
+            $table->decimal('amount', 12, 2);
+            $table->string('payment_method')->nullable();
+            $table->string('proof_image')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->dateTime('paid_at')->nullable();
+
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

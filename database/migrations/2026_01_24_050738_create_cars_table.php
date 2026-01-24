@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('brand');
+            $table->string('plate_number')->unique();
+            $table->year('year');
+            $table->decimal('price_12h', 12, 2);
+            $table->decimal('price_24h', 12, 2);
+            $table->enum('status', ['available', 'booked', 'rented', 'maintenance'])->default('available');
             $table->timestamps();
         });
     }

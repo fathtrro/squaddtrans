@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('phone');
+            $table->decimal('daily_rate', 12, 2);
+            $table->enum('status', ['available', 'busy'])->default('available');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

@@ -6,5 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penalty extends Model
 {
-    //
+    protected $fillable = [
+        'booking_id',
+        'type',
+        'description',
+        'amount',
+        'status'
+    ];
+
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
 }

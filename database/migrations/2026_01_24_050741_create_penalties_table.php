@@ -13,9 +13,17 @@ return new class extends Migration
     {
         Schema::create('penalties', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('booking_id')->constrained()->cascadeOnDelete();
+
+            $table->enum('type', ['late', 'damage']);
+            $table->text('description')->nullable();
+            $table->decimal('amount', 12, 2);
+            $table->enum('status', ['unpaid', 'paid'])->default('unpaid');
+
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
