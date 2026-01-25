@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('brand');
             $table->string('plate_number')->unique();
+            $table->string('image')->nullable();
             $table->year('year');
             $table->decimal('price_12h', 12, 2);
             $table->decimal('price_24h', 12, 2);
