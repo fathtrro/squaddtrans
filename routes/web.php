@@ -11,7 +11,10 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
+});
+Route::get('/Armada', function () {
+    return view('car');
 });
 
 Route::get('/dashboard', function () {

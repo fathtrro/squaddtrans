@@ -1,9 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
 
     {{-- Custom Styles --}}
     @push('styles')
@@ -92,7 +87,7 @@
         </section>
 
         {{-- Services Section --}}
-        <section class="py-24 bg-slate-50" id="layanan">
+        <section class="py-24 pt-0 bg-slate-50" id="layanan">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <span class="text-yellow-600 font-bold tracking-widest uppercase text-xs mb-3 block">Solusi Transportasi</span>
