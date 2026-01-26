@@ -15,7 +15,6 @@
                 <div class="w-full md:max-w-xl">
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <span class="material-symbols-outlined text-yellow-500">search</span>
                         </div>
                         <input type="text"
                                name="search"
@@ -74,7 +73,6 @@
                         <div class="flex flex-col gap-3 pb-6 border-b border-gray-100">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-yellow-600">payments</span>
                                 </div>
                                 <p class="text-gray-900 font-semibold">Rentang Harga</p>
                             </div>
@@ -94,7 +92,6 @@
                         <div class="flex flex-col gap-3 pb-6 border-b border-gray-100">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-yellow-600">calendar_today</span>
                                 </div>
                                 <p class="text-gray-900 font-semibold">Tahun Kendaraan</p>
                             </div>
@@ -121,7 +118,6 @@
                         <div class="flex flex-col gap-3">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-yellow-600">local_gas_station</span>
                                 </div>
                                 <p class="text-gray-900 font-semibold">Tipe Bahan Bakar</p>
                             </div>
@@ -196,11 +192,11 @@
                                             <span class="text-sm font-normal text-gray-500">/hari</span>
                                         </p>
                                     </div>
-                                    <a href="#"
-                                       class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 transform hover:scale-105 shadow-lg {{ $car->status != 'available' ? 'opacity-50 cursor-not-allowed' : '' }}"
-                                       {{ $car->status != 'available' ? 'onclick="return false;"' : '' }}>
-                                        {{ $car->status == 'available' ? 'Pesan' : 'Tidak Tersedia' }}
-                                    </a>
+                                <a href="{{ $car->status == 'available' ? route('bookings.create', $car) : '#' }}"
+   class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 transform hover:scale-105 shadow-lg {{ $car->status != 'available' ? 'opacity-50 cursor-not-allowed' : '' }}"
+   {{ $car->status != 'available' ? 'onclick="event.preventDefault(); return false;"' : '' }}>
+    {{ $car->status == 'available' ? 'Pesan' : 'Tidak Tersedia' }}
+</a>
                                 </div>
                             </div>
                         </div>

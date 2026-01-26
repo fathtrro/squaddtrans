@@ -10,18 +10,18 @@ class Car extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
         'brand',
-        'plate_number',
-        'image',
+        'name',
         'year',
-        'price_12h',
-        'price_24h',
-        'status',
         'category',
-        'fuel_type',
+        'seats',
         'transmission',
-        'seats'
+        'fuel_type',
+        'price_24h',
+        'price_with_driver',
+        'price_carter',
+        'main_image',
+        'status',
     ];
 
     protected $appends = ['main_image', 'formatted_price_24h', 'formatted_price_12h'];
