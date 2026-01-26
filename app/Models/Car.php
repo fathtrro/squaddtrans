@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Car extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'brand',
@@ -16,16 +18,61 @@ class Car extends Model
         'price_12h',
         'price_24h',
         'status',
+        'category',
+        'fuel_type',
+        'transmission',
+        'seats'
     ];
 
-    protected $casts = [
-        'price_12h' => 'decimal:2',
-        'price_24h' => 'decimal:2',
-        'year' => 'integer',
-    ];
+    protected $appends = ['main_image', 'formatted_price_24h', 'formatted_price_12h'];
 
-    public function images(): HasMany
+    public function images()
     {
         return $this->hasMany(CarImage::class);
+    }
+
+    // Helper method untuk format harga
+    public function getFormattedPrice24hAttribute()
+    {
+        return 'Rp ' . number_format($this->price_24h, 0, ',', '.');
+    }
+
+    public function getFormattedPrice12hAttribute()
+    {
+        return 'Rp ' . number_format($this->price_12h, 0, ',', '.');
+    }
+
+    // Get first image or default
+    public function getMainImageAttribute()
+    {
+        // Cek apakah ada relasi images
+        if ($this->images && $this->images->count() > 0) {
+            $imagePath = $this->images->first()->image_path;
+
+            // Cek apakah path sudah lengkap dengan storage/
+            if (strpos($imagePath, 'storage/') === 0) {
+                return asset($imagePath);
+            }
+
+            return asset('storage/' . $imagePath);
+        }
+
+        // Fallback ke kolom image utama
+        if ($this->image) {
+            // Cek apakah sudah full URL
+            if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+                return $this->image;
+            }
+
+            // Cek apakah path sudah lengkap dengan storage/
+            if (strpos($this->image, 'storage/') === 0) {
+                return asset($this->image);
+            }
+
+            return asset('storage/' . $this->image);
+        }
+
+        // Default placeholder image
+        return asset('images/default-car.jpg');
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\AgentController;
 
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CarsController;
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\DashboardController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -13,9 +14,9 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', function () {
     return view('dashboard');
 });
-Route::get('/Armada', function () {
-    return view('car');
-});
+
+
+Route::resource('cars', CarsController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
