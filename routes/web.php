@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CarsController;
+use App\Http\Controllers\ContactController;
 use App\Models\Booking;
 use App\Models\Car;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,7 @@ use App\Http\Controllers\AgentController;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\CarController;
+use App\Http\Controllers\Admin\InboxController;
 use App\Http\Controllers\Admin\DashboardController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -42,9 +44,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('bookings.show');
 
 });
-Route::get('contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('contact', [ContactController::class, 'index'])->name('contact');
+Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/dashboard', function () {
     $cars = Car::with('images')->where('status', 'available')->limit(3)->get();
@@ -61,6 +62,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])
             ->name('dashboard');
         Route::resource('car', CarController::class);
+        Route::resource('inbox', InboxController::class);
     });
 
 
