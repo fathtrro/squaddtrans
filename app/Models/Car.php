@@ -14,13 +14,13 @@ class Car extends Model
         'name',
         'plate_number',
         'year',
-        'category',
-        'seats',
-        'transmission',
-        'fuel_type',
+        'category',//select
+        'seats',//numbur
+        'transmission',//select
+        'fuel_type',//sele
         'price_24h',
         'price_12h',
-      
+
         'main_image',
         'status',
     ];

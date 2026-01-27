@@ -139,6 +139,84 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <!-- Type Mobil -->
+                        <div>
+                            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                                Type Mobil <span class="text-red-500">*</span>
+                            </label>
+                            <select name="category"
+                                    id="category"
+                                    required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('category') border-red-500 @enderror">
+                                <option value="">-- Pilih Type Mobil --</option>
+                                <option value="MPV (keluarga)" {{ (old('category') ?? $car->category) == 'MPV (keluarga)' ? 'selected' : '' }}>MPV (keluarga)</option>
+                                <option value="SUV (tangguh/medan berat)" {{ (old('category') ?? $car->category) == 'SUV (tangguh/medan berat)' ? 'selected' : '' }}>SUV (tangguh/medan berat)</option>
+                                <option value="Hatchback (kompak)" {{ (old('category') ?? $car->category) == 'Hatchback (kompak)' ? 'selected' : '' }}>Hatchback (kompak)</option>
+                                <option value="City Car (lincah di kota)" {{ (old('category') ?? $car->category) == 'City Car (lincah di kota)' ? 'selected' : '' }}>City Car (lincah di kota)</option>
+                                <option value="Sedan (nyaman)" {{ (old('category') ?? $car->category) == 'Sedan (nyaman)' ? 'selected' : '' }}>Sedan (nyaman)</option>
+                                <option value="Crossover (kombinasi)" {{ (old('category') ?? $car->category) == 'Crossover (kombinasi)' ? 'selected' : '' }}>Crossover (kombinasi)</option>
+                            </select>
+                            @error('category')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Jumlah Kursi -->
+                        <div>
+                            <label for="seats" class="block text-sm font-medium text-gray-700 mb-2">
+                                Jumlah Kursi <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number"
+                                   name="seats"
+                                   id="seats"
+                                   value="{{ old('seats', $car->seats) }}"
+                                   required
+                                   min="1"
+                                   placeholder="Contoh: 5"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('seats') border-red-500 @enderror">
+                            @error('seats')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Transmisi -->
+                        <div>
+                            <label for="transmission" class="block text-sm font-medium text-gray-700 mb-2">
+                                Transmisi <span class="text-red-500">*</span>
+                            </label>
+                            <select name="transmission"
+                                    id="transmission"
+                                    required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('transmission') border-red-500 @enderror">
+                                <option value="">-- Pilih Transmisi --</option>
+                                <option value="Manual" {{ strtolower(old('transmission', $car->transmission ?? '')) == 'manual' ? 'selected' : '' }}>Manual</option>
+                                <option value="Automatic" {{ strtolower(old('transmission', $car->transmission ?? '')) == 'automatic' ? 'selected' : '' }}>Automatic</option>
+                            </select>
+                            @error('transmission')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Jenis Bahan Bakar -->
+                        <div>
+                            <label for="fuel_type" class="block text-sm font-medium text-gray-700 mb-2">
+                                Jenis Bahan Bakar <span class="text-red-500">*</span>
+                            </label>
+                            <select name="fuel_type"
+                                    id="fuel_type"
+                                    required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('fuel_type') border-red-500 @enderror">
+                                <option value="">-- Pilih Bahan Bakar --</option>
+                                <option value="Bensin" {{ strtolower(old('fuel_type', $car->fuel_type ?? '')) == 'bensin' ? 'selected' : '' }}>Bensin</option>
+                                <option value="Diesel" {{ strtolower(old('fuel_type', $car->fuel_type ?? '')) == 'diesel' ? 'selected' : '' }}>Diesel</option>
+                                <option value="Hybrid" {{ strtolower(old('fuel_type', $car->fuel_type ?? '')) == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
+                                <option value="Listrik" {{ strtolower(old('fuel_type', $car->fuel_type ?? '')) == 'listrik' ? 'selected' : '' }}>Listrik</option>
+                            </select>
+                            @error('fuel_type')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 
