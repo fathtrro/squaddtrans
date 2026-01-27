@@ -1,189 +1,110 @@
 <?php
 
-
-
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Models\Booking;
+use App\Models\Guarantee;
+use App\Models\Payment;
 use App\Models\Car;
 use App\Models\Driver;
-use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
-    public function create(Car $car)
+    public function create(Request $request)
     {
-        // Debug log
-        Log::info('Booking create page accessed', ['car_id' => $car->id]);
-
-        // Check if car is available
-        if ($car->status !== 'available') {
-            return redirect()->route('cars.index')
-                ->with('error', 'Mobil ini sedang tidak tersedia.');
-        }
-
-        $drivers = Driver::where('status', 'available')->get();
-
-        return view('bookings.create', compact('car', 'drivers'));
+        return view('bookings.create', [
+            'cars' => Car::all(),
+            'drivers' => Driver::all(),
+            'selectedCarId' => $request->query('car'),
+            'selectedServiceType' => $request->query('service_type'),
+        ]);
     }
-
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'car_id' => 'required|exists:cars,id',
-            'service_type' => 'required|in:lepas_kunci,dengan_sopir,carter',
-            'start_datetime' => 'required|date|after:now',
+            'service_type' => 'required',
+            'start_datetime' => 'required|date',
             'end_datetime' => 'required|date|after:start_datetime',
-            'destination' => 'nullable|string|max:255',
-            'driver_id' => 'required_if:service_type,dengan_sopir,carter|nullable|exists:drivers,id',
+            'total_price' => 'required|numeric',
+            'guarantee_type' => 'required',
+            'document_file' => 'required|file|mimes:jpg,png,pdf',
+            'amount' => 'required|numeric|min:0',
         ]);
 
-        try {
-            DB::beginTransaction();
+        DB::transaction(function () use ($request) {
 
-            $car = Car::findOrFail($validated['car_id']);
-
-            // Calculate duration and total price
-            $startDate = Carbon::parse($validated['start_datetime']);
-            $endDate = Carbon::parse($validated['end_datetime']);
-            $durationDays = $startDate->diffInDays($endDate) ?: 1;
-
-            // Get base price based on service type
-            $basePrice = $car->price_24h;
-
-            if ($validated['service_type'] === 'dengan_sopir') {
-                $basePrice = $car->price_with_driver ?? ($car->price_24h + 200000);
-            } elseif ($validated['service_type'] === 'carter') {
-                $basePrice = $car->price_carter ?? ($car->price_24h + 500000);
-            }
-
-            $totalPrice = $basePrice * $durationDays;
-            $dpAmount = $totalPrice * 0.3; // 30% DP
-
-            // Create booking
             $booking = Booking::create([
                 'user_id' => auth()->id(),
-                'car_id' => $validated['car_id'],
-                'driver_id' => $validated['driver_id'] ?? null,
-                'service_type' => $validated['service_type'],
-                'start_datetime' => $validated['start_datetime'],
-                'end_datetime' => $validated['end_datetime'],
-                'destination' => $validated['destination'],
-                'dp_amount' => $dpAmount,
-                'total_price' => $totalPrice,
-                'status' => 'pending', // PASTIKAN INI ADA
+                'car_id' => $request->car_id,
+                'driver_id' => $request->driver_id,
+                'service_type' => $request->service_type,
+                'start_datetime' => $request->start_datetime,
+                'end_datetime' => $request->end_datetime,
+                'destination' => $request->destination,
+                'dp_amount' => $request->amount,
+                'total_price' => $request->total_price,
+                'status' => 'pending',
             ]);
 
-            // Update car status
-            $car->update(['status' => 'booked']);
+            $booking->update([
+                'booking_code' => 'BK-' . str_pad($booking->id, 6, '0', STR_PAD_LEFT)
+            ]);
 
-            // Update driver status if applicable
-            if ($validated['driver_id']) {
-                Driver::find($validated['driver_id'])->update(['status' => 'booked']);
-            }
 
-            DB::commit();
+            /** GUARANTEE */
+            $filePath = $request->file('document_file')
+                ->store('guarantees', 'public');
 
-            // Log untuk debug
-            \Log::info('Booking created', [
+            Guarantee::create([
                 'booking_id' => $booking->id,
-                'status' => $booking->status,
-                'total_price' => $booking->total_price,
-                'dp_amount' => $booking->dp_amount
+                'type' => $request->guarantee_type,
+                'document_file' => $filePath,
             ]);
 
-            return redirect()->route('bookings.show', $booking)
-                ->with('success', 'Booking berhasil dibuat! Silakan lakukan pembayaran DP.');
+            /** PAYMENT (DP) */
+            Payment::create([
+                'booking_id' => $booking->id,
+                'payment_type' => 'dp',
+                'amount' => $request->amount,
+                'payment_method' => $request->payment_method,
+                'status' => 'pending',
+            ]);
+        });
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::error('Booking creation failed', ['error' => $e->getMessage()]);
-            return back()->withInput()
-                ->with('error', 'Terjadi kesalahan saat membuat booking: ' . $e->getMessage());
-        }
+        return redirect()->route('bookings.success');
     }
 
-    public function show(Booking $booking)
+    public function success()
     {
-        // Ensure user can only view their own bookings
-        if ($booking->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
-            abort(403);
-        }
-
-        $booking->load(['car', 'driver', 'user']);
-
-        return view('bookings.show', compact('booking'));
+        return view('bookings.success');
     }
 
     public function index()
     {
-        $bookings = Booking::with(['car', 'driver'])
+        $bookings = Booking::with(['car', 'payments'])
             ->where('user_id', auth()->id())
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->latest()
+            ->get();
 
         return view('bookings.index', compact('bookings'));
     }
 
-    public function cancel(Booking $booking)
+
+    public function show($id)
     {
-        if ($booking->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $booking = Booking::with([
+            'car',
+            'driver',
+            'payments',
+            'guarantees'
+        ])->findOrFail($id);
 
-        if (!in_array($booking->status, ['pending', 'confirmed'])) {
-            return back()->with('error', 'Booking ini tidak dapat dibatalkan.');
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $booking->update(['status' => 'cancelled']);
-            $booking->car->update(['status' => 'available']);
-
-            if ($booking->driver_id) {
-                $booking->driver->update(['status' => 'available']);
-            }
-
-            DB::commit();
-
-            return back()->with('success', 'Booking berhasil dibatalkan.');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with('error', 'Gagal membatalkan booking.');
-        }
+        return view('bookings.show', compact('booking'));
     }
 
-    public function calculatePrice(Request $request)
-    {
-        $car = Car::find($request->car_id);
-        $startDate = Carbon::parse($request->start_datetime);
-        $endDate = Carbon::parse($request->end_datetime);
-        $durationDays = $startDate->diffInDays($endDate) ?: 1;
 
-        $basePrice = $car->price_24h;
-
-        if ($request->service_type === 'dengan_sopir') {
-            $basePrice = $car->price_with_driver ?? ($car->price_24h + 200000);
-        } elseif ($request->service_type === 'carter') {
-            $basePrice = $car->price_carter ?? ($car->price_24h + 500000);
-        }
-
-        $totalPrice = $basePrice * $durationDays;
-        $dpAmount = $totalPrice * 0.3;
-
-        return response()->json([
-            'duration_days' => $durationDays,
-            'base_price' => $basePrice,
-            'total_price' => $totalPrice,
-            'dp_amount' => $dpAmount,
-            'formatted_total' => 'Rp ' . number_format($totalPrice, 0, ',', '.'),
-            'formatted_dp' => 'Rp ' . number_format($dpAmount, 0, ',', '.'),
-        ]);
-    }
 }

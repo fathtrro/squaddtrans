@@ -8,6 +8,7 @@ use Carbon\Carbon;
 class Booking extends Model
 {
     protected $fillable = [
+        'booking_code',
         'user_id',
         'car_id',
         'driver_id',
@@ -43,6 +44,16 @@ class Booking extends Model
     public function car()
     {
         return $this->belongsTo(Car::class);
+    }
+    protected static function booted()
+    {
+        static::created(function ($booking) {
+            if (!$booking->booking_code) {
+                $booking->update([
+                    'booking_code' => 'BK-' . now()->format('Ymd') . '-' . str_pad($booking->id, 4, '0', STR_PAD_LEFT)
+                ]);
+            }
+        });
     }
 
     public function driver()

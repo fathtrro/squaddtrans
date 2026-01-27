@@ -27,22 +27,24 @@
                     <span class="relative z-10">Beranda</span>
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-500 group-hover:w-full transition-all duration-300"></span>
                 </a>
-                <a href="/layanan" class="relative px-4 py-2 text-gray-700 hover:text-yellow-500 transition-colors duration-200 group">
-                    <span class="relative z-10">Layanan</span>
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-500 group-hover:w-full transition-all duration-300"></span>
-                </a>
+
                 <a href="/cars" class="relative px-4 py-2 text-gray-700 hover:text-yellow-500 transition-colors duration-200 group">
                     <span class="relative z-10">Unit Armada</span>
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-500 group-hover:w-full transition-all duration-300"></span>
                 </a>
+                @auth
+<a href="{{ route('bookings.index') }}"
+   class="relative px-4 py-2 text-gray-700 hover:text-yellow-500 transition-colors duration-200 group">
+    <span class="relative z-10">Riwayat Booking</span>
+    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-500 group-hover:w-full transition-all duration-300"></span>
+</a>
+@endauth
+
                 <a href="/lokasi" class="relative px-4 py-2 text-gray-700 hover:text-yellow-500 transition-colors duration-200 group">
-                    <span class="relative z-10">Lokasi</span>
+                    <span class="relative z-10">Contact Us</span>
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-500 group-hover:w-full transition-all duration-300"></span>
                 </a>
-                <a href="/bantuan" class="relative px-4 py-2 text-gray-700 hover:text-yellow-500 transition-colors duration-200 group">
-                    <span class="relative z-10">Bantuan</span>
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-500 group-hover:w-full transition-all duration-300"></span>
-                </a>
+              
             </div>
 
             <!-- Right Section dengan button modern -->
@@ -101,6 +103,14 @@
                                 </svg>
                                 Profile Saya
                             </a>
+                            <a href="{{ route('bookings.index') }}"
+   class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-yellow-50 hover:text-yellow-600 transition-colors duration-200">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 5h6M9 9h6M9 13h6M5 5h.01M5 9h.01M5 13h.01"/>
+    </svg>
+    Riwayat Booking
+</a>
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

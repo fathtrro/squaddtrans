@@ -129,6 +129,7 @@
                             Lihat Detail
                         </a>
                         <a href="{{ route('bookings.create', ['car' => $car->id, 'service_type' => 'dengan_sopir']) }}"
+
                            class="px-4 py-3 bg-gray-900 hover:bg-black text-white font-bold text-sm rounded-lg transition-colors text-center">
                             Pesan Sekarang
                         </a>

@@ -26,12 +26,21 @@ Route::get('/cars/{car}', [CarsController::class, 'show'])->name('cars.show');
 
 // Booking routes (requires authentication)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/cars/{car}/book', [BookingController::class, 'create'])->name('bookings.create');
-    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
-    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
-    Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
-    Route::delete('/bookings/{booking}', [BookingController::class, 'cancel'])->name('bookings.cancel');
-    Route::post('/bookings/calculate-price', [BookingController::class, 'calculatePrice'])->name('bookings.calculate-price');
+    Route::get('/bookings', [BookingController::class, 'index'])
+        ->name('bookings.index');
+
+    Route::get('/bookings/create', [BookingController::class, 'create'])
+        ->name('bookings.create');
+
+    Route::post('/bookings/store', [BookingController::class, 'store'])
+        ->name('bookings.store');
+
+    Route::get('/bookings/success', [BookingController::class, 'success'])
+        ->name('bookings.success');
+
+    Route::get('/bookings/{booking}', [BookingController::class, 'show'])
+        ->name('bookings.show');
+
 });
 
 Route::get('/dashboard', function () {
