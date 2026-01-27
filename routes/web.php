@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CarsController;
 use App\Models\Booking;
+use App\Models\Car;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgentController;
 
@@ -13,21 +15,12 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 
 Route::get('/', function () {
-    return view('dashboard');
+    $cars = Car::with('images')->where('status', 'available')->limit(3)->get();
+    return view('dashboard', compact('cars'));
 });
-Route::get('/Armada', function () {
-    return view('car');
-});
-
-<<<<<<< HEAD
-
-=======
-<<<<<<< Updated upstream
-// Authenticated Routes
-=======
-
 
 // Car routes (public)
+Route::get('/Armada', [CarsController::class, 'index'])->name('cars.index');
 Route::get('/cars', [CarsController::class, 'index'])->name('cars.index');
 Route::get('/cars/{car}', [CarsController::class, 'show'])->name('cars.show');
 
@@ -40,10 +33,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/bookings/{booking}', [BookingController::class, 'cancel'])->name('bookings.cancel');
     Route::post('/bookings/calculate-price', [BookingController::class, 'calculatePrice'])->name('bookings.calculate-price');
 });
->>>>>>> Stashed changes
->>>>>>> 95ebc8dca29c1756055e6bd691b1b3dfed357fa1
+
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $cars = Car::with('images')->where('status', 'available')->limit(3)->get();
+    return view('dashboard', compact('cars'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

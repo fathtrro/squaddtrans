@@ -181,135 +181,81 @@
                         <span class="text-yellow-600 font-bold tracking-widest uppercase text-xs mb-3 block">Armada Kami</span>
                         <h2 class="section-title">Pilih Unit Favorit Anda</h2>
                     </div>
-                    <div class="flex bg-slate-100 p-1 rounded-2xl overflow-x-auto">
-                        <button class="px-6 py-2.5 rounded-xl font-bold text-sm bg-white shadow-sm text-gray-900">Semua</button>
-                        <button class="px-6 py-2.5 rounded-xl font-bold text-sm text-slate-500 hover:text-gray-900">Luxury</button>
-                        <button class="px-6 py-2.5 rounded-xl font-bold text-sm text-slate-500 hover:text-gray-900">Family</button>
-                        <button class="px-6 py-2.5 rounded-xl font-bold text-sm text-slate-500 hover:text-gray-900">Economic</button>
-                    </div>
+                    <a href="{{ route('cars.index') }}" class="text-yellow-600 hover:text-yellow-700 font-bold flex items-center gap-2 transition-colors">
+                        Lihat Semua Armada
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {{-- Vehicle Card 1 --}}
-                    <div class="group bg-white rounded-3xl overflow-hidden border border-slate-100 card-shadow transition-all hover:-translate-y-2">
-                        <div class="relative h-64 overflow-hidden bg-slate-100">
-                            <img alt="Luxury Car" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRbtNl7jWKSOQDwtCtxAPILIpaC4kUdm6EPdNy3RhgPuLbBEdOtVrJ038MGHoDYudIy-TL1bYjfatrVw1jpWtxVlyhCZsX3KBXYhMA_dUl4qFFHAlaTrsxhp3zdgDNY6qcaWQDNQ9ta884JO697KAVtRArc4Gnu6Ns2bcPaeA2KwR4ialfB-C3zuNLSNlJsCFk4Dhic-UZuqAe7zP6OTqIa6c5zPjq_5ZO4rex3jLKfrUed961Vp1p8sNir2H-pRvufR8UTuBiMkA"/>
-                            <div class="absolute top-4 left-4 flex gap-2">
-                                <span class="bg-gray-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Premium</span>
-                                <span class="bg-yellow-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Baru</span>
-                            </div>
-                        </div>
-                        <div class="p-8">
-                            <div class="flex justify-between items-start mb-4">
-                                <h3 class="text-xl font-extrabold text-gray-900">Executive Luxury Sedan</h3>
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-yellow-600 text-sm">star</span>
-                                    <span class="text-sm font-bold">4.9</span>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-3 gap-2 mb-8">
-                                <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
-                                    <span class="material-symbols-outlined text-slate-400 text-lg">person</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">4 Kursi</span>
-                                </div>
-                                <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
-                                    <span class="material-symbols-outlined text-slate-400 text-lg">ac_unit</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">Dual AC</span>
-                                </div>
-                                <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
-                                    <span class="material-symbols-outlined text-slate-400 text-lg">local_gas_station</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">Pertalite</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-2xl font-black text-gray-900">Rp 950k <span class="text-sm font-normal text-slate-400">/hari</span></p>
-                                </div>
-                                <button class="bg-slate-900 text-white p-3 rounded-xl hover:bg-yellow-600 transition-colors">
-                                    <span class="material-symbols-outlined">shopping_cart</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
 
-                    {{-- Vehicle Card 2 --}}
-                    <div class="group bg-white rounded-3xl overflow-hidden border border-slate-100 card-shadow transition-all hover:-translate-y-2">
-                        <div class="relative h-64 overflow-hidden bg-slate-100">
-                            <img alt="Executive SUV" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcj_Tw5DhgsFDGpwsoI8iaCc6_qWMIp0uw_F3Lbtm-_d502Ara8BeOUCRRaerLoYVVKAljMX_Sshtw20v1z-DxVodW3RHbXXBsRsrCNmua9C2i5Bs3B5V__XaneBzJygLVzmDBsOFM9_Lv9cfnkU60Q913mvigkvXIOp95LvVYDB2kLQ42Yv7Z0RCdI-0TlisAKvOW9-ptKjDx4Y_22MCMYqcFFs5F0xuc3un7l7v5j8rYIw8-E3zffg6ko4gzpqEE3irc2ET2m60"/>
-                            <div class="absolute top-4 left-4">
-                                <span class="bg-gray-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Most Popular</span>
-                            </div>
-                        </div>
-                        <div class="p-8">
-                            <div class="flex justify-between items-start mb-4">
-                                <h3 class="text-xl font-extrabold text-gray-900">Premium Family SUV</h3>
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-yellow-600 text-sm">star</span>
-                                    <span class="text-sm font-bold">4.8</span>
+                @if($cars->count() > 0)
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        @foreach($cars as $car)
+                            {{-- Vehicle Card --}}
+                            <div class="group bg-white rounded-3xl overflow-hidden border border-slate-100 card-shadow transition-all hover:-translate-y-2">
+                                <div class="relative h-64 overflow-hidden bg-slate-100">
+                                    @if($car->images->first())
+                                        <img alt="{{ $car->brand }} {{ $car->name }}"
+                                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                             src="{{ asset('storage/' . $car->images->first()->image_path) }}"/>
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center bg-gray-300">
+                                            <span class="material-symbols-outlined text-6xl text-gray-400">directions_car</span>
+                                        </div>
+                                    @endif
+                                    <div class="absolute top-4 left-4 flex gap-2">
+                                        <span class="bg-gray-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full uppercase">{{ $car->category ?? 'Premium' }}</span>
+                                        @php
+                                            $reviews = $car->reviews;
+                                            $avgRating = $reviews->count() > 0 ? round($reviews->avg('rating'), 1) : 0;
+                                        @endphp
+                                        @if($reviews->count() > 0)
+                                            <span class="bg-yellow-600 text-white text-xs font-bold px-3 py-1 rounded-full">⭐ {{ $avgRating }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="p-8">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h3 class="text-xl font-extrabold text-gray-900">{{ $car->brand }} {{ $car->name }}</h3>
+                                        <div class="flex items-center gap-1">
+                                            @php
+                                                $reviewCount = $car->reviews->count();
+                                            @endphp
+                                            @if($reviewCount > 0)
+                                                <span class="text-sm font-bold">{{ number_format($avgRating, 1) }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-2 mb-8">
+                                        <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
+                                            <span class="material-symbols-outlined text-slate-400 text-lg">person</span>
+                                            <span class="text-xs font-bold text-slate-500 uppercase">{{ $car->seats }} Kursi</span>
+                                        </div>
+                                        <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
+                                            <span class="material-symbols-outlined text-slate-400 text-lg">settings</span>
+                                            <span class="text-xs font-bold text-slate-500 uppercase">{{ ucfirst($car->transmission) }}</span>
+                                        </div>
+                                        <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
+                                            <span class="material-symbols-outlined text-slate-400 text-lg">local_gas_station</span>
+                                            <span class="text-xs font-bold text-slate-500 uppercase">{{ $car->fuel_type }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-2xl font-black text-gray-900">Rp {{ number_format($car->price_24h, 0, ',', '.') }} <span class="text-sm font-normal text-slate-400">/hari</span></p>
+                                        </div>
+                                        <a href="{{ route('bookings.create', $car) }}" class="bg-slate-900 text-white p-3 rounded-xl hover:bg-yellow-600 transition-colors">
+                                            <span class="material-symbols-outlined">shopping_cart</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-2 mb-8">
-                                <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
-                                    <span class="material-symbols-outlined text-slate-400 text-lg">person</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">7 Kursi</span>
-                                </div>
-                                <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
-                                    <span class="material-symbols-outlined text-slate-400 text-lg">ac_unit</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">Triple AC</span>
-                                </div>
-                                <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
-                                    <span class="material-symbols-outlined text-slate-400 text-lg">local_gas_station</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">Solar</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-2xl font-black text-gray-900">Rp 750k <span class="text-sm font-normal text-slate-400">/hari</span></p>
-                                </div>
-                                <button class="bg-slate-900 text-white p-3 rounded-xl hover:bg-yellow-600 transition-colors">
-                                    <span class="material-symbols-outlined">shopping_cart</span>
-                                </button>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-
-                    {{-- Vehicle Card 3 --}}
-                    <div class="group bg-white rounded-3xl overflow-hidden border border-slate-100 card-shadow transition-all hover:-translate-y-2">
-                        <div class="relative h-64 overflow-hidden bg-slate-100">
-                            <img alt="Family Van" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR828I_Lhqg5801bigVdMBgn2DfbJVkeO53dhvBIX5VyeI72XoKmuvfr8OUBQ3AvhjClZ2tvegkl9OQYjFHNOm36c3mtuPRs4HWH16wKPLFLWqhNKDFJfcMWgbQhUZJWHNYW2V1rSMjm-NhfUNXOwFJDskWMIQqpYr0YMnn8xuf73YmtjbcQb4eRTZHuCHWq0WD6ZH0Li9olq26_qDuIFX-iqdC8rTiUOEvwYzLz22fMVlH23OaEWyLqhHmdqsq2IIEl9jK79YQLg"/>
-                        </div>
-                        <div class="p-8">
-                            <div class="flex justify-between items-start mb-4">
-                                <h3 class="text-xl font-extrabold text-gray-900">Luxury Traveler Van</h3>
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-yellow-600 text-sm">star</span>
-                                    <span class="text-sm font-bold">5.0</span>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-3 gap-2 mb-8">
-                                <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
-                                    <span class="material-symbols-outlined text-slate-400 text-lg">person</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">12 Kursi</span>
-                                </div>
-                                <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
-                                    <span class="material-symbols-outlined text-slate-400 text-lg">ac_unit</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">Full AC</span>
-                                </div>
-                                <div class="bg-slate-50 p-3 rounded-xl flex flex-col items-center gap-1">
-                                    <span class="material-symbols-outlined text-slate-400 text-lg">local_gas_station</span>
-                                    <span class="text-xs font-bold text-slate-500 uppercase">Solar</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-2xl font-black text-gray-900">Rp 1.1M <span class="text-sm font-normal text-slate-400">/hari</span></p>
-                                </div>
-                                <button class="bg-slate-900 text-white p-3 rounded-xl hover:bg-yellow-600 transition-colors">
-                                    <span class="material-symbols-outlined">shopping_cart</span>
-                                </button>
-                            </div>
-                        </div>
+                @else
+                    <div class="text-center py-12">
+                        <p class="text-gray-500 text-lg">Belum ada armada yang tersedia. Silakan kembali lagi nanti.</p>
                     </div>
-                </div>
+                @endif
             </div>
         </section>
     </div>

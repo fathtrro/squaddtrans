@@ -9,7 +9,7 @@ class CarsController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Car::with('images')->where('status', '!=', 'maintenance');
+        $query = Car::with(['images', 'reviews'])->where('status', '!=', 'maintenance');
 
         // Search functionality
         if ($request->has('search') && $request->search != '') {
@@ -53,5 +53,30 @@ class CarsController extends Controller
         $cars = $query->orderBy('created_at', 'desc')->paginate(12);
 
         return view('cars.index', compact('cars'));
+    }
+
+    /**
+     * Display a single car detail
+     */
+    public function show(Car $car)
+    {
+        if ($car->status !== 'available') {
+            abort(404, 'Mobil ini tidak tersedia');
+        }
+
+        $car->load(['images', 'reviews', 'bookings']);
+
+        // Get related cars (same category)
+        $relatedCars = Car::where('category', $car->category)
+            ->where('id', '!=', $car->id)
+            ->where('status', 'available')
+            ->limit(4)
+            ->get();
+
+        // Calculate average rating
+        $averageRating = $car->reviews->avg('rating') ?? 0;
+        $totalReviews = $car->reviews->count();
+
+        return view('cars.show', compact('car', 'relatedCars', 'averageRating', 'totalReviews'));
     }
 }

@@ -18,6 +18,7 @@ class Car extends Model
         'transmission',
         'fuel_type',
         'price_24h',
+        'price_12h',
         'price_with_driver',
         'price_carter',
         'main_image',
@@ -29,6 +30,28 @@ class Car extends Model
     public function images()
     {
         return $this->hasMany(CarImage::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function carChecklists()
+    {
+        return $this->hasMany(CarChecklist::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasManyThrough(
+            Review::class,
+            Booking::class,
+            'car_id',      // Foreign key on bookings table
+            'booking_id',  // Foreign key on reviews table
+            'id',          // Local key on cars table
+            'id'           // Local key on bookings table
+        );
     }
 
     // Helper method untuk format harga
