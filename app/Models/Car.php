@@ -12,6 +12,7 @@ class Car extends Model
     protected $fillable = [
         'brand',
         'name',
+        'plate_number',
         'year',
         'category',
         'seats',
