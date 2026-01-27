@@ -42,7 +42,9 @@ Route::middleware(['auth'])->group(function () {
         ->name('bookings.show');
 
 });
-Route::get('contact',return view('contact'))->name('contact');
+Route::get('contact', function () {
+    return view('contact');
+})->name('contact');
 
 Route::get('/dashboard', function () {
     $cars = Car::with('images')->where('status', 'available')->limit(3)->get();
