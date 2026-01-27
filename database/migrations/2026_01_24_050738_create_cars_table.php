@@ -23,8 +23,6 @@ return new class extends Migration
             $table->string('fuel_type')->default('bensin');
             $table->decimal('price_12h', 12, 2)->default(0);
             $table->decimal('price_24h', 12, 2)->default(0);
-            $table->decimal('price_with_driver', 12, 2)->nullable();
-            $table->decimal('price_carter', 12, 2)->nullable();
             $table->string('main_image')->nullable();
             $table->enum('status', ['available', 'booked', 'rented', 'maintenance'])->default('available');
             $table->timestamps();

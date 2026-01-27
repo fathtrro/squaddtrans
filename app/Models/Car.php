@@ -20,8 +20,7 @@ class Car extends Model
         'fuel_type',
         'price_24h',
         'price_12h',
-        'price_with_driver',
-        'price_carter',
+      
         'main_image',
         'status',
     ];
