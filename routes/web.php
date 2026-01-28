@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\RenterController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\ContactController;
@@ -63,6 +64,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
             ->name('dashboard');
         Route::resource('car', CarController::class);
         Route::resource('inbox', InboxController::class);
+        Route::resource('renter', RenterController::class);
     });
 
 
