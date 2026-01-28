@@ -121,12 +121,34 @@
 
                         <div class="flex items-center space-x-3">
                             <div class="text-right">
-                                <p class="text-sm font-semibold text-gray-800">Admin Squad</p>
-                                <p class="text-xs text-gray-500">Super Admin</p>
+                                <p class="text-sm font-semibold text-gray-800">{{ Auth::user()->name ?? 'Admin Squad' }}</p>
+                                <p class="text-xs text-gray-500">{{ Auth::user()->type ?? 'Super Admin' }}</p>
                             </div>
-                            <img src="https://ui-avatars.com/api/?name=Admin+Squad&background=F59E0B&color=fff"
-                                 alt="Avatar"
-                                 class="w-10 h-10 rounded-full">
+                            <div class="relative group">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Admin Squad') }}&background=F59E0B&color=fff"
+                                     alt="Avatar"
+                                     class="w-10 h-10 rounded-full cursor-pointer">
+
+                                <!-- Dropdown Menu -->
+                                <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                    <div class="px-4 py-3 border-b border-gray-200">
+                                        <p class="text-sm font-semibold text-gray-800">{{ Auth::user()->name ?? 'Admin Squad' }}</p>
+                                        <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
+                                    </div>
+                                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        Profil
+                                    </a>
+                                    <form method="POST" action="{{ route('logout') }}" class="block">
+                                        @csrf
+                                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600">
+                                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                            </svg>
+                                            Logout
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
