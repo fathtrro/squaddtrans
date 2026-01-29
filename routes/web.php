@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\RenterController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ReviewController;
 use App\Models\Booking;
 use App\Models\Car;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/bookings/{booking}', [BookingController::class, 'show'])
         ->name('bookings.show');
+
+    // Review routes
+    Route::get('/reviews/create', [ReviewController::class, 'create'])
+        ->name('reviews.create');
+
+    Route::post('/reviews/store', [ReviewController::class, 'store'])
+        ->name('reviews.store');
 
 });
 Route::get('contact', [ContactController::class, 'index'])->name('contact');
