@@ -1,5 +1,5 @@
 <x-app-layout>
-{{-- Fleet Listing Page - SQUADTRANS Enhanced --}}
+{{-- Fleet Listing Page - SQUADTRANS Mobile Horizontal Scroll --}}
 
 {{-- Font Awesome --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -20,12 +20,27 @@ body {
 }
 .heading-font { font-family: 'Montserrat', sans-serif; }
 
-/* Hero Banner */
+/* Hero Banner - Mobile Optimized */
 .hero-banner {
-    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
-    border-radius: 24px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(31, 41, 55, 0.55) 0%,
+            rgba(17, 24, 39, 0.6) 100%
+        ),
+        url('/images/brio.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 16px;
     overflow: hidden;
     position: relative;
+}
+
+
+
+@media (min-width: 768px) {
+    .hero-banner { border-radius: 24px; }
 }
 
 .hero-pattern {
@@ -36,22 +51,57 @@ body {
         radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.08) 0%, transparent 50%);
 }
 
+/* Stats Cards */
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.3s;
+}
+
+@media (min-width: 768px) {
+    .stat-card {
+        border-radius: 16px;
+        padding: 20px;
+    }
+}
+
 /* Filter Section */
 .filter-bar {
     background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+@media (min-width: 768px) {
+    .filter-bar { border-radius: 20px; }
+}
+
+/* Category Filters - Horizontal Scroll */
+.category-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 4px 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+}
+
+.category-scroll::-webkit-scrollbar {
+    display: none;
 }
 
 .filter-btn {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: 2px solid transparent;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-.filter-btn:hover {
-    transform: translateY(-2px);
-    border-color: var(--primary);
+.filter-btn:active {
+    transform: scale(0.95);
 }
 
 .filter-btn.active {
@@ -60,24 +110,117 @@ body {
     font-weight: 700;
 }
 
-/* Fleet Cards */
+/* Horizontal Scroll Container for Cars - MOBILE */
+.cars-scroll-container {
+    position: relative;
+}
+
+.cars-scroll-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    padding: 2px;
+}
+
+.cars-scroll-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+/* Mobile: 2 Column Horizontal Layout */
+@media (max-width: 767px) {
+    .cars-scroll {
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-rows: repeat(2, 1fr);
+        grid-auto-columns: 280px;
+        gap: 12px;
+        padding-bottom: 60px;
+    }
+}
+
+/* Desktop: Normal Grid */
+@media (min-width: 768px) {
+    .cars-scroll {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .cars-scroll {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+}
+
+/* Scroll Navigation Buttons - Mobile Only */
+.scroll-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #FCD34D, #F59E0B);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    z-index: 10;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #111827;
+}
+
+.scroll-nav-btn:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+.scroll-nav-btn.left {
+    left: 8px;
+}
+
+.scroll-nav-btn.right {
+    right: 8px;
+}
+
+@media (min-width: 768px) {
+    .scroll-nav-btn {
+        display: none;
+    }
+}
+
+/* Fleet Cards - Compact Mobile Version */
 .fleet-card {
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: white;
     border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.fleet-card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-}
+@media (min-width: 768px) {
+    .fleet-card {
+        border-radius: 24px;
+    }
 
-.fleet-card:hover img {
-    transform: scale(1.15);
+    .fleet-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+    }
+
+    .fleet-card:hover img {
+        transform: scale(1.1);
+    }
 }
 
 .fleet-card img {
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .gradient-overlay {
@@ -92,25 +235,25 @@ body {
     background-clip: text;
 }
 
-/* Buttons */
+/* Buttons - Touch Friendly */
 .btn-primary {
     background: linear-gradient(135deg, #FCD34D, #F59E0B);
     transition: all 0.3s ease;
+    min-height: 44px;
 }
 
-.btn-primary:hover {
-    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
-    transform: translateY(-2px);
+.btn-primary:active {
+    transform: scale(0.98);
 }
 
 .btn-secondary {
     background: linear-gradient(135deg, #1F2937, #111827);
     transition: all 0.3s ease;
+    min-height: 44px;
 }
 
-.btn-secondary:hover {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
+.btn-secondary:active {
+    transform: scale(0.98);
 }
 
 .btn-outline {
@@ -118,11 +261,11 @@ body {
     background: transparent;
     color: #F59E0B;
     transition: all 0.3s ease;
+    min-height: 44px;
 }
 
-.btn-outline:hover {
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
-    color: #111827;
+.btn-outline:active {
+    background: rgba(245, 158, 11, 0.1);
 }
 
 /* Feature Icons */
@@ -134,19 +277,13 @@ body {
     justify-content: center;
     background: linear-gradient(135deg, #FCD34D, #F59E0B);
     border-radius: 50%;
-    font-size: 11px;
+    font-size: 10px;
 }
 
 /* Spec Items */
 .spec-item {
-    border-left: 3px solid #FCD34D;
-    padding-left: 12px;
-    transition: all 0.3s ease;
-}
-
-.spec-item:hover {
-    transform: translateX(6px);
-    border-color: #F59E0B;
+    border-left: 2px solid #FCD34D;
+    padding-left: 8px;
 }
 
 /* Badges */
@@ -156,13 +293,43 @@ body {
 }
 
 @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
-    50% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }
+    0%, 100% { box-shadow: 0 0 8px rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 0 16px rgba(245, 158, 11, 0.5); }
 }
 
 .badge-status {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
+}
+
+/* Compare Badge */
+.compare-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: white;
+    border-radius: 8px;
+    padding: 4px 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 10px;
+    z-index: 5;
+}
+
+@media (min-width: 768px) {
+    .compare-badge {
+        top: 12px;
+        right: 12px;
+        padding: 6px 10px;
+        border-radius: 10px;
+        font-size: 11px;
+    }
+}
+
+.compare-badge:active {
+    background: #FCD34D;
+    transform: scale(0.95);
 }
 
 /* Sort Dropdown */
@@ -172,95 +339,48 @@ body {
 
 .sort-menu {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 8px);
     right: 0;
-    margin-top: 8px;
     background: white;
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     min-width: 200px;
     z-index: 50;
     display: none;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
-.sort-dropdown:hover .sort-menu {
+.sort-dropdown.active .sort-menu {
     display: block;
 }
 
 .sort-menu a {
-    padding: 12px 20px;
+    padding: 12px 16px;
     display: block;
     transition: all 0.2s;
 }
 
-.sort-menu a:hover {
+.sort-menu a:active {
     background: #f8fafc;
     color: var(--primary);
 }
 
 /* View Toggle */
 .view-btn {
-    padding: 10px 14px;
+    padding: 10px;
     border-radius: 10px;
     transition: all 0.3s;
     cursor: pointer;
 }
 
-.view-btn:hover {
-    background: #f1f5f9;
+.view-btn:active {
+    background: #e2e8f0;
 }
 
 .view-btn.active {
     background: linear-gradient(135deg, #FCD34D, #F59E0B);
     color: #111827;
-}
-
-/* Stats Cards */
-.stat-card {
-    background: white;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    transition: all 0.3s;
-}
-
-.stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-}
-
-/* Loading Skeleton */
-.skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-
-/* Compare Badge */
-.compare-badge {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: white;
-    border-radius: 12px;
-    padding: 8px 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.compare-badge:hover {
-    background: #FCD34D;
-    transform: scale(1.1);
-}
-
-.compare-badge input[type="checkbox"] {
-    cursor: pointer;
 }
 
 /* Comparison Bar */
@@ -271,56 +391,86 @@ body {
     right: 0;
     background: linear-gradient(135deg, #1F2937, #111827);
     color: white;
-    padding: 20px;
+    padding: 16px;
     transform: translateY(100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 100;
-    box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.3);
+}
+
+@media (min-width: 768px) {
+    .comparison-bar { padding: 20px; }
 }
 
 .comparison-bar.show {
     transform: translateY(0);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .hero-banner { border-radius: 16px; }
-    .filter-bar { border-radius: 16px; }
+/* Scroll Indicator Dots - Mobile */
+.scroll-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 16px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@media (min-width: 768px) {
+    .scroll-indicator {
+        display: none;
+    }
+}
+
+.scroll-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d1d5db;
+    transition: all 0.3s;
+}
+
+.scroll-dot.active {
+    background: linear-gradient(135deg, #FCD34D, #F59E0B);
+    width: 24px;
+    border-radius: 4px;
 }
 </style>
 
-<main class="max-w-7xl mx-auto px-4 py-8">
+<main class="max-w-7xl mx-auto px-4 py-4 sm:py-6 lg:py-8">
 
 {{-- Hero Banner --}}
-<div class="hero-banner mb-10 relative overflow-hidden">
+<div class="hero-banner mb-6 sm:mb-8 lg:mb-10 relative overflow-hidden">
     <div class="hero-pattern"></div>
-    <div class="relative z-10 p-8 md:p-12">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="relative z-10 p-4 sm:p-6 lg:p-12">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-6">
             <div class="flex-1">
-                <span class="inline-block px-4 py-1 bg-yellow-400/20 text-yellow-400 text-xs font-bold rounded-full mb-4 border border-yellow-400/30">
+                <span class="inline-block px-3 py-1 bg-yellow-400/20 text-yellow-400 text-xs font-bold rounded-full mb-3 border border-yellow-400/30">
                     <i class="fa-solid fa-star"></i> PREMIUM FLEET
                 </span>
-                <h1 class="heading-font text-4xl md:text-5xl font-extrabold text-white mb-3">
+                <h1 class="heading-font text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white mb-2 sm:mb-3">
                     Armada Terbaik<br>Untuk Perjalanan Anda
                 </h1>
-                <p class="text-gray-300 max-w-xl text-lg">
-                    Lebih dari 50+ unit premium siap menemani setiap momen perjalanan Anda dengan kenyamanan maksimal.
+                <p class="text-gray-300 text-sm sm:text-base lg:text-lg max-w-xl">
+                    Lebih dari 50+ unit premium siap menemani setiap momen perjalanan Anda.
                 </p>
             </div>
 
             {{-- Stats --}}
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-4 w-full lg:w-auto">
                 <div class="stat-card text-center">
-                    <div class="text-3xl font-bold price-highlight">50+</div>
-                    <div class="text-xs text-gray-500 mt-1">Unit Tersedia</div>
+                    <div class="text-xl sm:text-2xl lg:text-3xl font-bold price-highlight">50+</div>
+                    <div class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Unit</div>
                 </div>
                 <div class="stat-card text-center">
-                    <div class="text-3xl font-bold price-highlight">4.8</div>
-                    <div class="text-xs text-gray-500 mt-1">Rating</div>
+                    <div class="text-xl sm:text-2xl lg:text-3xl font-bold price-highlight">4.8</div>
+                    <div class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Rating</div>
                 </div>
                 <div class="stat-card text-center">
-                    <div class="text-3xl font-bold price-highlight">24/7</div>
-                    <div class="text-xs text-gray-500 mt-1">Support</div>
+                    <div class="text-xl sm:text-2xl lg:text-3xl font-bold price-highlight">24/7</div>
+                    <div class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Support</div>
                 </div>
             </div>
         </div>
@@ -328,20 +478,22 @@ body {
 </div>
 
 {{-- Filter & Search Section --}}
-<div class="filter-bar p-6 mb-8">
-    <div class="flex flex-col lg:flex-row gap-4 items-center justify-between mb-6">
+<div class="filter-bar p-4 sm:p-5 lg:p-6 mb-6 sm:mb-8">
+    {{-- Search & Actions --}}
+    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-between mb-4 sm:mb-6">
         {{-- Search Bar --}}
-        <div class="flex-1 w-full lg:max-w-md relative">
-            <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <div class="flex-1 relative">
+            <i class="fa-solid fa-search absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
             <input type="text"
-                   placeholder="Cari mobil (brand, tipe, tahun...)"
-                   class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-yellow-400 focus:outline-none transition">
+                   id="searchInput"
+                   placeholder="Cari mobil..."
+                   class="w-full pl-9 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 text-sm sm:text-base rounded-xl border-2 border-gray-200 focus:border-yellow-400 focus:outline-none transition">
         </div>
 
         {{-- View Toggle & Sort --}}
-        <div class="flex items-center gap-3">
-            {{-- View Toggle --}}
-            <div class="flex bg-gray-100 rounded-xl p-1">
+        <div class="flex items-center gap-2 sm:gap-3">
+            {{-- View Toggle - Hidden on Mobile --}}
+            <div class="hidden sm:flex bg-gray-100 rounded-xl p-1">
                 <button class="view-btn active">
                     <i class="fa-solid fa-grid-2"></i>
                 </button>
@@ -352,387 +504,352 @@ body {
 
             {{-- Sort Dropdown --}}
             <div class="sort-dropdown">
-                <button class="flex items-center gap-2 px-4 py-3 bg-gray-100 rounded-xl font-semibold hover:bg-gray-200 transition">
+                <button class="sort-toggle flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-100 rounded-xl text-sm font-semibold hover:bg-gray-200 transition whitespace-nowrap">
                     <i class="fa-solid fa-sort"></i>
-                    <span>Urutkan</span>
+                    <span class="hidden sm:inline">Urutkan</span>
                     <i class="fa-solid fa-chevron-down text-xs"></i>
                 </button>
                 <div class="sort-menu">
-                    <a href="#"><i class="fa-solid fa-star text-yellow-500 mr-2"></i> Rating Tertinggi</a>
-                    <a href="#"><i class="fa-solid fa-dollar-sign text-green-500 mr-2"></i> Harga Terendah</a>
-                    <a href="#"><i class="fa-solid fa-dollar-sign text-red-500 mr-2"></i> Harga Tertinggi</a>
-                    <a href="#"><i class="fa-solid fa-calendar text-blue-500 mr-2"></i> Terbaru</a>
-                    <a href="#"><i class="fa-solid fa-fire text-orange-500 mr-2"></i> Terpopuler</a>
+                    <a href="#" class="sort-option"><i class="fa-solid fa-star text-yellow-500 mr-2"></i> Rating Tertinggi</a>
+                    <a href="#" class="sort-option"><i class="fa-solid fa-dollar-sign text-green-500 mr-2"></i> Harga Terendah</a>
+                    <a href="#" class="sort-option"><i class="fa-solid fa-dollar-sign text-red-500 mr-2"></i> Harga Tertinggi</a>
+                    <a href="#" class="sort-option"><i class="fa-solid fa-calendar text-blue-500 mr-2"></i> Terbaru</a>
+                    <a href="#" class="sort-option"><i class="fa-solid fa-fire text-orange-500 mr-2"></i> Terpopuler</a>
                 </div>
             </div>
+
+            {{-- Advanced Filter Button --}}
+            <button class="filter-toggle px-3 sm:px-4 py-2.5 sm:py-3 bg-yellow-400 rounded-xl text-sm font-semibold hover:bg-yellow-500 transition">
+                <i class="fa-solid fa-sliders"></i>
+                <span class="hidden sm:inline ml-2">Filter</span>
+            </button>
         </div>
     </div>
 
-    {{-- Category Filters --}}
-    <div class="flex flex-wrap gap-3">
-        <button class="filter-btn active px-5 py-2 rounded-full font-semibold text-sm">
-            <i class="fa-solid fa-layer-group mr-2"></i>Semua
+    {{-- Category Filters - Horizontal Scroll --}}
+    <div class="category-scroll">
+        <button class="filter-btn active px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm">
+            <i class="fa-solid fa-layer-group mr-1 sm:mr-2"></i>Semua
         </button>
-        <button class="filter-btn px-5 py-2 rounded-full font-semibold text-sm bg-gray-50 hover:bg-gray-100">
-            <i class="fa-solid fa-car mr-2"></i>Sedan
+        <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
+            <i class="fa-solid fa-car mr-1 sm:mr-2"></i>Sedan
         </button>
-        <button class="filter-btn px-5 py-2 rounded-full font-semibold text-sm bg-gray-50 hover:bg-gray-100">
-            <i class="fa-solid fa-truck-pickup mr-2"></i>SUV
+        <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
+            <i class="fa-solid fa-truck-pickup mr-1 sm:mr-2"></i>SUV
         </button>
-        <button class="filter-btn px-5 py-2 rounded-full font-semibold text-sm bg-gray-50 hover:bg-gray-100">
-            <i class="fa-solid fa-van-shuttle mr-2"></i>MPV
+        <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
+            <i class="fa-solid fa-van-shuttle mr-1 sm:mr-2"></i>MPV
         </button>
-        <button class="filter-btn px-5 py-2 rounded-full font-semibold text-sm bg-gray-50 hover:bg-gray-100">
-            <i class="fa-solid fa-car-side mr-2"></i>Hatchback
+        <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
+            <i class="fa-solid fa-car-side mr-1 sm:mr-2"></i>Hatchback
         </button>
-        <button class="filter-btn px-5 py-2 rounded-full font-semibold text-sm bg-gray-50 hover:bg-gray-100">
-            <i class="fa-solid fa-charging-station mr-2"></i>Electric
+        <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
+            <i class="fa-solid fa-charging-station mr-1 sm:mr-2"></i>Electric
         </button>
-        <button class="filter-btn px-5 py-2 rounded-full font-semibold text-sm bg-gray-50 hover:bg-gray-100">
-            <i class="fa-solid fa-crown mr-2"></i>Luxury
+        <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
+            <i class="fa-solid fa-crown mr-1 sm:mr-2"></i>Luxury
         </button>
     </div>
 </div>
 
 {{-- Results Info --}}
-<div class="flex items-center justify-between mb-6">
-    <p class="text-gray-600">
-        Menampilkan <span class="font-bold text-gray-900">{{ $cars->count() }}</span> dari
+<div class="flex items-center justify-between mb-4 sm:mb-6 px-1">
+    <p class="text-xs sm:text-sm text-gray-600">
+        <span class="font-bold text-gray-900">{{ $cars->count() }}</span> dari
         <span class="font-bold text-gray-900">{{ $cars->total() }}</span> unit
     </p>
-    <button class="text-yellow-600 font-semibold hover:text-yellow-700 transition">
-        <i class="fa-solid fa-filter mr-2"></i>Filter Lanjutan
+    <p class="text-xs text-gray-500 md:hidden">
+        <i class="fa-solid fa-hand-point-right mr-1"></i>Geser untuk lihat lebih banyak
+    </p>
+</div>
+
+{{-- Cars Horizontal Scroll Container --}}
+<div class="cars-scroll-container mb-10">
+    {{-- Navigation Buttons (Mobile Only) --}}
+    <button class="scroll-nav-btn left" id="scrollLeft">
+        <i class="fa-solid fa-chevron-left"></i>
     </button>
-</div>
+    <button class="scroll-nav-btn right" id="scrollRight">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
 
-{{-- Cars Grid --}}
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-@forelse($cars as $car)
-<div class="fleet-card rounded-3xl overflow-hidden shadow-lg relative">
+    {{-- Scrollable Wrapper --}}
+    <div class="cars-scroll-wrapper" id="carsScrollWrapper">
+        <div class="cars-scroll" id="carsScroll">
+            @forelse($cars as $car)
+            <div class="fleet-card overflow-hidden shadow-md">
 
-{{-- Compare Checkbox --}}
-<div class="compare-badge">
-    <label class="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" class="w-4 h-4 accent-yellow-500" value="{{ $car->id }}">
-        <span class="text-xs font-semibold">Bandingkan</span>
-    </label>
-</div>
+                {{-- Compare Checkbox --}}
+                <div class="compare-badge">
+                    <label class="flex items-center gap-1 cursor-pointer">
+                        <input type="checkbox" class="w-3 h-3 accent-yellow-500" value="{{ $car->id }}">
+                        <span class="text-xs font-semibold hidden sm:inline">Bandingkan</span>
+                        <i class="fa-solid fa-code-compare sm:hidden"></i>
+                    </label>
+                </div>
 
-{{-- Image Container --}}
-<div class="relative h-64 overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
-    @if($car->images->first())
-        <img src="{{ asset('storage/'.$car->images->first()->image_path) }}"
-             alt="{{ $car->name }}"
-             class="w-full h-full object-cover">
-    @else
-        <div class="flex items-center justify-center h-full">
-            <i class="fa-solid fa-car text-8xl text-gray-600"></i>
-        </div>
-    @endif
+                {{-- Image Container --}}
+                <div class="relative h-32 sm:h-48 lg:h-56 overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
+                    @if($car->images->first())
+                        <img src="{{ asset('storage/'.$car->images->first()->image_path) }}"
+                             alt="{{ $car->name }}"
+                             class="w-full h-full object-cover">
+                    @else
+                        <div class="flex items-center justify-center h-full">
+                            <i class="fa-solid fa-car text-4xl sm:text-7xl text-gray-600"></i>
+                        </div>
+                    @endif
 
-    <div class="gradient-overlay absolute inset-0"></div>
+                    <div class="gradient-overlay absolute inset-0"></div>
 
-    {{-- Top Badges --}}
-    <div class="absolute top-4 left-4 right-4 flex justify-between items-start">
-        <div class="flex flex-col gap-2">
-            <span class="badge-premium px-4 py-1.5 text-gray-900 text-xs font-bold rounded-full inline-block">
-                <i class="fa-solid fa-crown mr-1"></i>PREMIUM
-            </span>
-            @if($car->is_available)
-            <span class="px-4 py-1.5 bg-green-500 text-white text-xs font-bold rounded-full inline-block">
-                <i class="fa-solid fa-circle-check mr-1"></i>TERSEDIA
-            </span>
-            @else
-            <span class="px-4 py-1.5 bg-red-500 text-white text-xs font-bold rounded-full inline-block">
-                <i class="fa-solid fa-circle-xmark mr-1"></i>DISEWA
-            </span>
-            @endif
-        </div>
+                    {{-- Top Badges --}}
+                    <div class="absolute top-2 left-2 flex flex-col gap-1">
+                        <span class="badge-premium px-2 py-0.5 text-gray-900 text-[9px] sm:text-xs font-bold rounded-full inline-block">
+                            <i class="fa-solid fa-crown mr-0.5"></i>PREMIUM
+                        </span>
+                        @if($car->is_available)
+                        <span class="px-2 py-0.5 bg-green-500 text-white text-[9px] sm:text-xs font-bold rounded-full inline-block">
+                            <i class="fa-solid fa-circle-check mr-0.5"></i>TERSEDIA
+                        </span>
+                        @else
+                        <span class="px-2 py-0.5 bg-red-500 text-white text-[9px] sm:text-xs font-bold rounded-full inline-block">
+                            <i class="fa-solid fa-circle-xmark mr-0.5"></i>DISEWA
+                        </span>
+                        @endif
+                    </div>
 
-        <div class="flex flex-col gap-2 items-end">
-            @php
-                $avg = $car->reviews->avg('rating');
-            @endphp
-            @if($avg)
-            <span class="badge-status px-3 py-1.5 text-yellow-400 text-xs font-bold rounded-full">
-                <i class="fa-solid fa-star"></i> {{ number_format($avg, 1) }}
-            </span>
-            @endif
+                    {{-- Rating Badge --}}
+                    @php
+                        $avg = $car->reviews->avg('rating');
+                    @endphp
+                    @if($avg)
+                    <span class="badge-status absolute top-2 right-12 sm:right-16 px-2 py-0.5 sm:py-1 text-yellow-400 text-[9px] sm:text-xs font-bold rounded-full">
+                        <i class="fa-solid fa-star"></i> {{ number_format($avg, 1) }}
+                    </span>
+                    @endif
 
-            <button class="badge-status p-2 rounded-full hover:bg-red-500 transition">
-                <i class="fa-regular fa-heart text-white"></i>
-            </button>
-        </div>
-    </div>
+                    {{-- Bottom Info --}}
+                    <div class="absolute bottom-0 left-0 right-0 p-2 sm:p-4">
+                        <h3 class="heading-font text-white text-sm sm:text-lg font-bold mb-0.5 truncate">
+                            {{ $car->brand }}
+                        </h3>
+                        <p class="text-yellow-400 font-semibold text-xs sm:text-base truncate">{{ $car->name }}</p>
+                    </div>
+                </div>
 
-    {{-- Bottom Info --}}
-    <div class="absolute bottom-0 left-0 right-0 p-6">
-        <div class="flex items-end justify-between">
-            <div>
-                <h3 class="heading-font text-white text-2xl font-bold mb-1">{{ $car->brand }}</h3>
-                <p class="text-yellow-400 font-semibold text-lg">{{ $car->name }}</p>
+                {{-- Content --}}
+                <div class="p-2 sm:p-4 flex-1 flex flex-col">
+
+                    {{-- Quick Specs Grid --}}
+                    <div class="grid grid-cols-2 gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                        <div class="spec-item">
+                            <p class="text-[9px] sm:text-xs text-gray-500 mb-0.5">Tahun</p>
+                            <p class="font-bold flex items-center gap-1 text-[10px] sm:text-sm">
+                                <i class="fa-solid fa-calendar-days text-yellow-500 text-[9px]"></i>
+                                {{ $car->year }}
+                            </p>
+                        </div>
+
+                        <div class="spec-item">
+                            <p class="text-[9px] sm:text-xs text-gray-500 mb-0.5">Kapasitas</p>
+                            <p class="font-bold flex items-center gap-1 text-[10px] sm:text-sm">
+                                <i class="fa-solid fa-users text-yellow-500 text-[9px]"></i>
+                                {{ $car->seats }}
+                            </p>
+                        </div>
+
+                        <div class="spec-item">
+                            <p class="text-[9px] sm:text-xs text-gray-500 mb-0.5">Transmisi</p>
+                            <p class="font-bold flex items-center gap-1 text-[10px] sm:text-sm truncate">
+                                <i class="fa-solid fa-gears text-yellow-500 text-[9px]"></i>
+                                {{ ucfirst($car->transmission) }}
+                            </p>
+                        </div>
+
+                        <div class="spec-item">
+                            <p class="text-[9px] sm:text-xs text-gray-500 mb-0.5">BBM</p>
+                            <p class="font-bold flex items-center gap-1 text-[10px] sm:text-sm truncate">
+                                <i class="fa-solid fa-gas-pump text-yellow-500 text-[9px]"></i>
+                                {{ $car->fuel_type }}
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Features Icons --}}
+                    <div class="grid grid-cols-4 gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                        <div class="flex flex-col items-center gap-0.5 p-1 rounded-lg">
+                            <div class="feature-icon">
+                                <i class="fa-solid fa-snowflake text-white"></i>
+                            </div>
+                            <span class="text-[8px] sm:text-xs font-medium">AC</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-0.5 p-1 rounded-lg">
+                            <div class="feature-icon">
+                                <i class="fa-solid fa-shield-halved text-white"></i>
+                            </div>
+                            <span class="text-[8px] sm:text-xs font-medium">Safe</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-0.5 p-1 rounded-lg">
+                            <div class="feature-icon">
+                                <i class="fa-brands fa-bluetooth-b text-white"></i>
+                            </div>
+                            <span class="text-[8px] sm:text-xs font-medium">BT</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-0.5 p-1 rounded-lg">
+                            <div class="feature-icon">
+                                <i class="fa-solid fa-camera text-white"></i>
+                            </div>
+                            <span class="text-[8px] sm:text-xs font-medium">Cam</span>
+                        </div>
+                    </div>
+
+                    {{-- Divider --}}
+                    <div class="border-t border-gray-100 my-2 sm:my-3"></div>
+
+                    {{-- Price Section --}}
+                    <div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg sm:rounded-xl p-2 sm:p-3 mb-2 sm:mb-3 border border-yellow-100">
+                        <div class="flex items-center justify-between mb-1">
+                            <p class="text-[9px] sm:text-xs text-gray-600 font-medium">24 Jam</p>
+                            <span class="text-[8px] sm:text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-bold">
+                                -15%
+                            </span>
+                        </div>
+                        <div class="flex items-end gap-1">
+                            <p class="heading-font text-base sm:text-2xl font-extrabold price-highlight">
+                                {{ number_format($car->price_24h / 1000, 0) }}K
+                            </p>
+                        </div>
+
+                        {{-- Additional Pricing --}}
+                        <div class="mt-1.5 sm:mt-2 pt-1.5 sm:pt-2 border-t border-yellow-200 space-y-0.5">
+                            <div class="flex items-center justify-between text-[9px] sm:text-xs">
+                                <span class="text-gray-600">12 Jam:</span>
+                                <span class="font-bold text-gray-800">{{ number_format(($car->price_24h * 0.7) / 1000, 0) }}K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Action Buttons --}}
+                    <div class="grid grid-cols-2 gap-1.5 sm:gap-2 mt-auto">
+                        <a href="{{ route('cars.show', $car) }}"
+                           class="btn-secondary text-white py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-bold flex items-center justify-center gap-1 text-[10px] sm:text-sm">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span>Detail</span>
+                        </a>
+
+                        <a href="{{ route('bookings.create', ['car' => $car->id]) }}"
+                           class="btn-primary text-gray-900 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-bold flex items-center justify-center gap-1 text-[10px] sm:text-sm">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>Pesan</span>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="text-right">
-                <p class="text-gray-300 text-xs">Total Booking</p>
-                <p class="text-white font-bold text-lg">{{ rand(50, 500) }}x</p>
+            @empty
+            <div class="col-span-full text-center py-12 bg-white rounded-2xl">
+                <i class="fa-solid fa-car-burst text-5xl text-gray-300 mb-3"></i>
+                <h3 class="text-lg font-bold text-gray-800 mb-2">Tidak Ada Armada</h3>
+                <p class="text-sm text-gray-500">Coba ubah filter pencarian</p>
             </div>
+            @endforelse
         </div>
     </div>
-</div>
 
-{{-- Content --}}
-<div class="p-6">
-
-{{-- Quick Specs Grid --}}
-<div class="grid grid-cols-2 gap-3 mb-5">
-    <div class="spec-item">
-        <p class="text-xs text-gray-500 mb-1">Tahun</p>
-        <p class="font-bold flex items-center gap-2 text-sm">
-            <i class="fa-solid fa-calendar-days text-yellow-500"></i>
-            {{ $car->year }}
-        </p>
-    </div>
-
-    <div class="spec-item">
-        <p class="text-xs text-gray-500 mb-1">Kapasitas</p>
-        <p class="font-bold flex items-center gap-2 text-sm">
-            <i class="fa-solid fa-users text-yellow-500"></i>
-            {{ $car->seats }} Kursi
-        </p>
-    </div>
-
-    <div class="spec-item">
-        <p class="text-xs text-gray-500 mb-1">Transmisi</p>
-        <p class="font-bold flex items-center gap-2 text-sm">
-            <i class="fa-solid fa-gears text-yellow-500"></i>
-            {{ ucfirst($car->transmission) }}
-        </p>
-    </div>
-
-    <div class="spec-item">
-        <p class="text-xs text-gray-500 mb-1">Bahan Bakar</p>
-        <p class="font-bold flex items-center gap-2 text-sm">
-            <i class="fa-solid fa-gas-pump text-yellow-500"></i>
-            {{ $car->fuel_type }}
-        </p>
+    {{-- Scroll Indicator Dots --}}
+    <div class="scroll-indicator" id="scrollIndicator">
+        <!-- Dots will be generated by JavaScript -->
     </div>
 </div>
 
-{{-- Features Icons --}}
-<div class="grid grid-cols-4 gap-3 mb-5">
-    <div class="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-50 transition">
-        <div class="feature-icon">
-            <i class="fa-solid fa-snowflake text-white"></i>
-        </div>
-        <span class="text-xs font-medium">AC</span>
-    </div>
-    <div class="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-50 transition">
-        <div class="feature-icon">
-            <i class="fa-solid fa-shield-halved text-white"></i>
-        </div>
-        <span class="text-xs font-medium">Airbag</span>
-    </div>
-    <div class="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-50 transition">
-        <div class="feature-icon">
-            <i class="fa-brands fa-bluetooth-b text-white"></i>
-        </div>
-        <span class="text-xs font-medium">Audio</span>
-    </div>
-    <div class="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-50 transition">
-        <div class="feature-icon">
-            <i class="fa-solid fa-camera text-white"></i>
-        </div>
-        <span class="text-xs font-medium">Camera</span>
-    </div>
-</div>
-
-{{-- Divider --}}
-<div class="border-t border-gray-100 my-5"></div>
-
-{{-- Price Section --}}
-<div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-4 mb-5 border border-yellow-100">
-    <div class="flex items-center justify-between mb-2">
-        <p class="text-xs text-gray-600 font-medium">Harga Sewa / 24 Jam</p>
-        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">
-            -15% OFF
-        </span>
-    </div>
-    <div class="flex items-end gap-2">
-        <p class="heading-font text-3xl font-extrabold price-highlight">
-            Rp {{ number_format($car->price_24h, 0, ',', '.') }}
-        </p>
-        <p class="text-gray-400 line-through text-sm mb-1">
-            Rp {{ number_format($car->price_24h * 1.15, 0, ',', '.') }}
-        </p>
-    </div>
-
-    {{-- Additional Pricing Options --}}
-    <div class="mt-3 pt-3 border-t border-yellow-200">
-        <div class="flex items-center justify-between text-xs">
-            <span class="text-gray-600">12 Jam:</span>
-            <span class="font-bold text-gray-800">Rp {{ number_format($car->price_24h * 0.7, 0, ',', '.') }}</span>
-        </div>
-        <div class="flex items-center justify-between text-xs mt-1">
-            <span class="text-gray-600">Mingguan (7 hari):</span>
-            <span class="font-bold text-gray-800">Rp {{ number_format($car->price_24h * 6, 0, ',', '.') }}</span>
-        </div>
-    </div>
-</div>
-
-{{-- Action Buttons --}}
-<div class="grid grid-cols-2 gap-3">
-    <a href="{{ route('cars.show', $car) }}"
-       class="btn-secondary text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-sm">
-        <i class="fa-solid fa-circle-info"></i>
-        <span>Detail</span>
-    </a>
-
-    <a href="{{ route('bookings.create', ['car' => $car->id]) }}"
-       class="btn-primary text-gray-900 py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-sm">
-        <i class="fa-solid fa-calendar-check"></i>
-        <span>Pesan</span>
-    </a>
-</div>
-
-{{-- Quick Contact --}}
-<div class="mt-3">
-    <button class="w-full btn-outline py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2">
-        <i class="fa-brands fa-whatsapp"></i>
-        <span>Chat WhatsApp</span>
-    </button>
-</div>
-
-</div>
-</div>
-@empty
-<div class="col-span-full text-center py-20 bg-white rounded-3xl">
-    <i class="fa-solid fa-car-burst text-7xl text-gray-300 mb-4"></i>
-    <h3 class="text-2xl font-bold text-gray-800 mb-2">Tidak Ada Armada Tersedia</h3>
-    <p class="text-gray-500">Coba ubah filter pencarian Anda</p>
-    <button class="mt-6 btn-primary px-6 py-3 rounded-xl font-bold text-gray-900">
-        <i class="fa-solid fa-rotate-right mr-2"></i>Reset Filter
-    </button>
-</div>
-@endforelse
-</div>
-
-{{-- Pagination --}}
-<div class="mt-12 flex justify-center">
+{{-- Pagination (Desktop) --}}
+<div class="mt-8 sm:mt-12 flex justify-center">
     {{ $cars->links() }}
 </div>
 
 </main>
 
-{{-- Comparison Bar (Hidden by default) --}}
+{{-- Comparison Bar --}}
 <div class="comparison-bar" id="comparisonBar">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <i class="fa-solid fa-code-compare text-2xl text-yellow-400"></i>
+        <div class="flex items-center gap-3 sm:gap-4">
+            <i class="fa-solid fa-code-compare text-xl sm:text-2xl text-yellow-400"></i>
             <div>
-                <p class="font-bold text-lg">Bandingkan Mobil</p>
-                <p class="text-sm text-gray-400"><span id="compareCount">0</span> mobil dipilih</p>
+                <p class="font-bold text-sm sm:text-base">Bandingkan Mobil</p>
+                <p class="text-xs text-gray-400"><span id="compareCount">0</span> mobil dipilih</p>
             </div>
         </div>
 
-        <div class="flex items-center gap-3">
-            <button class="px-6 py-3 bg-yellow-400 text-gray-900 rounded-xl font-bold hover:bg-yellow-500 transition">
-                <i class="fa-solid fa-chart-simple mr-2"></i>Bandingkan Sekarang
+        <div class="flex items-center gap-2 sm:gap-3">
+            <button class="px-4 sm:px-6 py-2.5 bg-yellow-400 text-gray-900 rounded-xl text-xs sm:text-sm font-bold hover:bg-yellow-500 transition">
+                <i class="fa-solid fa-chart-simple mr-1"></i>
+                <span class="hidden sm:inline">Bandingkan</span>
+                <span class="sm:hidden">Cek</span>
             </button>
-            <button class="px-4 py-3 bg-white/10 text-white rounded-xl hover:bg-white/20 transition" onclick="clearComparison()">
+            <button class="px-3 py-2.5 bg-white/10 text-white rounded-xl hover:bg-white/20 transition" onclick="clearComparison()">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
     </div>
 </div>
 
-{{-- Quick Filter Modal (Sliced) --}}
-<div id="filterModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="heading-font text-2xl font-bold">Filter Lanjutan</h2>
-            <button class="p-2 hover:bg-gray-100 rounded-full transition">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-        </div>
-
-        <div class="space-y-6">
-            {{-- Price Range --}}
-            <div>
-                <label class="font-semibold mb-3 block">Rentang Harga</label>
-                <div class="flex items-center gap-4">
-                    <input type="number" placeholder="Min" class="flex-1 px-4 py-3 border rounded-xl">
-                    <span>-</span>
-                    <input type="number" placeholder="Max" class="flex-1 px-4 py-3 border rounded-xl">
-                </div>
-            </div>
-
-            {{-- Transmission --}}
-            <div>
-                <label class="font-semibold mb-3 block">Transmisi</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:border-yellow-400 transition">
-                        <input type="checkbox" class="w-5 h-5 accent-yellow-500">
-                        <span>Manual</span>
-                    </label>
-                    <label class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:border-yellow-400 transition">
-                        <input type="checkbox" class="w-5 h-5 accent-yellow-500">
-                        <span>Automatic</span>
-                    </label>
-                </div>
-            </div>
-
-            {{-- Seats --}}
-            <div>
-                <label class="font-semibold mb-3 block">Kapasitas Kursi</label>
-                <div class="grid grid-cols-4 gap-3">
-                    <button class="filter-btn px-4 py-3 rounded-xl font-semibold bg-gray-50">2-4</button>
-                    <button class="filter-btn px-4 py-3 rounded-xl font-semibold bg-gray-50">5-6</button>
-                    <button class="filter-btn px-4 py-3 rounded-xl font-semibold bg-gray-50">7+</button>
-                    <button class="filter-btn px-4 py-3 rounded-xl font-semibold bg-gray-50">Semua</button>
-                </div>
-            </div>
-
-            {{-- Features --}}
-            <div>
-                <label class="font-semibold mb-3 block">Fitur Tambahan</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="flex items-center gap-3 p-3 border rounded-xl cursor-pointer hover:border-yellow-400 transition">
-                        <input type="checkbox" class="w-4 h-4 accent-yellow-500">
-                        <i class="fa-solid fa-snowflake text-blue-500"></i>
-                        <span class="text-sm">AC</span>
-                    </label>
-                    <label class="flex items-center gap-3 p-3 border rounded-xl cursor-pointer hover:border-yellow-400 transition">
-                        <input type="checkbox" class="w-4 h-4 accent-yellow-500">
-                        <i class="fa-solid fa-shield-halved text-green-500"></i>
-                        <span class="text-sm">Airbag</span>
-                    </label>
-                    <label class="flex items-center gap-3 p-3 border rounded-xl cursor-pointer hover:border-yellow-400 transition">
-                        <input type="checkbox" class="w-4 h-4 accent-yellow-500">
-                        <i class="fa-brands fa-bluetooth-b text-blue-600"></i>
-                        <span class="text-sm">Bluetooth</span>
-                    </label>
-                    <label class="flex items-center gap-3 p-3 border rounded-xl cursor-pointer hover:border-yellow-400 transition">
-                        <input type="checkbox" class="w-4 h-4 accent-yellow-500">
-                        <i class="fa-solid fa-camera text-purple-500"></i>
-                        <span class="text-sm">Camera</span>
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex gap-3 mt-8">
-            <button class="flex-1 py-3 border-2 border-gray-300 rounded-xl font-bold hover:bg-gray-50 transition">
-                Reset Filter
-            </button>
-            <button class="flex-1 btn-primary py-3 rounded-xl font-bold text-gray-900">
-                Terapkan Filter
-            </button>
-        </div>
-    </div>
-</div>
-
-{{-- JavaScript for Interactions (Sliced) --}}
+{{-- JavaScript --}}
 <script>
+// Horizontal Scroll Navigation
+const scrollWrapper = document.getElementById('carsScrollWrapper');
+const scrollLeft = document.getElementById('scrollLeft');
+const scrollRight = document.getElementById('scrollRight');
+const scrollIndicator = document.getElementById('scrollIndicator');
+
+// Scroll amount (adjust based on card width)
+const scrollAmount = 300;
+
+scrollLeft?.addEventListener('click', () => {
+    scrollWrapper.scrollBy({
+        left: -scrollAmount,
+        behavior: 'smooth'
+    });
+});
+
+scrollRight?.addEventListener('click', () => {
+    scrollWrapper.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+    });
+});
+
+// Update scroll indicators
+function updateScrollIndicators() {
+    if (window.innerWidth >= 768) return; // Only for mobile
+
+    const scrollWidth = scrollWrapper.scrollWidth;
+    const clientWidth = scrollWrapper.clientWidth;
+    const scrollLeft = scrollWrapper.scrollLeft;
+
+    const totalDots = Math.ceil(scrollWidth / clientWidth);
+    const activeDot = Math.floor(scrollLeft / clientWidth);
+
+    // Generate dots
+    if (scrollIndicator && scrollIndicator.children.length !== totalDots) {
+        scrollIndicator.innerHTML = '';
+        for (let i = 0; i < totalDots; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'scroll-dot';
+            if (i === activeDot) dot.classList.add('active');
+            scrollIndicator.appendChild(dot);
+        }
+    } else {
+        // Update active dot
+        const dots = scrollIndicator?.querySelectorAll('.scroll-dot');
+        dots?.forEach((dot, index) => {
+            dot.classList.toggle('active', index === activeDot);
+        });
+    }
+}
+
+scrollWrapper?.addEventListener('scroll', updateScrollIndicators);
+window.addEventListener('resize', updateScrollIndicators);
+window.addEventListener('load', updateScrollIndicators);
+
 // Comparison functionality
 let comparedCars = [];
 const comparisonBar = document.getElementById('comparisonBar');
@@ -747,7 +864,7 @@ document.querySelectorAll('.compare-badge input[type="checkbox"]').forEach(check
                 comparedCars.push(carId);
             } else {
                 this.checked = false;
-                alert('Maksimal 3 mobil untuk dibandingkan');
+                alert('Maksimal 3 mobil');
             }
         } else {
             comparedCars = comparedCars.filter(id => id !== carId);
@@ -759,7 +876,6 @@ document.querySelectorAll('.compare-badge input[type="checkbox"]').forEach(check
 
 function updateComparisonBar() {
     compareCount.textContent = comparedCars.length;
-
     if (comparedCars.length > 0) {
         comparisonBar.classList.add('show');
     } else {
@@ -775,27 +891,32 @@ function clearComparison() {
     updateComparisonBar();
 }
 
-// Search functionality (placeholder)
-document.querySelector('input[type="text"]').addEventListener('input', function(e) {
-    // Will be connected to backend filter
+// Sort dropdown toggle
+const sortToggle = document.querySelector('.sort-toggle');
+const sortDropdown = document.querySelector('.sort-dropdown');
+
+sortToggle?.addEventListener('click', function(e) {
+    e.stopPropagation();
+    sortDropdown.classList.toggle('active');
+});
+
+document.addEventListener('click', function(e) {
+    if (!sortDropdown?.contains(e.target)) {
+        sortDropdown?.classList.remove('active');
+    }
+});
+
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+searchInput?.addEventListener('input', function(e) {
     console.log('Searching:', e.target.value);
 });
 
-// View toggle
-document.querySelectorAll('.view-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        // Toggle grid/list view logic here
-    });
-});
-
-// Filter buttons
+// Category filter buttons
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
-        // Apply filter logic here
     });
 });
 </script>

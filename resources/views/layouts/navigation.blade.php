@@ -49,7 +49,7 @@
 
                 <a href="/contact"
                     class="relative px-4 py-2 text-gray-700 hover:text-yellow-500 transition-colors duration-200 group">
-                    <span class="relative z-10">Contact Us</span>
+                    <span class="relative z-10">Tentang</span>
                     <span
                         class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-500 group-hover:w-full transition-all duration-300"></span>
                 </a>
