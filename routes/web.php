@@ -22,7 +22,19 @@ Route::get('/', function () {
     $cars = Car::with('images')->where('status', 'available')->limit(3)->get();
     return view('dashboard', compact('cars'));
 });
+Route::prefix('api/cars/{car}')->name('cars.')->group(function () {
+    // Check availability for specific dates
+    Route::post('/check-availability', [CarsController::class, 'checkAvailability'])
+        ->name('check-availability');
 
+    // Get booked dates for calendar
+    Route::get('/booked-dates', [CarsController::class, 'getBookedDates'])
+        ->name('booked-dates');
+
+    // Get price estimate
+    Route::post('/price-estimate', [CarsController::class, 'getPriceEstimate'])
+        ->name('price-estimate');
+});
 // Car routes (public)
 Route::get('/Armada', [CarsController::class, 'index'])->name('cars.index');
 Route::get('/cars', [CarsController::class, 'index'])->name('cars.index');
@@ -39,8 +51,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/bookings/store', [BookingController::class, 'store'])
         ->name('bookings.store');
 
-    Route::get('/bookings/success', [BookingController::class, 'success'])
+    Route::get('/bookings/success/{booking}', [BookingController::class, 'success'])
         ->name('bookings.success');
+
+
+    Route::get('/bookings/{booking}/download', [BookingController::class, 'downloadReceipt'])
+        ->name('bookings.download');
 
     Route::get('/bookings/{booking}', [BookingController::class, 'show'])
         ->name('bookings.show');

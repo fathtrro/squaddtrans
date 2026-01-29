@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CarsController extends Controller
 {
@@ -56,19 +57,22 @@ class CarsController extends Controller
     }
 
     /**
-     * Display a single car detail
+     * Display a single car detail with booking calendar
      */
     public function show(Car $car)
     {
-        if ($car->status !== 'available') {
-            abort(404, 'Mobil ini tidak tersedia');
-        }
+        // Load relationships
+        $car->load(['images', 'reviews.user', 'bookings' => function($query) {
+            // Only load confirmed and active bookings for calendar display
+            $query->whereIn('status', ['confirmed', 'active'])
+                  ->select('id', 'car_id', 'start_datetime', 'end_datetime', 'status');
+        }]);
 
-        $car->load(['images', 'reviews', 'bookings']);
-
-        // Get related cars (same category)
-        $relatedCars = Car::where('category', $car->category)
+        // Get related cars (same category, available, exclude current car)
+        $relatedCars = Car::with('images')
+            ->where('category', $car->category)
             ->where('id', '!=', $car->id)
+            ->where('is_available', true)
             ->where('status', 'available')
             ->limit(4)
             ->get();
@@ -77,6 +81,212 @@ class CarsController extends Controller
         $averageRating = $car->reviews->avg('rating') ?? 0;
         $totalReviews = $car->reviews->count();
 
-        return view('cars.show', compact('car', 'relatedCars', 'averageRating', 'totalReviews'));
+        // Get booking statistics
+        $bookingStats = $this->getBookingStats($car);
+
+        return view('cars.show', compact(
+            'car',
+            'relatedCars',
+            'averageRating',
+            'totalReviews',
+            'bookingStats'
+        ));
+    }
+
+    /**
+     * Check availability for specific dates
+     */
+    public function checkAvailability(Request $request, Car $car)
+    {
+        $request->validate([
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after:start_date',
+        ]);
+
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_date);
+
+        // Check if car has any booking overlapping with requested dates
+        $hasBooking = $car->bookings()
+            ->whereIn('status', ['confirmed', 'active'])
+            ->where(function($query) use ($startDate, $endDate) {
+                $query->whereBetween('start_datetime', [$startDate, $endDate])
+                      ->orWhereBetween('end_datetime', [$startDate, $endDate])
+                      ->orWhere(function($q) use ($startDate, $endDate) {
+                          $q->where('start_datetime', '<=', $startDate)
+                            ->where('end_datetime', '>=', $endDate);
+                      });
+            })
+            ->exists();
+
+        return response()->json([
+            'available' => !$hasBooking,
+            'message' => $hasBooking
+                ? 'Mobil sudah dibooking pada tanggal tersebut'
+                : 'Mobil tersedia untuk tanggal yang dipilih'
+        ]);
+    }
+
+    /**
+     * Get booked dates for calendar display
+     */
+    public function getBookedDates(Car $car, Request $request)
+    {
+        $year = $request->get('year', date('Y'));
+        $month = $request->get('month', date('m'));
+
+        // Get bookings for the requested month
+        $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth();
+        $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth();
+
+        $bookings = $car->bookings()
+            ->whereIn('status', ['confirmed', 'active'])
+            ->where(function($query) use ($startOfMonth, $endOfMonth) {
+                $query->whereBetween('start_datetime', [$startOfMonth, $endOfMonth])
+                      ->orWhereBetween('end_datetime', [$startOfMonth, $endOfMonth])
+                      ->orWhere(function($q) use ($startOfMonth, $endOfMonth) {
+                          $q->where('start_datetime', '<=', $startOfMonth)
+                            ->where('end_datetime', '>=', $endOfMonth);
+                      });
+            })
+            ->get(['start_datetime', 'end_datetime']);
+
+        // Convert bookings to array of dates
+        $bookedDates = [];
+        foreach ($bookings as $booking) {
+            $start = Carbon::parse($booking->start_datetime);
+            $end = Carbon::parse($booking->end_datetime);
+
+            while ($start <= $end) {
+                $bookedDates[] = $start->format('Y-m-d');
+                $start->addDay();
+            }
+        }
+
+        return response()->json([
+            'booked_dates' => array_unique($bookedDates),
+            'month' => $month,
+            'year' => $year
+        ]);
+    }
+
+    /**
+     * Get booking statistics for the car
+     */
+    private function getBookingStats(Car $car)
+    {
+        $totalBookings = $car->bookings()->count();
+        $activeBookings = $car->bookings()->where('status', 'active')->count();
+        $completedBookings = $car->bookings()->where('status', 'completed')->count();
+
+        // Calculate booking rate (percentage of days booked in last 30 days)
+        $thirtyDaysAgo = Carbon::now()->subDays(30);
+        $recentBookings = $car->bookings()
+            ->whereIn('status', ['confirmed', 'active', 'completed'])
+            ->where('start_datetime', '>=', $thirtyDaysAgo)
+            ->get();
+
+        $bookedDays = 0;
+        foreach ($recentBookings as $booking) {
+            $start = Carbon::parse($booking->start_datetime);
+            $end = Carbon::parse($booking->end_datetime);
+            $bookedDays += $start->diffInDays($end) + 1;
+        }
+
+        $bookingRate = min(100, round(($bookedDays / 30) * 100, 1));
+
+        // Get next available date
+        $nextAvailableDate = $this->getNextAvailableDate($car);
+
+        return [
+            'total_bookings' => $totalBookings,
+            'active_bookings' => $activeBookings,
+            'completed_bookings' => $completedBookings,
+            'booking_rate' => $bookingRate,
+            'next_available_date' => $nextAvailableDate
+        ];
+    }
+
+    /**
+     * Find the next available date for the car
+     */
+    private function getNextAvailableDate(Car $car)
+    {
+        $today = Carbon::today();
+        $maxDate = Carbon::today()->addMonths(3);
+
+        // Get all booked dates in the next 3 months
+        $bookings = $car->bookings()
+            ->whereIn('status', ['confirmed', 'active'])
+            ->where('start_datetime', '<=', $maxDate)
+            ->where('end_datetime', '>=', $today)
+            ->orderBy('start_datetime')
+            ->get(['start_datetime', 'end_datetime']);
+
+        $currentDate = $today->copy();
+
+        while ($currentDate <= $maxDate) {
+            $isBooked = false;
+
+            foreach ($bookings as $booking) {
+                $bookingStart = Carbon::parse($booking->start_datetime)->startOfDay();
+                $bookingEnd = Carbon::parse($booking->end_datetime)->endOfDay();
+
+                if ($currentDate->between($bookingStart, $bookingEnd)) {
+                    $isBooked = true;
+                    // Jump to the day after this booking ends
+                    $currentDate = $bookingEnd->copy()->addDay()->startOfDay();
+                    break;
+                }
+            }
+
+            if (!$isBooked) {
+                return $currentDate->format('Y-m-d');
+            }
+        }
+
+        return null; // No available date found in the next 3 months
+    }
+
+    /**
+     * Get price estimate based on rental duration
+     */
+    public function getPriceEstimate(Request $request, Car $car)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'service_type' => 'required|in:lepas_kunci,dengan_sopir,carter'
+        ]);
+
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_date);
+        $days = $startDate->diffInDays($endDate);
+
+        // Base price
+        $basePrice = $car->price_24h * $days;
+
+        // Additional charges based on service type
+        $serviceCharge = 0;
+        switch ($request->service_type) {
+            case 'dengan_sopir':
+                $serviceCharge = 150000 * $days; // Driver fee per day
+                break;
+            case 'carter':
+                $serviceCharge = 200000 * $days; // Carter service fee per day
+                break;
+        }
+
+        $totalPrice = $basePrice + $serviceCharge;
+        $minDeposit = $totalPrice * 0.3; // 30% minimum deposit
+
+        return response()->json([
+            'days' => $days,
+            'base_price' => $basePrice,
+            'service_charge' => $serviceCharge,
+            'total_price' => $totalPrice,
+            'min_deposit' => $minDeposit,
+            'currency' => 'IDR'
+        ]);
     }
 }

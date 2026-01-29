@@ -9,6 +9,7 @@ use App\Models\Car;
 use App\Models\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BookingController extends Controller
 {
@@ -21,7 +22,6 @@ class BookingController extends Controller
             'selectedServiceType' => $request->query('service_type'),
         ]);
     }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -35,7 +35,9 @@ class BookingController extends Controller
             'amount' => 'required|numeric|min:0',
         ]);
 
-        DB::transaction(function () use ($request) {
+        $booking = null; // ⬅️ penting
+
+        DB::transaction(function () use ($request, &$booking) {
 
             $booking = Booking::create([
                 'user_id' => auth()->id(),
@@ -54,8 +56,7 @@ class BookingController extends Controller
                 'booking_code' => 'BK-' . str_pad($booking->id, 6, '0', STR_PAD_LEFT)
             ]);
 
-
-            /** GUARANTEE */
+            // GUARANTEE
             $filePath = $request->file('document_file')
                 ->store('guarantees', 'public');
 
@@ -65,7 +66,7 @@ class BookingController extends Controller
                 'document_file' => $filePath,
             ]);
 
-            /** PAYMENT (DP) */
+            // PAYMENT
             Payment::create([
                 'booking_id' => $booking->id,
                 'payment_type' => 'dp',
@@ -75,22 +76,44 @@ class BookingController extends Controller
             ]);
         });
 
-        return redirect()->route('bookings.success');
+   
+        return redirect()->route('bookings.success', $booking->id);
     }
 
-    public function success()
+
+    public function success(Booking $booking)
     {
-        return view('bookings.success');
+        $booking->load(['car', 'user', 'payments']);
+
+        return view('bookings.success', compact('booking'));
     }
 
-    public function index()
-    {
-        $bookings = Booking::with(['car', 'payments'])
-            ->where('user_id', auth()->id())
-            ->latest()
-            ->get();
 
-        return view('bookings.index', compact('bookings'));
+    public function index(Request $request)
+    {
+        $query = Booking::with(['car', 'payments'])
+            ->where('user_id', auth()->id());
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by date
+        if ($request->filled('date_filter')) {
+            $query->whereDate('start_datetime', $request->date_filter);
+        }
+
+        // Get all bookings for stats (before pagination)
+        $allBookings = (clone $query)->get();
+
+        // Apply pagination
+        $bookings = $query->latest()->paginate(10);
+
+        return view('bookings.index', [
+            'bookings' => $bookings,
+            'allBookings' => $allBookings // For stats calculation
+        ]);
     }
 
 
@@ -106,5 +129,29 @@ class BookingController extends Controller
         return view('bookings.show', compact('booking'));
     }
 
+    /**
+     * Download bukti pembayaran sebagai PDF
+     */
+    public function downloadReceipt($id)
+    {
+        $booking = Booking::with([
+            'car',
+            'driver',
+            'payments',
+            'guarantees',
+            'user'
+        ])->findOrFail($id);
 
+        // Pastikan booking milik user yang sedang login
+        if ($booking->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Generate PDF
+        $pdf = Pdf::loadView('bookings.receipt', compact('booking'))
+            ->setPaper('a4', 'portrait');
+
+        // Download dengan nama file yang sesuai
+        return $pdf->download('Bukti-Pembayaran-' . $booking->booking_code . '.pdf');
+    }
 }

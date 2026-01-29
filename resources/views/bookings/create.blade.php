@@ -1,114 +1,516 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Booking Rental Mobil
-        </h2>
-    </x-slot>
+{{-- Booking Form - SQUADTRANS Theme --}}
 
-    <div class="py-12 bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+{{-- Font Awesome --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-                {{-- HEADER CARD --}}
-                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
-                    <h3 class="text-2xl font-bold mb-2">Lengkapi Data Booking</h3>
-                    <p class="text-blue-100 text-sm">Ikuti langkah-langkah berikut untuk menyelesaikan booking Anda</p>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+    --primary: #F59E0B;
+    --primary-light: #FCD34D;
+    --dark: #1F2937;
+    --darker: #111827;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.heading-font {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Header Card */
+.header-card {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.08) 0%, transparent 50%);
+}
+
+/* Step Indicator */
+.step-indicator {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-indicator.active {
+    background: linear-gradient(135deg, #FCD34D, #F59E0B) !important;
+    color: #111827 !important;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.step-indicator.completed {
+    background: #10B981 !important;
+    color: white !important;
+}
+
+.step-line {
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-label {
+    transition: all 0.3s;
+}
+
+.step-label.active {
+    color: var(--primary) !important;
+    font-weight: 700;
+}
+
+.step-label.completed {
+    color: #10B981 !important;
+}
+
+/* Form Sections */
+.form-section {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+@media (min-width: 768px) {
+    .form-section {
+        border-radius: 24px;
+        padding: 32px;
+    }
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.section-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #FCD34D, #F59E0B);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--darker);
+}
+
+/* Form Controls */
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 14px;
+    transition: all 0.3s;
+    background: white;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+/* Price Summary Card */
+.price-summary {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    border: 2px solid var(--primary);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.price-summary::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-10%, -10%); }
+}
+
+.price-highlight {
+    background: linear-gradient(135deg, #FCD34D, #F59E0B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Payment Summary */
+.payment-summary {
+    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+    border: 2px solid #10B981;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+/* Buttons */
+.btn {
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #FCD34D, #F59E0B);
+    color: var(--darker);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #34D399, #10B981);
+    color: white;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* File Upload */
+.file-upload-area {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+    background: #fafafa;
+}
+
+.file-upload-area:hover {
+    border-color: var(--primary);
+    background: #fffbeb;
+}
+
+.file-upload-area.dragover {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+}
+
+/* Info Card */
+.info-card {
+    background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+    border-left: 4px solid #3B82F6;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+}
+
+/* Select Wrapper */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: '\f078';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #6b7280;
+}
+
+.select-wrapper select {
+    appearance: none;
+    padding-right: 40px;
+}
+
+/* Number Input */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Service Type Cards */
+.service-card {
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: white;
+}
+
+.service-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.service-card.selected {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .step-indicator {
+        width: 36px;
+        height: 36px;
+        font-size: 12px;
+    }
+
+    .step-label {
+        font-size: 10px;
+    }
+
+    .section-header {
+        margin-bottom: 16px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        font-size: 13px;
+    }
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-overlay.active {
+    display: flex;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f4f6;
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+</style>
+
+<div class="min-h-screen py-6 sm:py-12">
+    <div class="max-w-7xl mx-auto px-4">
+
+        {{-- Header Card --}}
+        <div class="header-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 mb-6 sm:mb-8 text-white relative">
+            <div class="header-pattern"></div>
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-check text-2xl text-gray-900"></i>
+                    </div>
+                    <div>
+                        <h2 class="heading-font text-2xl sm:text-3xl font-extrabold">Booking Rental Mobil</h2>
+                        <p class="text-gray-300 text-sm mt-1">Lengkapi data untuk menyelesaikan booking Anda</p>
+                    </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="p-8">
-                    {{-- STEP INDICATOR --}}
-                    <div class="mb-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <div class="flex flex-col items-center flex-1">
-                                <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-blue-600 text-white">
-                                    1
-                                </div>
-                                <span class="step-label text-xs font-semibold text-blue-600">Mobil</span>
-                            </div>
-                            <div class="flex-1 h-1 bg-gray-200 mx-2 -mt-8">
-                                <div class="step-line h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div>
-                            </div>
-                            <div class="flex flex-col items-center flex-1">
-                                <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
-                                    2
-                                </div>
-                                <span class="step-label text-xs font-semibold text-gray-400">Waktu</span>
-                            </div>
-                            <div class="flex-1 h-1 bg-gray-200 mx-2 -mt-8">
-                                <div class="step-line h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div>
-                            </div>
-                            <div class="flex flex-col items-center flex-1">
-                                <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
-                                    3
-                                </div>
-                                <span class="step-label text-xs font-semibold text-gray-400">Jaminan</span>
-                            </div>
-                            <div class="flex-1 h-1 bg-gray-200 mx-2 -mt-8">
-                                <div class="step-line h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div>
-                            </div>
-                            <div class="flex flex-col items-center flex-1">
-                                <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
-                                    4
-                                </div>
-                                <span class="step-label text-xs font-semibold text-gray-400">Pembayaran</span>
-                            </div>
+        {{-- Main Form Card --}}
+        <div class="bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden">
+
+            {{-- Step Indicator --}}
+            <div class="bg-gray-50 p-6 sm:p-8 border-b-2 border-gray-100">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex flex-col items-center flex-1">
+                        <div class="step-indicator active w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
+                            <i class="fa-solid fa-car"></i>
                         </div>
+                        <span class="step-label text-xs font-semibold text-gray-400">Mobil</span>
                     </div>
 
-                    <form method="POST"
-                          action="{{ route('bookings.store') }}"
-                          enctype="multipart/form-data"
-                          id="bookingForm">
-                        @csrf
+                    <div class="flex-1 h-1 bg-gray-200 mx-2 -mt-8">
+                        <div class="step-line h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-300" style="width: 0%"></div>
+                    </div>
 
-                        {{-- STEP 1 --}}
-                        <div class="step transition-all duration-300">
-                            <div class="space-y-6">
-                                <div>
-                                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
-                                        </svg>
-                                        Pilih Mobil & Layanan
-                                    </h4>
+                    <div class="flex flex-col items-center flex-1">
+                        <div class="step-indicator w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <span class="step-label text-xs font-semibold text-gray-400">Waktu</span>
+                    </div>
+
+                    <div class="flex-1 h-1 bg-gray-200 mx-2 -mt-8">
+                        <div class="step-line h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-300" style="width: 0%"></div>
+                    </div>
+
+                    <div class="flex flex-col items-center flex-1">
+                        <div class="step-indicator w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <span class="step-label text-xs font-semibold text-gray-400">Jaminan</span>
+                    </div>
+
+                    <div class="flex-1 h-1 bg-gray-200 mx-2 -mt-8">
+                        <div class="step-line h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-300" style="width: 0%"></div>
+                    </div>
+
+                    <div class="flex flex-col items-center flex-1">
+                        <div class="step-indicator w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+                        <span class="step-label text-xs font-semibold text-gray-400">Pembayaran</span>
+                    </div>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ route('bookings.store') }}" enctype="multipart/form-data" id="bookingForm">
+                @csrf
+
+                <div class="p-6 sm:p-8">
+
+                    {{-- STEP 1: Mobil & Layanan --}}
+                    <div class="step active transition-all duration-300">
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fa-solid fa-car text-xl"></i>
                                 </div>
+                                <h4 class="heading-font text-xl font-bold text-gray-800">Pilih Mobil & Layanan</h4>
+                            </div>
 
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Mobil
-                                        </label>
-                                        <select name="car_id" id="carSelect"
-                                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                                                required>
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="form-label">
+                                        <i class="fa-solid fa-car mr-2 text-yellow-500"></i>Pilih Mobil
+                                    </label>
+                                    <div class="select-wrapper">
+                                        <select name="car_id" id="carSelect" class="form-select" required>
                                             @foreach($cars as $car)
                                                 <option value="{{ $car->id }}"
                                                     data-price="{{ $car->price_per_day ?? 300000 }}"
                                                     {{ $selectedCarId == $car->id ? 'selected' : '' }}>
-                                                    {{ $car->name }}
+                                                    {{ $car->name }} - {{ $car->brand }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
+                                </div>
 
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Jenis Layanan
+                                <div>
+                                    <label class="form-label">
+                                        <i class="fa-solid fa-briefcase mr-2 text-yellow-500"></i>Jenis Layanan
+                                    </label>
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                        <label class="service-card selected">
+                                            <input type="radio" name="service_type" value="lepas_kunci" class="hidden service-radio" checked>
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                                    <i class="fa-solid fa-key text-xl text-yellow-600"></i>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <p class="font-bold text-sm">Lepas Kunci</p>
+                                                    <p class="text-xs text-gray-500">Tanpa Sopir</p>
+                                                </div>
+                                            </div>
                                         </label>
-                                        <select name="service_type" id="serviceType"
-                                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none">
-                                            <option value="lepas_kunci">🔑 Lepas Kunci</option>
-                                            <option value="dengan_sopir">👨‍✈️ Dengan Sopir</option>
-                                            <option value="carter">🚐 Carter</option>
-                                        </select>
+
+                                        <label class="service-card">
+                                            <input type="radio" name="service_type" value="dengan_sopir" class="hidden service-radio">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                    <i class="fa-solid fa-user-tie text-xl text-blue-600"></i>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <p class="font-bold text-sm">Dengan Sopir</p>
+                                                    <p class="text-xs text-gray-500">Include Driver</p>
+                                                </div>
+                                            </div>
+                                        </label>
+
+                                        <label class="service-card">
+                                            <input type="radio" name="service_type" value="carter" class="hidden service-radio">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                                    <i class="fa-solid fa-van-shuttle text-xl text-green-600"></i>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <p class="font-bold text-sm">Carter</p>
+                                                    <p class="text-xs text-gray-500">Full Service</p>
+                                                </div>
+                                            </div>
+                                        </label>
                                     </div>
+                                </div>
 
-                                    <div id="driverSelectWrapper" class="hidden transition-all duration-300">
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Pilih Sopir
-                                        </label>
-                                        <select name="driver_id" id="driverSelect"
-                                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none">
+                                <div id="driverSelectWrapper" class="hidden transition-all duration-300">
+                                    <label class="form-label">
+                                        <i class="fa-solid fa-user-check mr-2 text-yellow-500"></i>Pilih Sopir
+                                    </label>
+                                    <div class="select-wrapper">
+                                        <select name="driver_id" id="driverSelect" class="form-select">
                                             <option value="">Pilih Sopir</option>
                                             @foreach($drivers as $driver)
                                                 <option value="{{ $driver->id }}">{{ $driver->name }}</option>
@@ -118,323 +520,477 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        {{-- STEP 2 --}}
-                        <div class="step hidden transition-all duration-300">
-                            <div class="space-y-6">
-                                <div>
-                                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                        </svg>
-                                        Waktu & Tujuan
-                                    </h4>
+                    {{-- STEP 2: Waktu & Tujuan --}}
+                    <div class="step hidden transition-all duration-300">
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fa-solid fa-calendar-days text-xl"></i>
                                 </div>
-
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Tanggal & Waktu Mulai
-                                        </label>
-                                        <input type="datetime-local" id="start" name="start_datetime"
-                                               class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                                               required>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Tanggal & Waktu Selesai
-                                        </label>
-                                        <input type="datetime-local" id="end" name="end_datetime"
-                                               class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                                               required>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Tujuan
-                                        </label>
-                                        <input type="text" name="destination"
-                                               class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                                               placeholder="Contoh: Jakarta - Bandung">
-                                    </div>
-
-                                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-4">
-                                        <div class="flex items-center justify-between mb-3">
-                                            <span class="text-sm font-semibold text-gray-700">Durasi:</span>
-                                            <span class="text-xl font-bold text-blue-600"><span id="duration">0</span> hari</span>
-                                        </div>
-                                        <div class="border-t-2 border-blue-200 pt-3 flex items-center justify-between">
-                                            <span class="text-sm font-semibold text-gray-700">Total Harga:</span>
-                                            <span class="text-2xl font-bold text-indigo-600">Rp <span id="totalPrice">0</span></span>
-                                        </div>
-                                    </div>
-
-                                    <input type="hidden" name="total_price" id="totalPriceInput">
-                                </div>
+                                <h4 class="heading-font text-xl font-bold text-gray-800">Waktu & Tujuan</h4>
                             </div>
-                        </div>
 
-                        {{-- STEP 3 --}}
-                        <div class="step hidden transition-all duration-300">
-                            <div class="space-y-6">
+                            <div class="space-y-5">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="form-label">
+                                            <i class="fa-solid fa-clock mr-2 text-yellow-500"></i>Tanggal & Waktu Mulai
+                                        </label>
+                                        <input type="datetime-local" id="start" name="start_datetime" class="form-input" required>
+                                    </div>
+
+                                    <div>
+                                        <label class="form-label">
+                                            <i class="fa-solid fa-clock mr-2 text-yellow-500"></i>Tanggal & Waktu Selesai
+                                        </label>
+                                        <input type="datetime-local" id="end" name="end_datetime" class="form-input" required>
+                                    </div>
+                                </div>
+
                                 <div>
-                                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                        </svg>
-                                        Jaminan
-                                    </h4>
+                                    <label class="form-label">
+                                        <i class="fa-solid fa-location-dot mr-2 text-yellow-500"></i>Tujuan
+                                    </label>
+                                    <input type="text" name="destination" class="form-input" placeholder="Contoh: Jakarta - Bandung">
                                 </div>
 
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Tipe Jaminan
-                                        </label>
-                                        <select name="guarantee_type"
-                                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none">
-                                            <option value="ktp">📋 KTP</option>
-                                            <option value="sim">🪪 SIM</option>
-                                            <option value="motor">🏍️ Motor</option>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Upload Dokumen
-                                        </label>
-                                        <div class="relative">
-                                            <input type="file" name="document_file" id="documentFile"
-                                                   class="w-full border-2 border-dashed border-gray-300 rounded-xl p-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
-                                                   required>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-2">Format: JPG, PNG, atau PDF (Max: 2MB)</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- STEP 4 --}}
-                        <div class="step hidden transition-all duration-300">
-                            <div class="space-y-6">
-                                <div>
-                                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                                        </svg>
-                                        Pembayaran
-                                    </h4>
-                                </div>
-
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Jumlah DP (Minimal 30%)
-                                        </label>
-                                        <div class="relative">
-                                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-semibold">Rp</span>
-                                            <input type="number" name="amount" id="dpInput"
-                                                   class="w-full border-2 border-gray-200 rounded-xl p-3 pl-12 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                                                   placeholder="0" required>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            Metode Pembayaran
-                                        </label>
-                                        <select name="payment_method"
-                                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none">
-                                            <option value="cash">💵 Cash</option>
-                                            <option value="transfer">🏦 Transfer</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-5 mt-6">
-                                        <div class="flex items-center mb-4">
-                                            <svg class="w-6 h-6 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                            <h5 class="font-bold text-gray-800">Ringkasan Pembayaran</h5>
-                                        </div>
-                                        <div class="space-y-3">
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-sm font-medium text-gray-700">Total Harga:</span>
-                                                <span class="text-lg font-bold text-gray-800">Rp <span id="summaryTotal">0</span></span>
+                                <div class="price-summary">
+                                    <div class="relative z-10">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <div class="flex items-center gap-2">
+                                                <i class="fa-solid fa-calendar-check text-2xl text-yellow-700"></i>
+                                                <span class="font-bold text-gray-700">Durasi Rental</span>
                                             </div>
-                                            <div class="border-t-2 border-green-200 pt-3 flex justify-between items-center">
-                                                <span class="text-sm font-medium text-gray-700">DP Dibayar:</span>
-                                                <span class="text-xl font-bold text-green-600">Rp <span id="summaryDP">0</span></span>
+                                            <span class="text-3xl font-extrabold text-gray-900">
+                                                <span id="duration">0</span> Hari
+                                            </span>
+                                        </div>
+
+                                        <div class="border-t-2 border-yellow-600 pt-4 flex items-center justify-between">
+                                            <span class="font-bold text-gray-700">Total Harga</span>
+                                            <span class="heading-font text-4xl font-extrabold price-highlight">
+                                                Rp <span id="totalPrice">0</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="total_price" id="totalPriceInput">
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- STEP 3: Jaminan --}}
+                    <div class="step hidden transition-all duration-300">
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fa-solid fa-shield-halved text-xl"></i>
+                                </div>
+                                <h4 class="heading-font text-xl font-bold text-gray-800">Jaminan</h4>
+                            </div>
+
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="form-label">
+                                        <i class="fa-solid fa-id-card mr-2 text-yellow-500"></i>Tipe Jaminan
+                                    </label>
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                        <label class="service-card selected">
+                                            <input type="radio" name="guarantee_type" value="ktp" class="hidden guarantee-radio" checked>
+                                            <div class="text-center">
+                                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fa-solid fa-id-card text-2xl text-blue-600"></i>
+                                                </div>
+                                                <p class="font-bold text-sm">KTP</p>
                                             </div>
+                                        </label>
+
+                                        <label class="service-card">
+                                            <input type="radio" name="guarantee_type" value="sim" class="hidden guarantee-radio">
+                                            <div class="text-center">
+                                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fa-solid fa-address-card text-2xl text-green-600"></i>
+                                                </div>
+                                                <p class="font-bold text-sm">SIM</p>
+                                            </div>
+                                        </label>
+
+                                        <label class="service-card">
+                                            <input type="radio" name="guarantee_type" value="motor" class="hidden guarantee-radio">
+                                            <div class="text-center">
+                                                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fa-solid fa-motorcycle text-2xl text-orange-600"></i>
+                                                </div>
+                                                <p class="font-bold text-sm">BPKB Motor</p>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="form-label">
+                                        <i class="fa-solid fa-upload mr-2 text-yellow-500"></i>Upload Dokumen
+                                    </label>
+                                    <div class="file-upload-area" id="fileUploadArea">
+                                        <input type="file" name="document_file" id="documentFile" class="hidden" required accept="image/*,application/pdf">
+                                        <div id="fileUploadContent">
+                                            <i class="fa-solid fa-cloud-arrow-up text-5xl text-gray-300 mb-3"></i>
+                                            <p class="font-bold text-gray-700 mb-1">Klik atau Drag & Drop</p>
+                                            <p class="text-sm text-gray-500">Format: JPG, PNG, atau PDF (Max: 2MB)</p>
+                                        </div>
+                                        <div id="filePreview" class="hidden">
+                                            <i class="fa-solid fa-file-circle-check text-5xl text-green-500 mb-3"></i>
+                                            <p class="font-bold text-gray-700" id="fileName"></p>
+                                            <button type="button" class="text-sm text-red-500 hover:text-red-700 mt-2" onclick="removeFile()">
+                                                <i class="fa-solid fa-trash mr-1"></i>Hapus File
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        {{-- BUTTONS --}}
-                        <div class="flex justify-between items-center pt-8 border-t-2 border-gray-100 mt-8">
-                            <button type="button" id="prevBtn"
-                                    class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200 flex items-center hidden">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                                </svg>
-                                Kembali
-                            </button>
+                    {{-- STEP 4: Pembayaran --}}
+                    <div class="step hidden transition-all duration-300">
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fa-solid fa-credit-card text-xl"></i>
+                                </div>
+                                <h4 class="heading-font text-xl font-bold text-gray-800">Pembayaran</h4>
+                            </div>
 
-                            <button type="button" id="nextBtn"
-                                    class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center ml-auto">
-                                Selanjutnya
-                                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                </svg>
-                            </button>
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="form-label">
+                                        <i class="fa-solid fa-money-bill-wave mr-2 text-yellow-500"></i>Jumlah DP (Minimal 30%)
+                                    </label>
+                                    <div class="relative">
+                                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
+                                        <input type="number" name="amount" id="dpInput" class="form-input pl-14" placeholder="0" required>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-2">
+                                        <i class="fa-solid fa-info-circle mr-1"></i>
+                                        DP Minimal: <span id="minDp" class="font-bold text-gray-700">Rp 0</span>
+                                    </p>
+                                </div>
 
-                            <button type="submit" id="submitBtn"
-                                    class="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center ml-auto hidden">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                                Selesai Booking
-                            </button>
+                                <div>
+                                    <label class="form-label">
+                                        <i class="fa-solid fa-wallet mr-2 text-yellow-500"></i>Metode Pembayaran
+                                    </label>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <label class="service-card selected">
+                                            <input type="radio" name="payment_method" value="cash" class="hidden payment-radio" checked>
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                                    <i class="fa-solid fa-money-bill-wave text-2xl text-green-600"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">Cash</p>
+                                                    <p class="text-xs text-gray-500">Bayar Tunai</p>
+                                                </div>
+                                            </div>
+                                        </label>
+
+                                        <label class="service-card">
+                                            <input type="radio" name="payment_method" value="transfer" class="hidden payment-radio">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                    <i class="fa-solid fa-building-columns text-2xl text-blue-600"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">Transfer</p>
+                                                    <p class="text-xs text-gray-500">Bank Transfer</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="payment-summary">
+                                    <div class="flex items-center mb-4">
+                                        <i class="fa-solid fa-circle-check text-3xl text-green-600 mr-3"></i>
+                                        <h5 class="heading-font text-xl font-bold text-gray-800">Ringkasan Pembayaran</h5>
+                                    </div>
+
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between items-center py-2">
+                                            <span class="font-semibold text-gray-700">Total Harga:</span>
+                                            <span class="text-2xl font-bold text-gray-900">Rp <span id="summaryTotal">0</span></span>
+                                        </div>
+
+                                        <div class="border-t-2 border-green-300 pt-3 flex justify-between items-center">
+                                            <span class="font-semibold text-gray-700">DP Dibayar:</span>
+                                            <span class="heading-font text-3xl font-extrabold text-green-600">
+                                                Rp <span id="summaryDP">0</span>
+                                            </span>
+                                        </div>
+
+                                        <div class="border-t-2 border-green-300 pt-3 flex justify-between items-center">
+                                            <span class="font-semibold text-gray-700">Sisa Pembayaran:</span>
+                                            <span class="text-xl font-bold text-gray-700">
+                                                Rp <span id="remaining">0</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                </div>
-            </div>
+                    </div>
 
-            {{-- INFO CARD --}}
-            <div class="mt-6 bg-blue-50 border-l-4 border-blue-600 rounded-lg p-4">
-                <div class="flex items-start">
-                    <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <div>
-                        <p class="text-sm font-semibold text-blue-800">Informasi Penting</p>
-                        <p class="text-xs text-blue-700 mt-1">Pastikan semua data yang Anda masukkan sudah benar sebelum menyelesaikan booking. DP minimal 30% dari total harga.</p>
+                    {{-- Navigation Buttons --}}
+                    <div class="flex justify-between items-center pt-6 mt-6 border-t-2 border-gray-100">
+                        <button type="button" id="prevBtn" class="btn btn-secondary hidden">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <span>Kembali</span>
+                        </button>
+
+                        <button type="button" id="nextBtn" class="btn btn-primary ml-auto">
+                            <span>Selanjutnya</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                        <button type="submit" id="submitBtn" class="btn btn-success ml-auto hidden">
+                            <i class="fa-solid fa-check-circle"></i>
+                            <span>Selesai Booking</span>
+                        </button>
                     </div>
                 </div>
+            </form>
+        </div>
+
+        {{-- Info Card --}}
+        <div class="info-card mt-6">
+            <i class="fa-solid fa-info-circle text-2xl text-blue-600"></i>
+            <div>
+                <p class="font-bold text-blue-900 mb-1">Informasi Penting</p>
+                <p class="text-sm text-blue-800">Pastikan semua data yang Anda masukkan sudah benar sebelum menyelesaikan booking. DP minimal 30% dari total harga.</p>
             </div>
         </div>
     </div>
+</div>
 
-    {{-- JS --}}
-    <script>
-        let currentStep = 0;
-        const steps = document.querySelectorAll('.step');
-        const labels = document.querySelectorAll('.step-label');
-        const indicators = document.querySelectorAll('.step-indicator');
-        const lines = document.querySelectorAll('.step-line');
+{{-- Loading Overlay --}}
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="text-center">
+        <div class="spinner mb-4"></div>
+        <p class="text-white font-bold">Memproses booking...</p>
+    </div>
+</div>
 
-        const serviceType = document.getElementById('serviceType');
-        const driverSelect = document.getElementById('driverSelect');
-        const driverSelectWrapper = document.getElementById('driverSelectWrapper');
+{{-- JavaScript --}}
+<script>
+let currentStep = 0;
+const steps = document.querySelectorAll('.step');
+const indicators = document.querySelectorAll('.step-indicator');
+const labels = document.querySelectorAll('.step-label');
+const lines = document.querySelectorAll('.step-line');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
 
-        const start = document.getElementById('start');
-        const end = document.getElementById('end');
-        const carSelect = document.getElementById('carSelect');
+// Service Type Selection
+document.querySelectorAll('.service-radio').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        this.closest('.service-card').classList.add('selected');
 
-        const durationText = document.getElementById('duration');
-        const totalText = document.getElementById('totalPrice');
-        const totalInput = document.getElementById('totalPriceInput');
+        const driverWrapper = document.getElementById('driverSelectWrapper');
+        const isLepasKunci = this.value === 'lepas_kunci';
+        driverWrapper.classList.toggle('hidden', isLepasKunci);
+    });
+});
 
-        const dpInput = document.getElementById('dpInput');
-        const summaryTotal = document.getElementById('summaryTotal');
-        const summaryDP = document.getElementById('summaryDP');
-
-        function showStep(step) {
-            steps.forEach((el, i) => {
-                el.classList.toggle('hidden', i !== step);
-            });
-
-            indicators.forEach((el, i) => {
-                if (i < step) {
-                    el.classList.remove('bg-gray-200', 'text-gray-500');
-                    el.classList.add('bg-green-500', 'text-white');
-                    el.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>';
-                } else if (i === step) {
-                    el.classList.remove('bg-gray-200', 'text-gray-500', 'bg-green-500');
-                    el.classList.add('bg-blue-600', 'text-white');
-                    el.textContent = i + 1;
-                } else {
-                    el.classList.remove('bg-blue-600', 'text-white', 'bg-green-500');
-                    el.classList.add('bg-gray-200', 'text-gray-500');
-                    el.textContent = i + 1;
-                }
-            });
-
-            labels.forEach((el, i) => {
-                if (i === step) {
-                    el.classList.remove('text-gray-400');
-                    el.classList.add('text-blue-600');
-                } else if (i < step) {
-                    el.classList.remove('text-gray-400', 'text-blue-600');
-                    el.classList.add('text-green-600');
-                } else {
-                    el.classList.remove('text-blue-600', 'text-green-600');
-                    el.classList.add('text-gray-400');
-                }
-            });
-
-            lines.forEach((line, i) => {
-                if (i < step) {
-                    line.style.width = '100%';
-                } else {
-                    line.style.width = '0%';
-                }
-            });
-
-            prevBtn.classList.toggle('hidden', step === 0);
-            nextBtn.classList.toggle('hidden', step === steps.length - 1);
-            submitBtn.classList.toggle('hidden', step !== steps.length - 1);
-        }
-
-        serviceType.onchange = () => {
-            const isLepasKunci = serviceType.value === 'lepas_kunci';
-            driverSelectWrapper.classList.toggle('hidden', isLepasKunci);
-            driverSelect.classList.toggle('hidden', isLepasKunci);
-        };
-
-        function calculatePrice() {
-            if (!start.value || !end.value) return;
-
-            const days = Math.ceil(
-                (new Date(end.value) - new Date(start.value)) / (1000 * 60 * 60 * 24)
-            );
-
-            const price = carSelect.selectedOptions[0].dataset.price * days;
-
-            durationText.innerText = days;
-            totalText.innerText = price.toLocaleString('id-ID');
-            totalInput.value = price;
-
-            summaryTotal.innerText = price.toLocaleString('id-ID');
-            dpInput.min = Math.ceil(price * 0.3);
-        }
-
-        start.onchange = calculatePrice;
-        end.onchange = calculatePrice;
-        carSelect.onchange = calculatePrice;
-
-        dpInput.oninput = () =>
-            summaryDP.innerText = Number(dpInput.value).toLocaleString('id-ID');
-
-        nextBtn.onclick = () => {
-            if (currentStep < steps.length - 1) {
-                currentStep++;
-                showStep(currentStep);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+// Guarantee Type Selection
+document.querySelectorAll('.guarantee-radio').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.querySelectorAll('.guarantee-card, .service-card').forEach(card => {
+            if (card.querySelector('.guarantee-radio')) {
+                card.classList.remove('selected');
             }
-        };
+        });
+        this.closest('.service-card').classList.add('selected');
+    });
+});
 
-        prevBtn.onclick = () => {
-            if (currentStep > 0) {
-                currentStep--;
-                showStep(currentStep);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+// Payment Method Selection
+document.querySelectorAll('.payment-radio').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.querySelectorAll('.payment-card, .service-card').forEach(card => {
+            if (card.querySelector('.payment-radio')) {
+                card.classList.remove('selected');
             }
-        };
+        });
+        this.closest('.service-card').classList.add('selected');
+    });
+});
 
+// File Upload
+const fileUploadArea = document.getElementById('fileUploadArea');
+const documentFile = document.getElementById('documentFile');
+const fileUploadContent = document.getElementById('fileUploadContent');
+const filePreview = document.getElementById('filePreview');
+const fileName = document.getElementById('fileName');
+
+fileUploadArea.addEventListener('click', () => documentFile.click());
+
+fileUploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    fileUploadArea.classList.add('dragover');
+});
+
+fileUploadArea.addEventListener('dragleave', () => {
+    fileUploadArea.classList.remove('dragover');
+});
+
+fileUploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileUploadArea.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        documentFile.files = files;
+        showFilePreview(files[0]);
+    }
+});
+
+documentFile.addEventListener('change', function() {
+    if (this.files.length > 0) {
+        showFilePreview(this.files[0]);
+    }
+});
+
+function showFilePreview(file) {
+    fileName.textContent = file.name;
+    fileUploadContent.classList.add('hidden');
+    filePreview.classList.remove('hidden');
+}
+
+function removeFile() {
+    documentFile.value = '';
+    fileUploadContent.classList.remove('hidden');
+    filePreview.classList.add('hidden');
+}
+
+// Step Navigation
+function showStep(step) {
+    steps.forEach((el, i) => {
+        el.classList.toggle('hidden', i !== step);
+    });
+
+    indicators.forEach((el, i) => {
+        el.classList.remove('active', 'completed');
+        if (i < step) {
+            el.classList.add('completed');
+            el.innerHTML = '<i class="fa-solid fa-check"></i>';
+        } else if (i === step) {
+            el.classList.add('active');
+            const icons = ['fa-car', 'fa-clock', 'fa-shield-halved', 'fa-credit-card'];
+            el.innerHTML = `<i class="fa-solid ${icons[i]}"></i>`;
+        } else {
+            const icons = ['fa-car', 'fa-clock', 'fa-shield-halved', 'fa-credit-card'];
+            el.innerHTML = `<i class="fa-solid ${icons[i]}"></i>`;
+        }
+    });
+
+    labels.forEach((el, i) => {
+        el.classList.remove('active', 'completed');
+        if (i < step) {
+            el.classList.add('completed');
+        } else if (i === step) {
+            el.classList.add('active');
+        }
+    });
+
+    lines.forEach((line, i) => {
+        line.style.width = i < step ? '100%' : '0%';
+    });
+
+    prevBtn.classList.toggle('hidden', step === 0);
+    nextBtn.classList.toggle('hidden', step === steps.length - 1);
+    submitBtn.classList.toggle('hidden', step !== steps.length - 1);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+nextBtn.addEventListener('click', () => {
+    if (currentStep < steps.length - 1) {
+        currentStep++;
         showStep(currentStep);
-    </script>
+    }
+});
+
+prevBtn.addEventListener('click', () => {
+    if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+    }
+});
+
+// Price Calculation
+const start = document.getElementById('start');
+const end = document.getElementById('end');
+const carSelect = document.getElementById('carSelect');
+const durationText = document.getElementById('duration');
+const totalText = document.getElementById('totalPrice');
+const totalInput = document.getElementById('totalPriceInput');
+const dpInput = document.getElementById('dpInput');
+const summaryTotal = document.getElementById('summaryTotal');
+const summaryDP = document.getElementById('summaryDP');
+const minDp = document.getElementById('minDp');
+const remaining = document.getElementById('remaining');
+
+function calculatePrice() {
+    if (!start.value || !end.value) return;
+
+    const startDate = new Date(start.value);
+    const endDate = new Date(end.value);
+    const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+    if (days <= 0) {
+        alert('Tanggal selesai harus setelah tanggal mulai');
+        return;
+    }
+
+    const pricePerDay = carSelect.selectedOptions[0].dataset.price;
+    const total = pricePerDay * days;
+    const minDpAmount = Math.ceil(total * 0.3);
+
+    durationText.textContent = days;
+    totalText.textContent = total.toLocaleString('id-ID');
+    totalInput.value = total;
+    summaryTotal.textContent = total.toLocaleString('id-ID');
+    dpInput.min = minDpAmount;
+    minDp.textContent = 'Rp ' + minDpAmount.toLocaleString('id-ID');
+}
+
+start.addEventListener('change', calculatePrice);
+end.addEventListener('change', calculatePrice);
+carSelect.addEventListener('change', calculatePrice);
+
+dpInput.addEventListener('input', function() {
+    const dpAmount = Number(this.value) || 0;
+    const total = Number(totalInput.value) || 0;
+    const remainingAmount = total - dpAmount;
+
+    summaryDP.textContent = dpAmount.toLocaleString('id-ID');
+    remaining.textContent = remainingAmount.toLocaleString('id-ID');
+});
+
+// Form Submission
+document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    loadingOverlay.classList.add('active');
+});
+
+// Initialize
+showStep(currentStep);
+</script>
+
 </x-app-layout>

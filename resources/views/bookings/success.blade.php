@@ -1,52 +1,102 @@
 <x-app-layout>
-    <div class="min-h-[70vh] flex items-center justify-center px-4">
-        <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-6 text-center">
+    <div class="min-h-screen flex items-center justify-center bg-[#FBFAF7] px-4 py-10">
+        <div class="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center">
 
             {{-- ICON --}}
-            <div class="flex justify-center mb-4">
-                <div class="w-16 h-16 flex items-center justify-center rounded-full bg-green-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none"
-                         viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M5 13l4 4L19 7" />
+            <div class="flex justify-center mb-5">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500
+                            flex items-center justify-center shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                     </svg>
                 </div>
             </div>
 
             {{-- TITLE --}}
-            <h2 class="text-xl font-bold mb-2">
-                Booking Berhasil 🎉
+            <h2 class="text-2xl font-extrabold text-gray-800">
+                Booking Berhasil!
             </h2>
-
-            {{-- DESC --}}
-            <p class="text-gray-600 mb-6">
-                Terima kasih, booking rental mobil kamu sudah kami terima.
-                Tim kami akan segera menghubungi kamu untuk konfirmasi.
+            <p class="text-xs text-gray-400 mt-1 mb-6">
+                ID : <span class="font-semibold text-gray-600">{{ $booking->booking_code }}</span>
             </p>
 
-            {{-- INFO --}}
-            @if(isset($booking))
-            <div class="bg-gray-50 rounded-lg p-4 text-left text-sm mb-6">
-                <p><span class="font-semibold">Kode Booking:</span> {{ $booking->code }}</p>
-                <p><span class="font-semibold">Mobil:</span> {{ $booking->car->name }}</p>
-                <p><span class="font-semibold">Layanan:</span> {{ ucwords(str_replace('_',' ', $booking->service_type)) }}</p>
-                <p><span class="font-semibold">Total:</span> Rp {{ number_format($booking->total_price) }}</p>
+            {{-- INFO CARD --}}
+            <div class="bg-[#FFFCF6] rounded-2xl p-5 mb-6 border border-yellow-100 text-left">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <p class="text-[10px] text-gray-400 uppercase">Kendaraan</p>
+                        <p class="font-semibold text-gray-800">{{ $booking->car->name }}</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-gray-400 uppercase">Layanan</p>
+                        <p class="font-semibold text-gray-800">
+                            {{ ucwords(str_replace('_',' ', $booking->service_type)) }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-center border-t border-dashed border-yellow-200 pt-4">
+                    <p class="text-[10px] text-gray-400 uppercase">Total Bayar</p>
+                    <p class="text-xl font-extrabold text-yellow-600">
+                        Rp {{ number_format($booking->total_price,0,',','.') }}
+                    </p>
+                    <span class="inline-block mt-1 px-3 py-1 text-[10px]
+                                 font-bold rounded-full bg-green-100 text-green-700">
+                        LUNAS
+                    </span>
+                </div>
             </div>
-            @endif
+
+            {{-- DETAIL --}}
+            <div class="text-sm text-gray-600 space-y-3 mb-8">
+                <div class="flex justify-between">
+                    <span>Tanggal Sewa</span>
+                    <span class="font-medium text-gray-800">
+                        {{ $booking->start_datetime->format('d M Y') }}
+                        -
+                        {{ $booking->end_datetime->format('d M Y') }}
+                    </span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Metode Pembayaran</span>
+                    <span class="font-medium text-gray-800">
+                        {{ ucfirst($booking->payments->first()->payment_method ?? '-') }}
+                    </span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Nama Penyewa</span>
+                    <span class="font-medium text-gray-800">
+                        {{ $booking->user->name }}
+                    </span>
+                </div>
+            </div>
 
             {{-- ACTION --}}
-            <div class="flex flex-col gap-3">
+            <div class="space-y-3">
                 <a href="{{ route('bookings.index') }}"
-                   class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold">
+                   class="w-full py-3 block rounded-xl
+                          bg-gradient-to-r from-yellow-400 to-yellow-500
+                          text-white font-bold shadow-md">
                     Lihat Riwayat Booking
                 </a>
 
                 <a href="{{ route('cars.index') }}"
-                   class="w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg text-sm font-semibold">
+                   class="w-full py-3 block rounded-xl border border-gray-300
+                          text-gray-700 font-semibold hover:bg-gray-50">
                     Booking Mobil Lain
+                </a>
+            </div>
+
+            {{-- FOOTER --}}
+            <div class="mt-6 text-xs text-gray-400">
+                Need help?
+                <a href="https://wa.me/62xxxxxxxxxx" class="text-green-600 font-semibold">
+                    Contact via WhatsApp
                 </a>
             </div>
 
         </div>
     </div>
 </x-app-layout>
+    
