@@ -39,7 +39,7 @@ class ReviewController extends Controller
 
         // Verify the booking belongs to the authenticated user
         $booking = Booking::findOrFail($validated['booking_id']);
-        
+
         if ($booking->user_id !== Auth::id()) {
             abort(403, 'Unauthorized');
         }

@@ -417,15 +417,15 @@
                             {{-- Review Card --}}
                             <div
                                 class="item bg-white rounded-2xl overflow-hidden border border-slate-100 card-shadow h-full flex flex-col">
-                                
+
                                 {{-- Car Image or Review Image --}}
                                 @if ($review->image_path)
-                                    <img src="{{ asset('storage/' . $review->image_path) }}" 
-                                         alt="Review Image" 
+                                    <img src="{{ asset('storage/' . $review->image_path) }}"
+                                         alt="Review Image"
                                          class="w-full h-48 object-cover">
                                 @elseif ($review->booking->car->images->first())
-                                    <img src="{{ asset('storage/' . $review->booking->car->images->first()->image_path) }}" 
-                                         alt="{{ $review->booking->car->brand }} {{ $review->booking->car->name }}" 
+                                    <img src="{{ asset('storage/' . $review->booking->car->images->first()->image_path) }}"
+                                         alt="{{ $review->booking->car->brand }} {{ $review->booking->car->name }}"
                                          class="w-full h-48 object-cover">
                                 @else
                                     <div class="w-full h-48 bg-gray-300 flex items-center justify-center">
