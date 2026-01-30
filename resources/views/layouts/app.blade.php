@@ -50,7 +50,9 @@
                     nav: true,
                     autoplay: true,
                     autoplayTimeout: 5000,
+                    autoplaySpeed: 1000,
                     autoplayHoverPause: true,
+                    dots: true,
                     responsive: {
                         0: {
                             items: 1
@@ -62,7 +64,10 @@
                             items: 3
                         }
                     },
-                    navText: ['<i class="fa-solid fa-chevron-left"></i>', '<i class="fa-solid fa-chevron-right"></i>']
+                    navText: [
+                        '<i class="fa-solid fa-chevron-left"></i>',
+                        '<i class="fa-solid fa-chevron-right"></i>'
+                    ]
                 });
             });
         </script>
