@@ -62,18 +62,22 @@ class CarsController extends Controller
     public function show(Car $car)
     {
         // Load relationships
-        $car->load(['images', 'reviews.user', 'bookings' => function($query) {
-            // Only load confirmed and active bookings for calendar display
-            $query->whereIn('status', ['confirmed', 'active'])
-                  ->select('id', 'car_id', 'start_datetime', 'end_datetime', 'status');
-        }]);
+        $car->load([
+            'images',
+            'reviews.user',
+            'bookings' => function ($query) {
+                // Only load confirmed and active bookings for calendar display
+                $query->whereIn('status', ['confirmed', 'active'])
+                    ->select('id', 'car_id', 'start_datetime', 'end_datetime', 'status');
+            }
+        ]);
 
-        // Get related cars (same category, available, exclude current car)
+        // Get related cars (same category, exclude current car)
+        // FIXED: Removed is_available condition
         $relatedCars = Car::with('images')
             ->where('category', $car->category)
             ->where('id', '!=', $car->id)
-            ->where('is_available', true)
-            ->where('status', 'available')
+            ->where('status', 'available')  // Only check status
             ->limit(4)
             ->get();
 
@@ -109,13 +113,13 @@ class CarsController extends Controller
         // Check if car has any booking overlapping with requested dates
         $hasBooking = $car->bookings()
             ->whereIn('status', ['confirmed', 'active'])
-            ->where(function($query) use ($startDate, $endDate) {
+            ->where(function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('start_datetime', [$startDate, $endDate])
-                      ->orWhereBetween('end_datetime', [$startDate, $endDate])
-                      ->orWhere(function($q) use ($startDate, $endDate) {
-                          $q->where('start_datetime', '<=', $startDate)
+                    ->orWhereBetween('end_datetime', [$startDate, $endDate])
+                    ->orWhere(function ($q) use ($startDate, $endDate) {
+                        $q->where('start_datetime', '<=', $startDate)
                             ->where('end_datetime', '>=', $endDate);
-                      });
+                    });
             })
             ->exists();
 
@@ -130,6 +134,9 @@ class CarsController extends Controller
     /**
      * Get booked dates for calendar display
      */
+    /**
+     * Get booked dates for calendar display
+     */
     public function getBookedDates(Car $car, Request $request)
     {
         $year = $request->get('year', date('Y'));
@@ -140,31 +147,45 @@ class CarsController extends Controller
         $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth();
 
         $bookings = $car->bookings()
+            ->with('user:id,name')
             ->whereIn('status', ['confirmed', 'active'])
-            ->where(function($query) use ($startOfMonth, $endOfMonth) {
+            ->where(function ($query) use ($startOfMonth, $endOfMonth) {
                 $query->whereBetween('start_datetime', [$startOfMonth, $endOfMonth])
-                      ->orWhereBetween('end_datetime', [$startOfMonth, $endOfMonth])
-                      ->orWhere(function($q) use ($startOfMonth, $endOfMonth) {
-                          $q->where('start_datetime', '<=', $startOfMonth)
+                    ->orWhereBetween('end_datetime', [$startOfMonth, $endOfMonth])
+                    ->orWhere(function ($q) use ($startOfMonth, $endOfMonth) {
+                        $q->where('start_datetime', '<=', $startOfMonth)
                             ->where('end_datetime', '>=', $endOfMonth);
-                      });
+                    });
             })
-            ->get(['start_datetime', 'end_datetime']);
+            ->get(['id', 'user_id', 'start_datetime', 'end_datetime', 'status', 'booking_code']);
 
-        // Convert bookings to array of dates
+        // Convert bookings to array of dates with booking info
         $bookedDates = [];
+        $bookingDetails = [];
+
         foreach ($bookings as $booking) {
             $start = Carbon::parse($booking->start_datetime);
             $end = Carbon::parse($booking->end_datetime);
 
+            $bookingInfo = [
+                'booking_code' => $booking->booking_code,
+                'user_name' => $booking->user ? $booking->user->name : 'User',
+                'status' => $booking->status,
+                'start' => $start->format('d M Y'),
+                'end' => $end->format('d M Y')
+            ];
+
             while ($start <= $end) {
-                $bookedDates[] = $start->format('Y-m-d');
+                $dateStr = $start->format('Y-m-d');
+                $bookedDates[] = $dateStr;
+                $bookingDetails[$dateStr] = $bookingInfo;
                 $start->addDay();
             }
         }
 
         return response()->json([
             'booked_dates' => array_unique($bookedDates),
+            'booking_details' => $bookingDetails,
             'month' => $month,
             'year' => $year
         ]);

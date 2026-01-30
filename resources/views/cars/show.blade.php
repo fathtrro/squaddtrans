@@ -1,91 +1,190 @@
 <x-app-layout>
-{{-- Car Detail Page - SQUADTRANS Theme with Enhanced Booking Calendar --}}
 
 {{-- Font Awesome --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-{{-- CSRF Token for AJAX --}}
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 :root {
     --primary: #F59E0B;
-    --primary-light: #FCD34D;
-    --dark: #1F2937;
-    --darker: #111827;
+    --primary-dark: #D97706;
+    --dark: #111827;
+    --gray: #6B7280;
+    --light: #F9FAFB;
+    --border: #E5E7EB;
+    --success: #10B981;
 }
 
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    background: #FFFFFF;
+    color: var(--dark);
+    line-height: 1.5;
 }
 
-.heading-font {
-    font-family: 'Montserrat', sans-serif;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
 }
 
-/* Image Gallery */
+/* Breadcrumb - Compact */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--gray);
+    margin-bottom: 1rem;
+}
+
+.breadcrumb a {
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+    color: var(--primary);
+}
+
+.breadcrumb i.fa-chevron-right {
+    font-size: 0.625rem;
+}
+
+/* Main Grid - Compact */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+    .main-grid {
+        grid-template-columns: 1fr 320px;
+        gap: 1.5rem;
+    }
+}
+
+/* Card - Minimal */
+.card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+/* Gallery - Compact */
 .gallery-main {
     position: relative;
-    height: 400px;
-    border-radius: 24px;
+    height: 320px;
+    border-radius: 8px;
     overflow: hidden;
     background: #000;
-}
-
-@media (min-width: 768px) {
-    .gallery-main {
-        height: 500px;
-    }
+    margin-bottom: 0.75rem;
 }
 
 .gallery-main img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s;
 }
 
-.gallery-main:hover img {
-    transform: scale(1.05);
-}
-
-.gallery-overlay {
+.car-title {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.car-title h1 {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.125rem;
+}
+
+.car-title p {
+    color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.badges {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    display: flex;
+    gap: 0.375rem;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+}
+
+.badge-premium {
+    background: rgba(245, 158, 11, 0.9);
+    color: white;
+}
+
+.badge-available {
+    background: rgba(16, 185, 129, 0.9);
+    color: white;
+}
+
+.rating-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(8px);
+    padding: 0.375rem 0.625rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: white;
+    font-weight: 600;
+    font-size: 0.8125rem;
 }
 
 .gallery-thumbs {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-top: 12px;
-}
-
-@media (min-width: 768px) {
-    .gallery-thumbs {
-        gap: 16px;
-        margin-top: 16px;
-    }
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
 }
 
 .thumb {
-    height: 80px;
-    border-radius: 12px;
+    height: 60px;
+    border-radius: 6px;
     overflow: hidden;
     cursor: pointer;
-    border: 3px solid transparent;
-    transition: all 0.3s;
-    position: relative;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    opacity: 0.6;
 }
 
-@media (min-width: 768px) {
-    .thumb {
-        height: 100px;
-    }
+.thumb:hover,
+.thumb.active {
+    border-color: var(--primary);
+    opacity: 1;
 }
 
 .thumb img {
@@ -94,811 +193,669 @@ body {
     object-fit: cover;
 }
 
-.thumb.active {
-    border-color: var(--primary);
-    transform: scale(1.05);
-}
-
-.thumb:hover {
-    border-color: var(--primary-light);
-}
-
-/* Info Cards */
-.info-card {
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-}
-
-@media (min-width: 768px) {
-    .info-card {
-        border-radius: 20px;
-        padding: 32px;
-    }
-}
-
-/* Spec Grid */
-.spec-grid {
+/* Specs - Compact Grid */
+.specs-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
-
-@media (min-width: 768px) {
-    .spec-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-    }
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
 }
 
 .spec-item {
-    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
-    border: 2px solid var(--primary);
-    border-radius: 12px;
-    padding: 16px;
+    background: var(--light);
+    border-radius: 6px;
+    padding: 0.75rem;
     text-align: center;
-    transition: all 0.3s;
 }
 
-.spec-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+.spec-item i {
+    font-size: 1.25rem;
+    color: var(--primary);
+    margin-bottom: 0.375rem;
 }
 
-.spec-icon {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
-    border-radius: 12px;
+.spec-label {
+    font-size: 0.6875rem;
+    color: var(--gray);
+    margin-bottom: 0.125rem;
+}
+
+.spec-value {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Features - Minimal */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.feature-item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 0 auto 12px;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--gray);
 }
 
-/* Features */
-.feature-badge {
-    background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
-    border: 2px solid #3B82F6;
-    border-radius: 12px;
-    padding: 12px 16px;
+.feature-item i {
+    font-size: 1rem;
+    color: var(--primary);
+}
+
+/* Section - Minimal */
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.3s;
+    gap: 0.5rem;
 }
 
-.feature-badge:hover {
-    transform: translateX(4px);
-    border-color: #2563EB;
+.section-title i {
+    color: var(--primary);
+    font-size: 0.875rem;
 }
 
-/* Price Card */
-.price-card {
-    background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
-    border-radius: 20px;
-    padding: 24px;
-    color: white;
-    position: relative;
-    overflow: hidden;
+/* Calendar - Compact */
+.date-picker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
-@media (min-width: 768px) {
-    .price-card {
-        padding: 32px;
-    }
+.date-field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+    color: var(--dark);
 }
 
-.price-pattern {
-    position: absolute;
-    inset: 0;
-    background-image:
-        radial-gradient(circle at 20% 50%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.08) 0%, transparent 50%);
+.date-field input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.8125rem;
 }
 
-.price-highlight {
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Calendar Styles */
-.calendar-container {
-    background: white;
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-}
-
-@media (min-width: 768px) {
-    .calendar-container {
-        padding: 32px;
-    }
-}
-
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
+.date-field input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
 }
 
 .calendar-nav {
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: var(--darker);
+    margin-bottom: 0.75rem;
+}
+
+.calendar-nav h4 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.calendar-nav button {
+    width: 28px;
+    height: 28px;
     border: none;
+    background: var(--light);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
 }
 
-.calendar-nav:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
-}
-
-.calendar-nav:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.calendar-nav button:hover {
+    background: var(--primary);
+    color: white;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
 }
 
 .calendar-day-header {
     text-align: center;
-    font-weight: 700;
-    font-size: 12px;
-    color: #6b7280;
-    padding: 8px 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--gray);
+    padding: 0.375rem 0;
 }
 
 .calendar-day {
     aspect-ratio: 1;
-    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s;
-    border: 2px solid transparent;
-    position: relative;
-}
-
-.calendar-day.empty {
-    cursor: default;
 }
 
 .calendar-day.available {
-    background: #f3f4f6;
-    color: #374151;
+    background: var(--light);
 }
 
 .calendar-day.available:hover {
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
-    color: var(--darker);
-    transform: scale(1.05);
+    background: var(--primary);
+    color: white;
 }
 
 .calendar-day.booked {
-    background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+    background: #FEE2E2;
     color: #DC2626;
-    cursor: not-allowed;
-    border-color: #EF4444;
+    cursor: pointer;
+    position: relative;
+}
+
+.calendar-day.booked:hover {
+    background: #FCA5A5;
 }
 
 .calendar-day.selected-start,
 .calendar-day.selected-end {
-    background: linear-gradient(135deg, #34D399, #10B981);
+    background: var(--success);
     color: white;
-    transform: scale(1.05);
-    font-weight: 700;
 }
 
 .calendar-day.selected-range {
-    background: linear-gradient(135deg, #A7F3D0, #6EE7B7);
+    background: #D1FAE5;
     color: #065F46;
 }
 
 .calendar-day.today {
-    border-color: #3B82F6;
-    font-weight: 700;
+    border: 2px solid #3B82F6;
 }
 
 .calendar-day.past {
-    background: #f9fafb;
-    color: #d1d5db;
+    background: transparent;
+    color: #D1D5DB;
     cursor: not-allowed;
 }
 
+/* Tooltip - Modern */
+.booking-tooltip {
+    position: fixed;
+    background: rgba(17, 24, 39, 0.96);
+    color: white;
+    padding: 0.625rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    z-index: 1000;
+    min-width: 180px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.booking-tooltip.show {
+    opacity: 1;
+}
+
+.booking-tooltip-header {
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+    padding-bottom: 0.375rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    color: var(--primary);
+    font-size: 0.6875rem;
+}
+
+.booking-tooltip-row {
+    display: flex;
+    gap: 0.375rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.6875rem;
+}
+
+.booking-tooltip-label {
+    color: rgba(255,255,255,0.6);
+    min-width: 50px;
+}
+
+.booking-tooltip-value {
+    font-weight: 500;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    font-size: 0.625rem;
+    font-weight: 600;
+}
+
+.status-confirmed {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.status-active {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+/* Legend - Compact */
 .calendar-legend {
     display: flex;
-    gap: 16px;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 2px solid #f3f4f6;
     flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
 }
 
 .legend-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
+    gap: 0.375rem;
 }
 
 .legend-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
 }
 
-/* Date Picker Section */
-.date-picker-section {
-    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
-    border: 2px solid var(--primary);
-    border-radius: 16px;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-.date-input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e5e7eb;
-    border-radius: 10px;
-    font-size: 14px;
-    transition: all 0.3s;
-}
-
-.date-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
-}
-
-/* Price Estimate Box */
-.price-estimate-box {
+/* Price Estimate - Compact */
+.price-estimate {
     background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
-    border: 2px solid #10B981;
-    border-radius: 16px;
-    padding: 20px;
-    margin-top: 20px;
+    border: 1px solid var(--success);
+    border-radius: 6px;
+    padding: 0.875rem;
+    margin-top: 0.75rem;
     display: none;
 }
 
-.price-estimate-box.show {
+.price-estimate.show {
     display: block;
-    animation: slideDown 0.3s ease-out;
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Reviews */
-.review-card {
-    background: white;
-    border: 2px solid #f3f4f6;
-    border-radius: 16px;
-    padding: 20px;
-    transition: all 0.3s;
-}
-
-.review-card:hover {
-    border-color: var(--primary);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);
-}
-
-.rating-stars {
-    color: var(--primary);
-}
-
-/* Buttons */
-.btn {
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 14px;
-    transition: all 0.3s;
-    display: inline-flex;
+.price-estimate-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
-    color: var(--darker);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-}
-
-.btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.btn-secondary {
-    background: linear-gradient(135deg, var(--dark), var(--darker));
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.btn-secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.btn-outline {
-    background: transparent;
-    border: 2px solid var(--primary);
-    color: var(--primary);
-}
-
-.btn-outline:hover {
-    background: var(--primary);
-    color: var(--darker);
-}
-
-/* Badges */
-.badge {
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.badge-available {
-    background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+    margin-bottom: 0.625rem;
+    font-size: 0.875rem;
+    font-weight: 600;
     color: #065F46;
 }
 
-.badge-premium {
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
-    color: var(--darker);
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.375rem;
+    font-size: 0.8125rem;
 }
 
-.badge-new {
-    background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
-    color: #1E40AF;
+.price-row.total {
+    border-top: 1px solid var(--success);
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    font-weight: 700;
+    font-size: 1rem;
 }
 
-/* Related Cars */
+/* Price Card - Sticky Compact */
+.price-card {
+    background: var(--dark);
+    color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    position: sticky;
+    top: 1rem;
+}
+
+.price-card h3 {
+    margin-bottom: 0.875rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.price-option {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.price-option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.price-option-label {
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.65);
+}
+
+.price-option-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.price-option.featured {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: var(--primary);
+}
+
+.price-info {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.55);
+    margin: 0.75rem 0;
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.price-features {
+    margin: 0.75rem 0;
+}
+
+.price-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    margin-bottom: 0.375rem;
+    color: rgba(255,255,255,0.75);
+}
+
+.price-feature i {
+    color: var(--success);
+    font-size: 0.75rem;
+}
+
+/* Buttons - Compact */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.625rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    text-decoration: none;
+    width: 100%;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Reviews - Compact */
+.review-item {
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 0;
+}
+
+.review-item:last-child {
+    border-bottom: none;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 0.5rem;
+}
+
+.review-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.review-avatar {
+    width: 32px;
+    height: 32px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.review-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.review-date {
+    font-size: 0.6875rem;
+    color: var(--gray);
+}
+
+.review-stars {
+    color: var(--primary);
+    font-size: 0.75rem;
+}
+
+.review-comment {
+    color: var(--gray);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+/* Related Cars - Compact */
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+    .related-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 .related-card {
     background: white;
-    border-radius: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    transition: all 0.3s;
+    transition: all 0.2s;
 }
 
 .related-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.related-card img {
+.related-image {
+    height: 140px;
+    overflow: hidden;
+}
+
+.related-image img {
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
-    transition: transform 0.5s;
 }
 
-.related-card:hover img {
-    transform: scale(1.1);
+.related-content {
+    padding: 0.75rem;
 }
 
-/* Sticky Booking */
-.sticky-booking {
-    position: sticky;
-    top: 20px;
+.related-brand {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.125rem;
 }
 
-/* Loading Spinner */
+.related-name {
+    color: var(--primary);
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+}
+
+.related-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.8125rem;
+}
+
+.related-price-label {
+    color: var(--gray);
+    font-size: 0.75rem;
+}
+
+.related-price-value {
+    font-weight: 700;
+}
+
 .spinner {
-    border: 3px solid #f3f4f6;
-    border-top: 3px solid var(--primary);
+    border: 2px solid var(--border);
+    border-top-color: var(--primary);
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    animation: spin 1s linear infinite;
-    display: inline-block;
+    width: 16px;
+    height: 16px;
+    animation: spin 0.6s linear infinite;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .spec-grid {
+    .gallery-main {
+        height: 260px;
+    }
+
+    .car-title h1 {
+        font-size: 1.25rem;
+    }
+
+    .specs-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .calendar-day {
-        font-size: 12px;
+    .gallery-thumbs {
+        grid-template-columns: repeat(4, 1fr);
     }
 
-    .calendar-day-header {
-        font-size: 10px;
+    .date-picker {
+        grid-template-columns: 1fr;
     }
+}
+
+/* Utility */
+.divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0.75rem 0;
 }
 </style>
 
-<div class="min-h-screen py-6 sm:py-12">
-    <div class="max-w-7xl mx-auto px-4">
+<div class="container">
+    {{-- Breadcrumb --}}
+    <div class="breadcrumb">
+        <a href="{{ route('cars.index') }}"><i class="fa-solid fa-home"></i> Home</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <a href="{{ route('cars.index') }}">Cars</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span style="color: var(--dark); font-weight: 600;">{{ $car->name }}</span>
+    </div>
 
-        {{-- Breadcrumb --}}
-        <div class="flex items-center gap-2 text-sm mb-6">
-            <a href="{{ route('cars.index') }}" class="text-gray-500 hover:text-yellow-500 transition">
-                <i class="fa-solid fa-home"></i> Beranda
-            </a>
-            <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-            <a href="{{ route('cars.index') }}" class="text-gray-500 hover:text-yellow-500 transition">
-                Armada
-            </a>
-            <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-            <span class="text-gray-900 font-semibold">{{ $car->name }}</span>
-        </div>
+    <div class="main-grid">
+        {{-- Left Column --}}
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            {{-- Gallery --}}
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <div class="gallery-main" id="mainImage">
+                    @if($car->images->first())
+                        <img src="{{ asset('storage/'.$car->images->first()->image_path) }}" alt="{{ $car->name }}">
+                    @else
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #000;">
+                            <i class="fa-solid fa-car" style="font-size: 3rem; color: #666;"></i>
+                        </div>
+                    @endif
 
-            {{-- Left Column: Car Details --}}
-            <div class="lg:col-span-2 space-y-6">
-
-                {{-- Image Gallery --}}
-                <div class="info-card">
-                    <div class="gallery-main" id="mainImage">
-                        @if($car->images->first())
-                            <img src="{{ asset('storage/'.$car->images->first()->image_path) }}" alt="{{ $car->name }}">
-                        @else
-                            <div class="flex items-center justify-center h-full bg-gray-900">
-                                <i class="fa-solid fa-car text-8xl text-gray-600"></i>
-                            </div>
+                    <div class="badges">
+                        @if($car->status == 'available')
+                        <span class="badge badge-available"><i class="fa-solid fa-check"></i> Available</span>
                         @endif
-                        <div class="gallery-overlay"></div>
-
-                        {{-- Badges Overlay --}}
-                        <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                            <span class="badge badge-premium">
-                                <i class="fa-solid fa-crown"></i> PREMIUM
-                            </span>
-                            @if($car->is_available)
-                            <span class="badge badge-available">
-                                <i class="fa-solid fa-circle-check"></i> TERSEDIA
-                            </span>
-                            @endif
-                            @if($car->year >= 2023)
-                            <span class="badge badge-new">
-                                <i class="fa-solid fa-sparkles"></i> NEW
-                            </span>
-                            @endif
-                        </div>
-
-                        {{-- Rating Overlay --}}
-                        @if($averageRating > 0)
-                        <div class="absolute top-4 right-4 bg-black/70 backdrop-blur-sm px-4 py-2 rounded-xl z-10">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-star text-yellow-400"></i>
-                                <span class="text-white font-bold">{{ number_format($averageRating, 1) }}</span>
-                                <span class="text-gray-300 text-sm">({{ $totalReviews }})</span>
-                            </div>
-                        </div>
-                        @endif
-
-                        {{-- Car Info Overlay --}}
-                        <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
-                            <h1 class="heading-font text-3xl sm:text-4xl font-extrabold text-white mb-2">
-                                {{ $car->brand }}
-                            </h1>
-                            <p class="text-yellow-400 text-xl font-bold">{{ $car->name }}</p>
-                        </div>
+                        <span class="badge badge-premium"><i class="fa-solid fa-crown"></i> Premium</span>
                     </div>
 
-                    {{-- Thumbnails --}}
-                    @if($car->images->count() > 1)
-                    <div class="gallery-thumbs">
-                        @foreach($car->images as $index => $image)
-                        <div class="thumb {{ $index === 0 ? 'active' : '' }}" onclick="changeMainImage('{{ asset('storage/'.$image->image_path) }}', this)">
-                            <img src="{{ asset('storage/'.$image->image_path) }}" alt="{{ $car->name }}">
-                        </div>
-                        @endforeach
+                    @if($averageRating > 0)
+                    <div class="rating-badge">
+                        <i class="fa-solid fa-star"></i>
+                        <span>{{ number_format($averageRating, 1) }}</span>
                     </div>
                     @endif
-                </div>
 
-                {{-- Specifications --}}
-                <div class="info-card">
-                    <h3 class="heading-font text-2xl font-bold mb-6 flex items-center gap-3">
-                        <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
-                            <i class="fa-solid fa-car-side text-white"></i>
-                        </div>
-                        Spesifikasi
-                    </h3>
-
-                    <div class="spec-grid">
-                        <div class="spec-item">
-                            <div class="spec-icon">
-                                <i class="fa-solid fa-calendar-days text-xl text-gray-900"></i>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-1">Tahun</p>
-                            <p class="font-bold text-lg">{{ $car->year }}</p>
-                        </div>
-
-                        <div class="spec-item">
-                            <div class="spec-icon">
-                                <i class="fa-solid fa-users text-xl text-gray-900"></i>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-1">Kapasitas</p>
-                            <p class="font-bold text-lg">{{ $car->seats }} Orang</p>
-                        </div>
-
-                        <div class="spec-item">
-                            <div class="spec-icon">
-                                <i class="fa-solid fa-gears text-xl text-gray-900"></i>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-1">Transmisi</p>
-                            <p class="font-bold text-lg">{{ ucfirst($car->transmission) }}</p>
-                        </div>
-
-                        <div class="spec-item">
-                            <div class="spec-icon">
-                                <i class="fa-solid fa-gas-pump text-xl text-gray-900"></i>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-1">Bahan Bakar</p>
-                            <p class="font-bold text-lg">{{ $car->fuel_type }}</p>
-                        </div>
-
-                        <div class="spec-item">
-                            <div class="spec-icon">
-                                <i class="fa-solid fa-palette text-xl text-gray-900"></i>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-1">Warna</p>
-                            <p class="font-bold text-lg">{{ $car->color }}</p>
-                        </div>
-
-                        <div class="spec-item">
-                            <div class="spec-icon">
-                                <i class="fa-solid fa-shapes text-xl text-gray-900"></i>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-1">Kategori</p>
-                            <p class="font-bold text-lg">{{ ucfirst($car->category) }}</p>
-                        </div>
-
-                        <div class="spec-item">
-                            <div class="spec-icon">
-                                <i class="fa-solid fa-code text-xl text-gray-900"></i>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-1">Plat Nomor</p>
-                            <p class="font-bold text-lg">{{ $car->plate_number }}</p>
-                        </div>
-
-                        <div class="spec-item">
-                            <div class="spec-icon">
-                                <i class="fa-solid fa-hashtag text-xl text-gray-900"></i>
-                            </div>
-                            <p class="text-xs text-gray-600 mb-1">Nomor Mesin</p>
-                            <p class="font-bold text-sm">{{ $car->engine_number }}</p>
-                        </div>
+                    <div class="car-title">
+                        <h1>{{ $car->brand }} {{ $car->name }}</h1>
+                        <p>{{ $car->year }} • {{ ucfirst($car->transmission) }}</p>
                     </div>
                 </div>
 
-                {{-- Features --}}
-                <div class="info-card">
-                    <h3 class="heading-font text-2xl font-bold mb-6 flex items-center gap-3">
-                        <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
-                            <i class="fa-solid fa-stars text-white"></i>
-                        </div>
-                        Fitur & Fasilitas
-                    </h3>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div class="feature-badge">
-                            <i class="fa-solid fa-snowflake text-blue-500 text-xl"></i>
-                            <span class="font-semibold">Air Conditioner</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="fa-solid fa-shield-halved text-green-500 text-xl"></i>
-                            <span class="font-semibold">Safety Features</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="fa-brands fa-bluetooth-b text-blue-500 text-xl"></i>
-                            <span class="font-semibold">Bluetooth Audio</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="fa-solid fa-camera text-purple-500 text-xl"></i>
-                            <span class="font-semibold">Parking Camera</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="fa-solid fa-music text-pink-500 text-xl"></i>
-                            <span class="font-semibold">Audio System</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="fa-solid fa-key text-orange-500 text-xl"></i>
-                            <span class="font-semibold">Keyless Entry</span>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Description --}}
-                <div class="info-card">
-                    <h3 class="heading-font text-2xl font-bold mb-4 flex items-center gap-3">
-                        <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
-                            <i class="fa-solid fa-file-lines text-white"></i>
-                        </div>
-                        Deskripsi
-                    </h3>
-                    <p class="text-gray-700 leading-relaxed">
-                        {{ $car->description ?? 'Mobil premium dengan kondisi sangat terawat dan siap menemani perjalanan Anda. Dilengkapi dengan berbagai fitur modern untuk kenyamanan maksimal.' }}
-                    </p>
-                </div>
-
-                {{-- Calendar Section with Date Picker --}}
-                <div class="calendar-container">
-                    <h3 class="heading-font text-2xl font-bold mb-6 flex items-center gap-3">
-                        <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
-                            <i class="fa-solid fa-calendar-check text-white"></i>
-                        </div>
-                        Cek Ketersediaan & Booking
-                    </h3>
-
-                    {{-- Date Range Picker --}}
-                    <div class="date-picker-section">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">
-                                    <i class="fa-solid fa-calendar-plus mr-2"></i>Tanggal Mulai
-                                </label>
-                                <input type="date" id="startDate" class="date-input" min="{{ date('Y-m-d') }}">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">
-                                    <i class="fa-solid fa-calendar-minus mr-2"></i>Tanggal Selesai
-                                </label>
-                                <input type="date" id="endDate" class="date-input" min="{{ date('Y-m-d') }}">
-                            </div>
-                        </div>
-
-                        <button type="button" id="checkAvailability" class="btn btn-primary w-full justify-center">
-                            <i class="fa-solid fa-search"></i>
-                            Cek Ketersediaan
-                        </button>
-                    </div>
-
-                    {{-- Price Estimate Box --}}
-                    <div class="price-estimate-box" id="priceEstimateBox">
-                        <div class="flex items-center justify-between mb-4">
-                            <h4 class="font-bold text-green-800 flex items-center gap-2">
-                                <i class="fa-solid fa-circle-check text-2xl"></i>
-                                Mobil Tersedia!
-                            </h4>
-                            <span class="text-sm text-green-700" id="rentalDuration"></span>
-                        </div>
-
-                        <div class="space-y-2 mb-4">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-green-700">Harga Dasar:</span>
-                                <span class="font-bold text-green-800" id="basePrice">Rp 0</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-green-700">Biaya Layanan:</span>
-                                <span class="font-bold text-green-800" id="serviceCharge">Rp 0</span>
-                            </div>
-                            <div class="border-t-2 border-green-400 pt-2 flex justify-between">
-                                <span class="font-bold text-green-800">Total Harga:</span>
-                                <span class="heading-font text-2xl font-extrabold text-green-600" id="totalPrice">Rp 0</span>
-                            </div>
-                            <div class="text-xs text-green-700">
-                                <i class="fa-solid fa-info-circle mr-1"></i>
-                                DP Minimal: <span class="font-bold" id="minDeposit">Rp 0</span>
-                            </div>
-                        </div>
-
-                        <a href="{{ route('bookings.create', ['car' => $car->id]) }}" id="bookNowBtn" class="btn btn-success w-full justify-center" style="background: linear-gradient(135deg, #34D399, #10B981); color: white;">
-                            <i class="fa-solid fa-calendar-check"></i>
-                            Lanjutkan Booking
-                        </a>
-                    </div>
-
-                    {{-- Calendar Display --}}
-                    <div class="mt-6">
-                        <div class="calendar-header">
-                            <button class="calendar-nav" id="prevMonth">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </button>
-                            <h4 class="heading-font text-xl font-bold" id="currentMonth"></h4>
-                            <button class="calendar-nav" id="nextMonth">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-                        </div>
-
-                        <div class="calendar-grid" id="calendarGrid">
-                            <!-- Calendar will be generated by JavaScript -->
-                        </div>
-
-                        <div class="calendar-legend">
-                            <div class="legend-item">
-                                <div class="legend-dot" style="background: #f3f4f6;"></div>
-                                <span>Tersedia</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-dot" style="background: linear-gradient(135deg, #FEE2E2, #FECACA);"></div>
-                                <span>Sudah Dibooking</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-dot" style="background: linear-gradient(135deg, #A7F3D0, #6EE7B7);"></div>
-                                <span>Range Dipilih</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-dot" style="border: 2px solid #3B82F6; background: white;"></div>
-                                <span>Hari Ini</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Reviews --}}
-                @if($totalReviews > 0)
-                <div class="info-card">
-                    <h3 class="heading-font text-2xl font-bold mb-6 flex items-center gap-3">
-                        <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
-                            <i class="fa-solid fa-star text-white"></i>
-                        </div>
-                        Review ({{ $totalReviews }})
-                    </h3>
-
-                    <div class="space-y-4">
-                        @foreach($car->reviews->take(5) as $review)
-                        <div class="review-card">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-                                        <i class="fa-solid fa-user text-white"></i>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold">{{ $review->user->name }}</p>
-                                        <p class="text-xs text-gray-500">{{ $review->created_at->diffForHumans() }}</p>
-                                    </div>
-                                </div>
-                                <div class="rating-stars">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <i class="fa-solid fa-star {{ $i <= $review->rating ? '' : 'text-gray-300' }}"></i>
-                                    @endfor
-                                </div>
-                            </div>
-                            <p class="text-gray-700">{{ $review->comment }}</p>
+                @if($car->images->count() > 1)
+                <div style="padding: 0.75rem;">
+                    <div class="gallery-thumbs">
+                        @foreach($car->images->take(5) as $index => $image)
+                        <div class="thumb {{ $index === 0 ? 'active' : '' }}" onclick="changeMainImage('{{ asset('storage/'.$image->image_path) }}', this)">
+                            <img src="{{ asset('storage/'.$image->image_path) }}" alt="{{ $car->name }}">
                         </div>
                         @endforeach
                     </div>
@@ -906,181 +863,340 @@ body {
                 @endif
             </div>
 
-            {{-- Right Column: Booking Card --}}
-            <div class="lg:col-span-1">
-                <div class="sticky-booking">
-                    <div class="price-card">
-                        <div class="price-pattern"></div>
-                        <div class="relative z-10">
-                            <h3 class="heading-font text-xl font-bold mb-4">Harga Sewa</h3>
+            {{-- Specs --}}
+            <div class="card">
+                <div class="section-title">
+                    <i class="fa-solid fa-gauge"></i> Specifications
+                </div>
 
-                            <div class="space-y-4">
-                                {{-- 24 Hours --}}
-                                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-gray-300 text-sm">24 Jam</span>
-                                        <span class="badge badge-premium text-xs">POPULER</span>
-                                    </div>
-                                    <p class="heading-font text-3xl font-extrabold price-highlight">
-                                        Rp {{ number_format($car->price_24h, 0, ',', '.') }}
-                                    </p>
-                                </div>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <i class="fa-solid fa-calendar"></i>
+                        <div class="spec-label">Year</div>
+                        <div class="spec-value">{{ $car->year }}</div>
+                    </div>
+                    <div class="spec-item">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="spec-label">Seats</div>
+                        <div class="spec-value">{{ $car->seats }}</div>
+                    </div>
+                    <div class="spec-item">
+                        <i class="fa-solid fa-gears"></i>
+                        <div class="spec-label">Trans</div>
+                        <div class="spec-value">{{ ucfirst($car->transmission) }}</div>
+                    </div>
+                    <div class="spec-item">
+                        <i class="fa-solid fa-gas-pump"></i>
+                        <div class="spec-label">Fuel</div>
+                        <div class="spec-value">{{ $car->fuel_type }}</div>
+                    </div>
+                </div>
 
-                                {{-- 12 Hours --}}
-                                <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-gray-300 text-sm">12 Jam</span>
-                                    </div>
-                                    <p class="heading-font text-2xl font-bold text-yellow-400">
-                                        Rp {{ number_format($car->price_24h * 0.7, 0, ',', '.') }}
-                                    </p>
-                                </div>
+                <div class="divider"></div>
 
-                                {{-- Per Hour --}}
-                                <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-gray-300 text-sm">Per Jam</span>
-                                    </div>
-                                    <p class="heading-font text-2xl font-bold text-yellow-400">
-                                        Rp {{ number_format($car->price_24h / 24, 0, ',', '.') }}
-                                    </p>
-                                </div>
-                            </div>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-snowflake"></i>
+                        <span>Air Conditioner</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-shield"></i>
+                        <span>Safety Features</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-brands fa-bluetooth"></i>
+                        <span>Bluetooth</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-camera"></i>
+                        <span>Camera</span>
+                    </div>
+                </div>
+            </div>
 
-                            <div class="mt-6 pt-6 border-t border-white/20">
-                                <p class="text-gray-300 text-sm mb-4">
-                                    <i class="fa-solid fa-info-circle mr-2"></i>
-                                    DP Minimal 30% dari total harga
-                                </p>
+            {{-- Calendar --}}
+            <div class="card">
+                <div class="section-title">
+                    <i class="fa-solid fa-calendar-check"></i> Check Availability
+                </div>
 
-                                <div class="space-y-3">
-                                    <a href="{{ route('bookings.create', ['car' => $car->id]) }}"
-                                       class="btn btn-primary w-full justify-center text-lg">
-                                        <i class="fa-solid fa-calendar-check"></i>
-                                        Booking Sekarang
-                                    </a>
+                <div class="date-picker">
+                    <div class="date-field">
+                        <label>Start Date</label>
+                        <input type="date" id="startDate" min="{{ date('Y-m-d') }}">
+                    </div>
+                    <div class="date-field">
+                        <label>End Date</label>
+                        <input type="date" id="endDate" min="{{ date('Y-m-d') }}">
+                    </div>
+                </div>
 
-                                    <a href="https://wa.me/6281234567890?text=Halo, saya tertarik dengan {{ $car->brand }} {{ $car->name }}"
-                                       class="btn btn-outline w-full justify-center bg-white/10">
-                                        <i class="fa-brands fa-whatsapp"></i>
-                                        Hubungi Kami
-                                    </a>
-                                </div>
-                            </div>
+                <button type="button" id="checkAvailability" class="btn btn-primary">
+                    <i class="fa-solid fa-search"></i> Check Availability
+                </button>
 
-                            {{-- Additional Info --}}
-                            <div class="mt-6 pt-6 border-t border-white/20 space-y-3 text-sm text-gray-300">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-check text-green-400"></i>
-                                    <span>Gratis antar jemput area tertentu</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-check text-green-400"></i>
-                                    <span>Mobil terawat & bersih</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-check text-green-400"></i>
-                                    <span>Customer service 24/7</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-check text-green-400"></i>
-                                    <span>Proses booking mudah & cepat</span>
-                                </div>
-                            </div>
+                <div class="price-estimate" id="priceEstimateBox">
+                    <div class="price-estimate-header">
+                        <span><i class="fa-solid fa-check-circle"></i> Available!</span>
+                        <span id="rentalDuration"></span>
+                    </div>
+
+                    <div class="price-row">
+                        <span>Base Price:</span>
+                        <span id="basePrice" style="font-weight: 600;">Rp 0</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Service:</span>
+                        <span id="serviceCharge" style="font-weight: 600;">Rp 0</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total:</span>
+                        <span id="totalPrice">Rp 0</span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #065F46; margin-top: 0.375rem;">
+                        Min. DP: <span id="minDeposit" style="font-weight: 600;">Rp 0</span>
+                    </div>
+
+                    <a href="{{ route('bookings.create', ['car' => $car->id]) }}" id="bookNowBtn" class="btn btn-success" style="margin-top: 0.75rem;">
+                        <i class="fa-solid fa-calendar-check"></i> Book Now
+                    </a>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <div class="calendar-nav">
+                        <button id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+                        <h4 id="currentMonth"></h4>
+                        <button id="nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+
+                    <div class="calendar-grid" id="calendarGrid"></div>
+
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--light);"></div>
+                            <span>Available</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: #FEE2E2;"></div>
+                            <span>Booked</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: #D1FAE5;"></div>
+                            <span>Selected</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        {{-- Related Cars --}}
-        @if($relatedCars->count() > 0)
-        <div class="mt-12">
-            <h3 class="heading-font text-2xl sm:text-3xl font-bold mb-6">Mobil Serupa</h3>
+            {{-- Reviews --}}
+            @if($totalReviews > 0)
+            <div class="card">
+                <div class="section-title">
+                    <i class="fa-solid fa-star"></i> Reviews ({{ $totalReviews }})
+                </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach($relatedCars as $relatedCar)
-                <div class="related-card">
-                    <div class="relative h-48 overflow-hidden">
-                        @if($relatedCar->images->first())
-                            <img src="{{ asset('storage/'.$relatedCar->images->first()->image_path) }}" alt="{{ $relatedCar->name }}">
-                        @else
-                            <div class="flex items-center justify-center h-full bg-gray-900">
-                                <i class="fa-solid fa-car text-5xl text-gray-600"></i>
+                @foreach($car->reviews->take(3) as $review)
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="review-user">
+                            <div class="review-avatar">{{ strtoupper(substr($review->user->name, 0, 1)) }}</div>
+                            <div>
+                                <div class="review-name">{{ $review->user->name }}</div>
+                                <div class="review-date">{{ $review->created_at->diffForHumans() }}</div>
                             </div>
-                        @endif
-
-                        <div class="absolute top-2 left-2">
-                            @if($relatedCar->is_available)
-                            <span class="badge badge-available text-xs">
-                                <i class="fa-solid fa-circle-check"></i> TERSEDIA
-                            </span>
-                            @endif
+                        </div>
+                        <div class="review-stars">
+                            @for($i = 1; $i <= 5; $i++)
+                                <i class="fa-solid fa-star {{ $i <= $review->rating ? '' : 'fa-regular' }}" style="{{ $i > $review->rating ? 'color: #D1D5DB;' : '' }}"></i>
+                            @endfor
                         </div>
                     </div>
-
-                    <div class="p-4">
-                        <h4 class="font-bold text-lg mb-1 truncate">{{ $relatedCar->brand }}</h4>
-                        <p class="text-yellow-500 text-sm mb-3 truncate">{{ $relatedCar->name }}</p>
-
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs text-gray-500">24 Jam</span>
-                            <span class="font-bold text-gray-900">Rp {{ number_format($relatedCar->price_24h / 1000, 0) }}K</span>
-                        </div>
-
-                        <a href="{{ route('cars.show', $relatedCar) }}" class="btn btn-primary w-full justify-center text-sm">
-                            Lihat Detail
-                        </a>
-                    </div>
+                    <p class="review-comment">{{ $review->comment }}</p>
                 </div>
                 @endforeach
             </div>
+            @endif
         </div>
-        @endif
+
+        {{-- Right Column: Price Card --}}
+        <div>
+            <div class="price-card">
+                <h3>Rental Price</h3>
+
+                <div class="price-option featured">
+                    <div class="price-option-header">
+                        <span class="price-option-label">24 Hours</span>
+                        <span class="badge badge-premium" style="font-size: 0.625rem;">BEST</span>
+                    </div>
+                    <div class="price-option-value">Rp {{ number_format($car->price_24h, 0, ',', '.') }}</div>
+                </div>
+
+                <div class="price-option">
+                    <div class="price-option-header">
+                        <span class="price-option-label">12 Hours</span>
+                    </div>
+                    <div class="price-option-value">Rp {{ number_format($car->price_24h * 0.7, 0, ',', '.') }}</div>
+                </div>
+
+                <div class="price-info">
+                    <i class="fa-solid fa-info-circle"></i> Minimum 30% deposit required
+                </div>
+
+                <a href="{{ route('bookings.create', ['car' => $car->id]) }}" class="btn btn-primary" style="margin-bottom: 0.5rem;">
+                    <i class="fa-solid fa-calendar-check"></i> Book Now
+                </a>
+
+                <a href="https://wa.me/6281234567890?text=Hi, I'm interested in {{ $car->brand }} {{ $car->name }}" class="btn btn-secondary">
+                    <i class="fa-brands fa-whatsapp"></i> Contact Us
+                </a>
+
+                <div class="price-features">
+                    <div class="price-feature">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Free delivery</span>
+                    </div>
+                    <div class="price-feature">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Well maintained</span>
+                    </div>
+                    <div class="price-feature">
+                        <i class="fa-solid fa-check"></i>
+                        <span>24/7 support</span>
+                    </div>
+                    <div class="price-feature">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Easy booking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    {{-- Related Cars --}}
+    @if($relatedCars->count() > 0)
+    <div style="margin-top: 2rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Similar Cars</h2>
+
+        <div class="related-grid">
+            @foreach($relatedCars as $relatedCar)
+            <div class="related-card">
+                <div class="related-image">
+                    @if($relatedCar->images->first())
+                        <img src="{{ asset('storage/'.$relatedCar->images->first()->image_path) }}" alt="{{ $relatedCar->name }}">
+                    @else
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #000;">
+                            <i class="fa-solid fa-car" style="font-size: 2.5rem; color: #666;"></i>
+                        </div>
+                    @endif
+                </div>
+
+                <div class="related-content">
+                    <div class="related-brand">{{ $relatedCar->brand }}</div>
+                    <div class="related-name">{{ $relatedCar->name }}</div>
+
+                    <div class="related-price">
+                        <span class="related-price-label">24 Hours</span>
+                        <span class="related-price-value">Rp {{ number_format($relatedCar->price_24h / 1000, 0) }}K</span>
+                    </div>
+
+                    <a href="{{ route('cars.show', $relatedCar) }}" class="btn btn-primary" style="padding: 0.5rem 0.75rem; font-size: 0.75rem;">
+                        View Details
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
 </div>
 
-{{-- JavaScript --}}
 <script>
 const carId = {{ $car->id }};
 const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-// Image Gallery
 function changeMainImage(src, thumb) {
-    const mainImg = document.querySelector('#mainImage img');
-    mainImg.src = src;
-
+    document.querySelector('#mainImage img').src = src;
     document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
     thumb.classList.add('active');
 }
 
-// Calendar
 const bookedDates = @json($car->bookings->map(function($booking) {
     $dates = [];
     $start = \Carbon\Carbon::parse($booking->start_datetime);
     $end = \Carbon\Carbon::parse($booking->end_datetime);
-
     while($start <= $end) {
         $dates[] = $start->format('Y-m-d');
         $start->addDay();
     }
-
     return $dates;
 })->flatten()->unique()->values());
 
+let bookingDetailsMap = {};
 let currentDate = new Date();
 let selectedStartDate = null;
 let selectedEndDate = null;
 
-const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
-    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-];
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+const tooltip = document.createElement('div');
+tooltip.className = 'booking-tooltip';
+document.body.appendChild(tooltip);
+
+function showBookingTooltip(dateStr, element) {
+    const booking = bookingDetailsMap[dateStr];
+    if (!booking) return;
+
+    const statusLabel = booking.status === 'confirmed' ? 'Confirmed' : 'Active';
+    const statusClass = booking.status === 'confirmed' ? 'status-confirmed' : 'status-active';
+
+    tooltip.innerHTML = `
+        <div class="booking-tooltip-header">
+            ${booking.booking_code}
+        </div>
+        <div class="booking-tooltip-row">
+            <span class="booking-tooltip-label">Customer:</span>
+            <span class="booking-tooltip-value">${booking.user_name}</span>
+        </div>
+        <div class="booking-tooltip-row">
+            <span class="booking-tooltip-label">Status:</span>
+            <span class="status-badge ${statusClass}">${statusLabel}</span>
+        </div>
+        <div class="booking-tooltip-row">
+            <span class="booking-tooltip-label">Period:</span>
+            <span class="booking-tooltip-value">${booking.start} - ${booking.end}</span>
+        </div>
+    `;
+
+    const rect = element.getBoundingClientRect();
+    tooltip.style.left = rect.left + (rect.width / 2) + 'px';
+    tooltip.style.top = (rect.top + window.scrollY - 10) + 'px';
+    tooltip.style.transform = 'translate(-50%, -100%)';
+    tooltip.classList.add('show');
+}
+
+function hideBookingTooltip() {
+    tooltip.classList.remove('show');
+}
+
+async function loadBookingDetails(year, month) {
+    try {
+        const response = await fetch(`/api/cars/${carId}/booked-dates?year=${year}&month=${month}`);
+        const data = await response.json();
+
+        if (data.booking_details) {
+            bookingDetailsMap = data.booking_details;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 function renderCalendar() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-
     document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+
+    loadBookingDetails(year, month + 1);
 
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -1088,19 +1204,11 @@ function renderCalendar() {
     today.setHours(0, 0, 0, 0);
 
     let html = '';
+    const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    dayHeaders.forEach(day => html += `<div class="calendar-day-header">${day}</div>`);
 
-    // Day headers
-    const dayHeaders = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
-    dayHeaders.forEach(day => {
-        html += `<div class="calendar-day-header">${day}</div>`;
-    });
+    for (let i = 0; i < firstDay; i++) html += '<div class="calendar-day"></div>';
 
-    // Empty cells before first day
-    for (let i = 0; i < firstDay; i++) {
-        html += '<div class="calendar-day empty"></div>';
-    }
-
-    // Days
     for (let day = 1; day <= daysInMonth; day++) {
         const dateObj = new Date(year, month, day);
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -1112,23 +1220,19 @@ function renderCalendar() {
         const isInRange = selectedStartDate && selectedEndDate && dateStr > selectedStartDate && dateStr < selectedEndDate;
 
         let classes = 'calendar-day';
-
-        if (isPast) {
-            classes += ' past';
-        } else if (isBooked) {
-            classes += ' booked';
-        } else {
-            classes += ' available';
-        }
-
+        if (isPast) classes += ' past';
+        else if (isBooked) classes += ' booked';
+        else classes += ' available';
         if (isToday) classes += ' today';
         if (isSelectedStart) classes += ' selected-start';
         if (isSelectedEnd) classes += ' selected-end';
         if (isInRange) classes += ' selected-range';
 
         const onclick = (!isPast && !isBooked) ? `onclick="selectDate('${dateStr}')"` : '';
+        const onmouseover = isBooked ? `onmouseover="showBookingTooltip('${dateStr}', this)"` : '';
+        const onmouseout = isBooked ? `onmouseout="hideBookingTooltip()"` : '';
 
-        html += `<div class="${classes}" ${onclick}>${day}</div>`;
+        html += `<div class="${classes}" ${onclick} ${onmouseover} ${onmouseout}>${day}</div>`;
     }
 
     document.getElementById('calendarGrid').innerHTML = html;
@@ -1136,25 +1240,21 @@ function renderCalendar() {
 
 function selectDate(dateStr) {
     if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
-        // Start new selection
         selectedStartDate = dateStr;
         selectedEndDate = null;
         document.getElementById('startDate').value = dateStr;
         document.getElementById('endDate').value = '';
     } else {
-        // Set end date
         if (dateStr > selectedStartDate) {
             selectedEndDate = dateStr;
             document.getElementById('endDate').value = dateStr;
         } else {
-            // If selected date is before start date, make it the new start date
             selectedEndDate = selectedStartDate;
             selectedStartDate = dateStr;
             document.getElementById('startDate').value = dateStr;
             document.getElementById('endDate').value = selectedEndDate;
         }
     }
-
     renderCalendar();
 }
 
@@ -1168,7 +1268,6 @@ document.getElementById('nextMonth').addEventListener('click', () => {
     renderCalendar();
 });
 
-// Sync date inputs with calendar
 document.getElementById('startDate').addEventListener('change', function() {
     selectedStartDate = this.value;
     renderCalendar();
@@ -1179,33 +1278,28 @@ document.getElementById('endDate').addEventListener('change', function() {
     renderCalendar();
 });
 
-// Check Availability
 document.getElementById('checkAvailability').addEventListener('click', async function() {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
 
     if (!startDate || !endDate) {
-        alert('Mohon pilih tanggal mulai dan selesai');
+        alert('Please select start and end dates');
         return;
     }
 
     const button = this;
     const originalText = button.innerHTML;
     button.disabled = true;
-    button.innerHTML = '<span class="spinner"></span> Mengecek...';
+    button.innerHTML = '<span class="spinner"></span> Checking...';
 
     try {
-        // Check availability
         const availabilityResponse = await fetch(`/api/cars/${carId}/check-availability`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': csrfToken
             },
-            body: JSON.stringify({
-                start_date: startDate,
-                end_date: endDate
-            })
+            body: JSON.stringify({ start_date: startDate, end_date: endDate })
         });
 
         const availabilityData = await availabilityResponse.json();
@@ -1217,7 +1311,6 @@ document.getElementById('checkAvailability').addEventListener('click', async fun
             return;
         }
 
-        // Get price estimate
         const priceResponse = await fetch(`/api/cars/${carId}/price-estimate`, {
             method: 'POST',
             headers: {
@@ -1233,35 +1326,28 @@ document.getElementById('checkAvailability').addEventListener('click', async fun
 
         const priceData = await priceResponse.json();
 
-        // Display results
-        document.getElementById('rentalDuration').textContent = `${priceData.days} hari`;
+        document.getElementById('rentalDuration').textContent = `${priceData.days} days`;
         document.getElementById('basePrice').textContent = `Rp ${priceData.base_price.toLocaleString('id-ID')}`;
         document.getElementById('serviceCharge').textContent = `Rp ${priceData.service_charge.toLocaleString('id-ID')}`;
         document.getElementById('totalPrice').textContent = `Rp ${priceData.total_price.toLocaleString('id-ID')}`;
         document.getElementById('minDeposit').textContent = `Rp ${priceData.min_deposit.toLocaleString('id-ID')}`;
 
-        // Update booking link
         const bookingUrl = new URL(document.getElementById('bookNowBtn').href);
         bookingUrl.searchParams.set('start', startDate);
         bookingUrl.searchParams.set('end', endDate);
         document.getElementById('bookNowBtn').href = bookingUrl.toString();
 
-        // Show price estimate box
         document.getElementById('priceEstimateBox').classList.add('show');
-
-        // Scroll to price estimate
         document.getElementById('priceEstimateBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
     } catch (error) {
         console.error('Error:', error);
-        alert('Terjadi kesalahan. Silakan coba lagi.');
+        alert('An error occurred. Please try again.');
     } finally {
         button.disabled = false;
         button.innerHTML = originalText;
     }
 });
 
-// Initialize calendar
 renderCalendar();
 </script>
 

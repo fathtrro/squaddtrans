@@ -71,9 +71,10 @@
 </div>
 
 <!-- Button -->
-<button class="w-full bg-primary text-white font-bold py-4 rounded-lg">
+<button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg">
     Masuk
 </button>
+
 
 </form>
 

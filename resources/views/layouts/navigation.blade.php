@@ -158,87 +158,97 @@
 
         </div>
     </div>
+<!-- Mobile Menu Premium -->
+<div x-show="open"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 -translate-y-6"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 -translate-y-6"
+    class="md:hidden relative bg-white/95 backdrop-blur-xl">
 
-    <!-- Mobile Menu dengan animasi slide -->
-    <div x-show="open" x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 transform -translate-y-4"
-        x-transition:enter-end="opacity-100 transform translate-y-0"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 transform translate-y-0"
-        x-transition:leave-end="opacity-0 transform -translate-y-4"
-        class="md:hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
-
-        <div class="px-4 py-6 space-y-2">
-            <a href="/"
-                class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-yellow-50 hover:text-yellow-600 transition-all duration-200 font-medium">
-                Beranda
-            </a>
-            <a href="/layanan"
-                class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-yellow-50 hover:text-yellow-600 transition-all duration-200 font-medium">
-                Layanan
-            </a>
-            <a href="/armada"
-                class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-yellow-50 hover:text-yellow-600 transition-all duration-200 font-medium">
-                Unit Armada
-            </a>
-            <a href="/lokasi"
-                class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-yellow-50 hover:text-yellow-600 transition-all duration-200 font-medium">
-                Lokasi
-            </a>
-            <a href="/bantuan"
-                class="block px-4 py-3 rounded-xl text-gray-700 hover:bg-yellow-50 hover:text-yellow-600 transition-all duration-200 font-medium">
-                Bantuan
-            </a>
-
-            {{-- Mobile Auth --}}
-            @guest
-                <div class="pt-4 flex flex-col gap-3">
-                    <a href="{{ route('login') }}"
-                        class="text-center px-6 py-3 rounded-xl border-2 border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300 font-medium">
-                        Masuk
-                    </a>
-                    <a href="{{ route('register') }}"
-                        class="text-center px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-                        Daftar
-                    </a>
-                </div>
-            @endguest
-
-            @auth
-                <div class="pt-4 mt-4 border-t border-gray-100 space-y-2">
-                    <div class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl">
-                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=fbbf24&color=fff"
-                            class="w-10 h-10 rounded-full ring-2 ring-yellow-400">
-                        <div>
-                            <p class="text-xs text-gray-500">Logged in as</p>
-                            <p class="font-semibold text-gray-900">{{ Auth::user()->name }}</p>
-                        </div>
-                    </div>
-
-                    <a href="{{ route('profile.edit') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-all duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        Profile
-                    </a>
-
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button
-                            class="flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            Logout
-                        </button>
-                    </form>
-                </div>
-            @endauth
-        </div>
+    <!-- Background Logo -->
+    <div class="absolute inset-0 flex items-center justify-center opacity-[0.04] pointer-events-none">
+        <img src="{{ asset('images/logo.jpeg') }}" class="w-72">
     </div>
+
+    <div class="relative px-6 py-8 space-y-2">
+
+        <!-- MENU -->
+        <a href="/"
+            class="block px-5 py-4 rounded-2xl text-gray-800 font-semibold
+                   hover:bg-yellow-50 hover:text-yellow-600 transition">
+            Beranda
+        </a>
+
+        <a href="/cars"
+            class="block px-5 py-4 rounded-2xl text-gray-800 font-semibold
+                   hover:bg-yellow-50 hover:text-yellow-600 transition">
+            Unit Armada
+        </a>
+
+        @auth
+            <a href="{{ route('bookings.index') }}"
+                class="block px-5 py-4 rounded-2xl text-gray-800 font-semibold
+                       hover:bg-yellow-50 hover:text-yellow-600 transition">
+                Riwayat Booking
+            </a>
+        @endauth
+
+        <a href="/contact"
+            class="block px-5 py-4 rounded-2xl text-gray-800 font-semibold
+                   hover:bg-yellow-50 hover:text-yellow-600 transition">
+            Tentang
+        </a>
+
+        {{-- AUTH MOBILE --}}
+        @guest
+            <div class="pt-6 grid grid-cols-2 gap-3">
+                <a href="{{ route('login') }}"
+                    class="text-center py-3 rounded-2xl border-2 border-gray-200
+                           hover:border-yellow-400 hover:bg-yellow-50 transition font-semibold">
+                    Masuk
+                </a>
+                <a href="{{ route('register') }}"
+                    class="text-center py-3 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500
+                           text-white font-bold shadow-lg hover:shadow-xl transition">
+                    Daftar
+                </a>
+            </div>
+        @endguest
+
+        @auth
+            <div class="pt-6 space-y-3">
+                <div class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-yellow-50">
+                    <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=fbbf24&color=fff"
+                        class="w-11 h-11 rounded-full ring-2 ring-yellow-400">
+                    <div>
+                        <p class="text-xs text-gray-500">Login sebagai</p>
+                        <p class="font-bold text-gray-900">{{ Auth::user()->name }}</p>
+                    </div>
+                </div>
+
+                <a href="{{ route('profile.edit') }}"
+                    class="block px-5 py-4 rounded-2xl text-gray-800 font-semibold
+                           hover:bg-gray-100 transition">
+                    Profile Saya
+                </a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button
+                        class="w-full text-left px-5 py-4 rounded-2xl text-red-600 font-semibold
+                               hover:bg-red-50 transition">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        @endauth
+
+    </div>
+</div>
+
 </nav>
 
 <!-- Spacer untuk fixed navbar -->
