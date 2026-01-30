@@ -8,6 +8,7 @@ class Review extends Model
 {
     protected $fillable = [
         'booking_id',
+        'user_id',
         'rating',
         'comment',
         'image_path'
@@ -20,13 +21,6 @@ class Review extends Model
 
     public function user()
     {
-        return $this->hasManyThrough(
-            User::class,
-            Booking::class,
-            'id',
-            'id',
-            'booking_id',
-            'user_id'
-        );
+        return $this->belongsTo(User::class);
     }
 }

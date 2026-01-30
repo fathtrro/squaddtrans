@@ -989,33 +989,48 @@ body {
             </div>
 
             {{-- Reviews --}}
-            @if($totalReviews > 0)
             <div class="card">
                 <div class="section-title">
                     <i class="fa-solid fa-star"></i> Reviews ({{ $totalReviews }})
                 </div>
 
-                @foreach($car->reviews->take(3) as $review)
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="review-user">
-                            <div class="review-avatar">{{ strtoupper(substr($review->user->name, 0, 1)) }}</div>
-                            <div>
-                                <div class="review-name">{{ $review->user->name }}</div>
-                                <div class="review-date">{{ $review->created_at->diffForHumans() }}</div>
+                @if($car->reviews->count() > 0)
+                    @foreach($car->reviews->take(3) as $review)
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="review-user">
+                                @if($review->user)
+                                <div class="review-avatar">{{ strtoupper(substr($review->user->name, 0, 1)) }}</div>
+                                <div>
+                                    <div class="review-name">{{ $review->user->name }}</div>
+                                    <div class="review-date">{{ $review->created_at->diffForHumans() }}</div>
+                                </div>
+                                @else
+                                <div class="review-avatar">?</div>
+                                <div>
+                                    <div class="review-name">Unknown User</div>
+                                    <div class="review-date">{{ $review->created_at->diffForHumans() }}</div>
+                                </div>
+                                @endif
+                            </div>
+                            <div class="review-stars">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="fa-solid fa-star {{ $i <= $review->rating ? '' : 'fa-regular' }}" style="{{ $i > $review->rating ? 'color: #D1D5DB;' : '' }}"></i>
+                                @endfor
                             </div>
                         </div>
-                        <div class="review-stars">
-                            @for($i = 1; $i <= 5; $i++)
-                                <i class="fa-solid fa-star {{ $i <= $review->rating ? '' : 'fa-regular' }}" style="{{ $i > $review->rating ? 'color: #D1D5DB;' : '' }}"></i>
-                            @endfor
-                        </div>
+                        <p class="review-comment">{{ $review->comment }}</p>
                     </div>
-                    <p class="review-comment">{{ $review->comment }}</p>
-                </div>
-                @endforeach
+                    @endforeach
+                @else
+                    <div class="py-6 text-center">
+                        <p class="text-slate-600 mb-4">Belum ada ulasan untuk mobil ini.</p>
+                        <a href="{{ route('reviews.create') }}" class="btn btn-primary" style="display:inline-block; width:auto;">
+                            <i class="fa-solid fa-plus"></i> Tambah Ulasan
+                        </a>
+                    </div>
+                @endif
             </div>
-            @endif
         </div>
 
         {{-- Right Column: Price Card --}}
@@ -1350,5 +1365,41 @@ document.getElementById('checkAvailability').addEventListener('click', async fun
 
 renderCalendar();
 </script>
+
+{{-- Car specific reviews (from bookings) --}}
+@if(isset($carReviews) && $carReviews->count() > 0)
+    <section class="py-12 sm:py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold">Ulasan untuk {{ $car->brand }} {{ $car->name }}</h3>
+                <a href="{{ route('reviews.create') }}" class="text-yellow-600 font-semibold">Tambah Ulasan</a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($carReviews as $review)
+                    <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                        @if($review->image_path)
+                            <img src="{{ asset('storage/'.$review->image_path) }}" class="w-full h-36 object-cover rounded-md mb-3" alt="Review image">
+                        @endif
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-yellow-600/10 rounded-full flex items-center justify-center">
+                                    <i class="fa-solid fa-user text-yellow-600"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-sm">{{ $review->booking->user->name ?? 'Pelanggan' }}</div>
+                                    <div class="text-xs text-slate-500">{{ $review->created_at->diffForHumans() }}</div>
+                                </div>
+                            </div>
+                            <div class="text-sm font-bold">{{ $review->rating }}/5</div>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-2">{{ $review->comment ?? 'Pelanggan puas.' }}</p>
+                        <div class="text-xs text-slate-500">Mobil: {{ $review->booking->car->brand ?? '' }} {{ $review->booking->car->name ?? '' }}</div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+@endif
 
 </x-app-layout>

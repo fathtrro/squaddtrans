@@ -64,7 +64,8 @@ class CarsController extends Controller
         // Load relationships
         $car->load([
             'images',
-            'reviews.user',
+            // load review -> booking -> user to avoid N+1 and ensure booking/user available
+            'reviews.booking.user',
             'bookings' => function ($query) {
                 // Only load confirmed and active bookings for calendar display
                 $query->whereIn('status', ['confirmed', 'active'])
@@ -88,12 +89,20 @@ class CarsController extends Controller
         // Get booking statistics
         $bookingStats = $this->getBookingStats($car);
 
+        // Reviews for this car (from bookings)
+        $carReviews = $car->reviews()
+            ->with(['booking.user', 'booking.car'])
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
         return view('cars.show', compact(
             'car',
             'relatedCars',
             'averageRating',
             'totalReviews',
-            'bookingStats'
+            'bookingStats',
+            'carReviews'
         ));
     }
 

@@ -51,6 +51,7 @@ class ReviewController extends Controller
 
         Review::create([
             'booking_id' => $validated['booking_id'],
+            'user_id' => Auth::id(),
             'rating' => $validated['rating'],
             'comment' => $validated['comment'] ?? null,
             'image_path' => $imagePath
