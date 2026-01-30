@@ -29,10 +29,7 @@
 
                                 {{-- Top Badges --}}
                                 <div class="absolute top-2 left-2 flex flex-col gap-1">
-                                    <span
-                                        class="badge-premium px-2 py-0.5 text-gray-900 text-[9px] sm:text-xs font-bold rounded-full inline-block">
-                                        <i class="fa-solid fa-crown mr-0.5"></i>PREMIUM
-                                    </span>
+
 
                                     @if ($car->status === 'available')
                                         <span
