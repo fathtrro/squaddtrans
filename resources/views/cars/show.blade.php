@@ -38,7 +38,7 @@ body {
     padding: 1rem;
 }
 
-/* Breadcrumb - Enhanced */
+/* Breadcrumb */
 .breadcrumb {
     display: flex;
     align-items: center;
@@ -84,7 +84,7 @@ body {
     }
 }
 
-/* Card - Enhanced with shadow */
+/* Card */
 .card {
     background: white;
     border: 1px solid var(--border);
@@ -99,7 +99,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* Gallery - Premium Look */
+/* Gallery */
 .gallery-main {
     position: relative;
     height: 400px;
@@ -168,14 +168,8 @@ body {
 }
 
 @keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
 .badge-premium {
@@ -207,19 +201,11 @@ body {
 }
 
 @keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-.rating-badge i {
-    color: #FCD34D;
-}
+.rating-badge i { color: #FCD34D; }
 
 .gallery-thumbs {
     display: grid;
@@ -253,11 +239,9 @@ body {
     transition: transform 0.3s ease;
 }
 
-.thumb:hover img {
-    transform: scale(1.1);
-}
+.thumb:hover img { transform: scale(1.1); }
 
-/* Specs - Modern Grid with Icons */
+/* Specs */
 .specs-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -278,9 +262,7 @@ body {
 .spec-item::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 3px;
     background: linear-gradient(90deg, var(--primary), var(--primary-dark));
     transform: scaleX(0);
@@ -293,9 +275,7 @@ body {
     border-color: var(--primary);
 }
 
-.spec-item:hover::before {
-    transform: scaleX(1);
-}
+.spec-item:hover::before { transform: scaleX(1); }
 
 .spec-item i {
     font-size: 1.5rem;
@@ -304,9 +284,7 @@ body {
     transition: transform 0.3s ease;
 }
 
-.spec-item:hover i {
-    transform: scale(1.2);
-}
+.spec-item:hover i { transform: scale(1.2); }
 
 .spec-label {
     font-size: 0.75rem;
@@ -323,7 +301,7 @@ body {
     color: var(--dark);
 }
 
-/* Features - Modern Icons */
+/* Features */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -352,8 +330,7 @@ body {
     font-size: 1.125rem;
     color: var(--primary);
     background: white;
-    width: 32px;
-    height: 32px;
+    width: 32px; height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -361,7 +338,7 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
 
-/* Section - Enhanced */
+/* Section Title */
 .section-title {
     font-size: 1.125rem;
     font-weight: 700;
@@ -378,15 +355,14 @@ body {
     color: var(--primary);
     font-size: 1rem;
     background: var(--primary-light);
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
 }
 
-/* Calendar - Premium Design */
+/* Calendar */
 .date-picker {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -439,8 +415,7 @@ body {
 }
 
 .calendar-nav button {
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border: none;
     background: white;
     border-radius: 8px;
@@ -536,11 +511,9 @@ body {
 .calendar-day.today::after {
     content: '';
     position: absolute;
-    bottom: 2px;
-    left: 50%;
+    bottom: 2px; left: 50%;
     transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
+    width: 4px; height: 4px;
     background: #3B82F6;
     border-radius: 50%;
 }
@@ -552,7 +525,7 @@ body {
     opacity: 0.4;
 }
 
-/* Tooltip - Premium */
+/* Tooltip */
 .booking-tooltip {
     position: fixed;
     background: linear-gradient(135deg, rgba(17, 24, 39, 0.98), rgba(31, 41, 55, 0.98));
@@ -569,9 +542,7 @@ body {
     border: 1px solid rgba(255,255,255,0.1);
 }
 
-.booking-tooltip.show {
-    opacity: 1;
-}
+.booking-tooltip.show { opacity: 1; }
 
 .booking-tooltip-header {
     font-weight: 700;
@@ -595,9 +566,7 @@ body {
     font-weight: 600;
 }
 
-.booking-tooltip-value {
-    font-weight: 600;
-}
+.booking-tooltip-value { font-weight: 600; }
 
 .status-badge {
     display: inline-block;
@@ -617,7 +586,7 @@ body {
     color: #065F46;
 }
 
-/* Legend - Modern */
+/* Legend */
 .calendar-legend {
     display: flex;
     flex-wrap: wrap;
@@ -635,13 +604,12 @@ body {
 }
 
 .legend-dot {
-    width: 16px;
-    height: 16px;
+    width: 16px; height: 16px;
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Price Estimate - Premium Card */
+/* Price Estimate */
 .price-estimate {
     background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
     border: 2px solid var(--success);
@@ -658,14 +626,8 @@ body {
 }
 
 @keyframes slideInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .price-estimate-header {
@@ -695,7 +657,9 @@ body {
     color: #065F46;
 }
 
-/* Price Card - Sticky Premium */
+/* =============================================
+   PRICE CARD – Sticky (dark)
+   ============================================= */
 .price-card {
     background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
     color: white;
@@ -766,9 +730,7 @@ body {
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.price-features {
-    margin: 1rem 0;
-}
+.price-features { margin: 1rem 0; }
 
 .price-feature {
     display: flex;
@@ -789,15 +751,207 @@ body {
     color: var(--success);
     font-size: 0.875rem;
     background: rgba(16, 185, 129, 0.2);
-    width: 24px;
-    height: 24px;
+    width: 24px; height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 6px;
 }
 
-/* Buttons - Modern & Attractive */
+/* =============================================
+   MINI DATE RANGE PICKER (inside price-card)
+   ============================================= */
+.pc-date-section {
+    margin: 1rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.pc-date-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.75px;
+    margin-bottom: 0.625rem;
+}
+
+.pc-date-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pc-date-box {
+    flex: 1;
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 0.625rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pc-date-box:hover,
+.pc-date-box.active {
+    border-color: var(--primary);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.pc-date-box .pc-date-box-label {
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.45);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.pc-date-box .pc-date-box-value {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: white;
+}
+
+.pc-date-box .pc-date-box-value.placeholder {
+    color: rgba(255,255,255,0.3);
+    font-weight: 500;
+    font-style: italic;
+}
+
+.pc-date-arrow {
+    color: rgba(255,255,255,0.35);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* mini calendar dropdown */
+.pc-calendar-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0; right: 0;
+    background: #1e293b;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 1rem;
+    z-index: 500;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.pc-calendar-dropdown.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.pc-cal-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.pc-cal-nav h5 {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: white;
+}
+
+.pc-cal-nav button {
+    width: 28px; height: 28px;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.7rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pc-cal-nav button:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.pc-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+}
+
+.pc-cal-hdr {
+    text-align: center;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.35);
+    padding: 0.4rem 0;
+    text-transform: uppercase;
+}
+
+.pc-cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.75);
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.pc-cal-day:hover { background: rgba(255,255,255,0.1); }
+
+.pc-cal-day.pc-past {
+    color: rgba(255,255,255,0.2);
+    cursor: not-allowed;
+}
+
+.pc-cal-day.pc-booked {
+    background: rgba(239,68,68,0.18);
+    color: #f87171;
+    cursor: not-allowed;
+    border: 1px solid rgba(239,68,68,0.25);
+}
+
+.pc-cal-day.pc-sel-start,
+.pc-cal-day.pc-sel-end {
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: white;
+    box-shadow: 0 3px 8px rgba(16,185,129,0.4);
+}
+
+.pc-cal-day.pc-sel-range {
+    background: rgba(16,185,129,0.2);
+    color: #6ee7b7;
+    border-radius: 0;
+}
+
+.pc-cal-day.pc-sel-start { border-radius: 6px 0 0 6px; }
+.pc-cal-day.pc-sel-end   { border-radius: 0 6px 6px 0; }
+.pc-cal-day.pc-sel-start.pc-sel-end { border-radius: 6px; }
+
+.pc-cal-day.pc-today {
+    border: 1.5px solid #60a5fa;
+}
+
+/* =============================================
+   BUTTONS
+   ============================================= */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -814,25 +968,21 @@ body {
     width: 100%;
     position: relative;
     overflow: hidden;
+    font-family: inherit;
 }
 
 .btn::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
     border-radius: 50%;
     background: rgba(255,255,255,0.2);
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
 }
 
-.btn:hover::before {
-    width: 300px;
-    height: 300px;
-}
+.btn:hover::before { width: 300px; height: 300px; }
 
 .btn-primary {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -867,17 +1017,140 @@ body {
     box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
-.btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+/* disabled state – visually locked */
+.btn.btn-locked {
+    background: rgba(255,255,255,0.08) !important;
+    color: rgba(255,255,255,0.35) !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    border: 1.5px dashed rgba(255,255,255,0.2) !important;
+    transform: none !important;
 }
 
-.btn i {
+.btn.btn-locked:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn.btn-locked::before { display: none; }
+
+.btn i { position: relative; z-index: 1; }
+.btn span { position: relative; z-index: 1; }
+
+/* =============================================
+   POPUP MODAL – "Pilih Tanggal Dulu"
+   ============================================= */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.popup-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.popup-modal {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    transform: scale(0.88);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
     position: relative;
-    z-index: 1;
 }
 
-/* Reviews - Enhanced Cards */
+.popup-overlay.show .popup-modal {
+    transform: scale(1);
+}
+
+.popup-modal-icon {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.25);
+}
+
+.popup-modal-icon i {
+    font-size: 1.75rem;
+    color: var(--primary-dark);
+}
+
+.popup-modal h4 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.popup-modal p {
+    font-size: 0.875rem;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.popup-modal .btn-popup-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem 1.75rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+}
+
+.popup-modal .btn-popup-close:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(245,158,11,0.4);
+}
+
+.popup-x {
+    position: absolute;
+    top: 0.75rem; right: 0.875rem;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: var(--gray);
+    cursor: pointer;
+    width: 28px; height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.popup-x:hover {
+    background: #f3f4f6;
+    color: var(--dark);
+}
+
+/* Reviews */
 .review-item {
     border-bottom: 1px solid var(--border);
     padding: 1rem 0;
@@ -891,9 +1164,7 @@ body {
     margin: 0.5rem 0;
 }
 
-.review-item:last-child {
-    border-bottom: none;
-}
+.review-item:last-child { border-bottom: none; }
 
 .review-header {
     display: flex;
@@ -909,8 +1180,7 @@ body {
 }
 
 .review-avatar {
-    width: 40px;
-    height: 40px;
+    width: 40px; height: 40px;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     border-radius: 50%;
     display: flex;
@@ -945,7 +1215,7 @@ body {
     line-height: 1.6;
 }
 
-/* Related Cars - Premium Cards */
+/* Related Cars */
 .related-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -954,9 +1224,7 @@ body {
 }
 
 @media (min-width: 768px) {
-    .related-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
+    .related-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 .related-card {
@@ -983,18 +1251,13 @@ body {
 .related-image::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-.related-card:hover .related-image::after {
-    opacity: 1;
-}
+.related-card:hover .related-image::after { opacity: 1; }
 
 .related-image img {
     width: 100%;
@@ -1003,13 +1266,9 @@ body {
     transition: transform 0.5s ease;
 }
 
-.related-card:hover .related-image img {
-    transform: scale(1.1);
-}
+.related-card:hover .related-image img { transform: scale(1.1); }
 
-.related-content {
-    padding: 1rem;
-}
+.related-content { padding: 1rem; }
 
 .related-brand {
     font-weight: 700;
@@ -1049,49 +1308,45 @@ body {
     border: 3px solid var(--border);
     border-top-color: var(--primary);
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 20px; height: 20px;
     animation: spin 0.6s linear infinite;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .gallery-main {
-        height: 300px;
-    }
-
-    .car-title h1 {
-        font-size: 1.5rem;
-    }
-
-    .specs-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .gallery-thumbs {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .date-picker {
-        grid-template-columns: 1fr;
-    }
-
-    .related-grid {
-        grid-template-columns: 1fr;
-    }
+    .gallery-main { height: 300px; }
+    .car-title h1 { font-size: 1.5rem; }
+    .specs-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
+    .date-picker { grid-template-columns: 1fr; }
+    .related-grid { grid-template-columns: 1fr; }
 }
 
-/* Utility */
 .divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border), transparent);
     margin: 1rem 0;
 }
 </style>
+
+<!-- ================================================
+     POPUP MODAL
+     ================================================ -->
+<div class="popup-overlay" id="popupOverlay">
+    <div class="popup-modal">
+        <button class="popup-x" id="popupClose"><i class="fa-solid fa-xmark"></i></button>
+        <div class="popup-modal-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
+        <h4>Pilih Tanggal Terlebih Dahulu</h4>
+        <p>Silakan pilih tanggal <strong>mulai</strong> dan <strong>selesai</strong> untuk melihat ketersediaan dan melanjutkan pemesanan.</p>
+        <button class="btn-popup-close" id="popupCloseBtn">
+            <i class="fa-solid fa-check"></i> Oke, Mengerti
+        </button>
+    </div>
+</div>
 
 <div class="container">
     {{-- Breadcrumb --}}
@@ -1341,12 +1596,44 @@ body {
                     <div class="price-option-value">Rp {{ number_format($car->price_24h * 0.7, 0, ',', '.') }}</div>
                 </div>
 
+                <!-- ==========================================
+                     MINI DATE RANGE PICKER (price card)
+                     ========================================== -->
+                <div class="pc-date-section" style="position: relative;">
+                    <div class="pc-date-label">Pilih Tanggal Sewa</div>
+                    <div class="pc-date-row" id="pcDateRow">
+                        <div class="pc-date-box" id="pcStartBox" onclick="togglePcCalendar(event)">
+                            <div class="pc-date-box-label">Mulai</div>
+                            <div class="pc-date-box-value placeholder" id="pcStartDisplay">Pilih tanggal</div>
+                        </div>
+                        <div class="pc-date-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                        <div class="pc-date-box" id="pcEndBox" onclick="togglePcCalendar(event)">
+                            <div class="pc-date-box-label">Selesai</div>
+                            <div class="pc-date-box-value placeholder" id="pcEndDisplay">Pilih tanggal</div>
+                        </div>
+                    </div>
+
+                    <!-- mini calendar -->
+                    <div class="pc-calendar-dropdown" id="pcCalDropdown">
+                        <div class="pc-cal-nav">
+                            <button id="pcPrevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+                            <h5 id="pcCurrentMonth"></h5>
+                            <button id="pcNextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        <div class="pc-cal-grid" id="pcCalGrid"></div>
+                    </div>
+                </div>
+
                 <div class="price-info">
                     <i class="fa-solid fa-info-circle"></i> Minimum 30% deposit required
                 </div>
 
-                <a href="{{ route('bookings.create', ['car' => $car->id]) }}" class="btn btn-primary" style="margin-bottom: 0.75rem;">
-                    <i class="fa-solid fa-calendar-check"></i> Book Now
+                <!-- =============================================
+                     FIX: Book Now button – navigate via JS
+                     ============================================= -->
+                <a href="#" id="pcBookNowBtn" class="btn btn-locked" onclick="handlePcBookNow(event)" style="margin-bottom: 0.75rem;">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Book Now</span>
                 </a>
 
                 <a href="https://wa.me/6281234567890?text=Hi, I'm interested in {{ $car->brand }} {{ $car->name }}" class="btn btn-secondary">
@@ -1413,20 +1700,23 @@ body {
     @endif
 </div>
 
-<script>
-const carId = {{ $car->id }};
-const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+<!-- ================================================
+     BOOKING TOOLTIP (hover on booked dates)
+     ================================================ -->
+<div class="booking-tooltip" id="bookingTooltip"></div>
 
-function changeMainImage(src, thumb) {
-    document.querySelector('#mainImage img').src = src;
-    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-    thumb.classList.add('active');
-}
+<script>
+// ============================================================
+// SHARED STATE
+// ============================================================
+const carId        = {{ $car->id }};
+const csrfToken    = document.querySelector('meta[name="csrf-token"]').content;
+const bookingRoute = "{{ route('bookings.create', ['car' => $car->id]) }}";
 
 const bookedDates = @json($car->bookings->map(function($booking) {
     $dates = [];
     $start = \Carbon\Carbon::parse($booking->start_datetime);
-    $end = \Carbon\Carbon::parse($booking->end_datetime);
+    $end   = \Carbon\Carbon::parse($booking->end_datetime);
     while($start <= $end) {
         $dates[] = $start->format('Y-m-d');
         $start->addDay();
@@ -1435,15 +1725,293 @@ const bookedDates = @json($car->bookings->map(function($booking) {
 })->flatten()->unique()->values());
 
 let bookingDetailsMap = {};
-let currentDate = new Date();
 let selectedStartDate = null;
-let selectedEndDate = null;
+let selectedEndDate   = null;
 
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+// ============================================================
+// UTILITY
+// ============================================================
+const monthNames = ["January","February","March","April","May","June",
+                    "July","August","September","October","November","December"];
 
-const tooltip = document.createElement('div');
-tooltip.className = 'booking-tooltip';
-document.body.appendChild(tooltip);
+function formatDisplay(dateStr) {
+    const [y, m, d] = dateStr.split('-');
+    return `${parseInt(d)} ${monthNames[parseInt(m)-1].slice(0,3)} ${y}`;
+}
+
+function pad2(n) { return String(n).padStart(2,'0'); }
+
+// ============================================================
+// SYNC – update both UIs whenever selection changes
+// ============================================================
+function syncSelection() {
+    // --- main calendar date inputs ---
+    document.getElementById('startDate').value = selectedStartDate || '';
+    document.getElementById('endDate').value   = selectedEndDate  || '';
+
+    // --- price-card mini boxes ---
+    const startEl = document.getElementById('pcStartDisplay');
+    const endEl   = document.getElementById('pcEndDisplay');
+
+    if (selectedStartDate) {
+        startEl.textContent = formatDisplay(selectedStartDate);
+        startEl.classList.remove('placeholder');
+    } else {
+        startEl.textContent = 'Pilih tanggal';
+        startEl.classList.add('placeholder');
+    }
+
+    if (selectedEndDate) {
+        endEl.textContent = formatDisplay(selectedEndDate);
+        endEl.classList.remove('placeholder');
+    } else {
+        endEl.textContent = 'Pilih tanggal';
+        endEl.classList.add('placeholder');
+    }
+
+    // --- Book Now button state ---
+    const pcBtn = document.getElementById('pcBookNowBtn');
+    if (selectedStartDate && selectedEndDate) {
+        pcBtn.classList.remove('btn-locked');
+        pcBtn.classList.add('btn-success');
+        // FIX: set data attributes instead of relying on href
+        pcBtn.setAttribute('data-start', selectedStartDate);
+        pcBtn.setAttribute('data-end', selectedEndDate);
+    } else {
+        pcBtn.classList.add('btn-locked');
+        pcBtn.classList.remove('btn-success');
+        pcBtn.removeAttribute('data-start');
+        pcBtn.removeAttribute('data-end');
+    }
+
+    // --- re-render both calendars ---
+    renderCalendar();
+    renderPcCalendar();
+}
+
+// ============================================================
+// SELECT DATE – shared logic
+// ============================================================
+function selectDate(dateStr) {
+    if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
+        // reset → set start
+        selectedStartDate = dateStr;
+        selectedEndDate   = null;
+    } else {
+        // already have start → set end (or swap)
+        if (dateStr > selectedStartDate) {
+            selectedEndDate = dateStr;
+        } else if (dateStr < selectedStartDate) {
+            selectedEndDate   = selectedStartDate;
+            selectedStartDate = dateStr;
+        } else {
+            // same day clicked again → clear
+            selectedStartDate = null;
+            selectedEndDate   = null;
+        }
+    }
+    syncSelection();
+}
+
+// ============================================================
+// MAIN CALENDAR (left column)
+// ============================================================
+let mainCalDate = new Date();
+
+async function loadBookingDetails(year, month) {
+    try {
+        const r = await fetch(`/api/cars/${carId}/booked-dates?year=${year}&month=${month}`);
+        const d = await r.json();
+        if (d.booking_details) bookingDetailsMap = d.booking_details;
+    } catch(e) { console.error(e); }
+}
+
+function renderCalendar() {
+    const year  = mainCalDate.getFullYear();
+    const month = mainCalDate.getMonth();
+    document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+
+    loadBookingDetails(year, month + 1);
+
+    const firstDay     = new Date(year, month, 1).getDay();
+    const daysInMonth  = new Date(year, month + 1, 0).getDate();
+    const today        = new Date(); today.setHours(0,0,0,0);
+
+    let html = '';
+    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d =>
+        html += `<div class="calendar-day-header">${d}</div>`
+    );
+
+    for (let i = 0; i < firstDay; i++) html += '<div class="calendar-day"></div>';
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateObj = new Date(year, month, day);
+        const dateStr = `${year}-${pad2(month+1)}-${pad2(day)}`;
+        const isBooked   = bookedDates.includes(dateStr);
+        const isToday    = today.getTime() === dateObj.getTime();
+        const isPast     = dateObj < today;
+        const isSStart   = selectedStartDate === dateStr;
+        const isSEnd     = selectedEndDate   === dateStr;
+        const isInRange  = selectedStartDate && selectedEndDate &&
+                           dateStr > selectedStartDate && dateStr < selectedEndDate;
+
+        let cls = 'calendar-day';
+        if (isPast)       cls += ' past';
+        else if (isBooked) cls += ' booked';
+        else               cls += ' available';
+        if (isToday)   cls += ' today';
+        if (isSStart)  cls += ' selected-start';
+        if (isSEnd)    cls += ' selected-end';
+        if (isInRange) cls += ' selected-range';
+
+        const onclick    = (!isPast && !isBooked) ? `onclick="selectDate('${dateStr}')"` : '';
+        const onmouseover = isBooked ? `onmouseover="showBookingTooltip('${dateStr}', this)"` : '';
+        const onmouseout  = isBooked ? `onmouseout="hideBookingTooltip()"` : '';
+
+        html += `<div class="${cls}" ${onclick} ${onmouseover} ${onmouseout}>${day}</div>`;
+    }
+
+    document.getElementById('calendarGrid').innerHTML = html;
+}
+
+document.getElementById('prevMonth').addEventListener('click', () => {
+    mainCalDate.setMonth(mainCalDate.getMonth() - 1);
+    renderCalendar();
+});
+document.getElementById('nextMonth').addEventListener('click', () => {
+    mainCalDate.setMonth(mainCalDate.getMonth() + 1);
+    renderCalendar();
+});
+
+// manual date-input change (main calendar)
+document.getElementById('startDate').addEventListener('change', function() {
+    selectedStartDate = this.value || null;
+    syncSelection();
+});
+document.getElementById('endDate').addEventListener('change', function() {
+    selectedEndDate = this.value || null;
+    syncSelection();
+});
+
+// ============================================================
+// PRICE-CARD MINI CALENDAR
+// ============================================================
+let pcCalDate  = new Date();
+let pcCalOpen  = false;
+
+function togglePcCalendar(e) {
+    e.stopPropagation();
+    pcCalOpen = !pcCalOpen;
+    document.getElementById('pcCalDropdown').classList.toggle('show', pcCalOpen);
+    document.getElementById('pcStartBox').classList.toggle('active', pcCalOpen && !selectedStartDate);
+    document.getElementById('pcEndBox').classList.toggle('active', pcCalOpen && selectedStartDate && !selectedEndDate);
+}
+
+// close when clicking outside
+document.addEventListener('click', function(e) {
+    if (pcCalOpen && !document.querySelector('.pc-date-section').contains(e.target)) {
+        pcCalOpen = false;
+        document.getElementById('pcCalDropdown').classList.remove('show');
+        document.getElementById('pcStartBox').classList.remove('active');
+        document.getElementById('pcEndBox').classList.remove('active');
+    }
+});
+
+function renderPcCalendar() {
+    const year  = pcCalDate.getFullYear();
+    const month = pcCalDate.getMonth();
+    document.getElementById('pcCurrentMonth').textContent = `${monthNames[month]} ${year}`;
+
+    const firstDay    = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today       = new Date(); today.setHours(0,0,0,0);
+
+    let html = '';
+    ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d =>
+        html += `<div class="pc-cal-hdr">${d}</div>`
+    );
+
+    for (let i = 0; i < firstDay; i++) html += '<div class="pc-cal-day"></div>';
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateObj = new Date(year, month, day);
+        const dateStr = `${year}-${pad2(month+1)}-${pad2(day)}`;
+        const isBooked  = bookedDates.includes(dateStr);
+        const isToday   = today.getTime() === dateObj.getTime();
+        const isPast    = dateObj < today;
+        const isSStart  = selectedStartDate === dateStr;
+        const isSEnd    = selectedEndDate   === dateStr;
+        const isInRange = selectedStartDate && selectedEndDate &&
+                          dateStr > selectedStartDate && dateStr < selectedEndDate;
+
+        let cls = 'pc-cal-day';
+        if (isPast)        cls += ' pc-past';
+        else if (isBooked) cls += ' pc-booked';
+        if (isToday)   cls += ' pc-today';
+        if (isSStart)  cls += ' pc-sel-start';
+        if (isSEnd)    cls += ' pc-sel-end';
+        if (isInRange) cls += ' pc-sel-range';
+
+        const onclick = (!isPast && !isBooked)
+            ? `onclick="selectDate('${dateStr}'); event.stopPropagation();"`
+            : '';
+
+        html += `<div class="${cls}" ${onclick}>${day}</div>`;
+    }
+
+    document.getElementById('pcCalGrid').innerHTML = html;
+}
+
+document.getElementById('pcPrevMonth').addEventListener('click', function(e) {
+    e.stopPropagation();
+    pcCalDate.setMonth(pcCalDate.getMonth() - 1);
+    renderPcCalendar();
+});
+document.getElementById('pcNextMonth').addEventListener('click', function(e) {
+    e.stopPropagation();
+    pcCalDate.setMonth(pcCalDate.getMonth() + 1);
+    renderPcCalendar();
+});
+
+// ============================================================
+// FIX: PRICE CARD – Book Now handler
+// Masalah asal: e.target bisa menangkap <i> atau <span>
+// di dalam <a>, sehingga e.target.href = undefined.
+// Solusi: selalu preventDefault() dan navigate manual via
+// window.location.href menggunakan data attributes.
+// ============================================================
+function handlePcBookNow(e) {
+    e.preventDefault();
+
+    if (!selectedStartDate || !selectedEndDate) {
+        document.getElementById('popupOverlay').classList.add('show');
+        return;
+    }
+
+    const url = new URL(bookingRoute, window.location.origin);
+    url.searchParams.set('start', selectedStartDate);
+    url.searchParams.set('end', selectedEndDate);
+    window.location.href = url.toString();
+}
+
+
+// ============================================================
+// POPUP – close handlers
+// ============================================================
+function closePopup() {
+    document.getElementById('popupOverlay').classList.remove('show');
+}
+
+document.getElementById('popupClose').addEventListener('click', closePopup);
+document.getElementById('popupCloseBtn').addEventListener('click', closePopup);
+document.getElementById('popupOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closePopup();
+});
+
+// ============================================================
+// BOOKING TOOLTIP (main calendar hover)
+// ============================================================
+const tooltip = document.getElementById('bookingTooltip');
 
 function showBookingTooltip(dateStr, element) {
     const booking = bookingDetailsMap[dateStr];
@@ -1453,9 +2021,7 @@ function showBookingTooltip(dateStr, element) {
     const statusClass = booking.status === 'confirmed' ? 'status-confirmed' : 'status-active';
 
     tooltip.innerHTML = `
-        <div class="booking-tooltip-header">
-            ${booking.booking_code}
-        </div>
+        <div class="booking-tooltip-header">${booking.booking_code}</div>
         <div class="booking-tooltip-row">
             <span class="booking-tooltip-label">Customer:</span>
             <span class="booking-tooltip-value">${booking.user_name}</span>
@@ -1466,13 +2032,12 @@ function showBookingTooltip(dateStr, element) {
         </div>
         <div class="booking-tooltip-row">
             <span class="booking-tooltip-label">Period:</span>
-            <span class="booking-tooltip-value">${booking.start} - ${booking.end}</span>
-        </div>
-    `;
+            <span class="booking-tooltip-value">${booking.start} – ${booking.end}</span>
+        </div>`;
 
     const rect = element.getBoundingClientRect();
-    tooltip.style.left = rect.left + (rect.width / 2) + 'px';
-    tooltip.style.top = (rect.top + window.scrollY - 10) + 'px';
+    tooltip.style.left      = rect.left + (rect.width / 2) + 'px';
+    tooltip.style.top       = (rect.top + window.scrollY - 10) + 'px';
     tooltip.style.transform = 'translate(-50%, -100%)';
     tooltip.classList.add('show');
 }
@@ -1481,177 +2046,84 @@ function hideBookingTooltip() {
     tooltip.classList.remove('show');
 }
 
-async function loadBookingDetails(year, month) {
-    try {
-        const response = await fetch(`/api/cars/${carId}/booked-dates?year=${year}&month=${month}`);
-        const data = await response.json();
-
-        if (data.booking_details) {
-            bookingDetailsMap = data.booking_details;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-function renderCalendar() {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
-
-    loadBookingDetails(year, month + 1);
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    let html = '';
-    const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    dayHeaders.forEach(day => html += `<div class="calendar-day-header">${day}</div>`);
-
-    for (let i = 0; i < firstDay; i++) html += '<div class="calendar-day"></div>';
-
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dateObj = new Date(year, month, day);
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const isBooked = bookedDates.includes(dateStr);
-        const isToday = today.getTime() === dateObj.getTime();
-        const isPast = dateObj < today;
-        const isSelectedStart = selectedStartDate === dateStr;
-        const isSelectedEnd = selectedEndDate === dateStr;
-        const isInRange = selectedStartDate && selectedEndDate && dateStr > selectedStartDate && dateStr < selectedEndDate;
-
-        let classes = 'calendar-day';
-        if (isPast) classes += ' past';
-        else if (isBooked) classes += ' booked';
-        else classes += ' available';
-        if (isToday) classes += ' today';
-        if (isSelectedStart) classes += ' selected-start';
-        if (isSelectedEnd) classes += ' selected-end';
-        if (isInRange) classes += ' selected-range';
-
-        const onclick = (!isPast && !isBooked) ? `onclick="selectDate('${dateStr}')"` : '';
-        const onmouseover = isBooked ? `onmouseover="showBookingTooltip('${dateStr}', this)"` : '';
-        const onmouseout = isBooked ? `onmouseout="hideBookingTooltip()"` : '';
-
-        html += `<div class="${classes}" ${onclick} ${onmouseover} ${onmouseout}>${day}</div>`;
-    }
-
-    document.getElementById('calendarGrid').innerHTML = html;
-}
-
-function selectDate(dateStr) {
-    if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
-        selectedStartDate = dateStr;
-        selectedEndDate = null;
-        document.getElementById('startDate').value = dateStr;
-        document.getElementById('endDate').value = '';
-    } else {
-        if (dateStr > selectedStartDate) {
-            selectedEndDate = dateStr;
-            document.getElementById('endDate').value = dateStr;
-        } else {
-            selectedEndDate = selectedStartDate;
-            selectedStartDate = dateStr;
-            document.getElementById('startDate').value = dateStr;
-            document.getElementById('endDate').value = selectedEndDate;
-        }
-    }
-    renderCalendar();
-}
-
-document.getElementById('prevMonth').addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
-});
-
-document.getElementById('nextMonth').addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-});
-
-document.getElementById('startDate').addEventListener('change', function() {
-    selectedStartDate = this.value;
-    renderCalendar();
-});
-
-document.getElementById('endDate').addEventListener('change', function() {
-    selectedEndDate = this.value;
-    renderCalendar();
-});
-
+// ============================================================
+// CHECK AVAILABILITY (main calendar button)
+// ============================================================
 document.getElementById('checkAvailability').addEventListener('click', async function() {
     const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
+    const endDate   = document.getElementById('endDate').value;
 
     if (!startDate || !endDate) {
         alert('Please select start and end dates');
         return;
     }
 
-    const button = this;
+    const button       = this;
     const originalText = button.innerHTML;
-    button.disabled = true;
-    button.innerHTML = '<span class="spinner"></span> Checking...';
+    button.disabled    = true;
+    button.innerHTML   = '<span class="spinner"></span> Checking...';
 
     try {
-        const availabilityResponse = await fetch(`/api/cars/${carId}/check-availability`, {
+        const availRes  = await fetch(`/api/cars/${carId}/check-availability`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
             body: JSON.stringify({ start_date: startDate, end_date: endDate })
         });
+        const availData = await availRes.json();
 
-        const availabilityData = await availabilityResponse.json();
-
-        if (!availabilityData.available) {
-            alert(availabilityData.message);
+        if (!availData.available) {
+            alert(availData.message);
             button.disabled = false;
             button.innerHTML = originalText;
             return;
         }
 
-        const priceResponse = await fetch(`/api/cars/${carId}/price-estimate`, {
+        const priceRes  = await fetch(`/api/cars/${carId}/price-estimate`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify({
-                start_date: startDate,
-                end_date: endDate,
-                service_type: 'lepas_kunci'
-            })
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+            body: JSON.stringify({ start_date: startDate, end_date: endDate, service_type: 'lepas_kunci' })
         });
-
-        const priceData = await priceResponse.json();
+        const priceData = await priceRes.json();
 
         document.getElementById('rentalDuration').textContent = `${priceData.days} days`;
-        document.getElementById('basePrice').textContent = `Rp ${priceData.base_price.toLocaleString('id-ID')}`;
+        document.getElementById('basePrice').textContent   = `Rp ${priceData.base_price.toLocaleString('id-ID')}`;
         document.getElementById('serviceCharge').textContent = `Rp ${priceData.service_charge.toLocaleString('id-ID')}`;
-        document.getElementById('totalPrice').textContent = `Rp ${priceData.total_price.toLocaleString('id-ID')}`;
-        document.getElementById('minDeposit').textContent = `Rp ${priceData.min_deposit.toLocaleString('id-ID')}`;
+        document.getElementById('totalPrice').textContent  = `Rp ${priceData.total_price.toLocaleString('id-ID')}`;
+        document.getElementById('minDeposit').textContent  = `Rp ${priceData.min_deposit.toLocaleString('id-ID')}`;
 
-        const bookingUrl = new URL(document.getElementById('bookNowBtn').href);
-        bookingUrl.searchParams.set('start', startDate);
-        bookingUrl.searchParams.set('end', endDate);
-        document.getElementById('bookNowBtn').href = bookingUrl.toString();
+        // FIX: gunakan encodeURIComponent dan set href dengan clean URL
+        if (startDate && endDate) {
+            const bookingUrl = new URL(document.getElementById('bookNowBtn').href);
+            bookingUrl.searchParams.set('start', startDate);
+            bookingUrl.searchParams.set('end', endDate);
+            document.getElementById('bookNowBtn').href = bookingUrl.toString();
+        }
 
         document.getElementById('priceEstimateBox').classList.add('show');
         document.getElementById('priceEstimateBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } catch (error) {
-        console.error('Error:', error);
+        console.error(error);
         alert('An error occurred. Please try again.');
     } finally {
-        button.disabled = false;
+        button.disabled  = false;
         button.innerHTML = originalText;
     }
 });
 
+// ============================================================
+// GALLERY thumbnail switcher
+// ============================================================
+function changeMainImage(src, thumb) {
+    document.querySelector('#mainImage img').src = src;
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+}
+
+// ============================================================
+// INIT
+// ============================================================
 renderCalendar();
+renderPcCalendar();
 </script>
 
 {{-- Car specific reviews (from bookings) --}}

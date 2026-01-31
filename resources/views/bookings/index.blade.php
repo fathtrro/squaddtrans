@@ -1,45 +1,66 @@
 <x-app-layout>
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
 
             <!-- Header Section -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">Riwayat Pembayaran</h1>
-                <p class="text-gray-600">Kelola dan lacak semua transaksi penyewaan kendaraan Anda.</p>
+<!-- Header + Stats (Sejajar) -->
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
+
+    <!-- Kiri: Judul -->
+    <div class="flex-1">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+            Riwayat Pembayaran
+        </h1>
+        <p class="text-gray-600">
+            Kelola dan lacak semua transaksi penyewaan kendaraan Anda.
+        </p>
+    </div>
+
+    <!-- Kanan: Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full lg:w-auto">
+
+        <!-- Loyalty Points -->
+        <div class="bg-white rounded-2xl shadow-md p-6 flex items-center justify-between min-w-[260px]">
+            <div>
+                <p class="text-sm text-gray-600 mb-1">LOYALTY POINTS</p>
+                <p class="text-3xl font-bold text-gray-900">
+                    {{ number_format(
+                        isset($allBookings)
+                            ? $allBookings->where('status', 'completed')->count() * 50
+                            : $bookings->where('status', 'completed')->count() * 50,
+                        0, ',', '.'
+                    ) }}
+                    <span class="text-sm font-normal text-gray-500">Pts</span>
+                </p>
             </div>
 
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div class="bg-white rounded-2xl shadow-md p-6 flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">LOYALTY POINTS</p>
-                        <p class="text-3xl font-bold text-gray-900">
-                            {{ number_format(isset($allBookings) ? $allBookings->where('status', 'completed')->count() * 50 : $bookings->where('status', 'completed')->count() * 50, 0, ',', '.') }}
-                            <span class="text-sm font-normal text-gray-500">Pts</span>
-                        </p>
-                    </div>
-                    <div class="w-16 h-16 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center">
-                        <svg class="w-8 h-8 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-md p-6 flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">TOTAL TRANSAKSI</p>
-                        <p class="text-3xl font-bold text-gray-900">
-                            {{ isset($allBookings) ? $allBookings->count() : $bookings->total() }}
-                            <span class="text-sm font-normal text-gray-500">Kali</span>
-                        </p>
-                    </div>
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center">
-                        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                    </div>
-                </div>
+            <div class="w-14 h-14 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center">
+                <svg class="w-7 h-7 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
             </div>
+        </div>
+
+        <!-- Total Transaksi -->
+        <div class="bg-white rounded-2xl shadow-md p-6 flex items-center justify-between min-w-[260px]">
+            <div>
+                <p class="text-sm text-gray-600 mb-1">TOTAL TRANSAKSI</p>
+                <p class="text-3xl font-bold text-gray-900">
+                    {{ isset($allBookings) ? $allBookings->count() : $bookings->total() }}
+                    <span class="text-sm font-normal text-gray-500">Kali</span>
+                </p>
+            </div>
+
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center">
+                <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+        </div>
+
+    </div>
+</div>
 
             @if($bookings->count())
                 <!-- Filter and Search Section -->

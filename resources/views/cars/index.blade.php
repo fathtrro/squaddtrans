@@ -1,97 +1,72 @@
 <x-app-layout>
-    {{-- Fleet Listing Page - SQUADTRANS Mobile Horizontal Scroll --}}
+    {{-- Fleet Listing Page - Clean Minimalist with Glass Effect --}}
 
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
-
-        :root {
-            --primary: #F59E0B;
-            --primary-light: #FCD34D;
-            --dark: #1F2937;
-            --darker: #111827;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
         }
 
-        .heading-font {
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        /* Hero Banner - Mobile Optimized */
+        /* Hero Banner - Compact with Glass Stats */
         .hero-banner {
             background:
                 linear-gradient(135deg,
-                    rgba(31, 41, 55, 0.55) 0%,
-                    rgba(17, 24, 39, 0.6) 100%),
+                    rgba(17, 24, 39, 0.7) 0%,
+                    rgba(31, 41, 55, 0.6) 100%),
                 url('/images/brio.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             border-radius: 16px;
-            overflow: hidden;
             position: relative;
+            overflow: hidden;
         }
 
-
-
-        @media (min-width: 768px) {
-            .hero-banner {
-                border-radius: 24px;
-            }
-        }
-
-        .hero-pattern {
-            position: absolute;
-            inset: 0;
-            background-image:
-                radial-gradient(circle at 20% 50%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.08) 0%, transparent 50%);
-        }
-
-        /* Stats Cards */
+        /* Glassmorphism for stats */
         .stat-card {
-            background: white;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            padding: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            padding: 12px 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
         }
 
         @media (min-width: 768px) {
             .stat-card {
-                border-radius: 16px;
-                padding: 20px;
+                padding: 16px 20px;
             }
         }
 
-        /* Filter Section */
+        /* Filter Bar - Glass Effect */
         .filter-bar {
-            background: white;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
         }
 
-        @media (min-width: 768px) {
-            .filter-bar {
-                border-radius: 20px;
-            }
-        }
-
-        /* Category Filters - Horizontal Scroll */
+        /* Category Scroll */
         .category-scroll {
             display: flex;
             overflow-x: auto;
             gap: 8px;
-            padding: 4px 0;
+            padding: 2px 0;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            scroll-behavior: smooth;
         }
 
         .category-scroll::-webkit-scrollbar {
@@ -99,41 +74,38 @@
         }
 
         .filter-btn {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid transparent;
+            transition: all 0.3s;
+            border: 1px solid #e5e7eb;
             white-space: nowrap;
             flex-shrink: 0;
-        }
-
-        .filter-btn:active {
-            transform: scale(0.95);
+            background: white;
+            color: #6b7280;
         }
 
         .filter-btn.active {
-            background: linear-gradient(135deg, #FCD34D, #F59E0B);
-            color: #111827;
-            font-weight: 700;
+            background: #111827;
+            color: white;
+            border-color: #111827;
+            font-weight: 600;
         }
 
-        /* Horizontal Scroll Container for Cars - MOBILE */
-        .cars-scroll-container {
-            position: relative;
+        .filter-btn:hover:not(.active) {
+            border-color: #d1d5db;
+            background: #f9fafb;
         }
 
+        /* Cars Container */
         .cars-scroll-wrapper {
             overflow-x: auto;
-            overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             scroll-behavior: smooth;
-            padding: 2px;
         }
 
         .cars-scroll-wrapper::-webkit-scrollbar {
             display: none;
         }
 
-        /* Mobile: 2 Column Horizontal Layout */
         @media (max-width: 767px) {
             .cars-scroll {
                 display: grid;
@@ -145,43 +117,71 @@
             }
         }
 
-        /* Desktop: Normal Grid */
         @media (min-width: 768px) {
             .cars-scroll {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
+                gap: 16px;
             }
         }
 
         @media (min-width: 1024px) {
             .cars-scroll {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 24px;
+                gap: 20px;
             }
         }
 
-        /* Scroll Navigation Buttons - Mobile Only */
+        /* Fleet Cards */
+        .fleet-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            transition: all 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .fleet-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+                border-color: #d1d5db;
+            }
+
+            .fleet-card:hover img {
+                transform: scale(1.05);
+            }
+        }
+
+        .fleet-card img {
+            transition: transform 0.4s;
+        }
+
+        /* Scroll Navigation */
         .scroll-nav-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #FCD34D, #F59E0B);
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: 1px solid #e5e7eb;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             z-index: 10;
             cursor: pointer;
             transition: all 0.3s;
             color: #111827;
         }
 
-        .scroll-nav-btn:active {
-            transform: translateY(-50%) scale(0.9);
+        .scroll-nav-btn:hover {
+            background: #f9fafb;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
 
         .scroll-nav-btn.left {
@@ -198,122 +198,6 @@
             }
         }
 
-        /* Fleet Cards - Compact Mobile Version */
-        .fleet-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: white;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            border-radius: 16px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        @media (min-width: 768px) {
-            .fleet-card {
-                border-radius: 24px;
-            }
-
-            .fleet-card:hover {
-                transform: translateY(-8px);
-                box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
-            }
-
-            .fleet-card:hover img {
-                transform: scale(1.1);
-            }
-        }
-
-        .fleet-card img {
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .gradient-overlay {
-            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.95) 100%);
-        }
-
-        /* Price Display */
-        .price-highlight {
-            background: linear-gradient(135deg, #FCD34D, #F59E0B);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Buttons - Touch Friendly */
-        .btn-primary {
-            background: linear-gradient(135deg, #FCD34D, #F59E0B);
-            transition: all 0.3s ease;
-            min-height: 44px;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #1F2937, #111827);
-            transition: all 0.3s ease;
-            min-height: 44px;
-        }
-
-        .btn-secondary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-outline {
-            border: 2px solid #F59E0B;
-            background: transparent;
-            color: #F59E0B;
-            transition: all 0.3s ease;
-            min-height: 44px;
-        }
-
-        .btn-outline:active {
-            background: rgba(245, 158, 11, 0.1);
-        }
-
-        /* Feature Icons */
-        .feature-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #FCD34D, #F59E0B);
-            border-radius: 50%;
-            font-size: 10px;
-        }
-
-        /* Spec Items */
-        .spec-item {
-            border-left: 2px solid #FCD34D;
-            padding-left: 8px;
-        }
-
-        /* Badges */
-        .badge-premium {
-            background: linear-gradient(135deg, #FCD34D, #F59E0B);
-            animation: pulse-glow 2s infinite;
-        }
-
-        @keyframes pulse-glow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
-            }
-
-            50% {
-                box-shadow: 0 0 16px rgba(245, 158, 11, 0.5);
-            }
-        }
-
-        .badge-status {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-        }
-
         /* Sort Dropdown */
         .sort-dropdown {
             position: relative;
@@ -324,13 +208,13 @@
             top: calc(100% + 8px);
             right: 0;
             background: white;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
             min-width: 200px;
             z-index: 50;
             display: none;
-            max-height: 70vh;
-            overflow-y: auto;
+            overflow: hidden;
         }
 
         .sort-dropdown.active .sort-menu {
@@ -338,34 +222,30 @@
         }
 
         .sort-menu a {
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: block;
             transition: all 0.2s;
+            font-size: 14px;
         }
 
-        .sort-menu a:active {
-            background: #f8fafc;
-            color: var(--primary);
+        .sort-menu a:hover {
+            background: #f9fafb;
         }
 
         /* View Toggle */
         .view-btn {
-            padding: 10px;
-            border-radius: 10px;
+            padding: 8px;
+            border-radius: 8px;
             transition: all 0.3s;
             cursor: pointer;
         }
 
-        .view-btn:active {
-            background: #e2e8f0;
-        }
-
         .view-btn.active {
-            background: linear-gradient(135deg, #FCD34D, #F59E0B);
+            background: white;
             color: #111827;
         }
 
-        /* Scroll Indicator Dots - Mobile */
+        /* Scroll Indicator */
         .scroll-indicator {
             display: flex;
             justify-content: center;
@@ -384,79 +264,87 @@
         }
 
         .scroll-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: #d1d5db;
+            background: rgba(255, 255, 255, 0.4);
             transition: all 0.3s;
         }
 
         .scroll-dot.active {
-            background: linear-gradient(135deg, #FCD34D, #F59E0B);
-            width: 24px;
-            border-radius: 4px;
+            background: white;
+            width: 20px;
+            border-radius: 3px;
+        }
+
+        /* Price Highlight */
+        .price-highlight {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 
-    <main class="max-w-7xl mx-auto px-4 py-4 sm:py-6 lg:py-8">
+    <main class="max-w-7xl mx-auto px-4 py-6">
 
-        {{-- Hero Banner --}}
-        <div class="hero-banner mb-6 sm:mb-8 lg:mb-10 relative overflow-hidden">
-            <div class="hero-pattern"></div>
-            <div class="relative z-10 p-4 sm:p-6 lg:p-12">
-                <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-6">
+        {{-- Hero Banner - Compact --}}
+        <div class="hero-banner mb-6 relative overflow-hidden">
+            <div class="relative z-10 p-6 lg:p-8">
+                <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+
+                    {{-- Text Content --}}
                     <div class="flex-1">
-                        <span
-                            class="inline-block px-3 py-1 bg-yellow-400/20 text-yellow-400 text-xs font-bold rounded-full mb-3 border border-yellow-400/30">
-                            <i class="fa-solid fa-star"></i> PREMIUM FLEET
-                        </span>
-                        <h1
-                            class="heading-font text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white mb-2 sm:mb-3">
-                            Armada Terbaik<br>Untuk Perjalanan Anda
+                        <div class="inline-flex items-center gap-1.5 backdrop-blur-md bg-white/10 border border-white/20 px-3 py-1 rounded-full mb-3">
+                            <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                            <span class="text-white text-xs font-medium">PREMIUM FLEET</span>
+                        </div>
+                        <h1 class="text-3xl lg:text-4xl font-bold text-white mb-2">
+                            Armada Terbaik Untuk<br class="hidden sm:block">Perjalanan Anda
                         </h1>
-                        <p class="text-gray-300 text-sm sm:text-base lg:text-lg max-w-xl">
-                            Lebih dari 50+ unit premium siap menemani setiap momen perjalanan Anda.
+                        <p class="text-gray-200 text-sm lg:text-base max-w-xl">
+                            50+ unit premium siap menemani perjalanan Anda
                         </p>
                     </div>
 
-                    {{-- Stats --}}
-                    <div class="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-4 w-full lg:w-auto">
-                        <div class="stat-card text-center">
-                            <div class="text-xl sm:text-2xl lg:text-3xl font-bold price-highlight">50+</div>
-                            <div class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Unit</div>
+                    {{-- Glass Stats Cards - Compact --}}
+                    <div class="flex gap-3 w-full lg:w-auto">
+                        <div class="stat-card flex-1 lg:flex-none text-center min-w-[90px]">
+                            <div class="text-2xl lg:text-3xl font-bold text-white">50+</div>
+                            <div class="text-xs text-white/80 mt-0.5">Unit</div>
                         </div>
-                        <div class="stat-card text-center">
-                            <div class="text-xl sm:text-2xl lg:text-3xl font-bold price-highlight">4.8</div>
-                            <div class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Rating</div>
+                        <div class="stat-card flex-1 lg:flex-none text-center min-w-[90px]">
+                            <div class="text-2xl lg:text-3xl font-bold text-white">4.8</div>
+                            <div class="text-xs text-white/80 mt-0.5">Rating</div>
                         </div>
-                        <div class="stat-card text-center">
-                            <div class="text-xl sm:text-2xl lg:text-3xl font-bold price-highlight">24/7</div>
-                            <div class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Support</div>
+                        <div class="stat-card flex-1 lg:flex-none text-center min-w-[90px]">
+                            <div class="text-2xl lg:text-3xl font-bold text-white">24/7</div>
+                            <div class="text-xs text-white/80 mt-0.5">Support</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Filter & Search Section --}}
-        <div class="filter-bar p-4 sm:p-5 lg:p-6 mb-6 sm:mb-8">
+        {{-- Filter & Search - Glass Effect --}}
+        <div class="filter-bar p-4 lg:p-5 mb-6">
+
             {{-- Search & Actions --}}
-            <div
-                class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-between mb-4 sm:mb-6">
+            <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between mb-4">
+
                 {{-- Search Bar --}}
                 <div class="flex-1 relative">
-                    <i
-                        class="fa-solid fa-search absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                     <input type="text" id="searchInput" placeholder="Cari mobil..."
-                        class="w-full pl-9 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 text-sm sm:text-base rounded-xl border-2 border-gray-200 focus:border-yellow-400 focus:outline-none transition">
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition outline-none">
                 </div>
 
-                {{-- View Toggle & Sort --}}
-                <div class="flex items-center gap-2 sm:gap-3">
-                    {{-- View Toggle - Hidden on Mobile --}}
-                    <div class="hidden sm:flex bg-gray-100 rounded-xl p-1">
+                {{-- Actions --}}
+                <div class="flex items-center gap-2">
+
+                    {{-- View Toggle --}}
+                    <div class="hidden sm:flex bg-gray-100 rounded-lg p-1">
                         <button class="view-btn active">
-                            <i class="fa-solid fa-grid-2"></i>
+                            <i class="fa-solid fa-table-cells"></i>
                         </button>
                         <button class="view-btn">
                             <i class="fa-solid fa-list"></i>
@@ -465,77 +353,85 @@
 
                     {{-- Sort Dropdown --}}
                     <div class="sort-dropdown">
-                        <button
-                            class="sort-toggle flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-100 rounded-xl text-sm font-semibold hover:bg-gray-200 transition whitespace-nowrap">
-                            <i class="fa-solid fa-sort"></i>
+                        <button class="sort-toggle flex items-center gap-2 px-3.5 py-2.5 bg-white border border-gray-200 rounded-lg text-sm hover:border-gray-300 transition">
+                            <i class="fa-solid fa-sort text-sm"></i>
                             <span class="hidden sm:inline">Urutkan</span>
                             <i class="fa-solid fa-chevron-down text-xs"></i>
                         </button>
                         <div class="sort-menu">
-                            <a href="#" class="sort-option"><i class="fa-solid fa-star text-yellow-500 mr-2"></i>
-                                Rating Tertinggi</a>
-                            <a href="#" class="sort-option"><i
-                                    class="fa-solid fa-dollar-sign text-green-500 mr-2"></i> Harga Terendah</a>
-                            <a href="#" class="sort-option"><i
-                                    class="fa-solid fa-dollar-sign text-red-500 mr-2"></i> Harga Tertinggi</a>
-                            <a href="#" class="sort-option"><i
-                                    class="fa-solid fa-calendar text-blue-500 mr-2"></i> Terbaru</a>
-                            <a href="#" class="sort-option"><i class="fa-solid fa-fire text-orange-500 mr-2"></i>
-                                Terpopuler</a>
+                            <a href="#" class="sort-option">
+                                <i class="fa-solid fa-star text-yellow-500 mr-2"></i>
+                                Rating Tertinggi
+                            </a>
+                            <a href="#" class="sort-option">
+                                <i class="fa-solid fa-arrow-up text-green-500 mr-2"></i>
+                                Harga Terendah
+                            </a>
+                            <a href="#" class="sort-option">
+                                <i class="fa-solid fa-arrow-down text-red-500 mr-2"></i>
+                                Harga Tertinggi
+                            </a>
+                            <a href="#" class="sort-option">
+                                <i class="fa-solid fa-clock text-blue-500 mr-2"></i>
+                                Terbaru
+                            </a>
+                            <a href="#" class="sort-option">
+                                <i class="fa-solid fa-fire text-orange-500 mr-2"></i>
+                                Terpopuler
+                            </a>
                         </div>
                     </div>
 
-                    {{-- Advanced Filter Button --}}
-                    <button
-                        class="filter-toggle px-3 sm:px-4 py-2.5 sm:py-3 bg-yellow-400 rounded-xl text-sm font-semibold hover:bg-yellow-500 transition">
+                    {{-- Filter Button --}}
+                    <button class="filter-toggle px-3.5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-medium transition">
                         <i class="fa-solid fa-sliders"></i>
                         <span class="hidden sm:inline ml-2">Filter</span>
                     </button>
                 </div>
             </div>
 
-            {{-- Category Filters - Horizontal Scroll --}}
-            <div class="category-scroll">
-                <button class="filter-btn active px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm">
-                    <i class="fa-solid fa-layer-group mr-1 sm:mr-2"></i>Semua
+            {{-- Category Filters --}}
+            <div class="category-scroll -mx-4 px-4 sm:mx-0 sm:px-0">
+                <button class="filter-btn active px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fa-solid fa-layer-group mr-1.5"></i>Semua
                 </button>
-                <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
-                    <i class="fa-solid fa-car mr-1 sm:mr-2"></i>Sedan
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fa-solid fa-car mr-1.5"></i>Sedan
                 </button>
-                <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
-                    <i class="fa-solid fa-truck-pickup mr-1 sm:mr-2"></i>SUV
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fa-solid fa-truck-pickup mr-1.5"></i>SUV
                 </button>
-                <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
-                    <i class="fa-solid fa-van-shuttle mr-1 sm:mr-2"></i>MPV
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fa-solid fa-van-shuttle mr-1.5"></i>MPV
                 </button>
-                <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
-                    <i class="fa-solid fa-car-side mr-1 sm:mr-2"></i>Hatchback
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fa-solid fa-car-side mr-1.5"></i>Hatchback
                 </button>
-                <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
-                    <i class="fa-solid fa-charging-station mr-1 sm:mr-2"></i>Electric
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fa-solid fa-charging-station mr-1.5"></i>Electric
                 </button>
-                <button class="filter-btn px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm bg-gray-50">
-                    <i class="fa-solid fa-crown mr-1 sm:mr-2"></i>Luxury
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fa-solid fa-crown mr-1.5"></i>Luxury
                 </button>
             </div>
         </div>
 
         {{-- Results Info --}}
-        <div class="flex items-center justify-between mb-4 sm:mb-6 px-1">
-            <p class="text-xs sm:text-sm text-gray-600">
-                <span class="font-bold text-gray-900">{{ $cars->count() }}</span> dari
-                <span class="font-bold text-gray-900">{{ $cars->total() }}</span> unit
+        <div class="flex items-center justify-between mb-4 px-1">
+            <p class="text-sm text-gray-600">
+                <span class="font-semibold text-gray-900">{{ $cars->count() }}</span> dari
+                <span class="font-semibold text-gray-900">{{ $cars->total() }}</span> unit
             </p>
             <p class="text-xs text-gray-500 md:hidden">
-                <i class="fa-solid fa-hand-point-right mr-1"></i>Geser untuk lihat lebih banyak
+                <i class="fa-solid fa-hand-point-right mr-1"></i>Geser untuk lihat lebih
             </p>
         </div>
 
-        {{-- Cars Horizontal Scroll Container --}}
+        {{-- Cars List --}}
         @include('cars.cars-list')
 
-        {{-- Pagination (Desktop) --}}
-        <div class="mt-8 sm:mt-12 flex justify-center">
+        {{-- Pagination --}}
+        <div class="mt-8 flex justify-center">
             {{ $cars->links() }}
         </div>
 
@@ -543,41 +439,30 @@
 
     {{-- JavaScript --}}
     <script>
-        // Horizontal Scroll Navigation
+        // Scroll Navigation
         const scrollWrapper = document.getElementById('carsScrollWrapper');
         const scrollLeft = document.getElementById('scrollLeft');
         const scrollRight = document.getElementById('scrollRight');
         const scrollIndicator = document.getElementById('scrollIndicator');
-
-        // Scroll amount (adjust based on card width)
         const scrollAmount = 300;
 
         scrollLeft?.addEventListener('click', () => {
-            scrollWrapper.scrollBy({
-                left: -scrollAmount,
-                behavior: 'smooth'
-            });
+            scrollWrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
         });
 
         scrollRight?.addEventListener('click', () => {
-            scrollWrapper.scrollBy({
-                left: scrollAmount,
-                behavior: 'smooth'
-            });
+            scrollWrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         });
 
-        // Update scroll indicators
+        // Scroll Indicators
         function updateScrollIndicators() {
-            if (window.innerWidth >= 768) return; // Only for mobile
-
+            if (window.innerWidth >= 768) return;
             const scrollWidth = scrollWrapper.scrollWidth;
             const clientWidth = scrollWrapper.clientWidth;
             const scrollLeft = scrollWrapper.scrollLeft;
-
             const totalDots = Math.ceil(scrollWidth / clientWidth);
             const activeDot = Math.floor(scrollLeft / clientWidth);
 
-            // Generate dots
             if (scrollIndicator && scrollIndicator.children.length !== totalDots) {
                 scrollIndicator.innerHTML = '';
                 for (let i = 0; i < totalDots; i++) {
@@ -587,7 +472,6 @@
                     scrollIndicator.appendChild(dot);
                 }
             } else {
-                // Update active dot
                 const dots = scrollIndicator?.querySelectorAll('.scroll-dot');
                 dots?.forEach((dot, index) => {
                     dot.classList.toggle('active', index === activeDot);
@@ -599,7 +483,7 @@
         window.addEventListener('resize', updateScrollIndicators);
         window.addEventListener('load', updateScrollIndicators);
 
-        // Sort dropdown toggle
+        // Sort Dropdown
         const sortToggle = document.querySelector('.sort-toggle');
         const sortDropdown = document.querySelector('.sort-dropdown');
 
@@ -614,16 +498,18 @@
             }
         });
 
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        searchInput?.addEventListener('input', function(e) {
-            console.log('Searching:', e.target.value);
-        });
-
-        // Category filter buttons
+        // Category Filters
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // View Toggle
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
             });
         });

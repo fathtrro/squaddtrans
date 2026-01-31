@@ -15,13 +15,21 @@ class BookingController extends Controller
 {
     public function create(Request $request)
     {
+        $car = null;
+
+        if ($request->filled('car')) {
+            $car = Car::with('images')->find($request->query('car'));
+        }
+
         return view('bookings.create', [
             'cars' => Car::all(),
             'drivers' => Driver::all(),
-            'selectedCarId' => $request->query('car'),
+            'car' => $car,
             'selectedServiceType' => $request->query('service_type'),
         ]);
     }
+
+
     public function store(Request $request)
     {
         $request->validate([
@@ -76,7 +84,7 @@ class BookingController extends Controller
             ]);
         });
 
-   
+
         return redirect()->route('bookings.success', $booking->id);
     }
 

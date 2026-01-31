@@ -5,31 +5,44 @@
         Hubungi Kami - SquadTrans
     </x-slot>
 
-    <!-- Hero Section with Gradient -->
-    <section class="relative bg-gradient-to-br from-[#FAF7F0] via-[#FFF8E7] to-[#FAF7F0] py-20 overflow-hidden">
-        <!-- Decorative Elements -->
-        <div class="absolute top-0 right-0 w-96 h-96 bg-[#F5A623] opacity-5 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-[#F5A623] opacity-5 rounded-full blur-3xl"></div>
+    <!-- Hero Section with Image Background -->
+<section
+    class="relative py-20 overflow-hidden bg-cover bg-center"
+    style="background-image: url('{{ asset('images/keluarga.jpeg') }}');"
+>
+    <!-- Overlay Gradient -->
+    <div class="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
 
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="max-w-6xl mx-auto text-center">
-                <div class="inline-flex items-center bg-white px-4 py-2 rounded-full shadow-sm mb-6 animate-slide-down">
-                    <svg class="w-5 h-5 text-[#F5A623] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                    </svg>
-                    <span class="text-sm font-medium text-gray-700">Siap Membantu Anda 24/7</span>
-                </div>
+    <!-- Decorative Blur -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-[#F5A623] opacity-10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-[#F5A623] opacity-10 rounded-full blur-3xl"></div>
 
-                <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6 animate-fade-in-up">
-                    Mari Terhubung <span class="text-[#F5A623]">Bersama</span>
-                </h1>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed animate-fade-in-up-delay">
-                    Tim profesional kami siap memberikan solusi terbaik untuk kebutuhan penyewaan mobil Anda.
-                    Hubungi kami kapan saja untuk konsultasi gratis.
-                </p>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-6xl mx-auto text-center text-white">
+
+            <div class="inline-flex items-center bg-white/90 px-4 py-2 rounded-full shadow-sm mb-6 animate-slide-down">
+                <svg class="w-5 h-5 text-[#F5A623] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                <span class="text-sm font-medium text-gray-700">
+                    Siap Membantu Anda 24/7
+                </span>
             </div>
+
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 animate-fade-in-up">
+                Mari Terhubung <span class="text-[#F5A623]">Bersama</span>
+            </h1>
+
+            <p class="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed animate-fade-in-up-delay">
+                Tim profesional kami siap memberikan solusi terbaik untuk kebutuhan penyewaan mobil Anda.
+                Hubungi kami kapan saja untuk konsultasi gratis.
+            </p>
+
         </div>
-    </section>
+    </div>
+</section>
+
 
     <!-- Quick Contact Cards -->
     <section class="bg-white py-8 -mt-10 relative z-20">

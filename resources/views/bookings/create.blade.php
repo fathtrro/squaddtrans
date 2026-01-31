@@ -1,7 +1,6 @@
 <x-app-layout>
-{{-- Booking Form - SQUADTRANS Theme --}}
+{{-- Booking Form - SQUADTRANS --}}
 
-{{-- Font Awesome --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
@@ -10,987 +9,1673 @@
 :root {
     --primary: #F59E0B;
     --primary-light: #FCD34D;
+    --primary-glow: rgba(245, 158, 11, 0.35);
     --dark: #1F2937;
     --darker: #111827;
+    --success: #10B981;
+    --success-light: #D1FAE5;
+    --danger: #EF4444;
+    --border: #E5E7EB;
+    --text-muted: #6B7280;
 }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    background: linear-gradient(160deg, #f0f4f8 0%, #e8edf2 50%, #f0f4f8 100%);
+    min-height: 100vh;
+    color: var(--dark);
 }
 
-.heading-font {
+.heading-font { font-family: 'Montserrat', sans-serif; }
+
+/* ============================================================
+   PAGE LAYOUT
+   ============================================================ */
+.page-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+}
+
+@media (min-width: 640px) {
+    .page-wrap { padding: 2.5rem 1.25rem 4rem; }
+}
+
+/* ============================================================
+   RECAP BANNER
+   ============================================================ */
+.recap-banner {
+    background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+    border-radius: 18px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(17,24,39,0.22);
+}
+
+.recap-banner::before {
+    content: '';
+    position: absolute;
+    top: -60%; right: -20%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.recap-car-img {
+    width: 72px; height: 72px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.12);
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recap-car-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+
+.recap-car-img .fallback-icon {
+    font-size: 1.75rem;
+    color: rgba(255,255,255,0.3);
+}
+
+.recap-info { flex: 1; position: relative; z-index: 1; }
+
+.recap-info .recap-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.2rem;
+}
+
+.recap-info .recap-car-name {
     font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: white;
 }
 
-/* Header Card */
-.header-card {
-    background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+.recap-info .recap-car-sub {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.15rem;
+}
+
+.recap-change-link {
+    position: relative; z-index: 1;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(255,255,255,0.3);
+    padding-bottom: 2px;
+    white-space: nowrap;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.recap-change-link:hover { color: var(--primary); border-color: var(--primary); }
+
+/* ============================================================
+   STEP PROGRESS BAR
+   ============================================================ */
+.progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+}
+
+.prog-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.prog-dot {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #dde2e8;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    transition: all 0.4s cubic-bezier(.4,0,.2,1);
+    position: relative;
+    z-index: 2;
+    border: 3px solid #dde2e8;
+}
+
+.prog-dot.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--darker);
+    box-shadow: 0 0 0 5px var(--primary-glow);
+    transform: scale(1.12);
+}
+
+.prog-dot.done {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+.prog-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #9ca3af;
+    margin-top: 0.45rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+    white-space: nowrap;
+}
+
+.prog-label.active { color: var(--primary); font-weight: 700; }
+.prog-label.done   { color: var(--success); }
+
+.prog-line {
+    width: 60px; height: 3px;
+    background: #dde2e8;
+    border-radius: 2px;
+    overflow: hidden;
+    align-self: center;
+    margin-bottom: 1.7rem;
+    flex-shrink: 0;
+}
+
+@media (min-width: 480px) { .prog-line { width: 80px; } }
+
+.prog-line-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary-light), var(--primary));
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+}
+
+/* ============================================================
+   FORM CARD
+   ============================================================ */
+.form-card {
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.07);
+    overflow: hidden;
+}
+
+.form-card-header {
+    background: linear-gradient(135deg, var(--darker), var(--dark));
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
     position: relative;
     overflow: hidden;
 }
 
-.header-pattern {
+.form-card-header::after {
+    content: '';
     position: absolute;
     inset: 0;
-    background-image:
-        radial-gradient(circle at 20% 50%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.08) 0%, transparent 50%);
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
 }
 
-/* Step Indicator */
-.step-indicator {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.step-indicator.active {
-    background: linear-gradient(135deg, #FCD34D, #F59E0B) !important;
-    color: #111827 !important;
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
-}
-
-.step-indicator.completed {
-    background: #10B981 !important;
-    color: white !important;
-}
-
-.step-line {
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.step-label {
-    transition: all 0.3s;
-}
-
-.step-label.active {
-    color: var(--primary) !important;
-    font-weight: 700;
-}
-
-.step-label.completed {
-    color: #10B981 !important;
-}
-
-/* Form Sections */
-.form-section {
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-}
-
-@media (min-width: 768px) {
-    .form-section {
-        border-radius: 24px;
-        padding: 32px;
-    }
-}
-
-.section-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 2px solid #f3f4f6;
-}
-
-.section-icon {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
-    border-radius: 12px;
+.form-card-header-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    border-radius: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--darker);
+    font-size: 1.25rem;
+    position: relative; z-index: 1;
+    flex-shrink: 0;
 }
 
-/* Form Controls */
-.form-input,
-.form-select {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    font-size: 14px;
-    transition: all 0.3s;
-    background: white;
+.form-card-header-text { position: relative; z-index: 1; }
+.form-card-header-text h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: white;
+}
+.form-card-header-text p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.1rem;
 }
 
-.form-input:focus,
-.form-select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+.form-card-body { padding: 1.75rem; }
+
+@media (min-width: 640px) { .form-card-body { padding: 2rem 2.25rem 2.25rem; } }
+
+/* ============================================================
+   STEPS (animated show/hide)
+   ============================================================ */
+.step-panel {
+    display: none;
+    animation: stepIn 0.35s cubic-bezier(.4,0,.2,1);
 }
 
-.form-label {
-    display: block;
-    font-size: 14px;
+.step-panel.active { display: block; }
+
+@keyframes stepIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   FORM CONTROLS
+   ============================================================ */
+.field { margin-bottom: 1.5rem; }
+.field:last-child { margin-bottom: 0; }
+
+.field-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    color: #374151;
-    margin-bottom: 8px;
+    color: var(--dark);
+    margin-bottom: 0.55rem;
 }
 
-/* Price Summary Card */
-.price-summary {
-    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+.field-label i {
+    width: 28px; height: 28px;
+    background: #FEF3C7;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 0.7rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    color: var(--dark);
+    background: #fafbfc;
+    transition: all 0.25s;
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+.form-input::placeholder { color: #b0b7c3; }
+
+.form-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: hue-rotate(30deg) saturate(1.4);
+}
+
+.field-hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.field-hint i { font-size: 0.65rem; color: #9ca3af; }
+
+.field-error {
+    font-size: 0.72rem;
+    color: var(--danger);
+    margin-top: 0.4rem;
+    display: none;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.field-error i { font-size: 0.65rem; }
+.field.has-error .form-input { border-color: var(--danger); background: #fef2f2; }
+.field.has-error .field-error { display: flex; }
+
+/* Two column grid */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 520px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   DURATION SUMMARY BOX (Step 1)
+   ============================================================ */
+.duration-box {
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
     border: 2px solid var(--primary);
-    border-radius: 16px;
-    padding: 20px;
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.5rem;
     position: relative;
     overflow: hidden;
+    display: none;
 }
 
-.price-summary::before {
+.duration-box.show { display: block; animation: stepIn 0.3s ease; }
+
+.duration-box::before {
     content: '';
     position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-    animation: shimmer 3s infinite;
+    top: -40%; right: -30%;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+    pointer-events: none;
 }
 
-@keyframes shimmer {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(-10%, -10%); }
+.duration-box-inner { position: relative; z-index: 1; }
+
+.duration-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0;
 }
 
-.price-highlight {
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
+.duration-row + .duration-row { border-top: 1px solid rgba(217,119,6,0.2); }
+
+.duration-row .dr-label {
+    font-size: 0.8rem;
+    color: #92400e;
+    font-weight: 600;
+}
+
+.duration-row .dr-value {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #78350f;
+}
+
+.duration-row.total {
+    border-top: 2px solid #d97706 !important;
+    margin-top: 0.35rem;
+    padding-top: 0.75rem;
+}
+
+.duration-row.total .dr-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #78350f;
+}
+
+.duration-row.total .dr-value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #d97706, #f59e0b);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
-/* Payment Summary */
-.payment-summary {
-    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
-    border: 2px solid #10B981;
-    border-radius: 16px;
-    padding: 24px;
+/* ============================================================
+   RADIO CARD GRID
+   ============================================================ */
+.card-radio-grid {
+    display: grid;
+    gap: 0.75rem;
 }
 
-/* Buttons */
-.btn {
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 14px;
-    transition: all 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
+@media (min-width: 520px) { .card-radio-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } }
+
+.card-radio {
+    border: 2px solid var(--border);
+    border-radius: 13px;
+    padding: 1rem;
     cursor: pointer;
+    transition: all 0.25s;
+    background: white;
+    position: relative;
 }
 
-.btn-primary {
-    background: linear-gradient(135deg, #FCD34D, #F59E0B);
+.card-radio:hover {
+    border-color: #d1d5db;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.card-radio.selected {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    box-shadow: 0 4px 14px var(--primary-glow);
+}
+
+.card-radio input[type="radio"] { display: none; }
+
+.card-radio .tick {
+    position: absolute;
+    top: 0.55rem; right: 0.55rem;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem;
+    color: transparent;
+    transition: all 0.25s;
+}
+
+.card-radio.selected .tick {
+    background: var(--primary);
+    border-color: var(--primary);
     color: var(--darker);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
 
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+.card-radio-icon {
+    width: 42px; height: 42px;
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.15rem;
+    margin-bottom: 0.6rem;
 }
 
-.btn-primary:active {
-    transform: translateY(0);
+.icon-yellow  { background: #FEF3C7; color: #d97706; }
+.icon-blue    { background: #DBEAFE; color: #2563eb; }
+.icon-green   { background: #D1FAE5; color: #059669; }
+.icon-orange  { background: #FFEDD5; color: #ea580c; }
+
+.card-radio-title {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.15rem;
 }
 
-.btn-secondary {
-    background: #f3f4f6;
-    color: #6b7280;
+.card-radio-sub {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
 }
 
-.btn-secondary:hover {
-    background: #e5e7eb;
-}
-
-.btn-success {
-    background: linear-gradient(135deg, #34D399, #10B981);
-    color: white;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.btn-success:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-}
-
-/* File Upload */
-.file-upload-area {
+/* ============================================================
+   FILE UPLOAD
+   ============================================================ */
+.upload-zone {
     border: 2px dashed #d1d5db;
-    border-radius: 12px;
-    padding: 24px;
+    border-radius: 13px;
+    padding: 1.75rem 1rem;
     text-align: center;
-    transition: all 0.3s;
     cursor: pointer;
-    background: #fafafa;
+    transition: all 0.3s;
+    background: #fafbfc;
+    position: relative;
 }
 
-.file-upload-area:hover {
+.upload-zone:hover,
+.upload-zone.dragover {
     border-color: var(--primary);
     background: #fffbeb;
 }
 
-.file-upload-area.dragover {
-    border-color: var(--primary);
-    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+.upload-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
 }
 
-/* Info Card */
-.info-card {
-    background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
-    border-left: 4px solid #3B82F6;
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    gap: 12px;
+.upload-zone-icon {
+    font-size: 2rem;
+    color: #c4c9d4;
+    margin-bottom: 0.6rem;
+    transition: color 0.3s;
 }
 
-/* Select Wrapper */
-.select-wrapper {
-    position: relative;
+.upload-zone:hover .upload-zone-icon { color: var(--primary); }
+
+.upload-zone p { font-size: 0.8rem; color: var(--text-muted); }
+.upload-zone p strong { color: var(--dark); }
+
+.upload-preview {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #f0fdf4;
+    border: 1.5px solid #86efac;
+    border-radius: 10px;
+    margin-top: 0.6rem;
 }
 
-.select-wrapper::after {
-    content: '\f078';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
+.upload-preview.show { display: flex; }
+
+.upload-preview-icon {
+    width: 36px; height: 36px;
+    background: var(--success-light);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--success);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.upload-preview-name {
+    flex: 1;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--dark);
+    word-break: break-all;
+}
+
+.upload-remove {
+    background: none; border: none;
+    color: var(--danger); font-size: 0.75rem;
+    cursor: pointer; padding: 0.25rem 0.4rem;
+    border-radius: 6px; transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.upload-remove:hover { background: #fee2e2; }
+
+/* ============================================================
+   DP INPUT (with Rp prefix)
+   ============================================================ */
+.input-prefix-wrap { position: relative; }
+
+.input-prefix {
     position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: #6b7280;
+    left: 0; top: 0; bottom: 0;
+    width: 3rem;
+    background: #f0f2f5;
+    border-right: 2px solid var(--border);
+    border-radius: 11px 0 0 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
 }
 
-.select-wrapper select {
-    appearance: none;
-    padding-right: 40px;
+.input-prefix-wrap .form-input {
+    padding-left: 3.5rem;
+    border-radius: 11px;
 }
 
-/* Number Input */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.input-prefix-wrap .form-input:focus + .input-prefix,
+.input-prefix-wrap .form-input:focus ~ .input-prefix { border-color: var(--primary); }
+
+/* ============================================================
+   PAYMENT SUMMARY BOX (Step 3)
+   ============================================================ */
+.pay-summary {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 2px solid #6ee7b7;
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.25rem;
 }
 
-input[type="number"] {
-    -moz-appearance: textfield;
+.pay-summary-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: #065f46;
+    margin-bottom: 0.85rem;
+    display: flex; align-items: center; gap: 0.5rem;
 }
 
-/* Service Type Cards */
-.service-card {
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 16px;
+.pay-summary-title i { color: var(--success); }
+
+.pay-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    font-size: 0.8rem;
+}
+
+.pay-row .pr-label { color: #047857; font-weight: 500; }
+.pay-row .pr-val   { color: #065f46; font-weight: 700; }
+
+.pay-row.highlight {
+    border-top: 2px solid #6ee7b7;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+}
+
+.pay-row.highlight .pr-label { font-size: 0.8125rem; font-weight: 700; color: #065f46; }
+.pay-row.highlight .pr-val {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: var(--success);
+}
+
+/* ============================================================
+   NAV BUTTONS
+   ============================================================ */
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.75rem;
+    margin-top: 0.25rem;
+    border-top: 2px solid #f0f2f5;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    border: none;
     cursor: pointer;
-    transition: all 0.3s;
-    background: white;
+    transition: all 0.25s;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
-.service-card:hover {
-    border-color: var(--primary);
+.btn-back {
+    background: #f3f4f6;
+    color: var(--text-muted);
+}
+
+.btn-back:hover { background: #e5e7eb; color: var(--dark); }
+
+.btn-next {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    color: var(--darker);
+    box-shadow: 0 4px 14px var(--primary-glow);
+    margin-left: auto;
+}
+
+.btn-next:hover {
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--primary-glow);
 }
 
-.service-card.selected {
-    border-color: var(--primary);
-    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+.btn-next:active { transform: translateY(0); }
+
+.btn-submit {
+    background: linear-gradient(135deg, #34d399, var(--success));
+    color: white;
+    box-shadow: 0 4px 14px rgba(16,185,129,0.3);
+    margin-left: auto;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .step-indicator {
-        width: 36px;
-        height: 36px;
-        font-size: 12px;
-    }
-
-    .step-label {
-        font-size: 10px;
-    }
-
-    .section-header {
-        margin-bottom: 16px;
-    }
-
-    .btn {
-        padding: 12px 20px;
-        font-size: 13px;
-    }
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16,185,129,0.4);
 }
 
-/* Loading Overlay */
+.btn-hidden { display: none !important; }
+
+/* ============================================================
+   CONFIRMATION MODAL
+   ============================================================ */
+.confirm-overlay {
+    position: fixed; inset: 0;
+    background: rgba(17,24,39,0.6);
+    backdrop-filter: blur(5px);
+    z-index: 5000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 1rem;
+}
+
+.confirm-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.confirm-modal {
+    background: white;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9) translateY(16px);
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+}
+
+.confirm-overlay.show .confirm-modal {
+    transform: scale(1) translateY(0);
+}
+
+.confirm-header {
+    background: linear-gradient(135deg, var(--darker), var(--dark));
+    border-radius: 24px 24px 0 0;
+    padding: 1.5rem 1.75rem 1.25rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.confirm-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(245,158,11,0.15) 0%, transparent 60%);
+}
+
+.confirm-header-icon {
+    width: 56px; height: 56px;
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 0.75rem;
+    font-size: 1.5rem;
+    color: var(--darker);
+    position: relative; z-index: 1;
+    box-shadow: 0 6px 16px var(--primary-glow);
+}
+
+.confirm-header h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: white;
+    position: relative; z-index: 1;
+}
+
+.confirm-header p {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.2rem;
+    position: relative; z-index: 1;
+}
+
+.confirm-body { padding: 1.5rem 1.75rem; }
+
+.confirm-section-title {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.6rem;
+    margin-top: 1rem;
+}
+
+.confirm-section-title:first-child { margin-top: 0; }
+
+.confirm-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.confirm-row:last-of-type { border-bottom: none; }
+
+.confirm-row .cr-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex; align-items: center; gap: 0.4rem;
+}
+
+.confirm-row .cr-label i { color: #c4c9d4; font-size: 0.72rem; }
+
+.confirm-row .cr-val {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.confirm-total {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 2px solid #6ee7b7;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-top: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.confirm-total .ct-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #065f46;
+}
+
+.confirm-total .ct-val {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: var(--success);
+}
+
+.confirm-footer {
+    padding: 1.25rem 1.75rem 1.75rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-confirm-back {
+    flex: 1;
+    background: #f3f4f6;
+    color: var(--text-muted);
+    justify-content: center;
+}
+
+.btn-confirm-back:hover { background: #e5e7eb; color: var(--dark); }
+
+.btn-confirm-submit {
+    flex: 1.6;
+    background: linear-gradient(135deg, #34d399, var(--success));
+    color: white;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(16,185,129,0.3);
+}
+
+.btn-confirm-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16,185,129,0.4);
+}
+
+/* ============================================================
+   LOADING OVERLAY
+   ============================================================ */
 .loading-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    position: fixed; inset: 0;
+    background: rgba(17,24,39,0.75);
+    z-index: 9999;
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.loading-overlay.active {
-    display: flex;
-}
+.loading-overlay.active { display: flex; }
 
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid #f3f4f6;
+    width: 48px; height: 48px;
+    border: 4px solid rgba(255,255,255,0.15);
     border-top-color: var(--primary);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    animation: spin 0.7s linear infinite;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-overlay p { color: white; font-size: 0.875rem; font-weight: 600; }
+
+/* ============================================================
+   INFO STRIP
+   ============================================================ */
+.info-strip {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    border-left: 4px solid #3b82f6;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
 }
+
+.info-strip i { color: #2563eb; font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+.info-strip p { font-size: 0.78rem; color: #1e3a5f; line-height: 1.5; }
+.info-strip p strong { color: #1e40af; }
+
+.hidden { display: none !important; }
 </style>
 
-<div class="min-h-screen py-6 sm:py-12">
-    <div class="max-w-7xl mx-auto px-4">
+<!-- ============================================================
+     CONFIRMATION MODAL
+     ============================================================ -->
+<div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-modal">
+        <div class="confirm-header">
+            <div class="confirm-header-icon">
+                <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+            <h3>Konfirmasi Pesanan</h3>
+            <p>Pastikan semua detail sudah benar</p>
+        </div>
 
-        {{-- Header Card --}}
-        <div class="header-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 mb-6 sm:mb-8 text-white relative">
-            <div class="header-pattern"></div>
-            <div class="relative z-10">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center">
-                        <i class="fa-solid fa-calendar-check text-2xl text-gray-900"></i>
-                    </div>
-                    <div>
-                        <h2 class="heading-font text-2xl sm:text-3xl font-extrabold">Booking Rental Mobil</h2>
-                        <p class="text-gray-300 text-sm mt-1">Lengkapi data untuk menyelesaikan booking Anda</p>
-                    </div>
-                </div>
+        <div class="confirm-body">
+            <div class="confirm-section-title"><i class="fa-solid fa-car"></i> &nbsp;Mobil</div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-tag"></i> Mobil</span>
+                <span class="cr-val" id="cfCarName">–</span>
+            </div>
+
+            <div class="confirm-section-title"><i class="fa-solid fa-calendar-days"></i> &nbsp;Waktu Sewa</div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-play"></i> Mulai</span>
+                <span class="cr-val" id="cfStart">–</span>
+            </div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-stop"></i> Selesai</span>
+                <span class="cr-val" id="cfEnd">–</span>
+            </div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-hourglass-half"></i> Durasi</span>
+                <span class="cr-val" id="cfDuration">–</span>
+            </div>
+
+            <div class="confirm-section-title"><i class="fa-solid fa-briefcase"></i> &nbsp;Layanan</div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-key"></i> Jenis Layanan</span>
+                <span class="cr-val" id="cfService">–</span>
+            </div>
+            <div class="confirm-row hidden" id="cfDriverRow">
+                <span class="cr-label"><i class="fa-solid fa-user-tie"></i> Sopir</span>
+                <span class="cr-val" id="cfDriver">–</span>
+            </div>
+
+            <div class="confirm-section-title"><i class="fa-solid fa-shield-halved"></i> &nbsp;Jaminan</div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-id-card"></i> Tipe Jaminan</span>
+                <span class="cr-val" id="cfGuarantee">–</span>
+            </div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-file"></i> Dokumen</span>
+                <span class="cr-val" id="cfDoc">–</span>
+            </div>
+
+            <div class="confirm-section-title"><i class="fa-solid fa-credit-card"></i> &nbsp;Pembayaran</div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-wallet"></i> Metode</span>
+                <span class="cr-val" id="cfPayMethod">–</span>
+            </div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-money-bill-wave"></i> Total Harga</span>
+                <span class="cr-val" id="cfTotalPrice">–</span>
+            </div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-hand-holding-dollar"></i> DP Dibayar</span>
+                <span class="cr-val" id="cfDP">–</span>
+            </div>
+
+            <div class="confirm-total">
+                <span class="ct-label">Sisa Pembayaran</span>
+                <span class="ct-val" id="cfRemaining">Rp 0</span>
             </div>
         </div>
 
-        {{-- Main Form Card --}}
-        <div class="bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden">
+        <div class="confirm-footer">
+            <button type="button" class="btn btn-confirm-back" id="confirmBack">
+                <i class="fa-solid fa-arrow-left"></i> Edit Lagi
+            </button>
+            <button type="button" class="btn btn-confirm-submit" id="confirmSubmit">
+                <i class="fa-solid fa-check-circle"></i> Konfirmasi & Pesan
+            </button>
+        </div>
+    </div>
+</div>
 
-            {{-- Step Indicator --}}
-            <div class="bg-gray-50 p-6 sm:p-8 border-b-2 border-gray-100">
-                <div class="flex justify-between items-center mb-6">
-                    <div class="flex flex-col items-center flex-1">
-                        <div class="step-indicator active w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
-                            <i class="fa-solid fa-car"></i>
-                        </div>
-                        <span class="step-label text-xs font-semibold text-gray-400">Mobil</span>
-                    </div>
+<!-- ============================================================
+     LOADING OVERLAY
+     ============================================================ -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p>Memproses booking Anda...</p>
+</div>
 
-                    <div class="flex-1 h-1 bg-gray-200 mx-2 -mt-8">
-                        <div class="step-line h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-300" style="width: 0%"></div>
-                    </div>
+<!-- ============================================================
+     PAGE
+     ============================================================ -->
+<div class="page-wrap">
+{{-- <!-- DEBUG BLOCK -->
+<div style="background:#fee2e2; padding:1rem; border-radius:8px; margin-bottom:1rem; font-size:0.8rem; font-family:monospace;">
+    <strong>URL full:</strong> <code>{{ request()->fullUrl() }}</code><br><br>
+    <strong>All query params:</strong><br>
+    <pre style="margin-top:0.5rem; white-space:pre-wrap;">{{ print_r(request()->query(), true) }}</pre>
+</div>
+<!-- END DEBUG --> --}}
+   @if($car)
+<div class="recap-banner">
+    <div class="recap-car-img">
+        @if($car->images->first())
+            <img src="{{ asset('storage/'.$car->images->first()->image_path) }}" alt="{{ $car->name }}">
+        @else
+            <i class="fa-solid fa-car fallback-icon"></i>
+        @endif
+    </div>
 
-                    <div class="flex flex-col items-center flex-1">
-                        <div class="step-indicator w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
-                            <i class="fa-solid fa-clock"></i>
-                        </div>
-                        <span class="step-label text-xs font-semibold text-gray-400">Waktu</span>
-                    </div>
+    <div class="recap-info">
+        <div class="recap-label">Mobil yang dipilih</div>
+        <div class="recap-car-name">{{ $car->brand }} {{ $car->name }}</div>
+        <div class="recap-car-sub">
+            {{ $car->year }} &middot;
+            {{ ucfirst($car->transmission) }} &middot;
+            {{ $car->seats }} Kursi
+        </div>
+    </div>
 
-                    <div class="flex-1 h-1 bg-gray-200 mx-2 -mt-8">
-                        <div class="step-line h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-300" style="width: 0%"></div>
-                    </div>
+    <a href="{{ route('cars.show', $car->id) }}" class="recap-change-link">
+        <i class="fa-solid fa-pen-to-square"></i> Ganti
+    </a>
+</div>
+@endif
 
-                    <div class="flex flex-col items-center flex-1">
-                        <div class="step-indicator w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <span class="step-label text-xs font-semibold text-gray-400">Jaminan</span>
-                    </div>
+    <!-- Progress Bar -->
+    <div class="progress-bar-wrap" id="progressBar"></div>
 
-                    <div class="flex-1 h-1 bg-gray-200 mx-2 -mt-8">
-                        <div class="step-line h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-300" style="width: 0%"></div>
-                    </div>
+    <!-- Form Card -->
+    <div class="form-card">
 
-                    <div class="flex flex-col items-center flex-1">
-                        <div class="step-indicator w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-sm mb-2 bg-gray-200 text-gray-500">
-                            <i class="fa-solid fa-credit-card"></i>
-                        </div>
-                        <span class="step-label text-xs font-semibold text-gray-400">Pembayaran</span>
-                    </div>
-                </div>
+        <div class="form-card-header" id="formHeader">
+            <div class="form-card-header-icon" id="headerIcon">
+                <i class="fa-solid fa-clock"></i>
             </div>
+            <div class="form-card-header-text">
+                <h3 id="headerTitle">Waktu Sewa</h3>
+                <p id="headerSub">Tentukan kapan Anda ingin menyewa</p>
+            </div>
+        </div>
 
+        <div class="form-card-body">
             <form method="POST" action="{{ route('bookings.store') }}" enctype="multipart/form-data" id="bookingForm">
                 @csrf
+                <input type="hidden" name="car_id" value="{{ $car->id }}">
+                <input type="hidden" name="total_price" id="totalPriceInput" value="0">
 
-                <div class="p-6 sm:p-8">
+                <!-- ============================================
+                     STEP 0 – Waktu & Layanan
+                     FIX: value menggunakan Carbon::parse() untuk
+                     normalize format dari URL params
+                     ============================================ -->
+                <div class="step-panel active" data-step="0">
 
-                    {{-- STEP 1: Mobil & Layanan --}}
-                    <div class="step active transition-all duration-300">
-                        <div class="form-section">
-                            <div class="section-header">
-                                <div class="section-icon">
-                                    <i class="fa-solid fa-car text-xl"></i>
-                                </div>
-                                <h4 class="heading-font text-xl font-bold text-gray-800">Pilih Mobil & Layanan</h4>
-                            </div>
+                    <div class="grid-2">
+                        <div class="field" id="fieldStart">
+                            <label class="field-label">
+                                <i><i class="fa-solid fa-play" style="font-size:0.6rem;"></i></i> Tanggal Mulai
+                            </label>
+                            <input type="datetime-local"
+                                   name="start_datetime"
+                                   id="startInput"
+                                   class="form-input"
+                                   value="{{ request('start') ? \Carbon\Carbon::parse(request('start'))->format('Y-m-d') . 'T08:00' : '' }}"
+                                   required>
+                            <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Pilih tanggal mulai</div>
+                        </div>
 
-                            <div class="space-y-5">
-                                <div>
-                                    <label class="form-label">
-                                        <i class="fa-solid fa-car mr-2 text-yellow-500"></i>Pilih Mobil
-                                    </label>
-                                    <div class="select-wrapper">
-                                        <select name="car_id" id="carSelect" class="form-select" required>
-                                            @foreach($cars as $car)
-                                                <option value="{{ $car->id }}"
-                                                    data-price="{{ $car->price_per_day ?? 300000 }}"
-                                                    {{ $selectedCarId == $car->id ? 'selected' : '' }}>
-                                                    {{ $car->name }} - {{ $car->brand }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="form-label">
-                                        <i class="fa-solid fa-briefcase mr-2 text-yellow-500"></i>Jenis Layanan
-                                    </label>
-                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                        <label class="service-card selected">
-                                            <input type="radio" name="service_type" value="lepas_kunci" class="hidden service-radio" checked>
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fa-solid fa-key text-xl text-yellow-600"></i>
-                                                </div>
-                                                <div class="flex-1">
-                                                    <p class="font-bold text-sm">Lepas Kunci</p>
-                                                    <p class="text-xs text-gray-500">Tanpa Sopir</p>
-                                                </div>
-                                            </div>
-                                        </label>
-
-                                        <label class="service-card">
-                                            <input type="radio" name="service_type" value="dengan_sopir" class="hidden service-radio">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fa-solid fa-user-tie text-xl text-blue-600"></i>
-                                                </div>
-                                                <div class="flex-1">
-                                                    <p class="font-bold text-sm">Dengan Sopir</p>
-                                                    <p class="text-xs text-gray-500">Include Driver</p>
-                                                </div>
-                                            </div>
-                                        </label>
-
-                                        <label class="service-card">
-                                            <input type="radio" name="service_type" value="carter" class="hidden service-radio">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fa-solid fa-van-shuttle text-xl text-green-600"></i>
-                                                </div>
-                                                <div class="flex-1">
-                                                    <p class="font-bold text-sm">Carter</p>
-                                                    <p class="text-xs text-gray-500">Full Service</p>
-                                                </div>
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div id="driverSelectWrapper" class="hidden transition-all duration-300">
-                                    <label class="form-label">
-                                        <i class="fa-solid fa-user-check mr-2 text-yellow-500"></i>Pilih Sopir
-                                    </label>
-                                    <div class="select-wrapper">
-                                        <select name="driver_id" id="driverSelect" class="form-select">
-                                            <option value="">Pilih Sopir</option>
-                                            @foreach($drivers as $driver)
-                                                <option value="{{ $driver->id }}">{{ $driver->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="field" id="fieldEnd">
+                            <label class="field-label">
+                                <i><i class="fa-solid fa-stop" style="font-size:0.6rem;"></i></i> Tanggal Selesai
+                            </label>
+                            <input type="datetime-local"
+                                   name="end_datetime"
+                                   id="endInput"
+                                   class="form-input"
+                                   value="{{ request('end') ? \Carbon\Carbon::parse(request('end'))->format('Y-m-d') . 'T08:00' : '' }}"
+                                   required>
+                            <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Pilih tanggal selesai</div>
                         </div>
                     </div>
 
-                    {{-- STEP 2: Waktu & Tujuan --}}
-                    <div class="step hidden transition-all duration-300">
-                        <div class="form-section">
-                            <div class="section-header">
-                                <div class="section-icon">
-                                    <i class="fa-solid fa-calendar-days text-xl"></i>
-                                </div>
-                                <h4 class="heading-font text-xl font-bold text-gray-800">Waktu & Tujuan</h4>
-                            </div>
+                    <div class="field">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-location-dot" style="font-size:0.65rem;"></i></i> Tujuan <span style="color:#9ca3af;font-weight:400;">(optional)</span>
+                        </label>
+                        <input type="text" name="destination" class="form-input" placeholder="Misal: Jakarta – Bandung">
+                    </div>
 
-                            <div class="space-y-5">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="form-label">
-                                            <i class="fa-solid fa-clock mr-2 text-yellow-500"></i>Tanggal & Waktu Mulai
-                                        </label>
-                                        <input type="datetime-local" id="start" name="start_datetime" class="form-input" required>
-                                    </div>
-
-                                    <div>
-                                        <label class="form-label">
-                                            <i class="fa-solid fa-clock mr-2 text-yellow-500"></i>Tanggal & Waktu Selesai
-                                        </label>
-                                        <input type="datetime-local" id="end" name="end_datetime" class="form-input" required>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="form-label">
-                                        <i class="fa-solid fa-location-dot mr-2 text-yellow-500"></i>Tujuan
-                                    </label>
-                                    <input type="text" name="destination" class="form-input" placeholder="Contoh: Jakarta - Bandung">
-                                </div>
-
-                                <div class="price-summary">
-                                    <div class="relative z-10">
-                                        <div class="flex items-center justify-between mb-4">
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-solid fa-calendar-check text-2xl text-yellow-700"></i>
-                                                <span class="font-bold text-gray-700">Durasi Rental</span>
-                                            </div>
-                                            <span class="text-3xl font-extrabold text-gray-900">
-                                                <span id="duration">0</span> Hari
-                                            </span>
-                                        </div>
-
-                                        <div class="border-t-2 border-yellow-600 pt-4 flex items-center justify-between">
-                                            <span class="font-bold text-gray-700">Total Harga</span>
-                                            <span class="heading-font text-4xl font-extrabold price-highlight">
-                                                Rp <span id="totalPrice">0</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <input type="hidden" name="total_price" id="totalPriceInput">
-                            </div>
+                    <!-- Jenis Layanan -->
+                    <div class="field">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-briefcase" style="font-size:0.6rem;"></i></i> Jenis Layanan
+                        </label>
+                        <div class="card-radio-grid" id="serviceGrid">
+                            <label class="card-radio selected" data-value="lepas_kunci">
+                                <input type="radio" name="service_type" value="lepas_kunci" checked>
+                                <div class="tick"><i class="fa-solid fa-check"></i></div>
+                                <div class="card-radio-icon icon-yellow"><i class="fa-solid fa-key"></i></div>
+                                <div class="card-radio-title">Lepas Kunci</div>
+                                <div class="card-radio-sub">Tanpa sopir</div>
+                            </label>
+                            <label class="card-radio" data-value="dengan_sopir">
+                                <input type="radio" name="service_type" value="dengan_sopir">
+                                <div class="tick"><i class="fa-solid fa-check"></i></div>
+                                <div class="card-radio-icon icon-blue"><i class="fa-solid fa-user-tie"></i></div>
+                                <div class="card-radio-title">Dengan Sopir</div>
+                                <div class="card-radio-sub">Include driver</div>
+                            </label>
+                            <label class="card-radio" data-value="carter">
+                                <input type="radio" name="service_type" value="carter">
+                                <div class="tick"><i class="fa-solid fa-check"></i></div>
+                                <div class="card-radio-icon icon-green"><i class="fa-solid fa-van-shuttle"></i></div>
+                                <div class="card-radio-title">Carter</div>
+                                <div class="card-radio-sub">Full service</div>
+                            </label>
                         </div>
                     </div>
 
-                    {{-- STEP 3: Jaminan --}}
-                    <div class="step hidden transition-all duration-300">
-                        <div class="form-section">
-                            <div class="section-header">
-                                <div class="section-icon">
-                                    <i class="fa-solid fa-shield-halved text-xl"></i>
-                                </div>
-                                <h4 class="heading-font text-xl font-bold text-gray-800">Jaminan</h4>
+                    <!-- Pilih Sopir -->
+                    <div class="field hidden" id="driverField">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-user-check" style="font-size:0.6rem;"></i></i> Pilih Sopir
+                        </label>
+                        <select name="driver_id" id="driverSelect" class="form-input" style="appearance:none; background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 12px center; padding-right:2.5rem; cursor:pointer;">
+                            <option value="">— Pilih sopir —</option>
+                            @foreach($drivers ?? [] as $driver)
+                                <option value="{{ $driver->id }}">{{ $driver->name }}</option>
+                            @endforeach
+                        </select>
+                        <div class="field-hint"><i class="fa-solid fa-info-circle"></i> Sopir akan dikirimkan ke lokasi Anda</div>
+                    </div>
+
+                    <!-- Duration Summary -->
+                    <div class="duration-box" id="durationBox">
+                        <div class="duration-box-inner">
+                            <div class="duration-row">
+                                <span class="dr-label">Durasi</span>
+                                <span class="dr-value"><span id="durDays">0</span> hari</span>
                             </div>
-
-                            <div class="space-y-5">
-                                <div>
-                                    <label class="form-label">
-                                        <i class="fa-solid fa-id-card mr-2 text-yellow-500"></i>Tipe Jaminan
-                                    </label>
-                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                        <label class="service-card selected">
-                                            <input type="radio" name="guarantee_type" value="ktp" class="hidden guarantee-radio" checked>
-                                            <div class="text-center">
-                                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                                                    <i class="fa-solid fa-id-card text-2xl text-blue-600"></i>
-                                                </div>
-                                                <p class="font-bold text-sm">KTP</p>
-                                            </div>
-                                        </label>
-
-                                        <label class="service-card">
-                                            <input type="radio" name="guarantee_type" value="sim" class="hidden guarantee-radio">
-                                            <div class="text-center">
-                                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                                                    <i class="fa-solid fa-address-card text-2xl text-green-600"></i>
-                                                </div>
-                                                <p class="font-bold text-sm">SIM</p>
-                                            </div>
-                                        </label>
-
-                                        <label class="service-card">
-                                            <input type="radio" name="guarantee_type" value="motor" class="hidden guarantee-radio">
-                                            <div class="text-center">
-                                                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                                                    <i class="fa-solid fa-motorcycle text-2xl text-orange-600"></i>
-                                                </div>
-                                                <p class="font-bold text-sm">BPKB Motor</p>
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="form-label">
-                                        <i class="fa-solid fa-upload mr-2 text-yellow-500"></i>Upload Dokumen
-                                    </label>
-                                    <div class="file-upload-area" id="fileUploadArea">
-                                        <input type="file" name="document_file" id="documentFile" class="hidden" required accept="image/*,application/pdf">
-                                        <div id="fileUploadContent">
-                                            <i class="fa-solid fa-cloud-arrow-up text-5xl text-gray-300 mb-3"></i>
-                                            <p class="font-bold text-gray-700 mb-1">Klik atau Drag & Drop</p>
-                                            <p class="text-sm text-gray-500">Format: JPG, PNG, atau PDF (Max: 2MB)</p>
-                                        </div>
-                                        <div id="filePreview" class="hidden">
-                                            <i class="fa-solid fa-file-circle-check text-5xl text-green-500 mb-3"></i>
-                                            <p class="font-bold text-gray-700" id="fileName"></p>
-                                            <button type="button" class="text-sm text-red-500 hover:text-red-700 mt-2" onclick="removeFile()">
-                                                <i class="fa-solid fa-trash mr-1"></i>Hapus File
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="duration-row">
+                                <span class="dr-label">Harga/hari</span>
+                                <span class="dr-value" id="durPricePerDay">Rp 0</span>
+                            </div>
+                            <div class="duration-row total">
+                                <span class="dr-label">Total Harga</span>
+                                <span class="dr-value" id="durTotal">Rp 0</span>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    {{-- STEP 4: Pembayaran --}}
-                    <div class="step hidden transition-all duration-300">
-                        <div class="form-section">
-                            <div class="section-header">
-                                <div class="section-icon">
-                                    <i class="fa-solid fa-credit-card text-xl"></i>
-                                </div>
-                                <h4 class="heading-font text-xl font-bold text-gray-800">Pembayaran</h4>
-                            </div>
-
-                            <div class="space-y-5">
-                                <div>
-                                    <label class="form-label">
-                                        <i class="fa-solid fa-money-bill-wave mr-2 text-yellow-500"></i>Jumlah DP (Minimal 30%)
-                                    </label>
-                                    <div class="relative">
-                                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
-                                        <input type="number" name="amount" id="dpInput" class="form-input pl-14" placeholder="0" required>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-2">
-                                        <i class="fa-solid fa-info-circle mr-1"></i>
-                                        DP Minimal: <span id="minDp" class="font-bold text-gray-700">Rp 0</span>
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <label class="form-label">
-                                        <i class="fa-solid fa-wallet mr-2 text-yellow-500"></i>Metode Pembayaran
-                                    </label>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <label class="service-card selected">
-                                            <input type="radio" name="payment_method" value="cash" class="hidden payment-radio" checked>
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fa-solid fa-money-bill-wave text-2xl text-green-600"></i>
-                                                </div>
-                                                <div>
-                                                    <p class="font-bold">Cash</p>
-                                                    <p class="text-xs text-gray-500">Bayar Tunai</p>
-                                                </div>
-                                            </div>
-                                        </label>
-
-                                        <label class="service-card">
-                                            <input type="radio" name="payment_method" value="transfer" class="hidden payment-radio">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fa-solid fa-building-columns text-2xl text-blue-600"></i>
-                                                </div>
-                                                <div>
-                                                    <p class="font-bold">Transfer</p>
-                                                    <p class="text-xs text-gray-500">Bank Transfer</p>
-                                                </div>
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="payment-summary">
-                                    <div class="flex items-center mb-4">
-                                        <i class="fa-solid fa-circle-check text-3xl text-green-600 mr-3"></i>
-                                        <h5 class="heading-font text-xl font-bold text-gray-800">Ringkasan Pembayaran</h5>
-                                    </div>
-
-                                    <div class="space-y-3">
-                                        <div class="flex justify-between items-center py-2">
-                                            <span class="font-semibold text-gray-700">Total Harga:</span>
-                                            <span class="text-2xl font-bold text-gray-900">Rp <span id="summaryTotal">0</span></span>
-                                        </div>
-
-                                        <div class="border-t-2 border-green-300 pt-3 flex justify-between items-center">
-                                            <span class="font-semibold text-gray-700">DP Dibayar:</span>
-                                            <span class="heading-font text-3xl font-extrabold text-green-600">
-                                                Rp <span id="summaryDP">0</span>
-                                            </span>
-                                        </div>
-
-                                        <div class="border-t-2 border-green-300 pt-3 flex justify-between items-center">
-                                            <span class="font-semibold text-gray-700">Sisa Pembayaran:</span>
-                                            <span class="text-xl font-bold text-gray-700">
-                                                Rp <span id="remaining">0</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <!-- ============================================
+                     STEP 1 – Jaminan
+                     ============================================ -->
+                <div class="step-panel" data-step="1">
+                    <div class="field">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-id-card" style="font-size:0.6rem;"></i></i> Tipe Jaminan
+                        </label>
+                        <div class="card-radio-grid" id="guaranteeGrid">
+                            <label class="card-radio selected" data-value="ktp">
+                                <input type="radio" name="guarantee_type" value="ktp" checked>
+                                <div class="tick"><i class="fa-solid fa-check"></i></div>
+                                <div class="card-radio-icon icon-blue"><i class="fa-solid fa-id-card"></i></div>
+                                <div class="card-radio-title">KTP</div>
+                                <div class="card-radio-sub">Kartu Tanda Penduduk</div>
+                            </label>
+                            <label class="card-radio" data-value="sim">
+                                <input type="radio" name="guarantee_type" value="sim">
+                                <div class="tick"><i class="fa-solid fa-check"></i></div>
+                                <div class="card-radio-icon icon-green"><i class="fa-solid fa-address-card"></i></div>
+                                <div class="card-radio-title">SIM</div>
+                                <div class="card-radio-sub">Surat Izin Mengemudi</div>
+                            </label>
+                            <label class="card-radio" data-value="motor">
+                                <input type="radio" name="guarantee_type" value="motor">
+                                <div class="tick"><i class="fa-solid fa-check"></i></div>
+                                <div class="card-radio-icon icon-orange"><i class="fa-solid fa-motorcycle"></i></div>
+                                <div class="card-radio-title">BPKB Motor</div>
+                                <div class="card-radio-sub">Surat kepemilikan</div>
+                            </label>
                         </div>
                     </div>
 
-                    {{-- Navigation Buttons --}}
-                    <div class="flex justify-between items-center pt-6 mt-6 border-t-2 border-gray-100">
-                        <button type="button" id="prevBtn" class="btn btn-secondary hidden">
-                            <i class="fa-solid fa-arrow-left"></i>
-                            <span>Kembali</span>
-                        </button>
-
-                        <button type="button" id="nextBtn" class="btn btn-primary ml-auto">
-                            <span>Selanjutnya</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-
-                        <button type="submit" id="submitBtn" class="btn btn-success ml-auto hidden">
-                            <i class="fa-solid fa-check-circle"></i>
-                            <span>Selesai Booking</span>
-                        </button>
+                    <div class="field" id="fieldDoc">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-upload" style="font-size:0.6rem;"></i></i> Upload Dokumen Jaminan
+                        </label>
+                        <div class="upload-zone" id="uploadZone">
+                            <input type="file" name="document_file" id="docFile" accept="image/*,application/pdf" required>
+                            <div class="upload-zone-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                            <p><strong>Klik atau drag & drop</strong> ke sini</p>
+                            <p style="margin-top:0.25rem;">JPG, PNG, atau PDF · Maks 2MB</p>
+                        </div>
+                        <div class="upload-preview" id="uploadPreview">
+                            <div class="upload-preview-icon"><i class="fa-solid fa-file-circle-check"></i></div>
+                            <div class="upload-preview-name" id="uploadFileName">—</div>
+                            <button type="button" class="upload-remove" id="uploadRemove">
+                                <i class="fa-solid fa-xmark"></i> Hapus
+                            </button>
+                        </div>
+                        <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Upload dokumen jaminan Anda</div>
                     </div>
+                </div>
+
+                <!-- ============================================
+                     STEP 2 – Pembayaran
+                     ============================================ -->
+                <div class="step-panel" data-step="2">
+                    <div class="field">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-wallet" style="font-size:0.6rem;"></i></i> Metode Pembayaran
+                        </label>
+                        <div class="card-radio-grid" id="paymentGrid">
+                            <label class="card-radio selected" data-value="cash">
+                                <input type="radio" name="payment_method" value="cash" checked>
+                                <div class="tick"><i class="fa-solid fa-check"></i></div>
+                                <div class="card-radio-icon icon-green"><i class="fa-solid fa-money-bill-wave"></i></div>
+                                <div class="card-radio-title">Cash</div>
+                                <div class="card-radio-sub">Bayar tunai</div>
+                            </label>
+                            <label class="card-radio" data-value="transfer">
+                                <input type="radio" name="payment_method" value="transfer">
+                                <div class="tick"><i class="fa-solid fa-check"></i></div>
+                                <div class="card-radio-icon icon-blue"><i class="fa-solid fa-building-columns"></i></div>
+                                <div class="card-radio-title">Transfer Bank</div>
+                                <div class="card-radio-sub">Via rekening</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field" id="fieldDP">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-hand-holding-dollar" style="font-size:0.6rem;"></i></i> Jumlah DP
+                        </label>
+                        <div class="input-prefix-wrap">
+                            <div class="input-prefix">Rp</div>
+                            <input type="number" name="amount" id="dpInput" class="form-input" placeholder="Masukkan jumlah DP" required min="0">
+                        </div>
+                        <div class="field-hint"><i class="fa-solid fa-info-circle"></i> Minimal DP: <strong id="minDpText">Rp 0</strong> (30% dari total)</div>
+                        <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> DP harus minimal <span id="minDpErr">Rp 0</span></div>
+                    </div>
+
+                    <!-- Payment Summary -->
+                    <div class="pay-summary">
+                        <div class="pay-summary-title"><i class="fa-solid fa-circle-check"></i> Ringkasan Pembayaran</div>
+                        <div class="pay-row">
+                            <span class="pr-label">Total Harga Sewa</span>
+                            <span class="pr-val" id="psTotalPrice">Rp 0</span>
+                        </div>
+                        <div class="pay-row">
+                            <span class="pr-label">DP yang Dibayar</span>
+                            <span class="pr-val" id="psDPPaid">Rp 0</span>
+                        </div>
+                        <div class="pay-row highlight">
+                            <span class="pr-label">Sisa Pembayaran</span>
+                            <span class="pr-val" id="psRemaining">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nav Buttons -->
+                <div class="nav-buttons">
+                    <button type="button" class="btn btn-back btn-hidden" id="btnBack">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali
+                    </button>
+                    <button type="button" class="btn btn-next" id="btnNext">
+                        Selanjutnya <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button type="button" class="btn btn-submit btn-hidden" id="btnSubmit">
+                        Konfirmasi Pesanan <i class="fa-solid fa-arrow-right"></i>
+                    </button>
                 </div>
             </form>
         </div>
+    </div>
 
-        {{-- Info Card --}}
-        <div class="info-card mt-6">
-            <i class="fa-solid fa-info-circle text-2xl text-blue-600"></i>
-            <div>
-                <p class="font-bold text-blue-900 mb-1">Informasi Penting</p>
-                <p class="text-sm text-blue-800">Pastikan semua data yang Anda masukkan sudah benar sebelum menyelesaikan booking. DP minimal 30% dari total harga.</p>
-            </div>
-        </div>
+    <!-- Info Strip -->
+    <div class="info-strip">
+        <i class="fa-solid fa-info-circle"></i>
+        <p>
+            <strong>Informasi:</strong> DP minimal <strong>30%</strong> dari total harga sewa.
+            Mobil akan dikirim ke lokasi Anda setelah booking dikonfirmasi. Butuh bantuan? Hubungi kami lewat WhatsApp.
+        </p>
     </div>
 </div>
 
-{{-- Loading Overlay --}}
-<div class="loading-overlay" id="loadingOverlay">
-    <div class="text-center">
-        <div class="spinner mb-4"></div>
-        <p class="text-white font-bold">Memproses booking...</p>
-    </div>
-</div>
-
-{{-- JavaScript --}}
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
 <script>
-let currentStep = 0;
-const steps = document.querySelectorAll('.step');
-const indicators = document.querySelectorAll('.step-indicator');
-const labels = document.querySelectorAll('.step-label');
-const lines = document.querySelectorAll('.step-line');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const submitBtn = document.getElementById('submitBtn');
+(function() {
+    // --------------------------------------------------------
+    // DATA
+    // --------------------------------------------------------
+    const PRICE_PER_DAY = {{ $car->price_24h ?? 300000 }};
+    const CAR_NAME      = "{{ $car->brand }} {{ $car->name }}";
 
-// Service Type Selection
-document.querySelectorAll('.service-radio').forEach(radio => {
-    radio.addEventListener('change', function() {
-        document.querySelectorAll('.service-card').forEach(card => {
-            card.classList.remove('selected');
-        });
-        this.closest('.service-card').classList.add('selected');
+    const STEPS = [
+        { icon: 'fa-clock',          title: 'Waktu Sewa',       sub: 'Tentukan kapan Anda ingin menyewa' },
+        { icon: 'fa-shield-halved',  title: 'Jaminan',          sub: 'Upload dokumen sebagai jaminan' },
+        { icon: 'fa-credit-card',    title: 'Pembayaran',       sub: 'Pilih metode dan masukkan DP' }
+    ];
 
-        const driverWrapper = document.getElementById('driverSelectWrapper');
-        const isLepasKunci = this.value === 'lepas_kunci';
-        driverWrapper.classList.toggle('hidden', isLepasKunci);
-    });
-});
+    // --------------------------------------------------------
+    // STATE
+    // --------------------------------------------------------
+    let currentStep  = 0;
+    let totalPrice   = 0;
+    let days         = 0;
+    let minDP        = 0;
 
-// Guarantee Type Selection
-document.querySelectorAll('.guarantee-radio').forEach(radio => {
-    radio.addEventListener('change', function() {
-        document.querySelectorAll('.guarantee-card, .service-card').forEach(card => {
-            if (card.querySelector('.guarantee-radio')) {
-                card.classList.remove('selected');
+    // --------------------------------------------------------
+    // ELS
+    // --------------------------------------------------------
+    const panels      = document.querySelectorAll('.step-panel');
+    const btnBack     = document.getElementById('btnBack');
+    const btnNext     = document.getElementById('btnNext');
+    const btnSubmit   = document.getElementById('btnSubmit');
+    const startInput  = document.getElementById('startInput');
+    const endInput    = document.getElementById('endInput');
+    const dpInput     = document.getElementById('dpInput');
+    const durationBox = document.getElementById('durationBox');
+
+    // --------------------------------------------------------
+    // PROGRESS BAR
+    // --------------------------------------------------------
+    function renderProgress() {
+        const wrap = document.getElementById('progressBar');
+        let html = '';
+        STEPS.forEach((s, i) => {
+            const cls = i < currentStep ? 'done' : (i === currentStep ? 'active' : '');
+            const lblCls = i < currentStep ? 'done' : (i === currentStep ? 'active' : '');
+            const icon  = i < currentStep
+                ? '<i class="fa-solid fa-check"></i>'
+                : `<i class="fa-solid ${s.icon}"></i>`;
+
+            html += `<div class="prog-step">
+                        <div class="prog-dot ${cls}">${icon}</div>
+                        <span class="prog-label ${lblCls}">${s.title}</span>
+                     </div>`;
+
+            if (i < STEPS.length - 1) {
+                const fillPct = i < currentStep ? '100' : '0';
+                html += `<div class="prog-line"><div class="prog-line-fill" style="width:${fillPct}%"></div></div>`;
             }
         });
-        this.closest('.service-card').classList.add('selected');
-    });
-});
+        wrap.innerHTML = html;
+    }
 
-// Payment Method Selection
-document.querySelectorAll('.payment-radio').forEach(radio => {
-    radio.addEventListener('change', function() {
-        document.querySelectorAll('.payment-card, .service-card').forEach(card => {
-            if (card.querySelector('.payment-radio')) {
-                card.classList.remove('selected');
+    // --------------------------------------------------------
+    // HEADER
+    // --------------------------------------------------------
+    function updateHeader() {
+        const s = STEPS[currentStep];
+        document.getElementById('headerIcon').innerHTML = `<i class="fa-solid ${s.icon}"></i>`;
+        document.getElementById('headerTitle').textContent = s.title;
+        document.getElementById('headerSub').textContent   = s.sub;
+    }
+
+    // --------------------------------------------------------
+    // STEP NAVIGATION
+    // --------------------------------------------------------
+    function goToStep(n) {
+        panels.forEach((p, i) => p.classList.toggle('active', i === n));
+        currentStep = n;
+
+        btnBack.classList.toggle('btn-hidden', n === 0);
+        btnNext.classList.toggle('btn-hidden', n === STEPS.length - 1);
+        btnSubmit.classList.toggle('btn-hidden', n !== STEPS.length - 1);
+
+        renderProgress();
+        updateHeader();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    btnBack.addEventListener('click', () => { if (currentStep > 0) goToStep(currentStep - 1); });
+
+    btnNext.addEventListener('click', () => {
+        if (!validateCurrentStep()) return;
+        if (currentStep < STEPS.length - 1) goToStep(currentStep + 1);
+    });
+
+    // --------------------------------------------------------
+    // VALIDATION
+    // --------------------------------------------------------
+    function clearError(fieldId) {
+        const f = document.getElementById(fieldId);
+        if (f) f.classList.remove('has-error');
+    }
+
+    function setError(fieldId) {
+        const f = document.getElementById(fieldId);
+        if (f) f.classList.add('has-error');
+    }
+
+    function validateCurrentStep() {
+        ['fieldStart','fieldEnd','fieldDoc','fieldDP'].forEach(clearError);
+
+        if (currentStep === 0) {
+            let ok = true;
+            if (!startInput.value) { setError('fieldStart'); ok = false; }
+            if (!endInput.value)   { setError('fieldEnd');   ok = false; }
+            if (ok && days <= 0)   { setError('fieldEnd');   ok = false; }
+            const svc = document.querySelector('input[name="service_type"]:checked').value;
+            if (svc !== 'lepas_kunci') {
+                const drv = document.getElementById('driverSelect');
+                if (!drv.value) {
+                    drv.style.borderColor = 'var(--danger)';
+                    ok = false;
+                } else {
+                    drv.style.borderColor = '';
+                }
             }
+            return ok;
+        }
+
+        if (currentStep === 1) {
+            const file = document.getElementById('docFile');
+            if (!file.files || file.files.length === 0) {
+                setError('fieldDoc');
+                return false;
+            }
+            return true;
+        }
+
+        if (currentStep === 2) {
+            const dp = Number(dpInput.value) || 0;
+            if (dp < minDP) {
+                setError('fieldDP');
+                return false;
+            }
+            return true;
+        }
+
+        return true;
+    }
+
+    // --------------------------------------------------------
+    // PRICE CALC
+    // --------------------------------------------------------
+    function calcPrice() {
+        if (!startInput.value || !endInput.value) {
+            durationBox.classList.remove('show');
+            return;
+        }
+
+        const s = new Date(startInput.value);
+        const e = new Date(endInput.value);
+        days = Math.ceil((e - s) / (1000 * 60 * 60 * 24));
+
+        if (days <= 0) {
+            durationBox.classList.remove('show');
+            totalPrice = 0; minDP = 0;
+            document.getElementById('totalPriceInput').value = 0;
+            updatePaySummary();
+            return;
+        }
+
+        totalPrice = PRICE_PER_DAY * days;
+        minDP      = Math.ceil(totalPrice * 0.3);
+
+        document.getElementById('totalPriceInput').value = totalPrice;
+
+        document.getElementById('durDays').textContent      = days;
+        document.getElementById('durPricePerDay').textContent = 'Rp ' + PRICE_PER_DAY.toLocaleString('id-ID');
+        document.getElementById('durTotal').textContent     = 'Rp ' + totalPrice.toLocaleString('id-ID');
+        document.getElementById('minDpText').textContent    = 'Rp ' + minDP.toLocaleString('id-ID');
+        document.getElementById('minDpErr').textContent     = 'Rp ' + minDP.toLocaleString('id-ID');
+
+        durationBox.classList.add('show');
+        updatePaySummary();
+    }
+
+    startInput.addEventListener('change', calcPrice);
+    endInput.addEventListener('change', () => { clearError('fieldEnd'); calcPrice(); });
+    startInput.addEventListener('change', () => { clearError('fieldStart'); });
+
+    // --------------------------------------------------------
+    // PAY SUMMARY
+    // --------------------------------------------------------
+    function updatePaySummary() {
+        const dp = Number(dpInput.value) || 0;
+        document.getElementById('psTotalPrice').textContent  = 'Rp ' + totalPrice.toLocaleString('id-ID');
+        document.getElementById('psDPPaid').textContent       = 'Rp ' + dp.toLocaleString('id-ID');
+        document.getElementById('psRemaining').textContent    = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID');
+    }
+
+    dpInput.addEventListener('input', () => { clearError('fieldDP'); updatePaySummary(); });
+
+    // --------------------------------------------------------
+    // CARD RADIO
+    // --------------------------------------------------------
+    function initCardRadio(gridId) {
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        grid.querySelectorAll('.card-radio').forEach(card => {
+            card.addEventListener('click', function() {
+                grid.querySelectorAll('.card-radio').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
+            });
         });
-        this.closest('.service-card').classList.add('selected');
-    });
-});
-
-// File Upload
-const fileUploadArea = document.getElementById('fileUploadArea');
-const documentFile = document.getElementById('documentFile');
-const fileUploadContent = document.getElementById('fileUploadContent');
-const filePreview = document.getElementById('filePreview');
-const fileName = document.getElementById('fileName');
-
-fileUploadArea.addEventListener('click', () => documentFile.click());
-
-fileUploadArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    fileUploadArea.classList.add('dragover');
-});
-
-fileUploadArea.addEventListener('dragleave', () => {
-    fileUploadArea.classList.remove('dragover');
-});
-
-fileUploadArea.addEventListener('drop', (e) => {
-    e.preventDefault();
-    fileUploadArea.classList.remove('dragover');
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        documentFile.files = files;
-        showFilePreview(files[0]);
     }
-});
 
-documentFile.addEventListener('change', function() {
-    if (this.files.length > 0) {
-        showFilePreview(this.files[0]);
-    }
-});
+    initCardRadio('serviceGrid');
+    initCardRadio('guaranteeGrid');
+    initCardRadio('paymentGrid');
 
-function showFilePreview(file) {
-    fileName.textContent = file.name;
-    fileUploadContent.classList.add('hidden');
-    filePreview.classList.remove('hidden');
-}
-
-function removeFile() {
-    documentFile.value = '';
-    fileUploadContent.classList.remove('hidden');
-    filePreview.classList.add('hidden');
-}
-
-// Step Navigation
-function showStep(step) {
-    steps.forEach((el, i) => {
-        el.classList.toggle('hidden', i !== step);
+    // Driver field toggle
+    document.querySelectorAll('#serviceGrid .card-radio').forEach(card => {
+        card.addEventListener('click', function() {
+            const val = this.dataset.value;
+            document.getElementById('driverField').classList.toggle('hidden', val === 'lepas_kunci');
+        });
     });
 
-    indicators.forEach((el, i) => {
-        el.classList.remove('active', 'completed');
-        if (i < step) {
-            el.classList.add('completed');
-            el.innerHTML = '<i class="fa-solid fa-check"></i>';
-        } else if (i === step) {
-            el.classList.add('active');
-            const icons = ['fa-car', 'fa-clock', 'fa-shield-halved', 'fa-credit-card'];
-            el.innerHTML = `<i class="fa-solid ${icons[i]}"></i>`;
+    // --------------------------------------------------------
+    // FILE UPLOAD
+    // --------------------------------------------------------
+    const uploadZone    = document.getElementById('uploadZone');
+    const docFile       = document.getElementById('docFile');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const uploadRemove  = document.getElementById('uploadRemove');
+
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone.addEventListener('dragleave', ()  => uploadZone.classList.remove('dragover'));
+    uploadZone.addEventListener('drop', e => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+            docFile.files = e.dataTransfer.files;
+            showPreview(e.dataTransfer.files[0]);
+        }
+    });
+
+    docFile.addEventListener('change', function() {
+        if (this.files.length) showPreview(this.files[0]);
+    });
+
+    function showPreview(file) {
+        document.getElementById('uploadFileName').textContent = file.name;
+        uploadPreview.classList.add('show');
+        clearError('fieldDoc');
+    }
+
+    uploadRemove.addEventListener('click', () => {
+        docFile.value = '';
+        uploadPreview.classList.remove('show');
+    });
+
+    // --------------------------------------------------------
+    // CONFIRMATION MODAL
+    // --------------------------------------------------------
+    function openConfirm() {
+        if (!validateCurrentStep()) return;
+
+        const svcVal   = document.querySelector('input[name="service_type"]:checked').value;
+        const svcMap   = { lepas_kunci:'Lepas Kunci (Tanpa Sopir)', dengan_sopir:'Dengan Sopir', carter:'Carter (Full Service)' };
+        const grnVal   = document.querySelector('input[name="guarantee_type"]:checked').value;
+        const grnMap   = { ktp:'KTP', sim:'SIM', motor:'BPKB Motor' };
+        const payVal   = document.querySelector('input[name="payment_method"]:checked').value;
+        const payMap   = { cash:'Cash (Tunai)', transfer:'Transfer Bank' };
+        const dp       = Number(dpInput.value) || 0;
+
+        function fmtDt(val) {
+            if (!val) return '–';
+            const d = new Date(val);
+            return d.toLocaleDateString('id-ID', { weekday:'short', day:'numeric', month:'short', year:'numeric' })
+                 + ' · ' + d.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+        }
+
+        document.getElementById('cfCarName').textContent       = CAR_NAME;
+        document.getElementById('cfStart').textContent         = fmtDt(startInput.value);
+        document.getElementById('cfEnd').textContent           = fmtDt(endInput.value);
+        document.getElementById('cfDuration').textContent      = days + ' hari';
+        document.getElementById('cfService').textContent       = svcMap[svcVal] || svcVal;
+        document.getElementById('cfGuarantee').textContent     = grnMap[grnVal] || grnVal;
+        document.getElementById('cfDoc').textContent           = docFile.files.length ? docFile.files[0].name : '–';
+        document.getElementById('cfPayMethod').textContent     = payMap[payVal] || payVal;
+        document.getElementById('cfTotalPrice').textContent    = 'Rp ' + totalPrice.toLocaleString('id-ID');
+        document.getElementById('cfDP').textContent            = 'Rp ' + dp.toLocaleString('id-ID');
+        document.getElementById('cfRemaining').textContent     = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID');
+
+        const driverRow = document.getElementById('cfDriverRow');
+        if (svcVal !== 'lepas_kunci') {
+            driverRow.classList.remove('hidden');
+            const drvSel = document.getElementById('driverSelect');
+            document.getElementById('cfDriver').textContent = drvSel.options[drvSel.selectedIndex]?.text || '–';
         } else {
-            const icons = ['fa-car', 'fa-clock', 'fa-shield-halved', 'fa-credit-card'];
-            el.innerHTML = `<i class="fa-solid ${icons[i]}"></i>`;
+            driverRow.classList.add('hidden');
         }
-    });
 
-    labels.forEach((el, i) => {
-        el.classList.remove('active', 'completed');
-        if (i < step) {
-            el.classList.add('completed');
-        } else if (i === step) {
-            el.classList.add('active');
-        }
-    });
-
-    lines.forEach((line, i) => {
-        line.style.width = i < step ? '100%' : '0%';
-    });
-
-    prevBtn.classList.toggle('hidden', step === 0);
-    nextBtn.classList.toggle('hidden', step === steps.length - 1);
-    submitBtn.classList.toggle('hidden', step !== steps.length - 1);
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-nextBtn.addEventListener('click', () => {
-    if (currentStep < steps.length - 1) {
-        currentStep++;
-        showStep(currentStep);
-    }
-});
-
-prevBtn.addEventListener('click', () => {
-    if (currentStep > 0) {
-        currentStep--;
-        showStep(currentStep);
-    }
-});
-
-// Price Calculation
-const start = document.getElementById('start');
-const end = document.getElementById('end');
-const carSelect = document.getElementById('carSelect');
-const durationText = document.getElementById('duration');
-const totalText = document.getElementById('totalPrice');
-const totalInput = document.getElementById('totalPriceInput');
-const dpInput = document.getElementById('dpInput');
-const summaryTotal = document.getElementById('summaryTotal');
-const summaryDP = document.getElementById('summaryDP');
-const minDp = document.getElementById('minDp');
-const remaining = document.getElementById('remaining');
-
-function calculatePrice() {
-    if (!start.value || !end.value) return;
-
-    const startDate = new Date(start.value);
-    const endDate = new Date(end.value);
-    const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-
-    if (days <= 0) {
-        alert('Tanggal selesai harus setelah tanggal mulai');
-        return;
+        document.getElementById('confirmOverlay').classList.add('show');
     }
 
-    const pricePerDay = carSelect.selectedOptions[0].dataset.price;
-    const total = pricePerDay * days;
-    const minDpAmount = Math.ceil(total * 0.3);
+    btnSubmit.addEventListener('click', openConfirm);
 
-    durationText.textContent = days;
-    totalText.textContent = total.toLocaleString('id-ID');
-    totalInput.value = total;
-    summaryTotal.textContent = total.toLocaleString('id-ID');
-    dpInput.min = minDpAmount;
-    minDp.textContent = 'Rp ' + minDpAmount.toLocaleString('id-ID');
-}
+    document.getElementById('confirmBack').addEventListener('click', () => {
+        document.getElementById('confirmOverlay').classList.remove('show');
+    });
 
-start.addEventListener('change', calculatePrice);
-end.addEventListener('change', calculatePrice);
-carSelect.addEventListener('change', calculatePrice);
+    document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('show');
+    });
 
-dpInput.addEventListener('input', function() {
-    const dpAmount = Number(this.value) || 0;
-    const total = Number(totalInput.value) || 0;
-    const remainingAmount = total - dpAmount;
+    document.getElementById('confirmSubmit').addEventListener('click', () => {
+        document.getElementById('confirmOverlay').classList.remove('show');
+        document.getElementById('loadingOverlay').classList.add('active');
+        document.getElementById('bookingForm').submit();
+    });
 
-    summaryDP.textContent = dpAmount.toLocaleString('id-ID');
-    remaining.textContent = remainingAmount.toLocaleString('id-ID');
-});
-
-// Form Submission
-document.getElementById('bookingForm').addEventListener('submit', function(e) {
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    loadingOverlay.classList.add('active');
-});
-
-// Initialize
-showStep(currentStep);
+    // --------------------------------------------------------
+    // INIT
+    // --------------------------------------------------------
+    goToStep(0);
+    calcPrice();
+})();
 </script>
 
 </x-app-layout>
