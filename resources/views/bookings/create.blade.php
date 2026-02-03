@@ -339,6 +339,11 @@ body {
     filter: hue-rotate(30deg) saturate(1.4);
 }
 
+textarea.form-input {
+    resize: vertical;
+    min-height: 80px;
+}
+
 .field-hint {
     font-size: 0.72rem;
     color: var(--text-muted);
@@ -621,6 +626,91 @@ body {
 
 .input-prefix-wrap .form-input:focus + .input-prefix,
 .input-prefix-wrap .form-input:focus ~ .input-prefix { border-color: var(--primary); }
+
+/* ============================================================
+   BANK INFO BOX
+   ============================================================ */
+.bank-info-box {
+    background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+    border: 2px solid #3B82F6;
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1rem;
+    display: none;
+}
+
+.bank-info-box.show { display: block; animation: stepIn 0.3s ease; }
+
+.bank-info-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: #1E40AF;
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bank-info-title i { color: #3B82F6; }
+
+.bank-item {
+    background: white;
+    border-radius: 10px;
+    padding: 0.875rem 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #93C5FD;
+}
+
+.bank-item:last-child { margin-bottom: 0; }
+
+.bank-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1E3A8A;
+    margin-bottom: 0.35rem;
+}
+
+.bank-account {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bank-number {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1E40AF;
+    letter-spacing: 0.5px;
+}
+
+.copy-btn {
+    background: #DBEAFE;
+    border: none;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #1E40AF;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.copy-btn:hover {
+    background: #3B82F6;
+    color: white;
+}
+
+.bank-holder {
+    font-size: 0.72rem;
+    color: #6B7280;
+    margin-top: 0.25rem;
+}
 
 /* ============================================================
    PAYMENT SUMMARY BOX (Step 3)
@@ -985,14 +1075,20 @@ body {
                 <span class="cr-val" id="cfDuration">–</span>
             </div>
 
+            <div class="confirm-section-title"><i class="fa-solid fa-user"></i> &nbsp;Data Penyewa</div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-phone"></i> Kontak</span>
+                <span class="cr-val" id="cfContact">–</span>
+            </div>
+            <div class="confirm-row">
+                <span class="cr-label"><i class="fa-solid fa-location-dot"></i> Alamat</span>
+                <span class="cr-val" id="cfAlamat">–</span>
+            </div>
+
             <div class="confirm-section-title"><i class="fa-solid fa-briefcase"></i> &nbsp;Layanan</div>
             <div class="confirm-row">
                 <span class="cr-label"><i class="fa-solid fa-key"></i> Jenis Layanan</span>
                 <span class="cr-val" id="cfService">–</span>
-            </div>
-            <div class="confirm-row hidden" id="cfDriverRow">
-                <span class="cr-label"><i class="fa-solid fa-user-tie"></i> Sopir</span>
-                <span class="cr-val" id="cfDriver">–</span>
             </div>
 
             <div class="confirm-section-title"><i class="fa-solid fa-shield-halved"></i> &nbsp;Jaminan</div>
@@ -1009,6 +1105,10 @@ body {
             <div class="confirm-row">
                 <span class="cr-label"><i class="fa-solid fa-wallet"></i> Metode</span>
                 <span class="cr-val" id="cfPayMethod">–</span>
+            </div>
+            <div class="confirm-row" id="cfBankRow">
+                <span class="cr-label"><i class="fa-solid fa-building-columns"></i> Bank</span>
+                <span class="cr-val" id="cfBank">–</span>
             </div>
             <div class="confirm-row">
                 <span class="cr-label"><i class="fa-solid fa-money-bill-wave"></i> Total Harga</span>
@@ -1048,13 +1148,7 @@ body {
      PAGE
      ============================================================ -->
 <div class="page-wrap">
-{{-- <!-- DEBUG BLOCK -->
-<div style="background:#fee2e2; padding:1rem; border-radius:8px; margin-bottom:1rem; font-size:0.8rem; font-family:monospace;">
-    <strong>URL full:</strong> <code>{{ request()->fullUrl() }}</code><br><br>
-    <strong>All query params:</strong><br>
-    <pre style="margin-top:0.5rem; white-space:pre-wrap;">{{ print_r(request()->query(), true) }}</pre>
-</div>
-<!-- END DEBUG --> --}}
+
    @if($car)
 <div class="recap-banner">
     <div class="recap-car-img">
@@ -1102,11 +1196,10 @@ body {
                 @csrf
                 <input type="hidden" name="car_id" value="{{ $car->id }}">
                 <input type="hidden" name="total_price" id="totalPriceInput" value="0">
+                <input type="hidden" name="driver_id" value="" id="hiddenDriverId">
 
                 <!-- ============================================
                      STEP 0 – Waktu & Layanan
-                     FIX: value menggunakan Carbon::parse() untuk
-                     normalize format dari URL params
                      ============================================ -->
                 <div class="step-panel active" data-step="0">
 
@@ -1145,6 +1238,25 @@ body {
                         <input type="text" name="destination" class="form-input" placeholder="Misal: Jakarta – Bandung">
                     </div>
 
+                    <!-- Data Penyewa -->
+                    <div class="grid-2">
+                        <div class="field" id="fieldContact">
+                            <label class="field-label">
+                                <i><i class="fa-solid fa-phone" style="font-size:0.6rem;"></i></i> Nomor Kontak
+                            </label>
+                            <input type="text" name="contact" id="contactInput" class="form-input" placeholder="08xxxxxxxxxx" required>
+                            <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Masukkan nomor kontak</div>
+                        </div>
+
+                        <div class="field" id="fieldAlamat">
+                            <label class="field-label">
+                                <i><i class="fa-solid fa-map-marker-alt" style="font-size:0.65rem;"></i></i> Alamat
+                            </label>
+                            <input type="text" name="alamat" id="alamatInput" class="form-input" placeholder="Alamat lengkap Anda" required>
+                            <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Masukkan alamat</div>
+                        </div>
+                    </div>
+
                     <!-- Jenis Layanan -->
                     <div class="field">
                         <label class="field-label">
@@ -1173,20 +1285,6 @@ body {
                                 <div class="card-radio-sub">Full service</div>
                             </label>
                         </div>
-                    </div>
-
-                    <!-- Pilih Sopir -->
-                    <div class="field hidden" id="driverField">
-                        <label class="field-label">
-                            <i><i class="fa-solid fa-user-check" style="font-size:0.6rem;"></i></i> Pilih Sopir
-                        </label>
-                        <select name="driver_id" id="driverSelect" class="form-input" style="appearance:none; background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 12px center; padding-right:2.5rem; cursor:pointer;">
-                            <option value="">— Pilih sopir —</option>
-                            @foreach($drivers ?? [] as $driver)
-                                <option value="{{ $driver->id }}">{{ $driver->name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="field-hint"><i class="fa-solid fa-info-circle"></i> Sopir akan dikirimkan ke lokasi Anda</div>
                     </div>
 
                     <!-- Duration Summary -->
@@ -1288,6 +1386,29 @@ body {
                         </div>
                     </div>
 
+                    <!-- Bank Selection (shown only for transfer) -->
+                    <div class="field hidden" id="fieldBank">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-building-columns" style="font-size:0.6rem;"></i></i> Pilih Bank
+                        </label>
+                        <select name="selected_bank" id="bankSelect" class="form-input" style="appearance:none; background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 12px center; padding-right:2.5rem; cursor:pointer;">
+                            <option value="">— Pilih Bank —</option>
+                            <option value="BCA">BCA - 1234567890 (a.n. SQUADTRANS)</option>
+                            <option value="Mandiri">Mandiri - 0987654321 (a.n. SQUADTRANS)</option>
+                            <option value="BRI">BRI - 5678901234 (a.n. SQUADTRANS)</option>
+                            <option value="BNI">BNI - 4321098765 (a.n. SQUADTRANS)</option>
+                        </select>
+                        <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Pilih bank tujuan transfer</div>
+                    </div>
+
+                    <!-- Bank Info Box -->
+                    <div class="bank-info-box" id="bankInfoBox">
+                        <div class="bank-info-title">
+                            <i class="fa-solid fa-info-circle"></i> Informasi Rekening Transfer
+                        </div>
+                        <div id="bankInfoContent"></div>
+                    </div>
+
                     <div class="field" id="fieldDP">
                         <label class="field-label">
                             <i><i class="fa-solid fa-hand-holding-dollar" style="font-size:0.6rem;"></i></i> Jumlah DP
@@ -1355,6 +1476,30 @@ body {
     const PRICE_PER_DAY = {{ $car->price_24h ?? 300000 }};
     const CAR_NAME      = "{{ $car->brand }} {{ $car->name }}";
 
+    // Bank account information
+    const BANK_ACCOUNTS = {
+        'BCA': {
+            name: 'BCA',
+            account: '1234567890',
+            holder: 'SQUADTRANS'
+        },
+        'Mandiri': {
+            name: 'Bank Mandiri',
+            account: '0987654321',
+            holder: 'SQUADTRANS'
+        },
+        'BRI': {
+            name: 'Bank BRI',
+            account: '5678901234',
+            holder: 'SQUADTRANS'
+        },
+        'BNI': {
+            name: 'Bank BNI',
+            account: '4321098765',
+            holder: 'SQUADTRANS'
+        }
+    };
+
     const STEPS = [
         { icon: 'fa-clock',          title: 'Waktu Sewa',       sub: 'Tentukan kapan Anda ingin menyewa' },
         { icon: 'fa-shield-halved',  title: 'Jaminan',          sub: 'Upload dokumen sebagai jaminan' },
@@ -1380,6 +1525,10 @@ body {
     const endInput    = document.getElementById('endInput');
     const dpInput     = document.getElementById('dpInput');
     const durationBox = document.getElementById('durationBox');
+    const contactInput = document.getElementById('contactInput');
+    const alamatInput  = document.getElementById('alamatInput');
+    const bankSelect   = document.getElementById('bankSelect');
+    const bankInfoBox  = document.getElementById('bankInfoBox');
 
     // --------------------------------------------------------
     // PROGRESS BAR
@@ -1454,23 +1603,25 @@ body {
     }
 
     function validateCurrentStep() {
-        ['fieldStart','fieldEnd','fieldDoc','fieldDP'].forEach(clearError);
+        ['fieldStart','fieldEnd','fieldContact','fieldAlamat','fieldDoc','fieldBank','fieldDP'].forEach(clearError);
 
         if (currentStep === 0) {
             let ok = true;
             if (!startInput.value) { setError('fieldStart'); ok = false; }
             if (!endInput.value)   { setError('fieldEnd');   ok = false; }
+            if (!contactInput.value) { setError('fieldContact'); ok = false; }
+            if (!alamatInput.value)  { setError('fieldAlamat');  ok = false; }
             if (ok && days <= 0)   { setError('fieldEnd');   ok = false; }
+
+            // Auto-assign driver if needed
             const svc = document.querySelector('input[name="service_type"]:checked').value;
             if (svc !== 'lepas_kunci') {
-                const drv = document.getElementById('driverSelect');
-                if (!drv.value) {
-                    drv.style.borderColor = 'var(--danger)';
-                    ok = false;
-                } else {
-                    drv.style.borderColor = '';
-                }
+                // Set default driver ID (you can change this to get from database)
+                document.getElementById('hiddenDriverId').value = '1'; // Default driver ID
+            } else {
+                document.getElementById('hiddenDriverId').value = '';
             }
+
             return ok;
         }
 
@@ -1484,6 +1635,14 @@ body {
         }
 
         if (currentStep === 2) {
+            const payMethod = document.querySelector('input[name="payment_method"]:checked').value;
+
+            // Validate bank selection if transfer is chosen
+            if (payMethod === 'transfer' && !bankSelect.value) {
+                setError('fieldBank');
+                return false;
+            }
+
             const dp = Number(dpInput.value) || 0;
             if (dp < minDP) {
                 setError('fieldDP');
@@ -1534,6 +1693,8 @@ body {
     startInput.addEventListener('change', calcPrice);
     endInput.addEventListener('change', () => { clearError('fieldEnd'); calcPrice(); });
     startInput.addEventListener('change', () => { clearError('fieldStart'); });
+    contactInput.addEventListener('input', () => { clearError('fieldContact'); });
+    alamatInput.addEventListener('input', () => { clearError('fieldAlamat'); });
 
     // --------------------------------------------------------
     // PAY SUMMARY
@@ -1567,13 +1728,67 @@ body {
     initCardRadio('guaranteeGrid');
     initCardRadio('paymentGrid');
 
-    // Driver field toggle
-    document.querySelectorAll('#serviceGrid .card-radio').forEach(card => {
+    // --------------------------------------------------------
+    // PAYMENT METHOD TOGGLE
+    // --------------------------------------------------------
+    document.querySelectorAll('#paymentGrid .card-radio').forEach(card => {
         card.addEventListener('click', function() {
             const val = this.dataset.value;
-            document.getElementById('driverField').classList.toggle('hidden', val === 'lepas_kunci');
+            const bankField = document.getElementById('fieldBank');
+
+            if (val === 'transfer') {
+                bankField.classList.remove('hidden');
+                if (bankSelect.value) {
+                    showBankInfo(bankSelect.value);
+                }
+            } else {
+                bankField.classList.add('hidden');
+                bankInfoBox.classList.remove('show');
+            }
         });
     });
+
+    // --------------------------------------------------------
+    // BANK SELECTION
+    // --------------------------------------------------------
+    bankSelect.addEventListener('change', function() {
+        clearError('fieldBank');
+        if (this.value) {
+            showBankInfo(this.value);
+        } else {
+            bankInfoBox.classList.remove('show');
+        }
+    });
+
+    function showBankInfo(bankCode) {
+        const bank = BANK_ACCOUNTS[bankCode];
+        if (!bank) return;
+
+        const content = `
+            <div class="bank-item">
+                <div class="bank-name">${bank.name}</div>
+                <div class="bank-account">
+                    <span class="bank-number">${bank.account}</span>
+                    <button type="button" class="copy-btn" onclick="copyToClipboard('${bank.account}')">
+                        <i class="fa-solid fa-copy"></i> Copy
+                    </button>
+                </div>
+                <div class="bank-holder">a.n. ${bank.holder}</div>
+            </div>
+        `;
+
+        document.getElementById('bankInfoContent').innerHTML = content;
+        bankInfoBox.classList.add('show');
+    }
+
+    // Copy to clipboard function
+    window.copyToClipboard = function(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Nomor rekening berhasil disalin!');
+        }).catch(err => {
+            console.error('Gagal menyalin:', err);
+        });
+    };
 
     // --------------------------------------------------------
     // FILE UPLOAD
@@ -1634,6 +1849,8 @@ body {
         document.getElementById('cfStart').textContent         = fmtDt(startInput.value);
         document.getElementById('cfEnd').textContent           = fmtDt(endInput.value);
         document.getElementById('cfDuration').textContent      = days + ' hari';
+        document.getElementById('cfContact').textContent       = contactInput.value || '–';
+        document.getElementById('cfAlamat').textContent        = alamatInput.value || '–';
         document.getElementById('cfService').textContent       = svcMap[svcVal] || svcVal;
         document.getElementById('cfGuarantee').textContent     = grnMap[grnVal] || grnVal;
         document.getElementById('cfDoc').textContent           = docFile.files.length ? docFile.files[0].name : '–';
@@ -1642,13 +1859,14 @@ body {
         document.getElementById('cfDP').textContent            = 'Rp ' + dp.toLocaleString('id-ID');
         document.getElementById('cfRemaining').textContent     = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID');
 
-        const driverRow = document.getElementById('cfDriverRow');
-        if (svcVal !== 'lepas_kunci') {
-            driverRow.classList.remove('hidden');
-            const drvSel = document.getElementById('driverSelect');
-            document.getElementById('cfDriver').textContent = drvSel.options[drvSel.selectedIndex]?.text || '–';
+        // Show bank info if transfer
+        const bankRow = document.getElementById('cfBankRow');
+        if (payVal === 'transfer') {
+            bankRow.classList.remove('hidden');
+            const selectedBank = bankSelect.options[bankSelect.selectedIndex]?.text || '–';
+            document.getElementById('cfBank').textContent = selectedBank;
         } else {
-            driverRow.classList.add('hidden');
+            bankRow.classList.add('hidden');
         }
 
         document.getElementById('confirmOverlay').classList.add('show');

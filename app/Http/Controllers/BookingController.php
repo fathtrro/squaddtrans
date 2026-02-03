@@ -29,24 +29,29 @@ class BookingController extends Controller
         ]);
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
             'car_id' => 'required|exists:cars,id',
-            'service_type' => 'required',
+            'driver_id' => 'nullable|exists:drivers,id',
+            'service_type' => 'required|string',
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date|after:start_datetime',
+            'destination' => 'required|string',
+            'contact' => 'required|string|max:20',
+            'alamat' => 'required|string',
             'total_price' => 'required|numeric',
-            'guarantee_type' => 'required',
+            'guarantee_type' => 'required|string',
             'document_file' => 'required|file|mimes:jpg,png,pdf',
             'amount' => 'required|numeric|min:0',
+            'payment_method' => 'required|string',
         ]);
 
-        $booking = null; // ⬅️ penting
+        $booking = null;
 
         DB::transaction(function () use ($request, &$booking) {
 
+            // BOOKING
             $booking = Booking::create([
                 'user_id' => auth()->id(),
                 'car_id' => $request->car_id,
@@ -55,11 +60,14 @@ class BookingController extends Controller
                 'start_datetime' => $request->start_datetime,
                 'end_datetime' => $request->end_datetime,
                 'destination' => $request->destination,
+                'contact' => $request->contact,
+                'alamat' => $request->alamat,
                 'dp_amount' => $request->amount,
                 'total_price' => $request->total_price,
                 'status' => 'pending',
             ]);
 
+            // BOOKING CODE
             $booking->update([
                 'booking_code' => 'BK-' . str_pad($booking->id, 6, '0', STR_PAD_LEFT)
             ]);
@@ -84,10 +92,8 @@ class BookingController extends Controller
             ]);
         });
 
-
         return redirect()->route('bookings.success', $booking->id);
     }
-
 
     public function success(Booking $booking)
     {
@@ -96,34 +102,27 @@ class BookingController extends Controller
         return view('bookings.success', compact('booking'));
     }
 
-
     public function index(Request $request)
     {
         $query = Booking::with(['car', 'payments'])
             ->where('user_id', auth()->id());
 
-        // Filter by status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Filter by date
         if ($request->filled('date_filter')) {
             $query->whereDate('start_datetime', $request->date_filter);
         }
 
-        // Get all bookings for stats (before pagination)
         $allBookings = (clone $query)->get();
-
-        // Apply pagination
         $bookings = $query->latest()->paginate(10);
 
         return view('bookings.index', [
             'bookings' => $bookings,
-            'allBookings' => $allBookings // For stats calculation
+            'allBookings' => $allBookings
         ]);
     }
-
 
     public function show($id)
     {
@@ -138,7 +137,7 @@ class BookingController extends Controller
     }
 
     /**
-     * Download bukti pembayaran sebagai PDF
+     * Download bukti pembayaran PDF
      */
     public function downloadReceipt($id)
     {
@@ -150,16 +149,13 @@ class BookingController extends Controller
             'user'
         ])->findOrFail($id);
 
-        // Pastikan booking milik user yang sedang login
         if ($booking->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
 
-        // Generate PDF
         $pdf = Pdf::loadView('bookings.receipt', compact('booking'))
             ->setPaper('a4', 'portrait');
 
-        // Download dengan nama file yang sesuai
         return $pdf->download('Bukti-Pembayaran-' . $booking->booking_code . '.pdf');
     }
 }

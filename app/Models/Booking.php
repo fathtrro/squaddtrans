@@ -16,10 +16,13 @@ class Booking extends Model
         'start_datetime',
         'end_datetime',
         'destination',
+        'contact',
+        'alamat',
         'dp_amount',
         'total_price',
         'status'
     ];
+
 
     /**
      * Cast attributes to native types

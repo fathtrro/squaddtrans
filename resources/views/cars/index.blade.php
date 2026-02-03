@@ -18,7 +18,7 @@
                 linear-gradient(135deg,
                     rgba(17, 24, 39, 0.7) 0%,
                     rgba(31, 41, 55, 0.6) 100%),
-                url('/images/brio.png');
+                url('/images/download.jpeg');
             background-size: cover;
             background-position: center;
             border-radius: 16px;
