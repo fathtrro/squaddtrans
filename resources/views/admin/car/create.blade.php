@@ -14,8 +14,7 @@
                 <li>
                     <div class="flex items-center">
                         <svg class="w-4 h-4 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                         <span class="text-gray-800 font-medium">Tambah Baru</span>
                     </div>
@@ -87,29 +86,16 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Type Mobil *
                             </label>
-
                             <select name="category" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('category') border-red-500 @enderror">
-
                                 <option value="">-- Pilih Type Mobil --</option>
-                                <option value="MPV (keluarga)"
-                                    {{ old('category') == 'MPV (keluarga)' ? 'selected' : '' }}>MPV (keluarga)</option>
-                                <option value="SUV (tangguh/medan berat)"
-                                    {{ old('category') == 'SUV (tangguh/medan berat)' ? 'selected' : '' }}>SUV
-                                    (tangguh/medan berat)</option>
-                                <option value="Hatchback (kompak)"
-                                    {{ old('category') == 'Hatchback (kompak)' ? 'selected' : '' }}>Hatchback (kompak)
-                                </option>
-                                <option value="City Car (lincah di kota)"
-                                    {{ old('category') == 'City Car (lincah di kota)' ? 'selected' : '' }}>City Car
-                                    (lincah di kota)</option>
-                                <option value="Sedan (nyaman)"
-                                    {{ old('category') == 'Sedan (nyaman)' ? 'selected' : '' }}>Sedan (nyaman)</option>
-                                <option value="Crossover (kombinasi)"
-                                    {{ old('category') == 'Crossover (kombinasi)' ? 'selected' : '' }}>Crossover
-                                    (kombinasi)</option>
+                                <option value="MPV (keluarga)" {{ old('category') == 'MPV (keluarga)' ? 'selected' : '' }}>MPV (keluarga)</option>
+                                <option value="SUV (tangguh/medan berat)" {{ old('category') == 'SUV (tangguh/medan berat)' ? 'selected' : '' }}>SUV (tangguh/medan berat)</option>
+                                <option value="Hatchback (kompak)" {{ old('category') == 'Hatchback (kompak)' ? 'selected' : '' }}>Hatchback (kompak)</option>
+                                <option value="City Car (lincah di kota)" {{ old('category') == 'City Car (lincah di kota)' ? 'selected' : '' }}>City Car (lincah di kota)</option>
+                                <option value="Sedan (nyaman)" {{ old('category') == 'Sedan (nyaman)' ? 'selected' : '' }}>Sedan (nyaman)</option>
+                                <option value="Crossover (kombinasi)" {{ old('category') == 'Crossover (kombinasi)' ? 'selected' : '' }}>Crossover (kombinasi)</option>
                             </select>
-
                             @error('category')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -122,28 +108,21 @@
                             <input type="number" name="seats" value="{{ old('seats') }}" required min="1"
                                 placeholder="Contoh: 5"
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('seats') border-red-500 @enderror">
-
                             @error('seats')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Transmisi *
                             </label>
-
                             <select name="transmission" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('transmission') border-red-500 @enderror">
-
                                 <option value="">-- Pilih Transmisi --</option>
-                                <option value="Manual" {{ old('transmission') == 'Manual' ? 'selected' : '' }}>Manual
-                                </option>
-                                <option value="Automatic" {{ old('transmission') == 'Automatic' ? 'selected' : '' }}>
-                                    Automatic</option>
+                                <option value="Manual" {{ old('transmission') == 'Manual' ? 'selected' : '' }}>Manual</option>
+                                <option value="Automatic" {{ old('transmission') == 'Automatic' ? 'selected' : '' }}>Automatic</option>
                             </select>
-
                             @error('transmission')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -153,27 +132,18 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Jenis Bahan Bakar *
                             </label>
-
                             <select name="fuel_type" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('fuel_type') border-red-500 @enderror">
-
                                 <option value="">-- Pilih Bahan Bakar --</option>
-                                <option value="Bensin" {{ old('fuel_type') == 'Bensin' ? 'selected' : '' }}>Bensin
-                                </option>
-                                <option value="Diesel" {{ old('fuel_type') == 'Diesel' ? 'selected' : '' }}>Diesel
-                                </option>
-                                <option value="Hybrid" {{ old('fuel_type') == 'Hybrid' ? 'selected' : '' }}>Hybrid
-                                </option>
-                                <option value="Listrik" {{ old('fuel_type') == 'Listrik' ? 'selected' : '' }}>Listrik
-                                </option>
+                                <option value="Bensin" {{ old('fuel_type') == 'Bensin' ? 'selected' : '' }}>Bensin</option>
+                                <option value="Diesel" {{ old('fuel_type') == 'Diesel' ? 'selected' : '' }}>Diesel</option>
+                                <option value="Hybrid" {{ old('fuel_type') == 'Hybrid' ? 'selected' : '' }}>Hybrid</option>
+                                <option value="Listrik" {{ old('fuel_type') == 'Listrik' ? 'selected' : '' }}>Listrik</option>
                             </select>
-
                             @error('fuel_type')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
-
-
                     </div>
                 </div>
 
@@ -214,8 +184,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
             <!-- Sidebar Section -->
@@ -225,15 +193,12 @@
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Foto Kendaraan</h3>
 
                     <div class="space-y-4">
-                        <div
-                            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-yellow-400 transition-colors cursor-pointer">
-                            <input type="file" name="images[]" multiple accept="image/*" class="hidden"
-                                id="imageUpload">
+                        <!-- Upload Area -->
+                        <div id="uploadArea" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-yellow-400 transition-colors cursor-pointer">
+                            <input type="file" name="images[]" multiple accept="image/*" class="hidden" id="imageUpload">
                             <label for="imageUpload" class="cursor-pointer">
-                                <div
-                                    class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                                         </path>
@@ -244,9 +209,13 @@
                             </label>
                         </div>
 
+                        <!-- Image Preview Container -->
+                        <div id="imagePreviewContainer" class="grid grid-cols-2 gap-3 mt-4 hidden">
+                            <!-- Preview images will be inserted here -->
+                        </div>
+
                         <p class="text-xs text-gray-500">
-                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
@@ -258,8 +227,7 @@
                 <!-- Quick Info -->
                 <div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl border border-yellow-200 p-6">
                     <div class="flex items-start">
-                        <svg class="w-5 h-5 text-yellow-600 mr-3 mt-0.5" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-yellow-600 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
@@ -280,10 +248,8 @@
                     <div class="space-y-3">
                         <button type="submit"
                             class="w-full px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-lg hover:from-yellow-500 hover:to-yellow-600 font-semibold shadow-sm transition-all">
-                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             Simpan Armada
                         </button>
@@ -297,4 +263,108 @@
             </div>
         </div>
     </form>
+
+    <!-- JavaScript untuk Image Preview -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageUpload = document.getElementById('imageUpload');
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+            const uploadArea = document.getElementById('uploadArea');
+            let selectedFiles = new DataTransfer();
+
+            // Handle file selection
+            imageUpload.addEventListener('change', function(e) {
+                const files = Array.from(e.target.files);
+
+                files.forEach(file => {
+                    // Validate file type
+                    if (!file.type.match('image.*')) {
+                        alert('File harus berupa gambar!');
+                        return;
+                    }
+
+                    // Validate file size (5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Ukuran file maksimal 5MB!');
+                        return;
+                    }
+
+                    // Add file to DataTransfer object
+                    selectedFiles.items.add(file);
+                });
+
+                // Update input files
+                imageUpload.files = selectedFiles.files;
+
+                // Render previews
+                renderPreviews();
+            });
+
+            function renderPreviews() {
+                imagePreviewContainer.innerHTML = '';
+
+                if (selectedFiles.files.length === 0) {
+                    imagePreviewContainer.classList.add('hidden');
+                    return;
+                }
+
+                imagePreviewContainer.classList.remove('hidden');
+
+                Array.from(selectedFiles.files).forEach((file, index) => {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'relative group';
+                        previewDiv.innerHTML = `
+                            <div class="aspect-square rounded-lg overflow-hidden bg-gray-100 border-2 border-gray-200">
+                                <img src="${e.target.result}"
+                                     alt="Preview ${index + 1}"
+                                     class="w-full h-full object-cover">
+                            </div>
+                            <button type="button"
+                                    onclick="removeImage(${index})"
+                                    class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                            ${index === 0 ? '<span class="absolute top-2 left-2 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">Utama</span>' : ''}
+                        `;
+                        imagePreviewContainer.appendChild(previewDiv);
+                    };
+
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Make removeImage function global
+            window.removeImage = function(index) {
+                const dt = new DataTransfer();
+                const files = Array.from(selectedFiles.files);
+
+                files.forEach((file, i) => {
+                    if (i !== index) {
+                        dt.items.add(file);
+                    }
+                });
+
+                selectedFiles = dt;
+                imageUpload.files = selectedFiles.files;
+                renderPreviews();
+            };
+        });
+    </script>
+
+    <style>
+        /* Optional: Add smooth transitions */
+        #imagePreviewContainer {
+            transition: all 0.3s ease;
+        }
+
+        .group:hover img {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+    </style>
 </x-admin-layout>
