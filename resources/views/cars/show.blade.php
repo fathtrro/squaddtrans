@@ -38,7 +38,9 @@ body {
     padding: 1rem;
 }
 
-/* Breadcrumb */
+/* ============================================= */
+/* BREADCRUMB */
+/* ============================================= */
 .breadcrumb {
     display: flex;
     align-items: center;
@@ -70,7 +72,9 @@ body {
     opacity: 0.5;
 }
 
-/* Main Grid */
+/* ============================================= */
+/* MAIN GRID LAYOUT */
+/* ============================================= */
 .main-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -84,7 +88,9 @@ body {
     }
 }
 
-/* Card */
+/* ============================================= */
+/* CARD */
+/* ============================================= */
 .card {
     background: white;
     border: 1px solid var(--border);
@@ -99,7 +105,9 @@ body {
     transform: translateY(-2px);
 }
 
-/* Gallery */
+/* ============================================= */
+/* GALLERY */
+/* ============================================= */
 .gallery-main {
     position: relative;
     height: 400px;
@@ -205,7 +213,9 @@ body {
     to { opacity: 1; transform: translateX(0); }
 }
 
-.rating-badge i { color: #FCD34D; }
+.rating-badge i {
+    color: #FCD34D;
+}
 
 .gallery-thumbs {
     display: grid;
@@ -239,9 +249,13 @@ body {
     transition: transform 0.3s ease;
 }
 
-.thumb:hover img { transform: scale(1.1); }
+.thumb:hover img {
+    transform: scale(1.1);
+}
 
-/* Specs */
+/* ============================================= */
+/* SPECIFICATIONS */
+/* ============================================= */
 .specs-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -262,7 +276,9 @@ body {
 .spec-item::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 3px;
     background: linear-gradient(90deg, var(--primary), var(--primary-dark));
     transform: scaleX(0);
@@ -275,7 +291,9 @@ body {
     border-color: var(--primary);
 }
 
-.spec-item:hover::before { transform: scaleX(1); }
+.spec-item:hover::before {
+    transform: scaleX(1);
+}
 
 .spec-item i {
     font-size: 1.5rem;
@@ -284,7 +302,9 @@ body {
     transition: transform 0.3s ease;
 }
 
-.spec-item:hover i { transform: scale(1.2); }
+.spec-item:hover i {
+    transform: scale(1.2);
+}
 
 .spec-label {
     font-size: 0.75rem;
@@ -301,7 +321,9 @@ body {
     color: var(--dark);
 }
 
-/* Features */
+/* ============================================= */
+/* FEATURES */
+/* ============================================= */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -330,7 +352,8 @@ body {
     font-size: 1.125rem;
     color: var(--primary);
     background: white;
-    width: 32px; height: 32px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -338,7 +361,9 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
 
-/* Section Title */
+/* ============================================= */
+/* SECTION TITLE */
+/* ============================================= */
 .section-title {
     font-size: 1.125rem;
     font-weight: 700;
@@ -355,14 +380,17 @@ body {
     color: var(--primary);
     font-size: 1rem;
     background: var(--primary-light);
-    width: 36px; height: 36px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
 }
 
-/* Calendar */
+/* ============================================= */
+/* CALENDAR */
+/* ============================================= */
 .date-picker {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -415,7 +443,8 @@ body {
 }
 
 .calendar-nav button {
-    width: 36px; height: 36px;
+    width: 36px;
+    height: 36px;
     border: none;
     background: white;
     border-radius: 8px;
@@ -511,9 +540,11 @@ body {
 .calendar-day.today::after {
     content: '';
     position: absolute;
-    bottom: 2px; left: 50%;
+    bottom: 2px;
+    left: 50%;
     transform: translateX(-50%);
-    width: 4px; height: 4px;
+    width: 4px;
+    height: 4px;
     background: #3B82F6;
     border-radius: 50%;
 }
@@ -525,7 +556,9 @@ body {
     opacity: 0.4;
 }
 
-/* Tooltip */
+/* ============================================= */
+/* TOOLTIP */
+/* ============================================= */
 .booking-tooltip {
     position: fixed;
     background: linear-gradient(135deg, rgba(17, 24, 39, 0.98), rgba(31, 41, 55, 0.98));
@@ -542,7 +575,9 @@ body {
     border: 1px solid rgba(255,255,255,0.1);
 }
 
-.booking-tooltip.show { opacity: 1; }
+.booking-tooltip.show {
+    opacity: 1;
+}
 
 .booking-tooltip-header {
     font-weight: 700;
@@ -566,7 +601,9 @@ body {
     font-weight: 600;
 }
 
-.booking-tooltip-value { font-weight: 600; }
+.booking-tooltip-value {
+    font-weight: 600;
+}
 
 .status-badge {
     display: inline-block;
@@ -586,7 +623,9 @@ body {
     color: #065F46;
 }
 
-/* Legend */
+/* ============================================= */
+/* CALENDAR LEGEND */
+/* ============================================= */
 .calendar-legend {
     display: flex;
     flex-wrap: wrap;
@@ -604,12 +643,15 @@ body {
 }
 
 .legend-dot {
-    width: 16px; height: 16px;
+    width: 16px;
+    height: 16px;
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Price Estimate */
+/* ============================================= */
+/* PRICE ESTIMATE */
+/* ============================================= */
 .price-estimate {
     background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
     border: 2px solid var(--success);
@@ -657,9 +699,9 @@ body {
     color: #065F46;
 }
 
-/* =============================================
-   PRICE CARD – Sticky (dark)
-   ============================================= */
+/* ============================================= */
+/* PRICE CARD (Sticky Dark Theme) */
+/* ============================================= */
 .price-card {
     background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
     color: white;
@@ -730,7 +772,9 @@ body {
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.price-features { margin: 1rem 0; }
+.price-features {
+    margin: 1rem 0;
+}
 
 .price-feature {
     display: flex;
@@ -751,207 +795,148 @@ body {
     color: var(--success);
     font-size: 0.875rem;
     background: rgba(16, 185, 129, 0.2);
-    width: 24px; height: 24px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 6px;
 }
 
-/* =============================================
-   MINI DATE RANGE PICKER (inside price-card)
-   ============================================= */
-.pc-date-section {
-    margin: 1rem 0;
-    padding: 1rem 0;
+/* ============================================= */
+/* INLINE CHECK AVAILABILITY (Inside Price Card) */
+/* ============================================= */
+.price-card .inline-check-availability {
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    display: block;
+    visibility: visible;
+    margin-top: 1.5rem;
     border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem;
+}
+
+.price-card .inline-check-availability .section-title {
+    color: rgba(255,255,255,0.95);
+    padding-bottom: 0.75rem;
     border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 1rem;
 }
 
-.pc-date-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.75px;
-    margin-bottom: 0.625rem;
-}
-
-.pc-date-row {
-    display: flex;
-    align-items: center;
+.price-card .inline-check-availability .date-picker {
+    grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
 }
 
-.pc-date-box {
-    flex: 1;
-    background: rgba(255,255,255,0.07);
-    border: 1.5px solid rgba(255,255,255,0.15);
-    border-radius: 10px;
-    padding: 0.625rem 0.75rem;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    min-height: 48px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.pc-date-box:hover,
-.pc-date-box.active {
-    border-color: var(--primary);
-    background: rgba(245, 158, 11, 0.1);
-}
-
-.pc-date-box .pc-date-box-label {
-    font-size: 0.6875rem;
-    color: rgba(255,255,255,0.45);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 2px;
-}
-
-.pc-date-box .pc-date-box-value {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    color: white;
-}
-
-.pc-date-box .pc-date-box-value.placeholder {
-    color: rgba(255,255,255,0.3);
-    font-weight: 500;
-    font-style: italic;
-}
-
-.pc-date-arrow {
-    color: rgba(255,255,255,0.35);
+.price-card .inline-check-availability .date-field label {
+    color: rgba(255,255,255,0.75);
     font-size: 0.75rem;
-    flex-shrink: 0;
 }
 
-/* mini calendar dropdown */
-.pc-calendar-dropdown {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0; right: 0;
-    background: #1e293b;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 14px;
-    padding: 1rem;
-    z-index: 500;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.45);
-    opacity: 0;
-    transform: translateY(-8px);
-    pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.pc-calendar-dropdown.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-.pc-cal-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
-}
-
-.pc-cal-nav h5 {
-    font-size: 0.8125rem;
-    font-weight: 700;
+.price-card .inline-check-availability .date-field input {
+    background: rgba(255,255,255,0.06);
     color: white;
+    border: 1px solid rgba(255,255,255,0.12);
+    font-size: 0.8125rem;
+    padding: 0.625rem;
 }
 
-.pc-cal-nav button {
-    width: 28px; height: 28px;
-    border: none;
+.price-card .inline-check-availability .date-field input:focus {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--primary);
+}
+
+.price-card .inline-check-availability .calendar-nav {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.price-card .inline-check-availability .calendar-nav h4 {
+    color: white;
+    font-size: 0.9375rem;
+}
+
+.price-card .inline-check-availability .calendar-nav button {
     background: rgba(255,255,255,0.08);
-    border-radius: 6px;
-    cursor: pointer;
-    color: rgba(255,255,255,0.7);
-    font-size: 0.7rem;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: rgba(255,255,255,0.8);
+    width: 32px;
+    height: 32px;
 }
 
-.pc-cal-nav button:hover {
+.price-card .inline-check-availability .calendar-nav button:hover {
     background: var(--primary);
     color: white;
 }
 
-.pc-cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
+.price-card .inline-check-availability .calendar-day-header {
+    color: rgba(255,255,255,0.5);
 }
 
-.pc-cal-hdr {
-    text-align: center;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.35);
-    padding: 0.4rem 0;
-    text-transform: uppercase;
+.price-card .inline-check-availability .calendar-day {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.8);
 }
 
-.pc-cal-day {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    color: rgba(255,255,255,0.75);
-    transition: all 0.2s ease;
-    position: relative;
+.price-card .inline-check-availability .calendar-day.available {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
 }
 
-.pc-cal-day:hover { background: rgba(255,255,255,0.1); }
-
-.pc-cal-day.pc-past {
-    color: rgba(255,255,255,0.2);
-    cursor: not-allowed;
+.price-card .inline-check-availability .calendar-day.available:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
 }
 
-.pc-cal-day.pc-booked {
-    background: rgba(239,68,68,0.18);
+.price-card .inline-check-availability .calendar-day.booked {
+    background: rgba(239,68,68,0.2);
     color: #f87171;
-    cursor: not-allowed;
-    border: 1px solid rgba(239,68,68,0.25);
+    border-color: rgba(239,68,68,0.3);
 }
 
-.pc-cal-day.pc-sel-start,
-.pc-cal-day.pc-sel-end {
+.price-card .inline-check-availability .calendar-day.selected-start,
+.price-card .inline-check-availability .calendar-day.selected-end {
     background: linear-gradient(135deg, var(--success), #059669);
     color: white;
-    box-shadow: 0 3px 8px rgba(16,185,129,0.4);
+    border-color: var(--success);
 }
 
-.pc-cal-day.pc-sel-range {
-    background: rgba(16,185,129,0.2);
+.price-card .inline-check-availability .calendar-day.selected-range {
+    background: rgba(16,185,129,0.25);
     color: #6ee7b7;
-    border-radius: 0;
+    border-color: rgba(16,185,129,0.4);
 }
 
-.pc-cal-day.pc-sel-start { border-radius: 6px 0 0 6px; }
-.pc-cal-day.pc-sel-end   { border-radius: 0 6px 6px 0; }
-.pc-cal-day.pc-sel-start.pc-sel-end { border-radius: 6px; }
-
-.pc-cal-day.pc-today {
-    border: 1.5px solid #60a5fa;
+.price-card .inline-check-availability .calendar-day.today {
+    border-color: #60a5fa;
 }
 
-/* =============================================
-   BUTTONS
-   ============================================= */
+.price-card .inline-check-availability .calendar-day.past {
+    color: rgba(255,255,255,0.2);
+    background: transparent;
+}
+
+.price-card .inline-check-availability .calendar-legend {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.price-card .inline-check-availability .legend-item {
+    color: rgba(255,255,255,0.75);
+    font-size: 0.75rem;
+}
+
+.price-card .inline-check-availability .btn-primary {
+    width: 100%;
+}
+
+/* ============================================= */
+/* BUTTONS */
+/* ============================================= */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -974,15 +959,20 @@ body {
 .btn::before {
     content: '';
     position: absolute;
-    top: 50%; left: 50%;
-    width: 0; height: 0;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
     border-radius: 50%;
     background: rgba(255,255,255,0.2);
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
 }
 
-.btn:hover::before { width: 300px; height: 300px; }
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
 
 .btn-primary {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -1017,7 +1007,6 @@ body {
     box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
-/* disabled state – visually locked */
 .btn.btn-locked {
     background: rgba(255,255,255,0.08) !important;
     color: rgba(255,255,255,0.35) !important;
@@ -1032,14 +1021,23 @@ body {
     box-shadow: none !important;
 }
 
-.btn.btn-locked::before { display: none; }
+.btn.btn-locked::before {
+    display: none;
+}
 
-.btn i { position: relative; z-index: 1; }
-.btn span { position: relative; z-index: 1; }
+.btn i {
+    position: relative;
+    z-index: 1;
+}
 
-/* =============================================
-   POPUP MODAL – "Pilih Tanggal Dulu"
-   ============================================= */
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================= */
+/* POPUP MODAL */
+/* ============================================= */
 .popup-overlay {
     position: fixed;
     inset: 0;
@@ -1077,7 +1075,8 @@ body {
 }
 
 .popup-modal-icon {
-    width: 72px; height: 72px;
+    width: 72px;
+    height: 72px;
     background: linear-gradient(135deg, #FEF3C7, #FDE68A);
     border-radius: 50%;
     display: flex;
@@ -1131,13 +1130,15 @@ body {
 
 .popup-x {
     position: absolute;
-    top: 0.75rem; right: 0.875rem;
+    top: 0.75rem;
+    right: 0.875rem;
     background: none;
     border: none;
     font-size: 1.1rem;
     color: var(--gray);
     cursor: pointer;
-    width: 28px; height: 28px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1150,72 +1151,9 @@ body {
     color: var(--dark);
 }
 
-/* Reviews */
-.review-item {
-    border-bottom: 1px solid var(--border);
-    padding: 1rem 0;
-    transition: all 0.3s ease;
-}
-
-.review-item:hover {
-    background: var(--light);
-    padding: 1rem;
-    border-radius: 12px;
-    margin: 0.5rem 0;
-}
-
-.review-item:last-child { border-bottom: none; }
-
-.review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 0.75rem;
-}
-
-.review-user {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.review-avatar {
-    width: 40px; height: 40px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 1rem;
-    box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
-}
-
-.review-name {
-    font-weight: 700;
-    font-size: 0.9375rem;
-    color: var(--dark);
-}
-
-.review-date {
-    font-size: 0.75rem;
-    color: var(--gray);
-    font-weight: 500;
-}
-
-.review-stars {
-    color: #FCD34D;
-    font-size: 0.875rem;
-}
-
-.review-comment {
-    color: var(--gray);
-    font-size: 0.875rem;
-    line-height: 1.6;
-}
-
-/* Related Cars */
+/* ============================================= */
+/* RELATED CARS */
+/* ============================================= */
 .related-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1224,7 +1162,9 @@ body {
 }
 
 @media (min-width: 768px) {
-    .related-grid { grid-template-columns: repeat(4, 1fr); }
+    .related-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .related-card {
@@ -1257,7 +1197,9 @@ body {
     transition: opacity 0.3s ease;
 }
 
-.related-card:hover .related-image::after { opacity: 1; }
+.related-card:hover .related-image::after {
+    opacity: 1;
+}
 
 .related-image img {
     width: 100%;
@@ -1266,9 +1208,13 @@ body {
     transition: transform 0.5s ease;
 }
 
-.related-card:hover .related-image img { transform: scale(1.1); }
+.related-card:hover .related-image img {
+    transform: scale(1.1);
+}
 
-.related-content { padding: 1rem; }
+.related-content {
+    padding: 1rem;
+}
 
 .related-brand {
     font-weight: 700;
@@ -1304,39 +1250,67 @@ body {
     font-size: 1rem;
 }
 
+/* ============================================= */
+/* SPINNER */
+/* ============================================= */
 .spinner {
     border: 3px solid var(--border);
     border-top-color: var(--primary);
     border-radius: 50%;
-    width: 20px; height: 20px;
+    width: 20px;
+    height: 20px;
     animation: spin 0.6s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Responsive */
-@media (max-width: 768px) {
-    .gallery-main { height: 300px; }
-    .car-title h1 { font-size: 1.5rem; }
-    .specs-grid { grid-template-columns: repeat(2, 1fr); }
-    .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
-    .date-picker { grid-template-columns: 1fr; }
-    .related-grid { grid-template-columns: 1fr; }
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
+/* ============================================= */
+/* DIVIDER */
+/* ============================================= */
 .divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border), transparent);
     margin: 1rem 0;
 }
+
+/* ============================================= */
+/* RESPONSIVE */
+/* ============================================= */
+@media (max-width: 768px) {
+    .gallery-main {
+        height: 300px;
+    }
+
+    .car-title h1 {
+        font-size: 1.5rem;
+    }
+
+    .specs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gallery-thumbs {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .date-picker {
+        grid-template-columns: 1fr;
+    }
+
+    .related-grid {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 
-<!-- ================================================
-     POPUP MODAL
-     ================================================ -->
+<!-- POPUP MODAL -->
 <div class="popup-overlay" id="popupOverlay">
     <div class="popup-modal">
-        <button class="popup-x" id="popupClose"><i class="fa-solid fa-xmark"></i></button>
+        <button class="popup-x" id="popupClose">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
         <div class="popup-modal-icon">
             <i class="fa-solid fa-calendar-days"></i>
         </div>
@@ -1351,7 +1325,9 @@ body {
 <div class="container">
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
-        <a href="{{ route('cars.index') }}"><i class="fa-solid fa-home"></i> Home</a>
+        <a href="{{ route('cars.index') }}">
+            <i class="fa-solid fa-home"></i> Home
+        </a>
         <i class="fa-solid fa-chevron-right"></i>
         <a href="{{ route('cars.index') }}">Cars</a>
         <i class="fa-solid fa-chevron-right"></i>
@@ -1375,9 +1351,13 @@ body {
 
                     <div class="badges">
                         @if($car->status == 'available')
-                        <span class="badge badge-available"><i class="fa-solid fa-check"></i> Available</span>
+                        <span class="badge badge-available">
+                            <i class="fa-solid fa-check"></i> Available
+                        </span>
                         @endif
-                        <span class="badge badge-premium"><i class="fa-solid fa-crown"></i> Premium</span>
+                        <span class="badge badge-premium">
+                            <i class="fa-solid fa-crown"></i> Premium
+                        </span>
                     </div>
 
                     @if($averageRating > 0)
@@ -1406,7 +1386,7 @@ body {
                 @endif
             </div>
 
-            {{-- Specs --}}
+            {{-- Specifications --}}
             <div class="card">
                 <div class="section-title">
                     <i class="fa-solid fa-gauge"></i> Specifications
@@ -1457,123 +1437,44 @@ body {
                 </div>
             </div>
 
-            {{-- Calendar --}}
-            <div class="card">
-                <div class="section-title">
-                    <i class="fa-solid fa-calendar-check"></i> Check Availability
-                </div>
+            {{-- Related Cars --}}
+            @if($relatedCars->count() > 0)
+            <div style="margin-top: 1.5rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--dark);">
+                    Rekomendasi Mobil
+                </h2>
 
-                <div class="date-picker">
-                    <div class="date-field">
-                        <label>Start Date</label>
-                        <input type="date" id="startDate" min="{{ date('Y-m-d') }}">
-                    </div>
-                    <div class="date-field">
-                        <label>End Date</label>
-                        <input type="date" id="endDate" min="{{ date('Y-m-d') }}">
-                    </div>
-                </div>
-
-                <button type="button" id="checkAvailability" class="btn btn-primary">
-                    <i class="fa-solid fa-search"></i> Check Availability
-                </button>
-
-                <div class="price-estimate" id="priceEstimateBox">
-                    <div class="price-estimate-header">
-                        <span><i class="fa-solid fa-check-circle"></i> Available!</span>
-                        <span id="rentalDuration"></span>
-                    </div>
-
-                    <div class="price-row">
-                        <span>Base Price:</span>
-                        <span id="basePrice" style="font-weight: 600;">Rp 0</span>
-                    </div>
-                    <div class="price-row">
-                        <span>Service:</span>
-                        <span id="serviceCharge" style="font-weight: 600;">Rp 0</span>
-                    </div>
-                    <div class="price-row total">
-                        <span>Total:</span>
-                        <span id="totalPrice">Rp 0</span>
-                    </div>
-                    <div style="font-size: 0.75rem; color: #065F46; margin-top: 0.375rem;">
-                        Min. DP: <span id="minDeposit" style="font-weight: 600;">Rp 0</span>
-                    </div>
-
-                    <a href="{{ route('bookings.create', ['car' => $car->id]) }}" id="bookNowBtn" class="btn btn-success" style="margin-top: 0.75rem;">
-                        <i class="fa-solid fa-calendar-check"></i> Book Now
-                    </a>
-                </div>
-
-                <div style="margin-top: 1rem;">
-                    <div class="calendar-nav">
-                        <button id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
-                        <h4 id="currentMonth"></h4>
-                        <button id="nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
-                    </div>
-
-                    <div class="calendar-grid" id="calendarGrid"></div>
-
-                    <div class="calendar-legend">
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: var(--light);"></div>
-                            <span>Available</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: #FEE2E2;"></div>
-                            <span>Booked</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: #D1FAE5;"></div>
-                            <span>Selected</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Reviews --}}
-            <div class="card">
-                <div class="section-title">
-                    <i class="fa-solid fa-star"></i> Reviews ({{ $totalReviews }})
-                </div>
-
-                @if($car->reviews->count() > 0)
-                    @foreach($car->reviews->take(3) as $review)
-                    <div class="review-item">
-                        <div class="review-header">
-                            <div class="review-user">
-                                @if($review->user)
-                                <div class="review-avatar">{{ strtoupper(substr($review->user->name, 0, 1)) }}</div>
-                                <div>
-                                    <div class="review-name">{{ $review->user->name }}</div>
-                                    <div class="review-date">{{ $review->created_at->diffForHumans() }}</div>
+                <div class="related-grid">
+                    @foreach($relatedCars as $relatedCar)
+                    <div class="related-card">
+                        <div class="related-image">
+                            @if($relatedCar->images->first())
+                                <img src="{{ asset('storage/'.$relatedCar->images->first()->image_path) }}" alt="{{ $relatedCar->name }}">
+                            @else
+                                <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #000;">
+                                    <i class="fa-solid fa-car" style="font-size: 2.5rem; color: #666;"></i>
                                 </div>
-                                @else
-                                <div class="review-avatar">?</div>
-                                <div>
-                                    <div class="review-name">Unknown User</div>
-                                    <div class="review-date">{{ $review->created_at->diffForHumans() }}</div>
-                                </div>
-                                @endif
-                            </div>
-                            <div class="review-stars">
-                                @for($i = 1; $i <= 5; $i++)
-                                    <i class="fa-solid fa-star {{ $i <= $review->rating ? '' : 'fa-regular' }}" style="{{ $i > $review->rating ? 'color: #D1D5DB;' : '' }}"></i>
-                                @endfor
-                            </div>
+                            @endif
                         </div>
-                        <p class="review-comment">{{ $review->comment }}</p>
+
+                        <div class="related-content">
+                            <div class="related-brand">{{ $relatedCar->brand }}</div>
+                            <div class="related-name">{{ $relatedCar->name }}</div>
+
+                            <div class="related-price">
+                                <span class="related-price-label">24 Hours</span>
+                                <span class="related-price-value">Rp {{ number_format($relatedCar->price_24h / 1000, 0) }}K</span>
+                            </div>
+
+                            <a href="{{ route('cars.show', $relatedCar) }}" class="btn btn-primary" style="padding: 0.625rem 1rem; font-size: 0.8125rem;">
+                                View Details
+                            </a>
+                        </div>
                     </div>
                     @endforeach
-                @else
-                    <div class="py-6 text-center">
-                        <p class="text-slate-600 mb-4">Belum ada ulasan untuk mobil ini.</p>
-                        <a href="{{ route('reviews.create') }}" class="btn btn-primary" style="display:inline-block; width:auto;">
-                            <i class="fa-solid fa-plus"></i> Tambah Ulasan
-                        </a>
-                    </div>
-                @endif
+                </div>
             </div>
+            @endif
         </div>
 
         {{-- Right Column: Price Card --}}
@@ -1596,49 +1497,90 @@ body {
                     <div class="price-option-value">Rp {{ number_format($car->price_24h * 0.7, 0, ',', '.') }}</div>
                 </div>
 
-                <!-- ==========================================
-                     MINI DATE RANGE PICKER (price card)
-                     ========================================== -->
-                <div class="pc-date-section" style="position: relative;">
-                    <div class="pc-date-label">Pilih Tanggal Sewa</div>
-                    <div class="pc-date-row" id="pcDateRow">
-                        <div class="pc-date-box" id="pcStartBox" onclick="togglePcCalendar(event)">
-                            <div class="pc-date-box-label">Mulai</div>
-                            <div class="pc-date-box-value placeholder" id="pcStartDisplay">Pilih tanggal</div>
+                {{-- Check Availability --}}
+                <div class="inline-check-availability">
+                    <div class="section-title">
+                        <i class="fa-solid fa-calendar-check"></i> Check Availability
+                    </div>
+
+                    {{-- Date Inputs --}}
+                    <div class="date-picker">
+                        <div class="date-field">
+                            <label>Start Date</label>
+                            <input type="date" id="startDate" min="{{ date('Y-m-d') }}">
                         </div>
-                        <div class="pc-date-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                        <div class="pc-date-box" id="pcEndBox" onclick="togglePcCalendar(event)">
-                            <div class="pc-date-box-label">Selesai</div>
-                            <div class="pc-date-box-value placeholder" id="pcEndDisplay">Pilih tanggal</div>
+                        <div class="date-field">
+                            <label>End Date</label>
+                            <input type="date" id="endDate" min="{{ date('Y-m-d') }}">
                         </div>
                     </div>
 
-                    <!-- mini calendar -->
-                    <div class="pc-calendar-dropdown" id="pcCalDropdown">
-                        <div class="pc-cal-nav">
-                            <button id="pcPrevMonth"><i class="fa-solid fa-chevron-left"></i></button>
-                            <h5 id="pcCurrentMonth"></h5>
-                            <button id="pcNextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+                    {{-- Calendar --}}
+                    <div style="margin-top: 1rem;">
+                        <div class="calendar-nav">
+                            <button id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+                            <h4 id="currentMonth"></h4>
+                            <button id="nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
-                        <div class="pc-cal-grid" id="pcCalGrid"></div>
+
+                        <div class="calendar-grid" id="calendarGrid"></div>
+
+                        <div class="calendar-legend">
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: rgba(255,255,255,0.06);"></div>
+                                <span>Available</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: rgba(239,68,68,0.2);"></div>
+                                <span>Booked</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: rgba(16,185,129,0.25);"></div>
+                                <span>Selected</span>
+                            </div>
+                        </div>
+
+                        <button style="margin-top: 1rem;" type="button" id="checkAvailability" class="btn btn-primary">
+                            <i class="fa-solid fa-search"></i> Check Availability
+                        </button>
+                    </div>
+
+                    {{-- Price Estimate --}}
+                    <div class="price-estimate" id="priceEstimateBox">
+                        <div class="price-estimate-header">
+                            <span><i class="fa-solid fa-check-circle"></i> Available!</span>
+                            <span id="rentalDuration"></span>
+                        </div>
+
+                        <div class="price-row">
+                            <span>Base Price:</span>
+                            <span id="basePrice" style="font-weight: 600;">Rp 0</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Service:</span>
+                            <span id="serviceCharge" style="font-weight: 600;">Rp 0</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total:</span>
+                            <span id="totalPrice">Rp 0</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: #065F46; margin-top: 0.375rem;">
+                            Min. DP: <span id="minDeposit" style="font-weight: 600;">Rp 0</span>
+                        </div>
+
+                        <a href="{{ route('bookings.create', ['car' => $car->id]) }}" id="bookNowBtn" class="btn btn-success" style="margin-top: 0.75rem;">
+                            <i class="fa-solid fa-calendar-check"></i> Book Now
+                        </a>
                     </div>
                 </div>
+
+                <a href="https://wa.me/6281234567890?text=Hi, I'm interested in {{ $car->brand }} {{ $car->name }}" class="btn btn-secondary" style="margin-top: 1rem;">
+                    <i class="fa-brands fa-whatsapp"></i> Contact Us
+                </a>
 
                 <div class="price-info">
                     <i class="fa-solid fa-info-circle"></i> Minimum 30% deposit required
                 </div>
-
-                <!-- =============================================
-                     FIX: Book Now button – navigate via JS
-                     ============================================= -->
-                <a href="#" id="pcBookNowBtn" class="btn btn-locked" onclick="handlePcBookNow(event)" style="margin-bottom: 0.75rem;">
-                    <i class="fa-solid fa-calendar-check"></i>
-                    <span>Book Now</span>
-                </a>
-
-                <a href="https://wa.me/6281234567890?text=Hi, I'm interested in {{ $car->brand }} {{ $car->name }}" class="btn btn-secondary">
-                    <i class="fa-brands fa-whatsapp"></i> Contact Us
-                </a>
 
                 <div class="price-features">
                     <div class="price-feature">
@@ -1661,48 +1603,9 @@ body {
             </div>
         </div>
     </div>
-
-    {{-- Related Cars --}}
-    @if($relatedCars->count() > 0)
-    <div style="margin-top: 3rem;">
-        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--dark);">Similar Cars</h2>
-
-        <div class="related-grid">
-            @foreach($relatedCars as $relatedCar)
-            <div class="related-card">
-                <div class="related-image">
-                    @if($relatedCar->images->first())
-                        <img src="{{ asset('storage/'.$relatedCar->images->first()->image_path) }}" alt="{{ $relatedCar->name }}">
-                    @else
-                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #000;">
-                            <i class="fa-solid fa-car" style="font-size: 2.5rem; color: #666;"></i>
-                        </div>
-                    @endif
-                </div>
-
-                <div class="related-content">
-                    <div class="related-brand">{{ $relatedCar->brand }}</div>
-                    <div class="related-name">{{ $relatedCar->name }}</div>
-
-                    <div class="related-price">
-                        <span class="related-price-label">24 Hours</span>
-                        <span class="related-price-value">Rp {{ number_format($relatedCar->price_24h / 1000, 0) }}K</span>
-                    </div>
-
-                    <a href="{{ route('cars.show', $relatedCar) }}" class="btn btn-primary" style="padding: 0.625rem 1rem; font-size: 0.8125rem;">
-                        View Details
-                    </a>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-    @endif
 </div>
 
-<!-- ================================================
-     BOOKING TOOLTIP (hover on booked dates)
-     ================================================ -->
+{{-- Booking Tooltip --}}
 <div class="booking-tooltip" id="bookingTooltip"></div>
 
 <script>
@@ -1729,83 +1632,45 @@ let selectedStartDate = null;
 let selectedEndDate   = null;
 
 // ============================================================
-// UTILITY
+// UTILITY FUNCTIONS
 // ============================================================
-const monthNames = ["January","February","March","April","May","June",
-                    "July","August","September","October","November","December"];
+const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
 
 function formatDisplay(dateStr) {
     const [y, m, d] = dateStr.split('-');
     return `${parseInt(d)} ${monthNames[parseInt(m)-1].slice(0,3)} ${y}`;
 }
 
-function pad2(n) { return String(n).padStart(2,'0'); }
-
-// ============================================================
-// SYNC – update both UIs whenever selection changes
-// ============================================================
-function syncSelection() {
-    // --- main calendar date inputs ---
-    document.getElementById('startDate').value = selectedStartDate || '';
-    document.getElementById('endDate').value   = selectedEndDate  || '';
-
-    // --- price-card mini boxes ---
-    const startEl = document.getElementById('pcStartDisplay');
-    const endEl   = document.getElementById('pcEndDisplay');
-
-    if (selectedStartDate) {
-        startEl.textContent = formatDisplay(selectedStartDate);
-        startEl.classList.remove('placeholder');
-    } else {
-        startEl.textContent = 'Pilih tanggal';
-        startEl.classList.add('placeholder');
-    }
-
-    if (selectedEndDate) {
-        endEl.textContent = formatDisplay(selectedEndDate);
-        endEl.classList.remove('placeholder');
-    } else {
-        endEl.textContent = 'Pilih tanggal';
-        endEl.classList.add('placeholder');
-    }
-
-    // --- Book Now button state ---
-    const pcBtn = document.getElementById('pcBookNowBtn');
-    if (selectedStartDate && selectedEndDate) {
-        pcBtn.classList.remove('btn-locked');
-        pcBtn.classList.add('btn-success');
-        // FIX: set data attributes instead of relying on href
-        pcBtn.setAttribute('data-start', selectedStartDate);
-        pcBtn.setAttribute('data-end', selectedEndDate);
-    } else {
-        pcBtn.classList.add('btn-locked');
-        pcBtn.classList.remove('btn-success');
-        pcBtn.removeAttribute('data-start');
-        pcBtn.removeAttribute('data-end');
-    }
-
-    // --- re-render both calendars ---
-    renderCalendar();
-    renderPcCalendar();
+function pad2(n) {
+    return String(n).padStart(2,'0');
 }
 
 // ============================================================
-// SELECT DATE – shared logic
+// SYNC SELECTION
+// ============================================================
+function syncSelection() {
+    document.getElementById('startDate').value = selectedStartDate || '';
+    document.getElementById('endDate').value   = selectedEndDate  || '';
+    renderCalendar();
+}
+
+// ============================================================
+// SELECT DATE
 // ============================================================
 function selectDate(dateStr) {
     if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
-        // reset → set start
         selectedStartDate = dateStr;
         selectedEndDate   = null;
     } else {
-        // already have start → set end (or swap)
         if (dateStr > selectedStartDate) {
             selectedEndDate = dateStr;
         } else if (dateStr < selectedStartDate) {
             selectedEndDate   = selectedStartDate;
             selectedStartDate = dateStr;
         } else {
-            // same day clicked again → clear
             selectedStartDate = null;
             selectedEndDate   = null;
         }
@@ -1814,39 +1679,52 @@ function selectDate(dateStr) {
 }
 
 // ============================================================
-// MAIN CALENDAR (left column)
+// CALENDAR RENDERING
 // ============================================================
 let mainCalDate = new Date();
 
 async function loadBookingDetails(year, month) {
     try {
-        const r = await fetch(`/api/cars/${carId}/booked-dates?year=${year}&month=${month}`);
-        const d = await r.json();
-        if (d.booking_details) bookingDetailsMap = d.booking_details;
-    } catch(e) { console.error(e); }
+        const response = await fetch(`/api/cars/${carId}/booked-dates?year=${year}&month=${month}`);
+        const data = await response.json();
+        if (data.booking_details) {
+            bookingDetailsMap = data.booking_details;
+        }
+    } catch(error) {
+        console.error('Error loading booking details:', error);
+    }
 }
 
 function renderCalendar() {
     const year  = mainCalDate.getFullYear();
     const month = mainCalDate.getMonth();
+
     document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
 
     loadBookingDetails(year, month + 1);
 
     const firstDay     = new Date(year, month, 1).getDay();
     const daysInMonth  = new Date(year, month + 1, 0).getDate();
-    const today        = new Date(); today.setHours(0,0,0,0);
+    const today        = new Date();
+    today.setHours(0,0,0,0);
 
     let html = '';
-    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d =>
-        html += `<div class="calendar-day-header">${d}</div>`
-    );
 
-    for (let i = 0; i < firstDay; i++) html += '<div class="calendar-day"></div>';
+    // Day headers
+    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(day => {
+        html += `<div class="calendar-day-header">${day}</div>`;
+    });
 
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+        html += '<div class="calendar-day"></div>';
+    }
+
+    // Calendar days
     for (let day = 1; day <= daysInMonth; day++) {
         const dateObj = new Date(year, month, day);
         const dateStr = `${year}-${pad2(month+1)}-${pad2(day)}`;
+
         const isBooked   = bookedDates.includes(dateStr);
         const isToday    = today.getTime() === dateObj.getTime();
         const isPast     = dateObj < today;
@@ -1855,148 +1733,53 @@ function renderCalendar() {
         const isInRange  = selectedStartDate && selectedEndDate &&
                            dateStr > selectedStartDate && dateStr < selectedEndDate;
 
-        let cls = 'calendar-day';
-        if (isPast)       cls += ' past';
-        else if (isBooked) cls += ' booked';
-        else               cls += ' available';
-        if (isToday)   cls += ' today';
-        if (isSStart)  cls += ' selected-start';
-        if (isSEnd)    cls += ' selected-end';
-        if (isInRange) cls += ' selected-range';
+        let classes = 'calendar-day';
+        if (isPast)       classes += ' past';
+        else if (isBooked) classes += ' booked';
+        else               classes += ' available';
+        if (isToday)   classes += ' today';
+        if (isSStart)  classes += ' selected-start';
+        if (isSEnd)    classes += ' selected-end';
+        if (isInRange) classes += ' selected-range';
 
-        const onclick    = (!isPast && !isBooked) ? `onclick="selectDate('${dateStr}')"` : '';
+        const onclick     = (!isPast && !isBooked) ? `onclick="selectDate('${dateStr}')"` : '';
         const onmouseover = isBooked ? `onmouseover="showBookingTooltip('${dateStr}', this)"` : '';
         const onmouseout  = isBooked ? `onmouseout="hideBookingTooltip()"` : '';
 
-        html += `<div class="${cls}" ${onclick} ${onmouseover} ${onmouseout}>${day}</div>`;
+        html += `<div class="${classes}" ${onclick} ${onmouseover} ${onmouseout}>${day}</div>`;
     }
 
     document.getElementById('calendarGrid').innerHTML = html;
 }
 
+// ============================================================
+// CALENDAR NAVIGATION
+// ============================================================
 document.getElementById('prevMonth').addEventListener('click', () => {
     mainCalDate.setMonth(mainCalDate.getMonth() - 1);
     renderCalendar();
 });
+
 document.getElementById('nextMonth').addEventListener('click', () => {
     mainCalDate.setMonth(mainCalDate.getMonth() + 1);
     renderCalendar();
 });
 
-// manual date-input change (main calendar)
+// ============================================================
+// DATE INPUT HANDLERS
+// ============================================================
 document.getElementById('startDate').addEventListener('change', function() {
     selectedStartDate = this.value || null;
     syncSelection();
 });
+
 document.getElementById('endDate').addEventListener('change', function() {
     selectedEndDate = this.value || null;
     syncSelection();
 });
 
 // ============================================================
-// PRICE-CARD MINI CALENDAR
-// ============================================================
-let pcCalDate  = new Date();
-let pcCalOpen  = false;
-
-function togglePcCalendar(e) {
-    e.stopPropagation();
-    pcCalOpen = !pcCalOpen;
-    document.getElementById('pcCalDropdown').classList.toggle('show', pcCalOpen);
-    document.getElementById('pcStartBox').classList.toggle('active', pcCalOpen && !selectedStartDate);
-    document.getElementById('pcEndBox').classList.toggle('active', pcCalOpen && selectedStartDate && !selectedEndDate);
-}
-
-// close when clicking outside
-document.addEventListener('click', function(e) {
-    if (pcCalOpen && !document.querySelector('.pc-date-section').contains(e.target)) {
-        pcCalOpen = false;
-        document.getElementById('pcCalDropdown').classList.remove('show');
-        document.getElementById('pcStartBox').classList.remove('active');
-        document.getElementById('pcEndBox').classList.remove('active');
-    }
-});
-
-function renderPcCalendar() {
-    const year  = pcCalDate.getFullYear();
-    const month = pcCalDate.getMonth();
-    document.getElementById('pcCurrentMonth').textContent = `${monthNames[month]} ${year}`;
-
-    const firstDay    = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const today       = new Date(); today.setHours(0,0,0,0);
-
-    let html = '';
-    ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d =>
-        html += `<div class="pc-cal-hdr">${d}</div>`
-    );
-
-    for (let i = 0; i < firstDay; i++) html += '<div class="pc-cal-day"></div>';
-
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dateObj = new Date(year, month, day);
-        const dateStr = `${year}-${pad2(month+1)}-${pad2(day)}`;
-        const isBooked  = bookedDates.includes(dateStr);
-        const isToday   = today.getTime() === dateObj.getTime();
-        const isPast    = dateObj < today;
-        const isSStart  = selectedStartDate === dateStr;
-        const isSEnd    = selectedEndDate   === dateStr;
-        const isInRange = selectedStartDate && selectedEndDate &&
-                          dateStr > selectedStartDate && dateStr < selectedEndDate;
-
-        let cls = 'pc-cal-day';
-        if (isPast)        cls += ' pc-past';
-        else if (isBooked) cls += ' pc-booked';
-        if (isToday)   cls += ' pc-today';
-        if (isSStart)  cls += ' pc-sel-start';
-        if (isSEnd)    cls += ' pc-sel-end';
-        if (isInRange) cls += ' pc-sel-range';
-
-        const onclick = (!isPast && !isBooked)
-            ? `onclick="selectDate('${dateStr}'); event.stopPropagation();"`
-            : '';
-
-        html += `<div class="${cls}" ${onclick}>${day}</div>`;
-    }
-
-    document.getElementById('pcCalGrid').innerHTML = html;
-}
-
-document.getElementById('pcPrevMonth').addEventListener('click', function(e) {
-    e.stopPropagation();
-    pcCalDate.setMonth(pcCalDate.getMonth() - 1);
-    renderPcCalendar();
-});
-document.getElementById('pcNextMonth').addEventListener('click', function(e) {
-    e.stopPropagation();
-    pcCalDate.setMonth(pcCalDate.getMonth() + 1);
-    renderPcCalendar();
-});
-
-// ============================================================
-// FIX: PRICE CARD – Book Now handler
-// Masalah asal: e.target bisa menangkap <i> atau <span>
-// di dalam <a>, sehingga e.target.href = undefined.
-// Solusi: selalu preventDefault() dan navigate manual via
-// window.location.href menggunakan data attributes.
-// ============================================================
-function handlePcBookNow(e) {
-    e.preventDefault();
-
-    if (!selectedStartDate || !selectedEndDate) {
-        document.getElementById('popupOverlay').classList.add('show');
-        return;
-    }
-
-    const url = new URL(bookingRoute, window.location.origin);
-    url.searchParams.set('start', selectedStartDate);
-    url.searchParams.set('end', selectedEndDate);
-    window.location.href = url.toString();
-}
-
-
-// ============================================================
-// POPUP – close handlers
+// POPUP HANDLERS
 // ============================================================
 function closePopup() {
     document.getElementById('popupOverlay').classList.remove('show');
@@ -2009,7 +1792,7 @@ document.getElementById('popupOverlay').addEventListener('click', function(e) {
 });
 
 // ============================================================
-// BOOKING TOOLTIP (main calendar hover)
+// BOOKING TOOLTIP
 // ============================================================
 const tooltip = document.getElementById('bookingTooltip');
 
@@ -2033,7 +1816,8 @@ function showBookingTooltip(dateStr, element) {
         <div class="booking-tooltip-row">
             <span class="booking-tooltip-label">Period:</span>
             <span class="booking-tooltip-value">${booking.start} – ${booking.end}</span>
-        </div>`;
+        </div>
+    `;
 
     const rect = element.getBoundingClientRect();
     tooltip.style.left      = rect.left + (rect.width / 2) + 'px';
@@ -2047,7 +1831,7 @@ function hideBookingTooltip() {
 }
 
 // ============================================================
-// CHECK AVAILABILITY (main calendar button)
+// CHECK AVAILABILITY
 // ============================================================
 document.getElementById('checkAvailability').addEventListener('click', async function() {
     const startDate = document.getElementById('startDate').value;
@@ -2064,12 +1848,19 @@ document.getElementById('checkAvailability').addEventListener('click', async fun
     button.innerHTML   = '<span class="spinner"></span> Checking...';
 
     try {
-        const availRes  = await fetch(`/api/cars/${carId}/check-availability`, {
+        // Check availability
+        const availResponse = await fetch(`/api/cars/${carId}/check-availability`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
-            body: JSON.stringify({ start_date: startDate, end_date: endDate })
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                start_date: startDate,
+                end_date: endDate
+            })
         });
-        const availData = await availRes.json();
+        const availData = await availResponse.json();
 
         if (!availData.available) {
             alert(availData.message);
@@ -2078,20 +1869,29 @@ document.getElementById('checkAvailability').addEventListener('click', async fun
             return;
         }
 
-        const priceRes  = await fetch(`/api/cars/${carId}/price-estimate`, {
+        // Get price estimate
+        const priceResponse = await fetch(`/api/cars/${carId}/price-estimate`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
-            body: JSON.stringify({ start_date: startDate, end_date: endDate, service_type: 'lepas_kunci' })
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                start_date: startDate,
+                end_date: endDate,
+                service_type: 'lepas_kunci'
+            })
         });
-        const priceData = await priceRes.json();
+        const priceData = await priceResponse.json();
 
+        // Update price display
         document.getElementById('rentalDuration').textContent = `${priceData.days} days`;
-        document.getElementById('basePrice').textContent   = `Rp ${priceData.base_price.toLocaleString('id-ID')}`;
-        document.getElementById('serviceCharge').textContent = `Rp ${priceData.service_charge.toLocaleString('id-ID')}`;
-        document.getElementById('totalPrice').textContent  = `Rp ${priceData.total_price.toLocaleString('id-ID')}`;
-        document.getElementById('minDeposit').textContent  = `Rp ${priceData.min_deposit.toLocaleString('id-ID')}`;
+        document.getElementById('basePrice').textContent      = `Rp ${priceData.base_price.toLocaleString('id-ID')}`;
+        document.getElementById('serviceCharge').textContent  = `Rp ${priceData.service_charge.toLocaleString('id-ID')}`;
+        document.getElementById('totalPrice').textContent     = `Rp ${priceData.total_price.toLocaleString('id-ID')}`;
+        document.getElementById('minDeposit').textContent     = `Rp ${priceData.min_deposit.toLocaleString('id-ID')}`;
 
-        // FIX: gunakan encodeURIComponent dan set href dengan clean URL
+        // Update Book Now button URL
         if (startDate && endDate) {
             const bookingUrl = new URL(document.getElementById('bookNowBtn').href);
             bookingUrl.searchParams.set('start', startDate);
@@ -2099,10 +1899,15 @@ document.getElementById('checkAvailability').addEventListener('click', async fun
             document.getElementById('bookNowBtn').href = bookingUrl.toString();
         }
 
+        // Show price estimate box
         document.getElementById('priceEstimateBox').classList.add('show');
-        document.getElementById('priceEstimateBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        document.getElementById('priceEstimateBox').scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest'
+        });
+
     } catch (error) {
-        console.error(error);
+        console.error('Error:', error);
         alert('An error occurred. Please try again.');
     } finally {
         button.disabled  = false;
@@ -2111,7 +1916,7 @@ document.getElementById('checkAvailability').addEventListener('click', async fun
 });
 
 // ============================================================
-// GALLERY thumbnail switcher
+// GALLERY IMAGE CHANGER
 // ============================================================
 function changeMainImage(src, thumb) {
     document.querySelector('#mainImage img').src = src;
@@ -2120,46 +1925,51 @@ function changeMainImage(src, thumb) {
 }
 
 // ============================================================
-// INIT
+// INITIALIZATION
 // ============================================================
 renderCalendar();
-renderPcCalendar();
 </script>
 
-{{-- Car specific reviews (from bookings) --}}
+{{-- Car Reviews Section --}}
 @if(isset($carReviews) && $carReviews->count() > 0)
-    <section class="py-12 sm:py-16 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold">Ulasan untuk {{ $car->brand }} {{ $car->name }}</h3>
-                <a href="{{ route('reviews.create') }}" class="text-yellow-600 font-semibold">Tambah Ulasan</a>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($carReviews as $review)
-                    <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
-                        @if($review->image_path)
-                            <img src="{{ asset('storage/'.$review->image_path) }}" class="w-full h-36 object-cover rounded-md mb-3" alt="Review image">
-                        @endif
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-yellow-600/10 rounded-full flex items-center justify-center">
-                                    <i class="fa-solid fa-user text-yellow-600"></i>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-sm">{{ $review->booking->user->name ?? 'Pelanggan' }}</div>
-                                    <div class="text-xs text-slate-500">{{ $review->created_at->diffForHumans() }}</div>
-                                </div>
-                            </div>
-                            <div class="text-sm font-bold">{{ $review->rating }}/5</div>
-                        </div>
-                        <p class="text-sm text-slate-600 mb-2">{{ $review->comment ?? 'Pelanggan puas.' }}</p>
-                        <div class="text-xs text-slate-500">Mobil: {{ $review->booking->car->brand ?? '' }} {{ $review->booking->car->name ?? '' }}</div>
-                    </div>
-                @endforeach
-            </div>
+<section class="py-12 sm:py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-bold">Ulasan untuk {{ $car->brand }} {{ $car->name }}</h3>
+            <a href="{{ route('reviews.create') }}" class="text-yellow-600 font-semibold hover:underline">
+                Tambah Ulasan
+            </a>
         </div>
-    </section>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($carReviews as $review)
+            <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                @if($review->image_path)
+                <img src="{{ asset('storage/'.$review->image_path) }}" class="w-full h-36 object-cover rounded-md mb-3" alt="Review image">
+                @endif
+
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-yellow-600/10 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-user text-yellow-600"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm">{{ $review->booking->user->name ?? 'Pelanggan' }}</div>
+                            <div class="text-xs text-slate-500">{{ $review->created_at->diffForHumans() }}</div>
+                        </div>
+                    </div>
+                    <div class="text-sm font-bold text-yellow-600">{{ $review->rating }}/5</div>
+                </div>
+
+                <p class="text-sm text-slate-600 mb-2">{{ $review->comment ?? 'Pelanggan puas.' }}</p>
+                <div class="text-xs text-slate-500">
+                    Mobil: {{ $review->booking->car->brand ?? '' }} {{ $review->booking->car->name ?? '' }}
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
 @endif
 
 </x-app-layout>
