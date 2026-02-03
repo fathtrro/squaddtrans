@@ -700,6 +700,135 @@ body {
 }
 
 /* ============================================= */
+/* RENTAL TYPE SELECTOR */
+/* ============================================= */
+.rental-type-selector {
+    margin-bottom: 1.5rem;
+}
+
+.rental-type-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+
+}
+
+.rental-type-card {
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.rental-type-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.rental-type-card:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(245, 158, 11, 0.5);
+    transform: translateY(-2px);
+}
+
+.rental-type-card:hover::before {
+    transform: scaleX(1);
+}
+
+.rental-type-card.active {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.rental-type-card.active::before {
+    transform: scaleX(1);
+}
+
+.rental-type-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(245, 158, 11, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.rental-type-card.active .rental-type-icon {
+    background: var(--primary);
+    transform: scale(1.1);
+}
+
+.rental-type-icon i {
+    font-size: 1.5rem;
+    color: var(--primary);
+    transition: all 0.3s ease;
+}
+
+.rental-type-card.active .rental-type-icon i {
+    color: var(--dark);
+}
+
+.rental-type-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 0.25rem;
+}
+
+.rental-type-desc {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+}
+
+.rental-type-check {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 24px;
+    height: 24px;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.rental-type-card.active .rental-type-check {
+    background: var(--primary);
+    border-color: var(--primary);
+    transform: scale(1.1);
+}
+
+.rental-type-check i {
+    font-size: 0.75rem;
+    color: transparent;
+    transition: all 0.3s ease;
+}
+
+.rental-type-card.active .rental-type-check i {
+    color: var(--dark);
+}
+
+/* ============================================= */
 /* PRICE CARD (Sticky Dark Theme) */
 /* ============================================= */
 .price-card {
@@ -1007,22 +1136,15 @@ body {
     box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
-.btn.btn-locked {
-    background: rgba(255,255,255,0.08) !important;
-    color: rgba(255,255,255,0.35) !important;
-    box-shadow: none !important;
-    cursor: pointer;
-    border: 1.5px dashed rgba(255,255,255,0.2) !important;
-    transform: none !important;
+.btn-whatsapp {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
 }
 
-.btn.btn-locked:hover {
-    transform: none !important;
-    box-shadow: none !important;
-}
-
-.btn.btn-locked::before {
-    display: none;
+.btn-whatsapp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
 }
 
 .btn i {
@@ -1302,6 +1424,10 @@ body {
     .related-grid {
         grid-template-columns: 1fr;
     }
+
+    .rental-type-options {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 
@@ -1497,8 +1623,36 @@ body {
                     <div class="price-option-value">Rp {{ number_format($car->price_24h * 0.7, 0, ',', '.') }}</div>
                 </div>
 
-                {{-- Check Availability --}}
-                <div class="inline-check-availability">
+                {{-- Rental Type Selector --}}
+                <div class="rental-type-selector">
+            
+                    <div class="rental-type-options">
+                        <div class="rental-type-card active" data-type="lepas_kunci" onclick="selectRentalType('lepas_kunci')">
+                            <div class="rental-type-check">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div class="rental-type-icon">
+                                <i class="fa-solid fa-key"></i>
+                            </div>
+                            <div class="rental-type-title">Lepas Kunci</div>
+                            <div class="rental-type-desc">Sewa mobil tanpa sopir. Anda yang mengemudi.</div>
+                        </div>
+
+                        <div class="rental-type-card" data-type="carter" onclick="selectRentalType('carter')">
+                            <div class="rental-type-check">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div class="rental-type-icon">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div class="rental-type-title">Carter</div>
+                            <div class="rental-type-desc">Full service dengan sopir profesional.</div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Check Availability (only for Lepas Kunci) --}}
+                <div class="inline-check-availability" id="availabilitySection">
                     <div class="section-title">
                         <i class="fa-solid fa-calendar-check"></i> Check Availability
                     </div>
@@ -1574,6 +1728,11 @@ body {
                     </div>
                 </div>
 
+                {{-- WhatsApp Button (for Carter) --}}
+                <a href="#" id="whatsappBtn" class="btn btn-whatsapp" style="margin-top: 1rem; display: none;">
+                    <i class="fa-brands fa-whatsapp"></i> Order via WhatsApp
+                </a>
+
                 <a href="https://wa.me/6281234567890?text=Hi, I'm interested in {{ $car->brand }} {{ $car->name }}" class="btn btn-secondary" style="margin-top: 1rem;">
                     <i class="fa-brands fa-whatsapp"></i> Contact Us
                 </a>
@@ -1615,6 +1774,8 @@ body {
 const carId        = {{ $car->id }};
 const csrfToken    = document.querySelector('meta[name="csrf-token"]').content;
 const bookingRoute = "{{ route('bookings.create', ['car' => $car->id]) }}";
+const carName      = "{{ $car->brand }} {{ $car->name }}";
+const carPrice     = {{ $car->price_24h }};
 
 const bookedDates = @json($car->bookings->map(function($booking) {
     $dates = [];
@@ -1630,6 +1791,7 @@ const bookedDates = @json($car->bookings->map(function($booking) {
 let bookingDetailsMap = {};
 let selectedStartDate = null;
 let selectedEndDate   = null;
+let selectedRentalType = 'lepas_kunci';
 
 // ============================================================
 // UTILITY FUNCTIONS
@@ -1646,6 +1808,35 @@ function formatDisplay(dateStr) {
 
 function pad2(n) {
     return String(n).padStart(2,'0');
+}
+
+// ============================================================
+// RENTAL TYPE SELECTION
+// ============================================================
+function selectRentalType(type) {
+    selectedRentalType = type;
+
+    // Update UI
+    document.querySelectorAll('.rental-type-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    document.querySelector(`.rental-type-card[data-type="${type}"]`).classList.add('active');
+
+    // Show/hide appropriate sections
+    const availabilitySection = document.getElementById('availabilitySection');
+    const whatsappBtn = document.getElementById('whatsappBtn');
+
+    if (type === 'lepas_kunci') {
+        availabilitySection.style.display = 'block';
+        whatsappBtn.style.display = 'none';
+    } else {
+        availabilitySection.style.display = 'none';
+        whatsappBtn.style.display = 'flex';
+
+        // Update WhatsApp message
+        const message = encodeURIComponent(`Halo, saya tertarik untuk carter ${carName}. Mohon informasi lebih lanjut.`);
+        whatsappBtn.href = `https://wa.me/6281234567890?text=${message}`;
+    }
 }
 
 // ============================================================
@@ -1928,6 +2119,7 @@ function changeMainImage(src, thumb) {
 // INITIALIZATION
 // ============================================================
 renderCalendar();
+selectRentalType('lepas_kunci'); // Set default
 </script>
 
 {{-- Car Reviews Section --}}

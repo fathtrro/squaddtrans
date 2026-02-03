@@ -34,7 +34,7 @@ body {
    PAGE LAYOUT
    ============================================================ */
 .page-wrap {
-    max-width: 780px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 1.5rem 1rem 3rem;
 }
@@ -112,6 +112,42 @@ body {
     font-size: 0.78rem;
     color: rgba(255,255,255,0.5);
     margin-top: 0.15rem;
+}
+
+.recap-service-badge {
+    position: relative;
+    z-index: 1;
+    background: rgba(245, 158, 11, 0.2);
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    padding: 0.5rem 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.recap-service-badge i {
+    font-size: 1.125rem;
+    color: var(--primary);
+}
+
+.recap-service-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.recap-service-text .label {
+    font-size: 0.625rem;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.recap-service-text .value {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--primary);
 }
 
 .recap-change-link {
@@ -378,7 +414,7 @@ textarea.form-input {
 @media (max-width: 520px) { .grid-2 { grid-template-columns: 1fr; } }
 
 /* ============================================================
-   DURATION SUMMARY BOX (Step 1)
+   DURATION SUMMARY BOX (Step 0)
    ============================================================ */
 .duration-box {
     background: linear-gradient(135deg, #FEF3C7, #FDE68A);
@@ -713,7 +749,7 @@ textarea.form-input {
 }
 
 /* ============================================================
-   PAYMENT SUMMARY BOX (Step 3)
+   PAYMENT SUMMARY BOX (Step 2)
    ============================================================ */
 .pay-summary {
     background: linear-gradient(135deg, #ecfdf5, #d1fae5);
@@ -1088,7 +1124,7 @@ textarea.form-input {
             <div class="confirm-section-title"><i class="fa-solid fa-briefcase"></i> &nbsp;Layanan</div>
             <div class="confirm-row">
                 <span class="cr-label"><i class="fa-solid fa-key"></i> Jenis Layanan</span>
-                <span class="cr-val" id="cfService">–</span>
+                <span class="cr-val" id="cfService">Lepas Kunci</span>
             </div>
 
             <div class="confirm-section-title"><i class="fa-solid fa-shield-halved"></i> &nbsp;Jaminan</div>
@@ -1169,6 +1205,14 @@ textarea.form-input {
         </div>
     </div>
 
+    <div class="recap-service-badge">
+        <i class="fa-solid fa-key"></i>
+        <div class="recap-service-text">
+            <span class="label">Jenis Sewa</span>
+            <span class="value">Lepas Kunci</span>
+        </div>
+    </div>
+
     <a href="{{ route('cars.show', $car->id) }}" class="recap-change-link">
         <i class="fa-solid fa-pen-to-square"></i> Ganti
     </a>
@@ -1196,10 +1240,11 @@ textarea.form-input {
                 @csrf
                 <input type="hidden" name="car_id" value="{{ $car->id }}">
                 <input type="hidden" name="total_price" id="totalPriceInput" value="0">
+                <input type="hidden" name="service_type" value="lepas_kunci">
                 <input type="hidden" name="driver_id" value="" id="hiddenDriverId">
 
                 <!-- ============================================
-                     STEP 0 – Waktu & Layanan
+                     STEP 0 – Waktu & Data Penyewa
                      ============================================ -->
                 <div class="step-panel active" data-step="0">
 
@@ -1254,36 +1299,6 @@ textarea.form-input {
                             </label>
                             <input type="text" name="alamat" id="alamatInput" class="form-input" placeholder="Alamat lengkap Anda" required>
                             <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Masukkan alamat</div>
-                        </div>
-                    </div>
-
-                    <!-- Jenis Layanan -->
-                    <div class="field">
-                        <label class="field-label">
-                            <i><i class="fa-solid fa-briefcase" style="font-size:0.6rem;"></i></i> Jenis Layanan
-                        </label>
-                        <div class="card-radio-grid" id="serviceGrid">
-                            <label class="card-radio selected" data-value="lepas_kunci">
-                                <input type="radio" name="service_type" value="lepas_kunci" checked>
-                                <div class="tick"><i class="fa-solid fa-check"></i></div>
-                                <div class="card-radio-icon icon-yellow"><i class="fa-solid fa-key"></i></div>
-                                <div class="card-radio-title">Lepas Kunci</div>
-                                <div class="card-radio-sub">Tanpa sopir</div>
-                            </label>
-                            <label class="card-radio" data-value="dengan_sopir">
-                                <input type="radio" name="service_type" value="dengan_sopir">
-                                <div class="tick"><i class="fa-solid fa-check"></i></div>
-                                <div class="card-radio-icon icon-blue"><i class="fa-solid fa-user-tie"></i></div>
-                                <div class="card-radio-title">Dengan Sopir</div>
-                                <div class="card-radio-sub">Include driver</div>
-                            </label>
-                            <label class="card-radio" data-value="carter">
-                                <input type="radio" name="service_type" value="carter">
-                                <div class="tick"><i class="fa-solid fa-check"></i></div>
-                                <div class="card-radio-icon icon-green"><i class="fa-solid fa-van-shuttle"></i></div>
-                                <div class="card-radio-title">Carter</div>
-                                <div class="card-radio-sub">Full service</div>
-                            </label>
                         </div>
                     </div>
 
@@ -1612,16 +1627,6 @@ textarea.form-input {
             if (!contactInput.value) { setError('fieldContact'); ok = false; }
             if (!alamatInput.value)  { setError('fieldAlamat');  ok = false; }
             if (ok && days <= 0)   { setError('fieldEnd');   ok = false; }
-
-            // Auto-assign driver if needed
-            const svc = document.querySelector('input[name="service_type"]:checked').value;
-            if (svc !== 'lepas_kunci') {
-                // Set default driver ID (you can change this to get from database)
-                document.getElementById('hiddenDriverId').value = '1'; // Default driver ID
-            } else {
-                document.getElementById('hiddenDriverId').value = '';
-            }
-
             return ok;
         }
 
@@ -1724,7 +1729,6 @@ textarea.form-input {
         });
     }
 
-    initCardRadio('serviceGrid');
     initCardRadio('guaranteeGrid');
     initCardRadio('paymentGrid');
 
@@ -1830,8 +1834,6 @@ textarea.form-input {
     function openConfirm() {
         if (!validateCurrentStep()) return;
 
-        const svcVal   = document.querySelector('input[name="service_type"]:checked').value;
-        const svcMap   = { lepas_kunci:'Lepas Kunci (Tanpa Sopir)', dengan_sopir:'Dengan Sopir', carter:'Carter (Full Service)' };
         const grnVal   = document.querySelector('input[name="guarantee_type"]:checked').value;
         const grnMap   = { ktp:'KTP', sim:'SIM', motor:'BPKB Motor' };
         const payVal   = document.querySelector('input[name="payment_method"]:checked').value;
@@ -1851,7 +1853,7 @@ textarea.form-input {
         document.getElementById('cfDuration').textContent      = days + ' hari';
         document.getElementById('cfContact').textContent       = contactInput.value || '–';
         document.getElementById('cfAlamat').textContent        = alamatInput.value || '–';
-        document.getElementById('cfService').textContent       = svcMap[svcVal] || svcVal;
+        document.getElementById('cfService').textContent       = 'Lepas Kunci';
         document.getElementById('cfGuarantee').textContent     = grnMap[grnVal] || grnVal;
         document.getElementById('cfDoc').textContent           = docFile.files.length ? docFile.files[0].name : '–';
         document.getElementById('cfPayMethod').textContent     = payMap[payVal] || payVal;
