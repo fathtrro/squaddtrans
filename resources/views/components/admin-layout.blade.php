@@ -1,3 +1,4 @@
+
 {{-- resources/views/components/admin-layout.blade.php --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -104,8 +105,8 @@
                     Paket Wisata
                 </a>
 
-                <a href="#"
-                   class="nav-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                <a href="{{ route('admin.laporan') }}"
+                   class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.laporan') ? 'text-white bg-gradient-to-r from-yellow-400 to-yellow-500 shadow-sm' : 'text-gray-700 hover:bg-gray-100' }}">
                     <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                     </svg>
@@ -155,9 +156,9 @@
                     </div>
 
                     <!-- User Info -->
-                    <div class="flex items-center space-x-2 sm:space-x-4">
+                    <div class="flex items-center space-x-3 sm:space-x-6 flex-shrink-0">
                         <!-- Notification Bell -->
-                        <a href="{{ route('admin.inbox.index') }}" class="relative p-2 text-gray-400 hover:text-yellow-600 transition-colors group">
+                        <a href="{{ route('admin.inbox.index') }}" class="relative p-2 text-gray-400 hover:text-yellow-600 transition-colors group flex-shrink-0">
                             <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                             </svg>
@@ -169,30 +170,32 @@
                                     {{ $unreadCount > 9 ? '9+' : $unreadCount }}
                                 </span>
                             @endif
-                            <span class="hidden sm:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                            <span class="hidden sm:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                                 Inbox ({{ $unreadCount }})
                             </span>
                         </a>
 
                         <!-- User Avatar & Dropdown -->
-                        <div class="relative group">
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Admin Squad') }}&background=F59E0B&color=fff"
-                                 alt="Avatar"
-                                 class="w-8 h-8 sm:w-10 sm:h-10 rounded-full cursor-pointer border-2 border-gray-200">
+                        <div class="relative group flex-shrink-0">
+                            <button type="button" class="flex items-center space-x-3 focus:outline-none">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Admin Squad') }}&background=F59E0B&color=fff"
+                                     alt="Avatar"
+                                     class="w-8 h-8 sm:w-10 sm:h-10 rounded-full cursor-pointer border-2 border-gray-200 hover:border-yellow-400 transition-colors">
 
-                            <!-- User Info (Desktop) -->
-                            <div class="hidden xl:block absolute right-full mr-3 top-1/2 -translate-y-1/2 text-right">
-                                <p class="text-sm font-semibold text-gray-800">{{ Auth::user()->name ?? 'Admin Squad' }}</p>
-                                <p class="text-xs text-gray-500">{{ Auth::user()->type ?? 'Super Admin' }}</p>
-                            </div>
+                                <!-- User Info (Desktop only, next to avatar) -->
+                                <div class="hidden lg:block text-left">
+                                    <p class="text-sm font-semibold text-gray-800 whitespace-nowrap">{{ Auth::user()->name ?? 'Admin Squad' }}</p>
+                                    <p class="text-xs text-gray-500 whitespace-nowrap">{{ Auth::user()->type ?? 'Super Admin' }}</p>
+                                </div>
+                            </button>
 
                             <!-- Dropdown Menu -->
-                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100">
                                 <div class="px-4 py-3 border-b border-gray-200">
                                     <p class="text-sm font-semibold text-gray-800 truncate">{{ Auth::user()->name ?? 'Admin Squad' }}</p>
                                     <p class="text-xs text-gray-500 truncate">{{ Auth::user()->email }}</p>
                                 </div>
-                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
                                     <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                     </svg>
@@ -200,7 +203,7 @@
                                 </a>
                                 <form method="POST" action="{{ route('logout') }}" class="block">
                                     @csrf
-                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600">
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors rounded-b-lg">
                                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                                         </svg>

@@ -16,8 +16,8 @@
                 </div>
             </div>
             <div class="space-y-1">
-                <p class="text-3xl font-bold text-gray-800">IDR 150.000.000</p>
-                <p class="text-sm text-green-600">↑ +12.5% dari bulan lalu</p>
+                <p class="text-3xl font-bold text-gray-800">IDR {{ number_format($totalRevenue, 0, ',', '.') }}</p>
+                <p class="text-sm {{ $revenueTrend >= 0 ? 'text-green-600' : 'text-red-600' }}">{{ $revenueTrend >= 0 ? '↑' : '↓' }} {{ abs(round($revenueTrend, 1)) }}% dari bulan lalu</p>
             </div>
         </div>
 
@@ -32,8 +32,8 @@
                 </div>
             </div>
             <div class="space-y-1">
-                <p class="text-3xl font-bold text-gray-800">42 Units</p>
-                <p class="text-sm text-green-600">↑ +5.0% hari ini</p>
+                <p class="text-3xl font-bold text-gray-800">{{ $activeRentals }} Units</p>
+                <p class="text-sm text-green-600">↑ Aktif saat ini</p>
             </div>
         </div>
 
@@ -48,8 +48,8 @@
                 </div>
             </div>
             <div class="space-y-1">
-                <p class="text-3xl font-bold text-gray-800">8 Tasks</p>
-                <p class="text-sm text-red-600">! Butuh perhatian segera</p>
+                <p class="text-3xl font-bold text-gray-800">{{ $pendingApprovals }} Tasks</p>
+                <p class="text-sm {{ $pendingApprovals > 0 ? 'text-red-600' : 'text-green-600' }}">{{ $pendingApprovals > 0 ? '! Butuh perhatian segera' : '✓ Semua tersetujui' }}</p>
             </div>
         </div>
 
@@ -64,8 +64,8 @@
                 </div>
             </div>
             <div class="space-y-1">
-                <p class="text-3xl font-bold text-gray-800">3 Urgent</p>
-                <p class="text-sm text-gray-600">⏱ 2 terjadwal besok</p>
+                <p class="text-3xl font-bold text-gray-800">{{ $maintenanceUrgent }} Issues</p>
+                <p class="text-sm text-gray-600">⏱ Perlu penanganan</p>
             </div>
         </div>
     </div>
@@ -81,22 +81,16 @@
                 </div>
                 <div class="flex space-x-2">
                     <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Unduh Report</button>
-                    <button class="px-4 py-2 text-sm bg-gray-800 text-white rounded-lg hover:bg-gray-700">2025</button>
+                    <button class="px-4 py-2 text-sm bg-gray-800 text-white rounded-lg hover:bg-gray-700">{{ date('Y') }}</button>
                 </div>
             </div>
             <div class="h-64 flex items-end justify-between space-x-2">
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 45%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 65%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 55%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 75%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 85%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 70%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 90%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 80%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 95%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 60%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 50%"></div>
-                <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: 70%"></div>
+                @foreach($revenueData as $month => $amount)
+                    @php
+                        $percentage = $maxRevenue > 0 ? ($amount / $maxRevenue) * 100 : 0;
+                    @endphp
+                    <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: {{ $percentage }}%" title="Bulan {{ $month }}: IDR {{ number_format($amount, 0, ',', '.') }}"></div>
+                @endforeach
             </div>
             <div class="flex justify-between mt-4 text-xs text-gray-500">
                 <span>JAN</span>
@@ -111,21 +105,21 @@
         <!-- Fleet Status -->
         <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <h3 class="text-lg font-bold text-gray-800 mb-2">Status Armada</h3>
-            <p class="text-sm text-gray-500 mb-6">Total 120 Kendaraan</p>
+            <p class="text-sm text-gray-500 mb-6">Total {{ $totalCars }} Kendaraan</p>
 
             <div class="flex items-center justify-center mb-6">
                 <div class="relative w-48 h-48">
                     <svg class="w-full h-full transform -rotate-90">
                         <circle cx="96" cy="96" r="80" stroke="#FEF3C7" stroke-width="16" fill="none"/>
                         <circle cx="96" cy="96" r="80" stroke="#F59E0B" stroke-width="16" fill="none"
-                                stroke-dasharray="301.59" stroke-dashoffset="90.48" stroke-linecap="round"/>
+                                stroke-dasharray="301.59" stroke-dashoffset="{{ 301.59 - (($carsRented / $totalCars) * 301.59) }}" stroke-linecap="round"/>
                         <circle cx="96" cy="96" r="80" stroke="#10B981" stroke-width="16" fill="none"
-                                stroke-dasharray="301.59" stroke-dashoffset="211.11" stroke-linecap="round"/>
+                                stroke-dasharray="301.59" stroke-dashoffset="{{ 301.59 - (($carsAvailable / $totalCars) * 301.59) }}" stroke-linecap="round"/>
                         <circle cx="96" cy="96" r="80" stroke="#EF4444" stroke-width="16" fill="none"
-                                stroke-dasharray="301.59" stroke-dashoffset="271.43" stroke-linecap="round"/>
+                                stroke-dasharray="301.59" stroke-dashoffset="{{ 301.59 - (($carsInService / $totalCars) * 301.59) }}" stroke-linecap="round"/>
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <span class="text-4xl font-bold text-gray-800">120</span>
+                        <span class="text-4xl font-bold text-gray-800">{{ $totalCars }}</span>
                         <span class="text-sm text-gray-500">UNITS</span>
                     </div>
                 </div>
@@ -137,21 +131,21 @@
                         <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
                         <span class="text-sm text-gray-700">Disewa</span>
                     </div>
-                    <span class="text-sm font-semibold text-gray-800">72 Units (60%)</span>
+                    <span class="text-sm font-semibold text-gray-800">{{ $carsRented }} Units ({{ $rentedPercentage }}%)</span>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
                         <span class="text-sm text-gray-700">Tersedia</span>
                     </div>
-                    <span class="text-sm font-semibold text-gray-800">36 Units (30%)</span>
+                    <span class="text-sm font-semibold text-gray-800">{{ $carsAvailable }} Units ({{ $availablePercentage }}%)</span>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
                         <span class="text-sm text-gray-700">Servis</span>
                     </div>
-                    <span class="text-sm font-semibold text-gray-800">12 Units (10%)</span>
+                    <span class="text-sm font-semibold text-gray-800">{{ $carsInService }} Units ({{ $servicePercentage }}%)</span>
                 </div>
             </div>
         </div>
@@ -159,9 +153,9 @@
 
     <!-- Recent Bookings Table -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-lg font-bold text-gray-800">Penyewaan Terbaru</h3>
-            <a href="#" class="text-sm font-medium text-yellow-600 hover:text-yellow-700">Lihat Semua →</a>
+            <a href="{{ route('admin.renter.index') }}" class="text-sm font-medium text-yellow-600 hover:text-yellow-700">Lihat Semua →</a>
         </div>
 
         <div class="overflow-x-auto">
@@ -177,81 +171,47 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#SQD-2931</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-sm font-semibold text-orange-600 mr-3">BK</div>
-                                <span class="text-sm text-gray-900">Budi Kusuma</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Toyota Hiace Premio</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">3 Hari</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">BERJALAN</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">IDR 2.450.000</td>
-                    </tr>
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#SQD-2932</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center text-sm font-semibold text-yellow-600 mr-3">SA</div>
-                                <span class="text-sm text-gray-900">Siti Aminah</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Mitsubishi Pajero Sport</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2 Hari</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 text-xs font-semibold text-yellow-800 bg-yellow-100 rounded-full">MENUNGGU</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">IDR 1.800.000</td>
-                    </tr>
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#SQD-2933</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-sm font-semibold text-orange-600 mr-3">RP</div>
-                                <span class="text-sm text-gray-900">Rian Pratama</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Innova Zenix Hybrid</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">5 Hari</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">BERJALAN</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">IDR 4.250.000</td>
-                    </tr>
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#SQD-2934</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center text-sm font-semibold text-yellow-600 mr-3">DF</div>
-                                <span class="text-sm text-gray-900">Dina Fitriani</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Toyota Alphard</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">4 Hari</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 text-xs font-semibold text-blue-800 bg-blue-100 rounded-full">SELESAI</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">IDR 5.600.000</td>
-                    </tr>
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#SQD-2935</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-sm font-semibold text-orange-600 mr-3">AW</div>
-                                <span class="text-sm text-gray-900">Ahmad Wijaya</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Honda CR-V</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">3 Hari</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 text-xs font-semibold text-yellow-800 bg-yellow-100 rounded-full">MENUNGGU</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">IDR 2.100.000</td>
-                    </tr>
+                    @forelse($recentBookings as $booking)
+                            @php
+                            $statusColorMap = [
+                                'pending' => ['bg' => '#FEF3C7', 'text' => '#B45309'],
+                                'confirmed' => ['bg' => '#FEF3C7', 'text' => '#92400E'],
+                                'running' => ['bg' => '#DCFCE7', 'text' => '#166534'],
+                                'completed' => ['bg' => '#DBEAFE', 'text' => '#1E40AF'],
+                                'cancelled' => ['bg' => '#FEE2E2', 'text' => '#991B1B'],
+                            ];
+                            $statusLabel = [
+                                'pending' => 'MENUNGGU',
+                                'confirmed' => 'DIKONFIRMASI',
+                                'running' => 'BERJALAN',
+                                'completed' => 'SELESAI',
+                                'cancelled' => 'DIBATALKAN',
+                            ];
+                            $colorData = $statusColorMap[$booking->status] ?? $statusColorMap['pending'];
+                            $statusText = $statusLabel[$booking->status] ?? strtoupper($booking->status);
+                            $duration = $booking->start_datetime->diffInDays($booking->end_datetime) + 1;
+                            $initials = strtoupper(substr($booking->user->name, 0, 2));
+                        @endphp
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $booking->booking_code }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold mr-3" style="background-color: {{ $colorData['bg'] }}; color: {{ $colorData['text'] }};">{{ $initials }}</div>
+                                    <span class="text-sm text-gray-900">{{ $booking->user->name }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $booking->car->brand }} {{ $booking->car->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $duration }} {{ $duration > 1 ? 'Hari' : 'Hari' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background-color: {{ $colorData['bg'] }}; color: {{ $colorData['text'] }};">{{ $statusText }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">IDR {{ number_format($booking->total_price, 0, ',', '.') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada data booking</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

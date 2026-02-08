@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\InboxController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReportController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 
@@ -86,6 +87,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])
             ->name('dashboard');
+        Route::get('/laporan', [ReportController::class, 'laporan'])
+            ->name('laporan');
         Route::resource('car', CarController::class);
         Route::resource('inbox', InboxController::class);
         Route::resource('renter', RenterController::class);
