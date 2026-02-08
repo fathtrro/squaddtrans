@@ -78,8 +78,8 @@
                     @php
                         $percentage = $maxRevenue > 0 ? ($amount / $maxRevenue) * 100 : 0;
                     @endphp
-                    <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" 
-                         style="height: {{ $percentage }}%" 
+                    <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg"
+                         style="height: {{ $percentage }}%"
                          title="Bulan {{ $month }}: IDR {{ number_format($amount, 0, ',', '.') }}">
                     </div>
                 @endforeach
@@ -150,16 +150,16 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-8">
         <div class="p-6 border-b border-gray-200">
             <h3 class="text-lg font-bold text-gray-800 mb-4">Laporan Keuntungan Riil</h3>
-            
+
             <!-- Filters -->
             <form method="GET" class="flex gap-4 flex-wrap">
                 <div class="flex-1 min-w-[200px]">
-                    <input type="date" name="start_date" value="{{ request('start_date') }}" 
+                    <input type="date" name="start_date" value="{{ request('start_date') }}"
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
                            placeholder="Tanggal Mulai">
                 </div>
                 <div class="flex-1 min-w-[200px]">
-                    <input type="date" name="end_date" value="{{ request('end_date') }}" 
+                    <input type="date" name="end_date" value="{{ request('end_date') }}"
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
                            placeholder="Tanggal Akhir">
                 </div>
@@ -231,7 +231,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">IDR {{ number_format($booking['total_paid'], 0, ',', '.') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">IDR {{ number_format($booking['penalty'], 0, ',', '.') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-3 py-1 text-xs font-semibold rounded-full" 
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full"
                                       style="background-color: {{ $colorData['bg'] }}; color: {{ $colorData['text'] }};">
                                     {{ $statusText }}
                                 </span>
