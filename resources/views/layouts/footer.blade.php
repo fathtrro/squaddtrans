@@ -39,27 +39,27 @@
                 <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Layanan Populer</h4>
                 <ul class="space-y-3">
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Sewa Mobil Lepas Kunci
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Sewa Mobil + Driver
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Antar Jemput Bandara
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Paket Wisata Bali
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Sewa Hiace / Bus
                         </a>
                     </li>
@@ -71,27 +71,27 @@
                 <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Dukungan</h4>
                 <ul class="space-y-3">
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Cara Pemesanan
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Metode Pembayaran
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Syarat & Ketentuan
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Pusat Bantuan
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
+                        <a class="text-gray-400 hover:text-yellow-500 transition-colors text-sm">
                             Privacy Policy
                         </a>
                     </li>
