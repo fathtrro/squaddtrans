@@ -1246,6 +1246,11 @@ textarea.form-input {
                 <input type="hidden" name="total_price" id="totalPriceInput" value="0">
                 <input type="hidden" name="service_type" value="lepas_kunci">
                 <input type="hidden" name="driver_id" value="" id="hiddenDriverId">
+                <!-- Hidden fields populated from cars/show query params -->
+                <input type="hidden" name="duration_mode" id="durationModeHidden" value="24">
+                <input type="hidden" name="base_price" id="basePriceHidden" value="0">
+                <input type="hidden" name="min_deposit" id="minDepositHidden" value="0">
+                <input type="hidden" name="days" id="daysHidden" value="0">
 
                 <!-- ============================================
                      STEP 0 – Waktu & Data Penyewa
@@ -1309,6 +1314,10 @@ textarea.form-input {
                     <!-- Duration Summary -->
                     <div class="duration-box" id="durationBox">
                         <div class="duration-box-inner">
+                            <div class="duration-row" id="durationModeInfo" style="display:none; padding-bottom:0.6rem; border-bottom:1px solid rgba(217,119,6,0.15);">
+                                <span class="dr-label">Mode Sewa</span>
+                                <span class="dr-value" id="durationModeText">—</span>
+                            </div>
                             <div class="duration-row">
                                 <span class="dr-label">Durasi</span>
                                 <span class="dr-value"><span id="durDays">0</span> hari</span>
@@ -1510,214 +1519,170 @@ textarea.form-input {
      ============================================================ -->
 <script>
 (function() {
+    // Parse incoming query params from cars/show
+    const params = new URLSearchParams(window.location.search);
+    const paramStart = params.get('start'); // format: 'YYYY-MM-DD HH:MM'
+    const paramEnd = params.get('end');
+    const paramMode = params.get('mode'); // '12' or '24'
+    const paramBasePrice = params.get('base_price') ? parseInt(params.get('base_price')) : null;
+    const paramTotalPrice = params.get('total_price') ? parseInt(params.get('total_price')) : null;
+    const paramMinDeposit = params.get('min_deposit') ? parseInt(params.get('min_deposit')) : null;
+    const paramDays = params.get('days') ? parseInt(params.get('days')) : null;
+
     // --------------------------------------------------------
     // DATA
     // --------------------------------------------------------
     const PRICE_PER_DAY = {{ $car->price_24h ?? 300000 }};
     const CAR_NAME      = "{{ $car->brand }} {{ $car->name }}";
 
-    // Bank account information
+    // Bank accounts and steps remain unchanged
     const BANK_ACCOUNTS = {
-        'BCA': {
-            name: 'BCA',
-            account: '1234567890',
-            holder: 'SQUADTRANS'
-        },
-        'Mandiri': {
-            name: 'Bank Mandiri',
-            account: '0987654321',
-            holder: 'SQUADTRANS'
-        },
-        'BRI': {
-            name: 'Bank BRI',
-            account: '5678901234',
-            holder: 'SQUADTRANS'
-        },
-        'BNI': {
-            name: 'Bank BNI',
-            account: '4321098765',
-            holder: 'SQUADTRANS'
-        }
+        'BCA': { name: 'BCA', account: '1234567890', holder: 'SQUADTRANS' },
+        'Mandiri': { name: 'Bank Mandiri', account: '0987654321', holder: 'SQUADTRANS' },
+        'BRI': { name: 'Bank BRI', account: '5678901234', holder: 'SQUADTRANS' },
+        'BNI': { name: 'Bank BNI', account: '4321098765', holder: 'SQUADTRANS' }
     };
 
     const STEPS = [
-        { icon: 'fa-clock',          title: 'Waktu Sewa',       sub: 'Tentukan kapan Anda ingin menyewa' },
-        { icon: 'fa-shield-halved',  title: 'Jaminan',          sub: 'Upload dokumen sebagai jaminan' },
-        { icon: 'fa-credit-card',    title: 'Pembayaran',       sub: 'Pilih metode dan masukkan DP' }
+        { icon: 'fa-clock', title: 'Waktu Sewa', sub: 'Tentukan kapan Anda ingin menyewa' },
+        { icon: 'fa-shield-halved', title: 'Jaminan', sub: 'Upload dokumen sebagai jaminan' },
+        { icon: 'fa-credit-card', title: 'Pembayaran', sub: 'Pilih metode dan masukkan DP' }
     ];
 
     // --------------------------------------------------------
     // STATE
     // --------------------------------------------------------
-    let currentStep  = 0;
-    let totalPrice   = 0;
-    let days         = 0;
-    let minDP        = 0;
+    let currentStep = 0;
+    let durationMode = paramMode || '24';
+    let totalPrice = paramTotalPrice || 0;
+    let basePrice = paramBasePrice || 0;
+    let days = paramDays || 0;
+    let minDP = paramMinDeposit || Math.ceil((totalPrice || 0) * 0.3);
 
     // --------------------------------------------------------
     // ELS
     // --------------------------------------------------------
-    const panels      = document.querySelectorAll('.step-panel');
-    const btnBack     = document.getElementById('btnBack');
-    const btnNext     = document.getElementById('btnNext');
-    const btnSubmit   = document.getElementById('btnSubmit');
-    const startInput  = document.getElementById('startInput');
-    const endInput    = document.getElementById('endInput');
-    const dpInput     = document.getElementById('dpInput');
+    const panels = document.querySelectorAll('.step-panel');
+    const btnBack = document.getElementById('btnBack');
+    const btnNext = document.getElementById('btnNext');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const startInput = document.getElementById('startInput');
+    const endInput = document.getElementById('endInput');
+    const dpInput = document.getElementById('dpInput');
     const durationBox = document.getElementById('durationBox');
     const contactInput = document.getElementById('contactInput');
-    const alamatInput  = document.getElementById('alamatInput');
-    const bankSelect   = document.getElementById('bankSelect');
-    const bankInfoBox  = document.getElementById('bankInfoBox');
+    const alamatInput = document.getElementById('alamatInput');
+    const bankSelect = document.getElementById('bankSelect');
+    const bankInfoBox = document.getElementById('bankInfoBox');
 
-    // --------------------------------------------------------
-    // PROGRESS BAR
-    // --------------------------------------------------------
+    // Reuse rendering, header and navigation code (unchanged)
     function renderProgress() {
         const wrap = document.getElementById('progressBar');
         let html = '';
         STEPS.forEach((s, i) => {
             const cls = i < currentStep ? 'done' : (i === currentStep ? 'active' : '');
             const lblCls = i < currentStep ? 'done' : (i === currentStep ? 'active' : '');
-            const icon  = i < currentStep
-                ? '<i class="fa-solid fa-check"></i>'
-                : `<i class="fa-solid ${s.icon}"></i>`;
-
-            html += `<div class="prog-step">
-                        <div class="prog-dot ${cls}">${icon}</div>
-                        <span class="prog-label ${lblCls}">${s.title}</span>
-                     </div>`;
-
-            if (i < STEPS.length - 1) {
-                const fillPct = i < currentStep ? '100' : '0';
-                html += `<div class="prog-line"><div class="prog-line-fill" style="width:${fillPct}%"></div></div>`;
-            }
+            const icon = i < currentStep ? '<i class="fa-solid fa-check"></i>' : `<i class="fa-solid ${s.icon}"></i>`;
+            html += `<div class="prog-step"><div class="prog-dot ${cls}">${icon}</div><span class="prog-label ${lblCls}">${s.title}</span></div>`;
+            if (i < STEPS.length - 1) html += `<div class="prog-line"><div class="prog-line-fill" style="width:${i < currentStep ? '100' : '0'}%"></div></div>`;
         });
         wrap.innerHTML = html;
     }
 
-    // --------------------------------------------------------
-    // HEADER
-    // --------------------------------------------------------
     function updateHeader() {
         const s = STEPS[currentStep];
         document.getElementById('headerIcon').innerHTML = `<i class="fa-solid ${s.icon}"></i>`;
         document.getElementById('headerTitle').textContent = s.title;
-        document.getElementById('headerSub').textContent   = s.sub;
+        document.getElementById('headerSub').textContent = s.sub;
     }
 
-    // --------------------------------------------------------
-    // STEP NAVIGATION
-    // --------------------------------------------------------
     function goToStep(n) {
         panels.forEach((p, i) => p.classList.toggle('active', i === n));
         currentStep = n;
-
         btnBack.classList.toggle('btn-hidden', n === 0);
         btnNext.classList.toggle('btn-hidden', n === STEPS.length - 1);
         btnSubmit.classList.toggle('btn-hidden', n !== STEPS.length - 1);
-
-        renderProgress();
-        updateHeader();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        renderProgress(); updateHeader(); window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     btnBack.addEventListener('click', () => { if (currentStep > 0) goToStep(currentStep - 1); });
+    btnNext.addEventListener('click', () => { if (!validateCurrentStep()) return; if (currentStep < STEPS.length - 1) goToStep(currentStep + 1); });
 
-    btnNext.addEventListener('click', () => {
-        if (!validateCurrentStep()) return;
-        if (currentStep < STEPS.length - 1) goToStep(currentStep + 1);
-    });
-
-    // --------------------------------------------------------
-    // VALIDATION
-    // --------------------------------------------------------
-    function clearError(fieldId) {
-        const f = document.getElementById(fieldId);
-        if (f) f.classList.remove('has-error');
-    }
-
-    function setError(fieldId) {
-        const f = document.getElementById(fieldId);
-        if (f) f.classList.add('has-error');
-    }
+    function clearError(fieldId) { const f = document.getElementById(fieldId); if (f) f.classList.remove('has-error'); }
+    function setError(fieldId) { const f = document.getElementById(fieldId); if (f) f.classList.add('has-error'); }
 
     function validateCurrentStep() {
         ['fieldStart','fieldEnd','fieldContact','fieldAlamat','fieldDoc','fieldBank','fieldDP'].forEach(clearError);
-
         if (currentStep === 0) {
             let ok = true;
             if (!startInput.value) { setError('fieldStart'); ok = false; }
-            if (!endInput.value)   { setError('fieldEnd');   ok = false; }
+            if (!endInput.value) { setError('fieldEnd'); ok = false; }
             if (!contactInput.value) { setError('fieldContact'); ok = false; }
-            if (!alamatInput.value)  { setError('fieldAlamat');  ok = false; }
-            if (ok && days <= 0)   { setError('fieldEnd');   ok = false; }
+            if (!alamatInput.value) { setError('fieldAlamat'); ok = false; }
+            if (ok && days <= 0) { setError('fieldEnd'); ok = false; }
             return ok;
         }
-
-        if (currentStep === 1) {
-            const file = document.getElementById('docFile');
-            if (!file.files || file.files.length === 0) {
-                setError('fieldDoc');
-                return false;
-            }
-            return true;
-        }
-
+        if (currentStep === 1) { const file = document.getElementById('docFile'); if (!file.files || file.files.length === 0) { setError('fieldDoc'); return false; } return true; }
         if (currentStep === 2) {
             const payMethod = document.querySelector('input[name="payment_method"]:checked').value;
-
-            // Validate bank selection if transfer is chosen
-            if (payMethod === 'transfer' && !bankSelect.value) {
-                setError('fieldBank');
-                return false;
-            }
-
+            if (payMethod === 'transfer' && !bankSelect.value) { setError('fieldBank'); return false; }
             const dp = Number(dpInput.value) || 0;
-            if (dp < minDP) {
+            if (dp < minDP) { setError('fieldDP'); return false; }
+            // Validate: DP should not exceed total price
+            if (dp > totalPrice) {
                 setError('fieldDP');
+                document.getElementById('minDpErr').textContent = `DP tidak boleh lebih dari Rp ${totalPrice.toLocaleString('id-ID')}`;
                 return false;
             }
             return true;
         }
-
         return true;
     }
 
-    // --------------------------------------------------------
-    // PRICE CALC
-    // --------------------------------------------------------
+    // Price calculation now supports params passed from cars/show
     function calcPrice() {
-        if (!startInput.value || !endInput.value) {
-            durationBox.classList.remove('show');
-            return;
-        }
-
-        const s = new Date(startInput.value);
-        const e = new Date(endInput.value);
+        if (!startInput.value || !endInput.value) { durationBox.classList.remove('show'); return; }
+        const s = new Date(startInput.value); const e = new Date(endInput.value);
         days = Math.ceil((e - s) / (1000 * 60 * 60 * 24));
 
-        if (days <= 0) {
-            durationBox.classList.remove('show');
-            totalPrice = 0; minDP = 0;
-            document.getElementById('totalPriceInput').value = 0;
-            updatePaySummary();
-            return;
+        if (days <= 0) { durationBox.classList.remove('show'); totalPrice = 0; minDP = 0; document.getElementById('totalPriceInput').value = 0; updatePaySummary(); return; }
+
+        // If cars/show provided a total price and it matches this selection, use it
+        if (paramTotalPrice !== null && (paramMode === '12' || (paramDays !== null && paramDays === days))) {
+            totalPrice = paramTotalPrice;
+            basePrice = paramBasePrice || (durationMode === '12' ? Math.round(PRICE_PER_DAY * 0.7) : PRICE_PER_DAY * days);
+            minDP = paramMinDeposit !== null ? paramMinDeposit : Math.ceil(totalPrice * 0.3);
+        } else {
+            // recalc locally
+            basePrice = durationMode === '12' ? Math.round(PRICE_PER_DAY * 0.7) : PRICE_PER_DAY * days;
+            totalPrice = basePrice;
+            minDP = Math.ceil(totalPrice * 0.3);
         }
 
-        totalPrice = PRICE_PER_DAY * days;
-        minDP      = Math.ceil(totalPrice * 0.3);
-
         document.getElementById('totalPriceInput').value = totalPrice;
+        document.getElementById('durationModeHidden').value = durationMode;
+        document.getElementById('basePriceHidden').value = basePrice;
+        document.getElementById('minDepositHidden').value = minDP;
+        document.getElementById('daysHidden').value = days;
 
-        document.getElementById('durDays').textContent      = days;
-        document.getElementById('durPricePerDay').textContent = 'Rp ' + PRICE_PER_DAY.toLocaleString('id-ID');
-        document.getElementById('durTotal').textContent     = 'Rp ' + totalPrice.toLocaleString('id-ID');
-        document.getElementById('minDpText').textContent    = 'Rp ' + minDP.toLocaleString('id-ID');
-        document.getElementById('minDpErr').textContent     = 'Rp ' + minDP.toLocaleString('id-ID');
+        // show mode info if provided
+        const modeInfo = document.getElementById('durationModeInfo');
+        if (paramMode) { modeInfo.style.display = 'flex'; document.getElementById('durationModeText').textContent = durationMode === '12' ? '12 Jam' : '24 Jam'; }
 
-        durationBox.classList.add('show');
-        updatePaySummary();
+        document.getElementById('durDays').textContent = durationMode === '12' ? '1/2' : days;
+        document.getElementById('durPricePerDay').textContent = durationMode === '12' ? 'Rp ' + Math.round(PRICE_PER_DAY * 0.7).toLocaleString('id-ID') : 'Rp ' + PRICE_PER_DAY.toLocaleString('id-ID');
+        document.getElementById('durTotal').textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
+        document.getElementById('minDpText').textContent = 'Rp ' + minDP.toLocaleString('id-ID');
+        document.getElementById('minDpErr').textContent = 'Rp ' + minDP.toLocaleString('id-ID');
+
+        // Set max attribute on DP input so user cannot enter value > total price
+        dpInput.setAttribute('max', totalPrice);
+        // Reset DP input if it exceeds new total price
+        if (Number(dpInput.value) > totalPrice) {
+            dpInput.value = '';
+        }
+
+        durationBox.classList.add('show'); updatePaySummary();
     }
 
     startInput.addEventListener('change', calcPrice);
@@ -1726,251 +1691,94 @@ textarea.form-input {
     contactInput.addEventListener('input', () => { clearError('fieldContact'); });
     alamatInput.addEventListener('input', () => { clearError('fieldAlamat'); });
 
-    // --------------------------------------------------------
-    // PAY SUMMARY
-    // --------------------------------------------------------
-    function updatePaySummary() {
-        const dp = Number(dpInput.value) || 0;
-        document.getElementById('psTotalPrice').textContent  = 'Rp ' + totalPrice.toLocaleString('id-ID');
-        document.getElementById('psDPPaid').textContent       = 'Rp ' + dp.toLocaleString('id-ID');
-        document.getElementById('psRemaining').textContent    = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID');
-    }
+    function updatePaySummary() { const dp = Number(dpInput.value) || 0; document.getElementById('psTotalPrice').textContent = 'Rp ' + totalPrice.toLocaleString('id-ID'); document.getElementById('psDPPaid').textContent = 'Rp ' + dp.toLocaleString('id-ID'); document.getElementById('psRemaining').textContent = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID'); }
+    
+    // ========================================================
+    // DP INPUT VALIDATION: Prevent DP > Total Price
+    // ========================================================
+    dpInput.addEventListener('input', () => {
+        clearError('fieldDP');
+        const dpValue = Number(dpInput.value) || 0;
 
-    dpInput.addEventListener('input', () => { clearError('fieldDP'); updatePaySummary(); });
-
-    // --------------------------------------------------------
-    // CARD RADIO
-    // --------------------------------------------------------
-    function initCardRadio(gridId) {
-        const grid = document.getElementById(gridId);
-        if (!grid) return;
-        grid.querySelectorAll('.card-radio').forEach(card => {
-            card.addEventListener('click', function() {
-                grid.querySelectorAll('.card-radio').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                const radio = this.querySelector('input[type="radio"]');
-                if (radio) radio.checked = true;
-            });
-        });
-    }
-
-    initCardRadio('guaranteeGrid');
-    initCardRadio('paymentGrid');
-
-    // --------------------------------------------------------
-    // PAYMENT METHOD TOGGLE
-    // --------------------------------------------------------
-    document.querySelectorAll('#paymentGrid .card-radio').forEach(card => {
-        card.addEventListener('click', function() {
-            const val = this.dataset.value;
-            const bankField = document.getElementById('fieldBank');
-            const proofField = document.getElementById('fieldProofImage'); 
-
-            if (val === 'transfer') {
-                bankField.classList.remove('hidden');
-                proofField.classList.remove('hidden');
-                if (bankSelect.value) {
-                    showBankInfo(bankSelect.value);
-                }
-            } else {
-                bankField.classList.add('hidden');
-                proofField.classList.add('hidden');
-                bankInfoBox.classList.remove('show');
-            }
-        });
-    });
-
-    // --------------------------------------------------------
-    // BANK SELECTION
-    // --------------------------------------------------------
-    bankSelect.addEventListener('change', function() {
-        clearError('fieldBank');
-        if (this.value) {
-            showBankInfo(this.value);
+        // Validate: DP should not exceed total price
+        if (dpValue > totalPrice) {
+            setError('fieldDP');
+            document.getElementById('minDpErr').textContent = `DP tidak boleh lebih dari Rp ${totalPrice.toLocaleString('id-ID')}`;
+            // Reset the input to maximum allowed value
+            dpInput.value = totalPrice;
+        } else if (dpValue < minDP && dpValue > 0) {
+            // If DP is less than minimum but greater than 0
+            setError('fieldDP');
+            document.getElementById('minDpErr').textContent = `DP minimal Rp ${minDP.toLocaleString('id-ID')}`;
         } else {
-            bankInfoBox.classList.remove('show');
+            // Clear error if within valid range
+            clearError('fieldDP');
+            document.getElementById('minDpErr').textContent = `Rp ${minDP.toLocaleString('id-ID')}`;
         }
+
+        updatePaySummary();
     });
 
-    function showBankInfo(bankCode) {
-        const bank = BANK_ACCOUNTS[bankCode];
-        if (!bank) return;
+    function initCardRadio(gridId) { const grid = document.getElementById(gridId); if (!grid) return; grid.querySelectorAll('.card-radio').forEach(card => { card.addEventListener('click', function() { grid.querySelectorAll('.card-radio').forEach(c => c.classList.remove('selected')); this.classList.add('selected'); const radio = this.querySelector('input[type="radio"]'); if (radio) radio.checked = true; }); }); }
+    initCardRadio('guaranteeGrid'); initCardRadio('paymentGrid');
 
-        const content = `
-            <div class="bank-item">
-                <div class="bank-name">${bank.name}</div>
-                <div class="bank-account">
-                    <span class="bank-number">${bank.account}</span>
-                    <button type="button" class="copy-btn" onclick="copyToClipboard('${bank.account}')">
-                        <i class="fa-solid fa-copy"></i> Copy
-                    </button>
-                </div>
-                <div class="bank-holder">a.n. ${bank.holder}</div>
-            </div>
-        `;
+    document.querySelectorAll('#paymentGrid .card-radio').forEach(card => { card.addEventListener('click', function() { const val = this.dataset.value; const bankField = document.getElementById('fieldBank'); const proofField = document.getElementById('fieldProofImage'); if (val === 'transfer') { bankField.classList.remove('hidden'); proofField.classList.remove('hidden'); if (bankSelect.value) showBankInfo(bankSelect.value); } else { bankField.classList.add('hidden'); proofField.classList.add('hidden'); bankInfoBox.classList.remove('show'); } }); });
 
-        document.getElementById('bankInfoContent').innerHTML = content;
-        bankInfoBox.classList.add('show');
-    }
+    bankSelect.addEventListener('change', function() { clearError('fieldBank'); if (this.value) showBankInfo(this.value); else bankInfoBox.classList.remove('show'); });
+    function showBankInfo(bankCode) { const bank = BANK_ACCOUNTS[bankCode]; if (!bank) return; const content = `<div class="bank-item"><div class="bank-name">${bank.name}</div><div class="bank-account"><span class="bank-number">${bank.account}</span><button type="button" class="copy-btn" onclick="copyToClipboard('${bank.account}')"><i class="fa-solid fa-copy"></i> Copy</button></div><div class="bank-holder">a.n. ${bank.holder}</div></div>`; document.getElementById('bankInfoContent').innerHTML = content; bankInfoBox.classList.add('show'); }
+    window.copyToClipboard = function(text) { navigator.clipboard.writeText(text).then(() => { alert('Nomor rekening berhasil disalin!'); }).catch(err => { console.error('Gagal menyalin:', err); }); };
 
-    // Copy to clipboard function
-    window.copyToClipboard = function(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Nomor rekening berhasil disalin!');
-        }).catch(err => {
-            console.error('Gagal menyalin:', err);
-        });
-    };
+    const uploadZone = document.getElementById('uploadZone'); const docFile = document.getElementById('docFile'); const uploadPreview = document.getElementById('uploadPreview'); const uploadRemove = document.getElementById('uploadRemove');
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); }); uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover')); uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('dragover'); if (e.dataTransfer.files.length) { docFile.files = e.dataTransfer.files; showPreview(e.dataTransfer.files[0]); } }); docFile.addEventListener('change', function() { if (this.files.length) showPreview(this.files[0]); }); function showPreview(file) { document.getElementById('uploadFileName').textContent = file.name; uploadPreview.classList.add('show'); clearError('fieldDoc'); } uploadRemove.addEventListener('click', () => { docFile.value = ''; uploadPreview.classList.remove('show'); });
 
-    // --------------------------------------------------------
-    // FILE UPLOAD - GUARANTEE
-    // --------------------------------------------------------
-    const uploadZone    = document.getElementById('uploadZone');
-    const docFile       = document.getElementById('docFile');
-    const uploadPreview = document.getElementById('uploadPreview');
-    const uploadRemove  = document.getElementById('uploadRemove');
+    const proofUploadZone = document.getElementById('proofUploadZone'); const proofFile = document.getElementById('proofFile'); const proofUploadPreview = document.getElementById('proofUploadPreview'); const proofUploadRemove = document.getElementById('proofUploadRemove');
+    proofUploadZone.addEventListener('dragover', e => { e.preventDefault(); proofUploadZone.classList.add('dragover'); }); proofUploadZone.addEventListener('dragleave', () => proofUploadZone.classList.remove('dragover')); proofUploadZone.addEventListener('drop', e => { e.preventDefault(); proofUploadZone.classList.remove('dragover'); if (e.dataTransfer.files.length) { proofFile.files = e.dataTransfer.files; showProofPreview(e.dataTransfer.files[0]); } }); proofFile.addEventListener('change', function() { if (this.files.length) showProofPreview(this.files[0]); }); function showProofPreview(file) { document.getElementById('proofUploadFileName').textContent = file.name; proofUploadPreview.classList.add('show'); } proofUploadRemove.addEventListener('click', () => { proofFile.value = ''; proofUploadPreview.classList.remove('show'); });
 
-    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
-    uploadZone.addEventListener('dragleave', ()  => uploadZone.classList.remove('dragover'));
-    uploadZone.addEventListener('drop', e => {
-        e.preventDefault();
-        uploadZone.classList.remove('dragover');
-        if (e.dataTransfer.files.length) {
-            docFile.files = e.dataTransfer.files;
-            showPreview(e.dataTransfer.files[0]);
-        }
-    });
-
-    docFile.addEventListener('change', function() {
-        if (this.files.length) showPreview(this.files[0]);
-    });
-
-    function showPreview(file) {
-        document.getElementById('uploadFileName').textContent = file.name;
-        uploadPreview.classList.add('show');
-        clearError('fieldDoc');
-    }
-
-    uploadRemove.addEventListener('click', () => {
-        docFile.value = '';
-        uploadPreview.classList.remove('show');
-    });
-
-    // --------------------------------------------------------
-    // ✅ FILE UPLOAD - PROOF IMAGE
-    // --------------------------------------------------------
-    const proofUploadZone = document.getElementById('proofUploadZone');
-    const proofFile = document.getElementById('proofFile');
-    const proofUploadPreview = document.getElementById('proofUploadPreview');
-    const proofUploadRemove = document.getElementById('proofUploadRemove');
-
-    proofUploadZone.addEventListener('dragover', e => {
-        e.preventDefault();
-        proofUploadZone.classList.add('dragover');
-    });
-
-    proofUploadZone.addEventListener('dragleave', () =>
-        proofUploadZone.classList.remove('dragover')
-    );
-
-    proofUploadZone.addEventListener('drop', e => {
-        e.preventDefault();
-        proofUploadZone.classList.remove('dragover');
-        if (e.dataTransfer.files.length) {
-            proofFile.files = e.dataTransfer.files;
-            showProofPreview(e.dataTransfer.files[0]);
-        }
-    });
-
-    proofFile.addEventListener('change', function() {
-        if (this.files.length) showProofPreview(this.files[0]);
-    });
-
-    function showProofPreview(file) {
-        document.getElementById('proofUploadFileName').textContent = file.name;
-        proofUploadPreview.classList.add('show');
-    }
-
-    proofUploadRemove.addEventListener('click', () => {
-        proofFile.value = '';
-        proofUploadPreview.classList.remove('show');
-    });
-
-    // --------------------------------------------------------
-    // CONFIRMATION MODAL
-    // --------------------------------------------------------
     function openConfirm() {
         if (!validateCurrentStep()) return;
+        const grnVal = document.querySelector('input[name="guarantee_type"]:checked').value;
+        const grnMap = { ktp:'KTP', sim:'SIM', motor:'BPKB Motor' };
+        const payVal = document.querySelector('input[name="payment_method"]:checked').value;
+        const payMap = { cash:'Cash (Tunai)', transfer:'Transfer Bank' };
+        const dp = Number(dpInput.value) || 0;
+        function fmtDt(val) { if (!val) return '–'; const d = new Date(val); return d.toLocaleDateString('id-ID', { weekday:'short', day:'numeric', month:'short', year:'numeric' }) + ' · ' + d.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' }); }
 
-        const grnVal   = document.querySelector('input[name="guarantee_type"]:checked').value;
-        const grnMap   = { ktp:'KTP', sim:'SIM', motor:'BPKB Motor' };
-        const payVal   = document.querySelector('input[name="payment_method"]:checked').value;
-        const payMap   = { cash:'Cash (Tunai)', transfer:'Transfer Bank' };
-        const dp       = Number(dpInput.value) || 0;
+        document.getElementById('cfCarName').textContent = CAR_NAME;
+        document.getElementById('cfStart').textContent = fmtDt(startInput.value);
+        document.getElementById('cfEnd').textContent = fmtDt(endInput.value);
+        document.getElementById('cfDuration').textContent = durationMode === '12' ? '12 Jam' : (days + ' Hari');
+        document.getElementById('cfContact').textContent = contactInput.value || '–';
+        document.getElementById('cfAlamat').textContent = alamatInput.value || '–';
+        document.getElementById('cfService').textContent = 'Lepas Kunci';
+        document.getElementById('cfGuarantee').textContent = grnMap[grnVal] || grnVal;
+        document.getElementById('cfDoc').textContent = docFile.files.length ? docFile.files[0].name : '–';
+        document.getElementById('cfPayMethod').textContent = payMap[payVal] || payVal;
+        document.getElementById('cfTotalPrice').textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
+        document.getElementById('cfDP').textContent = 'Rp ' + dp.toLocaleString('id-ID');
+        document.getElementById('cfRemaining').textContent = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID');
 
-        function fmtDt(val) {
-            if (!val) return '–';
-            const d = new Date(val);
-            return d.toLocaleDateString('id-ID', { weekday:'short', day:'numeric', month:'short', year:'numeric' })
-                 + ' · ' + d.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
-        }
-
-        document.getElementById('cfCarName').textContent       = CAR_NAME;
-        document.getElementById('cfStart').textContent         = fmtDt(startInput.value);
-        document.getElementById('cfEnd').textContent           = fmtDt(endInput.value);
-        document.getElementById('cfDuration').textContent      = days + ' hari';
-        document.getElementById('cfContact').textContent       = contactInput.value || '–';
-        document.getElementById('cfAlamat').textContent        = alamatInput.value || '–';
-        document.getElementById('cfService').textContent       = 'Lepas Kunci';
-        document.getElementById('cfGuarantee').textContent     = grnMap[grnVal] || grnVal;
-        document.getElementById('cfDoc').textContent           = docFile.files.length ? docFile.files[0].name : '–';
-        document.getElementById('cfPayMethod').textContent     = payMap[payVal] || payVal;
-        document.getElementById('cfTotalPrice').textContent    = 'Rp ' + totalPrice.toLocaleString('id-ID');
-        document.getElementById('cfDP').textContent            = 'Rp ' + dp.toLocaleString('id-ID');
-        document.getElementById('cfRemaining').textContent     = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID');
-
-        // Show bank info if transfer
         const bankRow = document.getElementById('cfBankRow');
-        if (payVal === 'transfer') {
-            bankRow.classList.remove('hidden');
-            const selectedBank = bankSelect.options[bankSelect.selectedIndex]?.text || '–';
-            document.getElementById('cfBank').textContent = selectedBank;
-        } else {
-            bankRow.classList.add('hidden');
-        }
+        if (payVal === 'transfer') { bankRow.classList.remove('hidden'); const selectedBank = bankSelect.options[bankSelect.selectedIndex]?.text || '–'; document.getElementById('cfBank').textContent = selectedBank; } else bankRow.classList.add('hidden');
 
-        // ✅ Show proof image if transfer and uploaded
         const proofRow = document.getElementById('cfProofRow');
-        if (payVal === 'transfer' && proofFile.files.length) {
-            proofRow.classList.remove('hidden');
-            document.getElementById('cfProof').textContent = proofFile.files[0].name;
-        } else {
-            proofRow.classList.add('hidden');
-        }
+        if (payVal === 'transfer' && proofFile.files.length) { proofRow.classList.remove('hidden'); document.getElementById('cfProof').textContent = proofFile.files[0].name; } else proofRow.classList.add('hidden');
 
         document.getElementById('confirmOverlay').classList.add('show');
     }
 
     btnSubmit.addEventListener('click', openConfirm);
+    document.getElementById('confirmBack').addEventListener('click', () => { document.getElementById('confirmOverlay').classList.remove('show'); });
+    document.getElementById('confirmOverlay').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
+    document.getElementById('confirmSubmit').addEventListener('click', () => { document.getElementById('confirmOverlay').classList.remove('show'); document.getElementById('loadingOverlay').classList.add('active'); document.getElementById('bookingForm').submit(); });
 
-    document.getElementById('confirmBack').addEventListener('click', () => {
-        document.getElementById('confirmOverlay').classList.remove('show');
-    });
-
-    document.getElementById('confirmOverlay').addEventListener('click', function(e) {
-        if (e.target === this) this.classList.remove('show');
-    });
-
-    document.getElementById('confirmSubmit').addEventListener('click', () => {
-        document.getElementById('confirmOverlay').classList.remove('show');
-        document.getElementById('loadingOverlay').classList.add('active');
-        document.getElementById('bookingForm').submit();
-    });
-
-    // --------------------------------------------------------
-    // INIT
-    // --------------------------------------------------------
+    // Prefill inputs from params if present
     goToStep(0);
+    if (paramStart) startInput.value = paramStart.replace(' ', 'T');
+    if (paramEnd) endInput.value = paramEnd.replace(' ', 'T');
+    // Set hidden duration mode
+    document.getElementById('durationModeHidden').value = durationMode;
+
+    // Initial price calculation uses provided param values if available
     calcPrice();
 })();
 </script>

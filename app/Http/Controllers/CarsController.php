@@ -111,23 +111,50 @@ class CarsController extends Controller
      */
     public function checkAvailability(Request $request, Car $car)
     {
-        $request->validate([
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after:start_date',
-        ]);
+        $durationMode = $request->get('duration_mode', '24');
 
-        $startDate = Carbon::parse($request->start_date);
-        $endDate = Carbon::parse($request->end_date);
+        // Validate based on duration mode
+        if ($durationMode === '12') {
+            // For 12-hour: end_date can be same as start_date
+            $validated = $request->validate([
+                'start_date' => 'required|date|after_or_equal:today',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'duration_mode' => 'required|in:12',
+                'start_time' => 'required|date_format:H:i',
+                'end_time' => 'required|date_format:H:i',
+            ]);
+        } else {
+            // For 24-hour: end_date must be after start_date
+            $validated = $request->validate([
+                'start_date' => 'required|date|after_or_equal:today',
+                'end_date' => 'required|date|after:start_date',
+                'duration_mode' => 'required|in:24',
+            ]);
+        }
 
-        // Check if car has any booking overlapping with requested dates
+        // Build start and end datetime based on duration mode
+        if ($durationMode === '12') {
+            $startTime = $request->get('start_time', '00:00');
+            $endTime = $request->get('end_time', '00:00');
+            $startDateTime = Carbon::createFromFormat('Y-m-d H:i', 
+                $request->start_date . ' ' . $startTime);
+            $endDateTime = Carbon::createFromFormat('Y-m-d H:i', 
+                $request->end_date . ' ' . $endTime);
+        } else {
+            // For 24-hour mode, assume full day rental (00:00 to 23:59)
+            $startDateTime = Carbon::parse($request->start_date)->startOfDay();
+            $endDateTime = Carbon::parse($request->end_date)->endOfDay();
+        }
+
+        // Check if car has any booking overlapping with requested period
         $hasBooking = $car->bookings()
             ->whereIn('status', ['confirmed', 'active'])
-            ->where(function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('start_datetime', [$startDate, $endDate])
-                    ->orWhereBetween('end_datetime', [$startDate, $endDate])
-                    ->orWhere(function ($q) use ($startDate, $endDate) {
-                        $q->where('start_datetime', '<=', $startDate)
-                            ->where('end_datetime', '>=', $endDate);
+            ->where(function ($query) use ($startDateTime, $endDateTime) {
+                $query->whereBetween('start_datetime', [$startDateTime, $endDateTime])
+                    ->orWhereBetween('end_datetime', [$startDateTime, $endDateTime])
+                    ->orWhere(function ($q) use ($startDateTime, $endDateTime) {
+                        $q->where('start_datetime', '<=', $startDateTime)
+                            ->where('end_datetime', '>=', $endDateTime);
                     });
             })
             ->exists();
@@ -157,7 +184,7 @@ class CarsController extends Controller
 
         $bookings = $car->bookings()
             ->with('user:id,name')
-            ->whereIn('status', ['confirmed', 'active'])
+            ->whereIn('status', ['pending', 'confirmed', 'running'])
             ->where(function ($query) use ($startOfMonth, $endOfMonth) {
                 $query->whereBetween('start_datetime', [$startOfMonth, $endOfMonth])
                     ->orWhereBetween('end_datetime', [$startOfMonth, $endOfMonth])
@@ -283,18 +310,44 @@ class CarsController extends Controller
      */
     public function getPriceEstimate(Request $request, Car $car)
     {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'service_type' => 'required|in:lepas_kunci,dengan_sopir,carter'
-        ]);
+        $durationMode = $request->get('duration_mode', '24');
 
-        $startDate = Carbon::parse($request->start_date);
-        $endDate = Carbon::parse($request->end_date);
-        $days = $startDate->diffInDays($endDate);
+        // Validate based on duration mode
+        if ($durationMode === '12') {
+            // For 12-hour: end_date can be same as start_date
+            $validated = $request->validate([
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'service_type' => 'required|in:lepas_kunci,dengan_sopir,carter',
+                'duration_mode' => 'required|in:12',
+                'start_time' => 'required|date_format:H:i',
+                'end_time' => 'required|date_format:H:i',
+            ]);
+        } else {
+            // For 24-hour: end_date must be after start_date
+            $validated = $request->validate([
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after:start_date',
+                'service_type' => 'required|in:lepas_kunci,dengan_sopir,carter',
+                'duration_mode' => 'required|in:24',
+            ]);
+        }
 
-        // Base price
-        $basePrice = $car->price_24h * $days;
+        $basePrice = 0;
+        $days = 0;
+
+        // Calculate base price based on duration mode
+        if ($durationMode === '12') {
+            // For 12-hour rental: use 70% of 24-hour price
+            $basePrice = $car->price_24h * 0.7;
+            $days = 1; // Count as 1 unit for calculation
+        } else {
+            // For 24-hour rental: standard full day calculation
+            $startDate = Carbon::parse($request->start_date);
+            $endDate = Carbon::parse($request->end_date);
+            $days = $startDate->diffInDays($endDate);
+            $basePrice = $car->price_24h * $days;
+        }
 
         // Additional charges based on service type
         $serviceCharge = 0;

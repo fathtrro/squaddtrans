@@ -98,5 +98,30 @@
 
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Push an extra history state so pressing back triggers popstate
+            try {
+                history.pushState(null, '', location.href);
+                history.pushState(null, '', location.href);
+            } catch (e) {
+                // ignore
+            }
+
+            window.addEventListener('popstate', function (event) {
+                // Redirect user to cars index when they try to go back from this success page
+                window.location.href = "{{ route('cars.index') }}";
+            });
+
+            // Handle page show from bfcache (back-forward cache)
+            window.onpageshow = function (event) {
+                if (event.persisted) {
+                    window.location.replace("{{ route('cars.index') }}");
+                }
+            };
+        });
+    </script>
+
 </x-app-layout>
     

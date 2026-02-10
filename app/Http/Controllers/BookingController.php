@@ -31,13 +31,15 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        // Allow destination to be optional (users may skip). If frontend passes min_deposit,
+        // enforce amount >= min_deposit where applicable.
+        $rules = [
             'car_id' => 'required|exists:cars,id',
             'driver_id' => 'nullable|exists:drivers,id',
             'service_type' => 'required|string',
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date|after:start_datetime',
-            'destination' => 'required|string',
+            'destination' => 'nullable|string',
             'contact' => 'required|string|max:20',
             'alamat' => 'required|string',
             'total_price' => 'required|numeric',
@@ -45,8 +47,18 @@ class BookingController extends Controller
             'document_file' => 'required|file|mimes:jpg,png,pdf',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string',
-            'proof_image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048', // ✅ TAMBAHKAN INI
-        ]);
+            'proof_image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+        ];
+
+        $validated = $request->validate($rules);
+
+        // If frontend provided a minimum deposit, validate amount meets it
+        if ($request->filled('min_deposit')) {
+            $min = (float) $request->min_deposit;
+            if ((float) $request->amount < $min) {
+                return back()->withErrors(['amount' => "DP harus minimal Rp " . number_format($min, 0, ',', '.')])->withInput();
+            }
+        }
 
         $booking = null;
 
