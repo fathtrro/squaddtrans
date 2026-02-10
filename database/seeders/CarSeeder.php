@@ -54,7 +54,7 @@ class CarSeeder extends Seeder
                 'price_12h' => 200000,
                 'status' => 'available',
             ],
-            
+
             // Sedan
             [
                 'brand' => 'Toyota',
