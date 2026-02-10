@@ -45,6 +45,7 @@ class BookingController extends Controller
             'document_file' => 'required|file|mimes:jpg,png,pdf',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string',
+            'proof_image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048', // ✅ TAMBAHKAN INI
         ]);
 
         $booking = null;
@@ -82,12 +83,20 @@ class BookingController extends Controller
                 'document_file' => $filePath,
             ]);
 
+            // ✅ TAMBAHKAN: Upload proof image jika ada
+            $proofImagePath = null;
+            if ($request->hasFile('proof_image')) {
+                $proofImagePath = $request->file('proof_image')
+                    ->store('payment_proofs', 'public');
+            }
+
             // PAYMENT
             Payment::create([
                 'booking_id' => $booking->id,
                 'payment_type' => 'dp',
                 'amount' => $request->amount,
                 'payment_method' => $request->payment_method,
+                'proof_image' => $proofImagePath, // ✅ SIMPAN PATH BUKTI
                 'status' => 'pending',
             ]);
         });
@@ -117,7 +126,7 @@ class BookingController extends Controller
 
         $allBookings = (clone $query)->get();
         $bookings = $query->latest()->paginate(10);
-
+        dd($allBookings->toArray());
         return view('bookings.index', [
             'bookings' => $bookings,
             'allBookings' => $allBookings

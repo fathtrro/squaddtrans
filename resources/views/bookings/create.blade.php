@@ -1142,9 +1142,13 @@ textarea.form-input {
                 <span class="cr-label"><i class="fa-solid fa-wallet"></i> Metode</span>
                 <span class="cr-val" id="cfPayMethod">–</span>
             </div>
-            <div class="confirm-row" id="cfBankRow">
+            <div class="confirm-row hidden" id="cfBankRow">
                 <span class="cr-label"><i class="fa-solid fa-building-columns"></i> Bank</span>
                 <span class="cr-val" id="cfBank">–</span>
+            </div>
+            <div class="confirm-row hidden" id="cfProofRow">
+                <span class="cr-label"><i class="fa-solid fa-receipt"></i> Bukti Bayar</span>
+                <span class="cr-val" id="cfProof">–</span>
             </div>
             <div class="confirm-row">
                 <span class="cr-label"><i class="fa-solid fa-money-bill-wave"></i> Total Harga</span>
@@ -1422,6 +1426,27 @@ textarea.form-input {
                             <i class="fa-solid fa-info-circle"></i> Informasi Rekening Transfer
                         </div>
                         <div id="bankInfoContent"></div>
+                    </div>
+
+                    <!-- ✅ UPLOAD BUKTI PEMBAYARAN (hanya untuk Transfer) -->
+                    <div class="field hidden" id="fieldProofImage">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-receipt" style="font-size:0.6rem;"></i></i> Upload Bukti Pembayaran
+                        </label>
+                        <div class="upload-zone" id="proofUploadZone">
+                            <input type="file" name="proof_image" id="proofFile" accept="image/*">
+                            <div class="upload-zone-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                            <p><strong>Klik atau drag & drop</strong> ke sini</p>
+                            <p style="margin-top:0.25rem;">JPG, PNG · Maks 2MB</p>
+                        </div>
+                        <div class="upload-preview" id="proofUploadPreview">
+                            <div class="upload-preview-icon"><i class="fa-solid fa-file-circle-check"></i></div>
+                            <div class="upload-preview-name" id="proofUploadFileName">—</div>
+                            <button type="button" class="upload-remove" id="proofUploadRemove">
+                                <i class="fa-solid fa-xmark"></i> Hapus
+                            </button>
+                        </div>
+                        <div class="field-hint"><i class="fa-solid fa-info-circle"></i> Upload bukti transfer Anda</div>
                     </div>
 
                     <div class="field" id="fieldDP">
@@ -1739,14 +1764,17 @@ textarea.form-input {
         card.addEventListener('click', function() {
             const val = this.dataset.value;
             const bankField = document.getElementById('fieldBank');
+            const proofField = document.getElementById('fieldProofImage'); // ✅ TAMBAHKAN
 
             if (val === 'transfer') {
                 bankField.classList.remove('hidden');
+                proofField.classList.remove('hidden'); // ✅ TAMPILKAN UPLOAD BUKTI
                 if (bankSelect.value) {
                     showBankInfo(bankSelect.value);
                 }
             } else {
                 bankField.classList.add('hidden');
+                proofField.classList.add('hidden'); // ✅ SEMBUNYIKAN
                 bankInfoBox.classList.remove('show');
             }
         });
@@ -1795,7 +1823,7 @@ textarea.form-input {
     };
 
     // --------------------------------------------------------
-    // FILE UPLOAD
+    // FILE UPLOAD - GUARANTEE
     // --------------------------------------------------------
     const uploadZone    = document.getElementById('uploadZone');
     const docFile       = document.getElementById('docFile');
@@ -1826,6 +1854,46 @@ textarea.form-input {
     uploadRemove.addEventListener('click', () => {
         docFile.value = '';
         uploadPreview.classList.remove('show');
+    });
+
+    // --------------------------------------------------------
+    // ✅ FILE UPLOAD - PROOF IMAGE
+    // --------------------------------------------------------
+    const proofUploadZone = document.getElementById('proofUploadZone');
+    const proofFile = document.getElementById('proofFile');
+    const proofUploadPreview = document.getElementById('proofUploadPreview');
+    const proofUploadRemove = document.getElementById('proofUploadRemove');
+
+    proofUploadZone.addEventListener('dragover', e => {
+        e.preventDefault();
+        proofUploadZone.classList.add('dragover');
+    });
+
+    proofUploadZone.addEventListener('dragleave', () =>
+        proofUploadZone.classList.remove('dragover')
+    );
+
+    proofUploadZone.addEventListener('drop', e => {
+        e.preventDefault();
+        proofUploadZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+            proofFile.files = e.dataTransfer.files;
+            showProofPreview(e.dataTransfer.files[0]);
+        }
+    });
+
+    proofFile.addEventListener('change', function() {
+        if (this.files.length) showProofPreview(this.files[0]);
+    });
+
+    function showProofPreview(file) {
+        document.getElementById('proofUploadFileName').textContent = file.name;
+        proofUploadPreview.classList.add('show');
+    }
+
+    proofUploadRemove.addEventListener('click', () => {
+        proofFile.value = '';
+        proofUploadPreview.classList.remove('show');
     });
 
     // --------------------------------------------------------
@@ -1869,6 +1937,15 @@ textarea.form-input {
             document.getElementById('cfBank').textContent = selectedBank;
         } else {
             bankRow.classList.add('hidden');
+        }
+
+        // ✅ Show proof image if transfer and uploaded
+        const proofRow = document.getElementById('cfProofRow');
+        if (payVal === 'transfer' && proofFile.files.length) {
+            proofRow.classList.remove('hidden');
+            document.getElementById('cfProof').textContent = proofFile.files[0].name;
+        } else {
+            proofRow.classList.add('hidden');
         }
 
         document.getElementById('confirmOverlay').classList.add('show');
