@@ -136,9 +136,9 @@ class CarsController extends Controller
         if ($durationMode === '12') {
             $startTime = $request->get('start_time', '00:00');
             $endTime = $request->get('end_time', '00:00');
-            $startDateTime = Carbon::createFromFormat('Y-m-d H:i', 
+            $startDateTime = Carbon::createFromFormat('Y-m-d H:i',
                 $request->start_date . ' ' . $startTime);
-            $endDateTime = Carbon::createFromFormat('Y-m-d H:i', 
+            $endDateTime = Carbon::createFromFormat('Y-m-d H:i',
                 $request->end_date . ' ' . $endTime);
         } else {
             // For 24-hour mode, assume full day rental (00:00 to 23:59)

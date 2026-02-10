@@ -1692,7 +1692,7 @@ textarea.form-input {
     alamatInput.addEventListener('input', () => { clearError('fieldAlamat'); });
 
     function updatePaySummary() { const dp = Number(dpInput.value) || 0; document.getElementById('psTotalPrice').textContent = 'Rp ' + totalPrice.toLocaleString('id-ID'); document.getElementById('psDPPaid').textContent = 'Rp ' + dp.toLocaleString('id-ID'); document.getElementById('psRemaining').textContent = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID'); }
-    
+
     // ========================================================
     // DP INPUT VALIDATION: Prevent DP > Total Price
     // ========================================================
