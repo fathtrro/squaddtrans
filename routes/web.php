@@ -99,7 +99,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::resource('car', CarController::class);
         Route::resource('inbox', InboxController::class);
         Route::resource('renter', RenterController::class);
-        
+
         // Booking extension management
         Route::get('/booking-extensions', [BookingExtensionController::class, 'index'])
             ->name('booking-extensions.index');

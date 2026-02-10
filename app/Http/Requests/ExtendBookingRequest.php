@@ -25,7 +25,7 @@ class ExtendBookingRequest extends FormRequest
                     // Pastikan minimal 1 jam perpanjangan
                     $oldEnd = $booking->end_datetime;
                     $newEnd = Carbon::parse($value);
-                    
+
                     if ($oldEnd->diffInHours($newEnd) < 1) {
                         $fail('Perpanjangan minimal 1 jam dari waktu selesai saat ini.');
                     }
