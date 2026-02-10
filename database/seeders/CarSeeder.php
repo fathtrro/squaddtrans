@@ -14,13 +14,13 @@ class CarSeeder extends Seeder
     public function run(): void
     {
         $cars = [
-            // Compact Cars
+            // City Car (lincah di kota)
             [
                 'brand' => 'Honda',
                 'name' => 'Honda City',
                 'plate_number' => 'B 1001 ABC',
                 'year' => 2023,
-                'category' => 'compact',
+                'category' => 'City Car (lincah di kota)',
                 'seats' => 5,
                 'transmission' => 'automatic',
                 'fuel_type' => 'petrol',
@@ -33,7 +33,7 @@ class CarSeeder extends Seeder
                 'name' => 'Toyota Agya',
                 'plate_number' => 'B 1002 ABC',
                 'year' => 2022,
-                'category' => 'compact',
+                'category' => 'City Car (lincah di kota)',
                 'seats' => 5,
                 'transmission' => 'manual',
                 'fuel_type' => 'petrol',
@@ -46,7 +46,7 @@ class CarSeeder extends Seeder
                 'name' => 'Daihatsu Ayla',
                 'plate_number' => 'B 1003 ABC',
                 'year' => 2023,
-                'category' => 'compact',
+                'category' => 'City Car (lincah di kota)',
                 'seats' => 5,
                 'transmission' => 'manual',
                 'fuel_type' => 'petrol',
@@ -55,13 +55,13 @@ class CarSeeder extends Seeder
                 'status' => 'available',
             ],
 
-            // Sedan
+            // Sedan (nyaman)
             [
                 'brand' => 'Toyota',
                 'name' => 'Toyota Corolla',
                 'plate_number' => 'B 2001 ABC',
                 'year' => 2023,
-                'category' => 'sedan',
+                'category' => 'Sedan (nyaman)',
                 'seats' => 5,
                 'transmission' => 'automatic',
                 'fuel_type' => 'petrol',
@@ -74,7 +74,7 @@ class CarSeeder extends Seeder
                 'name' => 'Honda Accord',
                 'plate_number' => 'B 2002 ABC',
                 'year' => 2022,
-                'category' => 'sedan',
+                'category' => 'Sedan (nyaman)',
                 'seats' => 5,
                 'transmission' => 'automatic',
                 'fuel_type' => 'petrol',
@@ -87,7 +87,7 @@ class CarSeeder extends Seeder
                 'name' => 'Nissan Teana',
                 'plate_number' => 'B 2003 ABC',
                 'year' => 2021,
-                'category' => 'sedan',
+                'category' => 'Sedan (nyaman)',
                 'seats' => 5,
                 'transmission' => 'automatic',
                 'fuel_type' => 'petrol',
@@ -96,13 +96,13 @@ class CarSeeder extends Seeder
                 'status' => 'available',
             ],
 
-            // SUV / MPV
+            // MPV (keluarga)
             [
                 'brand' => 'Toyota',
                 'name' => 'Toyota Avanza',
                 'plate_number' => 'B 3001 ABC',
                 'year' => 2023,
-                'category' => 'mpv',
+                'category' => 'MPV (keluarga)',
                 'seats' => 7,
                 'transmission' => 'manual',
                 'fuel_type' => 'petrol',
@@ -115,7 +115,7 @@ class CarSeeder extends Seeder
                 'name' => 'Daihatsu Xenia',
                 'plate_number' => 'B 3002 ABC',
                 'year' => 2022,
-                'category' => 'mpv',
+                'category' => 'MPV (keluarga)',
                 'seats' => 7,
                 'transmission' => 'manual',
                 'fuel_type' => 'petrol',
@@ -128,7 +128,7 @@ class CarSeeder extends Seeder
                 'name' => 'Honda CR-V',
                 'plate_number' => 'B 3003 ABC',
                 'year' => 2023,
-                'category' => 'suv',
+                'category' => 'SUV (tangguh/medan berat)',
                 'seats' => 5,
                 'transmission' => 'automatic',
                 'fuel_type' => 'petrol',
@@ -141,7 +141,7 @@ class CarSeeder extends Seeder
                 'name' => 'Toyota Fortuner',
                 'plate_number' => 'B 3004 ABC',
                 'year' => 2022,
-                'category' => 'suv',
+                'category' => 'SUV (tangguh/medan berat)',
                 'seats' => 7,
                 'transmission' => 'automatic',
                 'fuel_type' => 'diesel',
@@ -156,7 +156,7 @@ class CarSeeder extends Seeder
                 'name' => 'BMW 3 Series',
                 'plate_number' => 'B 4001 ABC',
                 'year' => 2023,
-                'category' => 'sedan',
+                'category' => 'Sedan (nyaman)',
                 'seats' => 5,
                 'transmission' => 'automatic',
                 'fuel_type' => 'petrol',
@@ -169,7 +169,7 @@ class CarSeeder extends Seeder
                 'name' => 'Mercedes C-Class',
                 'plate_number' => 'B 4002 ABC',
                 'year' => 2023,
-                'category' => 'sedan',
+                'category' => 'Sedan (nyaman)',
                 'seats' => 5,
                 'transmission' => 'automatic',
                 'fuel_type' => 'petrol',
@@ -178,13 +178,13 @@ class CarSeeder extends Seeder
                 'status' => 'available',
             ],
 
-            // Van / Minibus
+            // Van / Minibus (dikelompokkan ke MPV)
             [
                 'brand' => 'Toyota',
                 'name' => 'Toyota Hiace',
                 'plate_number' => 'B 5001 ABC',
                 'year' => 2022,
-                'category' => 'van',
+                'category' => 'MPV (keluarga)',
                 'seats' => 12,
                 'transmission' => 'manual',
                 'fuel_type' => 'diesel',
@@ -197,7 +197,7 @@ class CarSeeder extends Seeder
                 'name' => 'Mitsubishi L300',
                 'plate_number' => 'B 5002 ABC',
                 'year' => 2021,
-                'category' => 'van',
+                'category' => 'MPV (keluarga)',
                 'seats' => 10,
                 'transmission' => 'manual',
                 'fuel_type' => 'diesel',

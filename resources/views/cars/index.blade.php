@@ -391,29 +391,14 @@
             </div>
 
             {{-- Category Filters --}}
-            <div class="category-scroll -mx-4 px-4 sm:mx-0 sm:px-0">
-                <button class="filter-btn active px-4 py-2 rounded-full text-sm font-medium">
-                    <i class="fa-solid fa-layer-group mr-1.5"></i>Semua
-                </button>
-                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
-                    <i class="fa-solid fa-car mr-1.5"></i>Sedan
-                </button>
-                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
-                    <i class="fa-solid fa-truck-pickup mr-1.5"></i>SUV
-                </button>
-                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
-                    <i class="fa-solid fa-van-shuttle mr-1.5"></i>MPV
-                </button>
-                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
-                    <i class="fa-solid fa-car-side mr-1.5"></i>Hatchback
-                </button>
-                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
-                    <i class="fa-solid fa-charging-station mr-1.5"></i>Electric
-                </button>
-                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium">
-                    <i class="fa-solid fa-crown mr-1.5"></i>Luxury
-                </button>
-            </div>
+            <form method="GET" action="{{ route('cars.index') }}" id="filterForm" class="category-scroll -mx-4 px-4 sm:mx-0 sm:px-0">
+                @foreach (['all' => ['icon' => 'fa-layer-group', 'label' => 'Semua'], 'MPV (keluarga)' => ['icon' => 'fa-van-shuttle', 'label' => 'MPV (keluarga)'], 'SUV (tangguh/medan berat)' => ['icon' => 'fa-truck-pickup', 'label' => 'SUV (tangguh/medan berat)'], 'Hatchback (kompak)' => ['icon' => 'fa-car-side', 'label' => 'Hatchback (kompak)'], 'City Car (lincah di kota)' => ['icon' => 'fa-car', 'label' => 'City Car (lincah di kota)'], 'Sedan (nyaman)' => ['icon' => 'fa-car', 'label' => 'Sedan (nyaman)'], 'Crossover (kombinasi)' => ['icon' => 'fa-cube', 'label' => 'Crossover (kombinasi)'] ] as $value => $option)
+                    <button type="button" class="filter-btn {{ request('category', 'all') == $value ? 'active' : '' }} px-4 py-2 rounded-full text-sm font-medium category-filter-btn" data-category="{{ $value }}">
+                        <i class="fa-solid {{ $option['icon'] }} mr-1.5"></i>{{ $option['label'] }}
+                    </button>
+                @endforeach
+                <input type="hidden" name="category" id="categoryInput" value="{{ request('category', 'all') }}">
+            </form>
         </div>
 
         {{-- Results Info --}}
@@ -499,10 +484,13 @@
         });
 
         // Category Filters
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.category-filter-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.category-filter-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
+                document.getElementById('categoryInput').value = this.dataset.category;
+                document.getElementById('filterForm').submit();
             });
         });
 
