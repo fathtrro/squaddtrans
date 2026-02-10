@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\RenterController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\BookingExtensionController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ReviewController;
@@ -62,6 +63,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bookings/{booking}', [BookingController::class, 'show'])
         ->name('bookings.show');
 
+    // Extension routes (User)
+    Route::post('/bookings/{booking}/extend', [BookingExtensionController::class, 'store'])
+        ->name('bookings.extend');
+    Route::get('/bookings/{booking}/extend-conflict', [BookingExtensionController::class, 'checkConflict'])
+        ->name('bookings.extend-conflict');
+
     // Review routes
     Route::get('/reviews/create', [ReviewController::class, 'create'])
         ->name('reviews.create');
@@ -92,6 +99,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::resource('car', CarController::class);
         Route::resource('inbox', InboxController::class);
         Route::resource('renter', RenterController::class);
+        
+        // Booking extension management
+        Route::get('/booking-extensions', [BookingExtensionController::class, 'index'])
+            ->name('booking-extensions.index');
+        Route::post('/booking-extensions/{extension}/approve', [BookingExtensionController::class, 'approve'])
+            ->name('booking-extensions.approve');
+        Route::post('/booking-extensions/{extension}/reject', [BookingExtensionController::class, 'reject'])
+            ->name('booking-extensions.reject');
     });
 
 

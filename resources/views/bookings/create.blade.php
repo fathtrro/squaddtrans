@@ -1764,17 +1764,17 @@ textarea.form-input {
         card.addEventListener('click', function() {
             const val = this.dataset.value;
             const bankField = document.getElementById('fieldBank');
-            const proofField = document.getElementById('fieldProofImage'); // ✅ TAMBAHKAN
+            const proofField = document.getElementById('fieldProofImage'); 
 
             if (val === 'transfer') {
                 bankField.classList.remove('hidden');
-                proofField.classList.remove('hidden'); // ✅ TAMPILKAN UPLOAD BUKTI
+                proofField.classList.remove('hidden');
                 if (bankSelect.value) {
                     showBankInfo(bankSelect.value);
                 }
             } else {
                 bankField.classList.add('hidden');
-                proofField.classList.add('hidden'); // ✅ SEMBUNYIKAN
+                proofField.classList.add('hidden');
                 bankInfoBox.classList.remove('show');
             }
         });

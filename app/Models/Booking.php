@@ -89,6 +89,11 @@ class Booking extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function extensions()
+    {
+        return $this->hasMany(BookingExtension::class);
+    }
+
     /**
      * Accessors - Format Price
      */

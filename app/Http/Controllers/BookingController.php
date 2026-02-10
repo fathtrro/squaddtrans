@@ -126,7 +126,7 @@ class BookingController extends Controller
 
         $allBookings = (clone $query)->get();
         $bookings = $query->latest()->paginate(10);
-        dd($allBookings->toArray());
+        // dd($allBookings->toArray());
         return view('bookings.index', [
             'bookings' => $bookings,
             'allBookings' => $allBookings
@@ -139,7 +139,9 @@ class BookingController extends Controller
             'car',
             'driver',
             'payments',
-            'guarantees'
+            'guarantees',
+            'extensions',
+            'user'
         ])->findOrFail($id);
 
         return view('bookings.show', compact('booking'));
