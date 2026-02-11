@@ -24,7 +24,7 @@ Route::get('/', function () {
     $cars = Car::with('images')->where('status', 'available')->limit(3)->get();
     return view('dashboard', compact('cars'));
 });
- push
+
 // Search cars API with autocomplete
 Route::get('/api/search-cars', function (Illuminate\Http\Request $request) {
     $search = $request->query('q', '');
