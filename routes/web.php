@@ -24,15 +24,15 @@ Route::get('/', function () {
     $cars = Car::with('images')->where('status', 'available')->limit(3)->get();
     return view('dashboard', compact('cars'));
 });
-
+ push
 // Search cars API with autocomplete
 Route::get('/api/search-cars', function (Illuminate\Http\Request $request) {
     $search = $request->query('q', '');
-    
+
     if (strlen($search) < 1) {
         return response()->json([]);
     }
-    
+
     $cars = Car::where('status', 'available')
         ->where(function ($query) use ($search) {
             $query->where('brand', 'LIKE', "%{$search}%")
@@ -51,7 +51,7 @@ Route::get('/api/search-cars', function (Illuminate\Http\Request $request) {
                 'price' => 'Rp ' . number_format($car->price_24h, 0, ',', '.'),
             ];
         });
-    
+
     return response()->json($cars);
 });
 
