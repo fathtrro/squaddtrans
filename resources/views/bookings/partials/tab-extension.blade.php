@@ -2,7 +2,7 @@
 @php
     // Allow extend if booking is running or pending completion
     $canExtend = in_array($booking->status, ['running', 'renting']);
-    
+
     // Check if there's a pending extension request
     $hasPendingExtension = $booking->extensions && $booking->extensions->contains('status', 'requested');
 @endphp

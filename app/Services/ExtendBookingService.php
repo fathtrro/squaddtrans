@@ -43,7 +43,7 @@ class ExtendBookingService
         $pendingExtension = BookingExtension::where('booking_id', $booking->id)
             ->where('status', 'requested')
             ->first();
-        
+
         if ($pendingExtension) {
             return [
                 'success' => false,

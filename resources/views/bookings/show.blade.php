@@ -366,10 +366,10 @@
         // Handle form submission via AJAX
         document.getElementById('extendForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const formData = new FormData(this);
             const submitBtn = this.querySelector('button[type="submit"]');
-            
+
             // Disable button during submission
             submitBtn.disabled = true;
             submitBtn.textContent = 'Mengirim...';
@@ -389,7 +389,7 @@
                     // Show success message
                     closeExtendModal();
                     showNotification(data.message, 'success');
-                    
+
                     // Reload the page after 1.5 seconds to show updated extension info
                     setTimeout(() => {
                         location.reload();
@@ -414,9 +414,9 @@
                 type === 'success' ? 'bg-green-500' : 'bg-red-500'
             }`;
             notification.textContent = message;
-            
+
             document.body.appendChild(notification);
-            
+
             setTimeout(() => {
                 notification.remove();
             }, 4000);
