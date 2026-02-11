@@ -24,6 +24,37 @@ Route::get('/', function () {
     $cars = Car::with('images')->where('status', 'available')->limit(3)->get();
     return view('dashboard', compact('cars'));
 });
+
+// Search cars API with autocomplete
+Route::get('/api/search-cars', function (Illuminate\Http\Request $request) {
+    $search = $request->query('q', '');
+    
+    if (strlen($search) < 1) {
+        return response()->json([]);
+    }
+    
+    $cars = Car::where('status', 'available')
+        ->where(function ($query) use ($search) {
+            $query->where('brand', 'LIKE', "%{$search}%")
+                ->orWhere('name', 'LIKE', "%{$search}%")
+                ->orWhereRaw("CONCAT(brand, ' ', name) LIKE ?", ["%{$search}%"]);
+        })
+        ->select('id', 'brand', 'name', 'price_24h')
+        ->limit(10)
+        ->get()
+        ->map(function ($car) {
+            return [
+                'id' => $car->id,
+                'label' => "{$car->brand} {$car->name}",
+                'brand' => $car->brand,
+                'name' => $car->name,
+                'price' => 'Rp ' . number_format($car->price_24h, 0, ',', '.'),
+            ];
+        });
+    
+    return response()->json($cars);
+});
+
 Route::prefix('api/cars/{car}')->name('cars.')->group(function () {
     // Check availability for specific dates
     Route::post('/check-availability', [CarsController::class, 'checkAvailability'])

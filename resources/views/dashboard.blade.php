@@ -63,118 +63,104 @@
             </div>
         </header>
 
-        {{-- Category Section (UPDATED) --}}
+        {{-- Search Section --}}
         <section class="relative z-20 max-w-6xl mx-auto -mt-24 px-4 mb-12">
-    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border border-slate-100">
-        <div class="text-center mb-8">
-            <span class="text-yellow-600 font-bold tracking-widest uppercase text-xs mb-3 block">
-                Temukan Kendaraan Ideal
-            </span>
-            <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-2">Pilih Jenis Kendaraan</h3>
-            <p class="text-slate-500 text-sm">Pilih kategori kendaraan sesuai kebutuhan perjalanan Anda</p>
-        </div>
+            <div
+                class="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border border-slate-100 flex flex-col md:flex-row gap-4 md:gap-6 items-end">
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Cari Mobil - Full Width -->
+                <div class="space-y-2 flex-1 w-full">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        Cari Mobil
+                    </label>
+                    <div class="relative h-full">
+                        <i class="fa-solid fa-car absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="carSearchInput" placeholder="Cari merk atau model mobil yang Anda inginkan..."
+                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-yellow-600/20 text-sm" autocomplete="off" />
 
-            <!-- MPV (Keluarga) -->
-            <a href="{{ route('cars.index', ['category' => 'MPV (keluarga)']) }}" class="group">
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 md:p-6 rounded-2xl border-2 border-blue-200 hover:border-blue-500 hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col items-center text-center transform hover:-translate-y-2">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
-                        <i class="fa-solid fa-van-shuttle text-white text-2xl md:text-3xl"></i>
-                    </div>
-                    <h4 class="font-bold text-slate-900 mb-1 text-sm md:text-base">MPV</h4>
-                    <p class="text-xs text-slate-600 font-medium">(Keluarga)</p>
-                    <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span class="text-xs text-blue-600 font-bold flex items-center gap-1">
-                            Lihat Detail <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </span>
+                        <!-- Autocomplete dropdown -->
+                        <div id="carSearchResults" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-200 rounded-xl shadow-lg z-50 max-h-72 overflow-y-auto">
+                            <!-- Results akan ditampilkan di sini -->
+                        </div>
                     </div>
                 </div>
-            </a>
 
-            <!-- SUV (Tangguh/Medan Berat) -->
-            <a href="{{ route('cars.index', ['category' => 'SUV (tangguh/medan berat)']) }}" class="group">
-                <div class="bg-gradient-to-br from-red-50 to-red-100 p-5 md:p-6 rounded-2xl border-2 border-red-200 hover:border-red-500 hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col items-center text-center transform hover:-translate-y-2">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
-                        <i class="fa-solid fa-car-side text-white text-2xl md:text-3xl"></i>
-                    </div>
-                    <h4 class="font-bold text-slate-900 mb-1 text-sm md:text-base">SUV</h4>
-                    <p class="text-xs text-slate-600 font-medium">(Tangguh)</p>
-                    <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span class="text-xs text-red-600 font-bold flex items-center gap-1">
-                            Lihat Detail <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </span>
-                    </div>
-                </div>
-            </a>
 
-            <!-- Hatchback (Kompak) -->
-            <a href="{{ route('cars.index', ['category' => 'Hatchback (kompak)']) }}" class="group">
-                <div class="bg-gradient-to-br from-green-50 to-green-100 p-5 md:p-6 rounded-2xl border-2 border-green-200 hover:border-green-500 hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col items-center text-center transform hover:-translate-y-2">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
-                        <i class="fa-solid fa-car text-white text-2xl md:text-3xl"></i>
-                    </div>
-                    <h4 class="font-bold text-slate-900 mb-1 text-sm md:text-base">Hatchback</h4>
-                    <p class="text-xs text-slate-600 font-medium">(Kompak)</p>
-                    <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span class="text-xs text-green-600 font-bold flex items-center gap-1">
-                            Lihat Detail <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </span>
-                    </div>
-                </div>
-            </a>
+            </div>
+        </section>
 
-            <!-- City Car (Lincah di Kota) -->
-            <a href="{{ route('cars.index', ['category' => 'City Car (lincah di kota)']) }}" class="group">
-                <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-5 md:p-6 rounded-2xl border-2 border-purple-200 hover:border-purple-500 hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col items-center text-center transform hover:-translate-y-2">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
-                        <i class="fa-solid fa-car-rear text-white text-2xl md:text-3xl"></i>
-                    </div>
-                    <h4 class="font-bold text-slate-900 mb-1 text-sm md:text-base">City Car</h4>
-                    <p class="text-xs text-slate-600 font-medium">(Lincah)</p>
-                    <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span class="text-xs text-purple-600 font-bold flex items-center gap-1">
-                            Lihat Detail <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </span>
-                    </div>
-                </div>
-            </a>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const carSearchInput = document.getElementById('carSearchInput');
+                const carSearchResults = document.getElementById('carSearchResults');
+                let searchTimeout;
 
-            <!-- Sedan (Nyaman) -->
-            <a href="{{ route('cars.index', ['category' => 'Sedan (nyaman)']) }}" class="group">
-                <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-5 md:p-6 rounded-2xl border-2 border-yellow-200 hover:border-yellow-500 hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col items-center text-center transform hover:-translate-y-2">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
-                        <i class="fa-solid fa-car-side text-white text-2xl md:text-3xl"></i>
-                    </div>
-                    <h4 class="font-bold text-slate-900 mb-1 text-sm md:text-base">Sedan</h4>
-                    <p class="text-xs text-slate-600 font-medium">(Nyaman)</p>
-                    <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span class="text-xs text-yellow-600 font-bold flex items-center gap-1">
-                            Lihat Detail <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </span>
-                    </div>
-                </div>
-            </a>
+                // Handle input change
+                carSearchInput.addEventListener('input', function(e) {
+                    clearTimeout(searchTimeout);
+                    const query = e.target.value.trim();
 
-            <!-- Crossover (Kombinasi) -->
-            <a href="{{ route('cars.index', ['category' => 'Crossover (kombinasi)']) }}" class="group">
-                <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-5 md:p-6 rounded-2xl border-2 border-orange-200 hover:border-orange-500 hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col items-center text-center transform hover:-translate-y-2">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
-                        <i class="fa-solid fa-car text-white text-2xl md:text-3xl"></i>
-                    </div>
-                    <h4 class="font-bold text-slate-900 mb-1 text-sm md:text-base">Crossover</h4>
-                    <p class="text-xs text-slate-600 font-medium">(Kombinasi)</p>
-                    <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span class="text-xs text-orange-600 font-bold flex items-center gap-1">
-                            Lihat Detail <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </span>
-                    </div>
-                </div>
-            </a>
+                    if (query.length < 1) {
+                        carSearchResults.classList.add('hidden');
+                        return;
+                    }
 
-        </div>
-    </div>
-</section>
+                    // Debounce search to avoid too many requests
+                    searchTimeout = setTimeout(function() {
+                        fetchCarResults(query);
+                    }, 300);
+                });
+
+                // Fetch search results from API
+                function fetchCarResults(query) {
+                    fetch(`/api/search-cars?q=${encodeURIComponent(query)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            displayResults(data);
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+
+                // Display results in dropdown
+                function displayResults(cars) {
+                    if (cars.length === 0) {
+                        carSearchResults.innerHTML = `
+                            <div class="p-4 text-center text-slate-500">
+                                <i class="fa-solid fa-inbox text-2xl text-slate-300 mb-2"></i>
+                                <p class="text-sm">Mobil tidak ditemukan</p>
+                            </div>
+                        `;
+                        carSearchResults.classList.remove('hidden');
+                        return;
+                    }
+
+                    carSearchResults.innerHTML = cars.map(car => `
+                        <a href="/cars/${car.id}" class="flex items-center gap-3 p-3 hover:bg-yellow-50 border-l-4 border-transparent hover:border-yellow-500 transition-all cursor-pointer block">
+                            <div class="flex-1">
+                                <div class="font-bold text-slate-900 text-sm">${car.label}</div>
+                                <div class="text-xs text-slate-500">${car.price}</div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-yellow-600 text-xs"></i>
+                        </a>
+                    `).join('');
+                    carSearchResults.classList.remove('hidden');
+                }
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('[id*="carSearch"]')) {
+                        carSearchResults.classList.add('hidden');
+                    }
+                });
+
+                // Handle result selection by keyboard
+                carSearchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        carSearchResults.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
 
 
         {{-- Services Section --}}
