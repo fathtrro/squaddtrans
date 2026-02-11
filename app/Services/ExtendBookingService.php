@@ -39,6 +39,19 @@ class ExtendBookingService
             ];
         }
 
+        // Check if there's already a pending extension request
+        $pendingExtension = BookingExtension::where('booking_id', $booking->id)
+            ->where('status', 'requested')
+            ->first();
+        
+        if ($pendingExtension) {
+            return [
+                'success' => false,
+                'message' => 'Anda sudah memiliki permintaan perpanjangan yang menunggu persetujuan admin. Silakan tunggu sampai admin memberikan keputusan.',
+                'extension' => null,
+            ];
+        }
+
         // Check for conflicts
         $conflictCheck = $this->conflictService->checkExtensionConflict($booking, $newEndDatetime);
         if ($conflictCheck['has_conflict']) {

@@ -58,11 +58,25 @@ class BookingExtensionController extends Controller
     {
         // Authorize: user can only extend their own bookings
         if ($booking->user_id !== auth()->id()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 403);
+            }
             return redirect()->back()->with('error', 'Unauthorized');
         }
 
         $newEnd = \Carbon\Carbon::parse($request->input('new_end_datetime'));
         $result = $this->extendService->requestExtension($booking, $newEnd);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => $result['success'],
+                'message' => $result['message'],
+                'extension' => $result['extension'] ?? null
+            ], $result['success'] ? 200 : 400);
+        }
 
         if ($result['success']) {
             return redirect()->back()->with('success', $result['message']);

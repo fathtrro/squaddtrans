@@ -66,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     // Extension routes (User)
     Route::post('/bookings/{booking}/extend', [BookingExtensionController::class, 'store'])
         ->name('bookings.extend');
-    Route::get('/bookings/{booking}/extend-conflict', [BookingExtensionController::class, 'checkConflict'])
+    Route::post('/bookings/{booking}/extend-conflict', [BookingExtensionController::class, 'checkConflict'])
         ->name('bookings.extend-conflict');
 
     // Review routes

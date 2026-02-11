@@ -45,28 +45,28 @@
                     <nav class="flex gap-0 overflow-x-visible justify-between sm:justify-start sm:gap-1">
                         <button @click="activeTab = 'progres'"
                                 :class="activeTab === 'progres' ? 'border-orange-500 text-orange-600 font-bold' : 'border-transparent text-gray-600 hover:text-gray-900'"
-                                class="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 sm:py-4 border-b-2 transition-colors duration-200 text-xs sm:text-sm flex-1 sm:flex-none">
+                                class="flex flex-col items-center justify-center gap-1 px-2 sm:px-4 py-3 sm:py-4 border-b-2 transition-colors duration-200 text-xs sm:text-sm flex-1 sm:flex-none">
                             <i class="fas fa-clock text-lg sm:text-base"></i>
                             <span>Progres</span>
                         </button>
 
                         <button @click="activeTab = 'info'"
                                 :class="activeTab === 'info' ? 'border-orange-500 text-orange-600 font-bold' : 'border-transparent text-gray-600 hover:text-gray-900'"
-                                class="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 sm:py-4 border-b-2 transition-colors duration-200 text-xs sm:text-sm flex-1 sm:flex-none">
+                                class="flex flex-col items-center justify-center gap-1 px-2 sm:px-4 py-3 sm:py-4 border-b-2 transition-colors duration-200 text-xs sm:text-sm flex-1 sm:flex-none">
                             <i class="fas fa-circle-info text-lg sm:text-base"></i>
                             <span>Info</span>
                         </button>
 
                         <button @click="activeTab = 'biaya'"
                                 :class="activeTab === 'biaya' ? 'border-orange-500 text-orange-600 font-bold' : 'border-transparent text-gray-600 hover:text-gray-900'"
-                                class="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 sm:py-4 border-b-2 transition-colors duration-200 text-xs sm:text-sm flex-1 sm:flex-none">
+                                class="flex flex-col items-center justify-center gap-1 px-2 sm:px-4 py-3 sm:py-4 border-b-2 transition-colors duration-200 text-xs sm:text-sm flex-1 sm:flex-none">
                             <i class="fas fa-receipt text-lg sm:text-base"></i>
                             <span>Biaya</span>
                         </button>
 
                         <button @click="activeTab = 'extension'"
                                 :class="activeTab === 'extension' ? 'border-orange-500 text-orange-600 font-bold' : 'border-transparent text-gray-600 hover:text-gray-900'"
-                                class="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 sm:py-4 border-b-2 transition-colors duration-200 text-xs sm:text-sm flex-1 sm:flex-none">
+                                class="flex flex-col items-center justify-center gap-1 px-2 sm:px-4 py-3 sm:py-4 border-b-2 transition-colors duration-200 text-xs sm:text-sm flex-1 sm:flex-none">
                             <i class="fas fa-repeat text-lg sm:text-base"></i>
                             <span>Perpanjang</span>
                         </button>
@@ -94,13 +94,13 @@
                     @include('bookings.partials.tab-billing')
                 </div>
 
-                {{-- PERPANJANG TAB --}}
-                <div x-show="activeTab === 'extension'" x-transition>
-                    @include('bookings.partials.tab-extension')
-                </div>
+                    {{-- PERPANJANG TAB --}}
+                    <div x-show="activeTab === 'extension'" x-transition>
+                        @include('bookings.partials.tab-extension')
+                    </div>
                 </div>
 
-                {{-- RIGHT SIDEBAR (1 column on desktop) --}}
+                {{-- RIGHT SIDEBAR (1 column on desktop, full width stacked on mobile) --}}
                 <div class="lg:col-span-1">
                     <div class="lg:sticky lg:top-8 space-y-6">
                         {{-- CAR INFO CARD --}}
@@ -158,7 +158,7 @@
                     </div>
 
                     {{-- ACTIONS --}}
-                    <div class="space-y-3">
+                    <div class="space-y-3 sticky top-96">
                         @if($booking->canBeCancelled())
                             <form method="POST" action="#" class="w-full">
                                 @csrf
