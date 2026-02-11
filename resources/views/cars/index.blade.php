@@ -328,68 +328,6 @@
         {{-- Filter & Search - Glass Effect --}}
         <div class="filter-bar p-4 lg:p-5 mb-6">
 
-            {{-- Search & Actions --}}
-            <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between mb-4">
-
-                {{-- Search Bar --}}
-                <div class="flex-1 relative">
-                    <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                    <input type="text" id="searchInput" placeholder="Cari mobil..."
-                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition outline-none">
-                </div>
-
-                {{-- Actions --}}
-                <div class="flex items-center gap-2">
-
-                    {{-- View Toggle --}}
-                    <div class="hidden sm:flex bg-gray-100 rounded-lg p-1">
-                        <button class="view-btn active">
-                            <i class="fa-solid fa-table-cells"></i>
-                        </button>
-                        <button class="view-btn">
-                            <i class="fa-solid fa-list"></i>
-                        </button>
-                    </div>
-
-                    {{-- Sort Dropdown --}}
-                    <div class="sort-dropdown">
-                        <button class="sort-toggle flex items-center gap-2 px-3.5 py-2.5 bg-white border border-gray-200 rounded-lg text-sm hover:border-gray-300 transition">
-                            <i class="fa-solid fa-sort text-sm"></i>
-                            <span class="hidden sm:inline">Urutkan</span>
-                            <i class="fa-solid fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="sort-menu">
-                            <a href="#" class="sort-option">
-                                <i class="fa-solid fa-star text-yellow-500 mr-2"></i>
-                                Rating Tertinggi
-                            </a>
-                            <a href="#" class="sort-option">
-                                <i class="fa-solid fa-arrow-up text-green-500 mr-2"></i>
-                                Harga Terendah
-                            </a>
-                            <a href="#" class="sort-option">
-                                <i class="fa-solid fa-arrow-down text-red-500 mr-2"></i>
-                                Harga Tertinggi
-                            </a>
-                            <a href="#" class="sort-option">
-                                <i class="fa-solid fa-clock text-blue-500 mr-2"></i>
-                                Terbaru
-                            </a>
-                            <a href="#" class="sort-option">
-                                <i class="fa-solid fa-fire text-orange-500 mr-2"></i>
-                                Terpopuler
-                            </a>
-                        </div>
-                    </div>
-
-                    {{-- Filter Button --}}
-                    <button class="filter-toggle px-3.5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-medium transition">
-                        <i class="fa-solid fa-sliders"></i>
-                        <span class="hidden sm:inline ml-2">Filter</span>
-                    </button>
-                </div>
-            </div>
-
             {{-- Category Filters --}}
             <form method="GET" action="{{ route('cars.index') }}" id="filterForm" class="category-scroll -mx-4 px-4 sm:mx-0 sm:px-0">
                 @foreach (['all' => ['icon' => 'fa-layer-group', 'label' => 'Semua'], 'MPV (keluarga)' => ['icon' => 'fa-van-shuttle', 'label' => 'MPV (keluarga)'], 'SUV (tangguh/medan berat)' => ['icon' => 'fa-truck-pickup', 'label' => 'SUV (tangguh/medan berat)'], 'Hatchback (kompak)' => ['icon' => 'fa-car-side', 'label' => 'Hatchback (kompak)'], 'City Car (lincah di kota)' => ['icon' => 'fa-car', 'label' => 'City Car (lincah di kota)'], 'Sedan (nyaman)' => ['icon' => 'fa-car', 'label' => 'Sedan (nyaman)'], 'Crossover (kombinasi)' => ['icon' => 'fa-cube', 'label' => 'Crossover (kombinasi)'] ] as $value => $option)

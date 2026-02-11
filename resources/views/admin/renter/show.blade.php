@@ -22,7 +22,7 @@
         <!-- Left Column - Main Info -->
         <div class="lg:col-span-2 space-y-6">
 
-            <!-- Booking Code & Status Card -->
+            <!-- MODIFIED: Booking Code & Status Card -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <div class="flex items-center justify-between">
                     <div>
@@ -30,15 +30,38 @@
                         <p class="text-3xl font-bold text-gray-900">{{ $renter->booking_code }}</p>
                     </div>
 
-                    <span class="px-7 py-2 rounded-lg text-sm font-semibold
-                        @if($renter->status === 'pending') bg-yellow-100 text-yellow-800
-                        @elseif($renter->status === 'confirmed') bg-blue-100 text-blue-800
-                        @elseif($renter->status === 'running') bg-purple-100 text-purple-800
-                        @elseif($renter->status === 'completed') bg-green-100 text-green-800
-                        @else bg-red-100 text-red-800
-                        @endif">
-                        {{ strtoupper($renter->status) }}
-                    </span>
+                    <!-- FORM UNTUK MENGUBAH STATUS -->
+                    <form method="POST" action="{{ route('admin.renter.update', $renter->id) }}" class="relative group w-48">
+                        @csrf
+                        @method('PATCH')
+
+                        <label class="sr-only">Ubah Status</label>
+                        <div class="relative">
+                            <select name="status"
+                                    onchange="this.form.submit()"
+                                    class="appearance-none w-full bg-white border-2 text-sm font-bold py-2 pl-3 pr-10 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50 transition-colors cursor-pointer
+                                    @if($renter->status === 'pending') border-yellow-400 text-yellow-700 focus:ring-yellow-400 focus:bg-yellow-50
+                                    @elseif($renter->status === 'confirmed') border-blue-400 text-blue-700 focus:ring-blue-400 focus:bg-blue-50
+                                    @elseif($renter->status === 'running') border-purple-400 text-purple-700 focus:ring-purple-400 focus:bg-purple-50
+                                    @elseif($renter->status === 'completed') border-green-500 text-green-700 focus:ring-green-500 focus:bg-green-50
+                                    @else border-red-400 text-red-700 focus:ring-red-400 focus:bg-red-50
+                                    @endif">
+
+                                <option value="pending" {{ $renter->status === 'pending' ? 'selected' : '' }}>PENDING</option>
+                                <option value="confirmed" {{ $renter->status === 'confirmed' ? 'selected' : '' }}>CONFIRMED</option>
+                                <option value="running" {{ $renter->status === 'running' ? 'selected' : '' }}>RUNNING</option>
+                                <option value="completed" {{ $renter->status === 'completed' ? 'selected' : '' }}>COMPLETED</option>
+                                <option value="cancelled" {{ $renter->status === 'cancelled' ? 'selected' : '' }}>CANCELLED</option>
+                            </select>
+
+                            <!-- Icon Panah Dropdown (Single Chevron Down) -->
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-current">
+                                <svg class="fill-current h-4 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 

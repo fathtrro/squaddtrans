@@ -139,27 +139,15 @@
 
                             <!-- Status -->
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <form action="{{ route('admin.renter.update', $renter->id) }}"
-                                      method="POST"
-                                      class="status-form">
-                                    @csrf
-                                    @method('PUT')
-                                    <select name="status"
-                                            class="text-xs font-semibold rounded-lg border-0 focus:ring-2 focus:ring-yellow-500 cursor-pointer px-3 py-1
-                                            @if($renter->status === 'pending') bg-yellow-100 text-yellow-800
-                                            @elseif($renter->status === 'confirmed') bg-blue-100 text-blue-800
-                                            @elseif($renter->status === 'running') bg-purple-100 text-purple-800
-                                            @elseif($renter->status === 'completed') bg-green-100 text-green-800
-                                            @else bg-red-100 text-red-800
-                                            @endif"
-                                            onchange="if(confirm('Yakin ingin mengubah status booking?')) { this.form.submit(); } else { this.value='{{ $renter->status }}'; }">
-                                        <option value="pending" {{ $renter->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                        <option value="confirmed" {{ $renter->status === 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                                        <option value="running" {{ $renter->status === 'running' ? 'selected' : '' }}>Running</option>
-                                        <option value="completed" {{ $renter->status === 'completed' ? 'selected' : '' }}>Completed</option>
-                                        <option value="cancelled" {{ $renter->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                    </select>
-                                </form>
+                                <span class="text-xs font-semibold rounded-lg px-3 py-1 inline-block
+                                @if($renter->status === 'pending') bg-yellow-100 text-yellow-800
+                                @elseif($renter->status === 'confirmed') bg-blue-100 text-blue-800
+                                @elseif($renter->status === 'running') bg-purple-100 text-purple-800
+                                @elseif($renter->status === 'completed') bg-green-100 text-green-800
+                                @else bg-red-100 text-red-800
+                                @endif">
+                                    {{ ucfirst($renter->status) }}
+                                </span>
                             </td>
 
                             <!-- Actions -->
@@ -217,27 +205,15 @@
                         <h3 class="text-sm font-semibold text-gray-900">{{ $renter->booking_code }}</h3>
                         <p class="text-xs text-gray-500 capitalize">{{ str_replace('_', ' ', $renter->service_type) }}</p>
                     </div>
-                    <form action="{{ route('admin.renter.update', $renter->id) }}"
-                          method="POST"
-                          class="status-form">
-                        @csrf
-                        @method('PUT')
-                        <select name="status"
-                                class="text-xs font-semibold rounded-lg border-0 focus:ring-2 focus:ring-yellow-500 cursor-pointer px-2 py-1
-                                @if($renter->status === 'pending') bg-yellow-100 text-yellow-800
-                                @elseif($renter->status === 'confirmed') bg-blue-100 text-blue-800
-                                @elseif($renter->status === 'running') bg-purple-100 text-purple-800
-                                @elseif($renter->status === 'completed') bg-green-100 text-green-800
-                                @else bg-red-100 text-red-800
-                                @endif"
-                                onchange="if(confirm('Yakin ingin mengubah status booking?')) { this.form.submit(); } else { this.value='{{ $renter->status }}'; }">
-                            <option value="pending" {{ $renter->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="confirmed" {{ $renter->status === 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                            <option value="running" {{ $renter->status === 'running' ? 'selected' : '' }}>Running</option>
-                            <option value="completed" {{ $renter->status === 'completed' ? 'selected' : '' }}>Completed</option>
-                            <option value="cancelled" {{ $renter->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                        </select>
-                    </form>
+                    <span class="text-xs font-semibold rounded-lg px-2 py-1 inline-block
+                    @if($renter->status === 'pending') bg-yellow-100 text-yellow-800
+                    @elseif($renter->status === 'confirmed') bg-blue-100 text-blue-800
+                    @elseif($renter->status === 'running') bg-purple-100 text-purple-800
+                    @elseif($renter->status === 'completed') bg-green-100 text-green-800
+                    @else bg-red-100 text-red-800
+                    @endif">
+                        {{ ucfirst($renter->status) }}
+                    </span>
                 </div>
 
                 <!-- Customer Info -->
