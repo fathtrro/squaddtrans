@@ -37,15 +37,32 @@
                 </div>
 
                 <div class="text-center border-t border-dashed border-yellow-200 pt-4">
-                    <p class="text-[10px] text-gray-400 uppercase">Total Bayar</p>
-                    <p class="text-xl font-extrabold text-yellow-600">
+                    <p class="text-[10px] text-gray-400 uppercase">Total Harga Sewa</p>
+                    <p class="text-lg font-extrabold text-gray-800">
                         Rp {{ number_format($booking->total_price,0,',','.') }}
                     </p>
-                    <span class="inline-block mt-1 px-3 py-1 text-[10px]
-                                 font-bold rounded-full bg-green-100 text-green-700">
-                        LUNAS
-                    </span>
                 </div>
+
+                @php
+                    $dpPayment = $booking->payments->where('payment_type', 'dp')->sum('amount');
+                    $remaining = $booking->total_price - $dpPayment;
+                @endphp
+
+                <div class="mt-4 space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">DP yang dibayar</span>
+                        <span class="font-semibold text-green-600">Rp {{ number_format($dpPayment,0,',','.') }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Sisa Pembayaran</span>
+                        <span class="font-semibold text-orange-600">Rp {{ number_format($remaining,0,',','.') }}</span>
+                    </div>
+                </div>
+
+                <span class="inline-block mt-4 px-3 py-1 text-[10px]
+                             font-bold rounded-full bg-orange-100 text-orange-700">
+                    PENDING PELUNASAN
+                </span>
             </div>
 
             {{-- DETAIL --}}

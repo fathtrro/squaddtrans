@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\BankAccount;
 use App\Models\Guarantee;
 use App\Models\Payment;
 use App\Models\Car;
@@ -24,8 +25,29 @@ class BookingController extends Controller
         return view('bookings.create', [
             'cars' => Car::all(),
             'drivers' => Driver::all(),
+            'bankAccounts' => BankAccount::where('is_active', true)->get(),
             'car' => $car,
             'selectedServiceType' => $request->query('service_type'),
+        ]);
+    }
+
+    // API endpoint to check booked dates for a car
+    public function checkBookedDates(Request $request)
+    {
+        $carId = $request->query('car_id');
+
+        if (!$carId) {
+            return response()->json(['error' => 'Car ID required'], 400);
+        }
+
+        // Get all confirmed/running bookings for this car
+        $bookedDates = Booking::where('car_id', $carId)
+            ->whereIn('status', ['confirmed', 'running'])
+            ->selectRaw('DATE(start_datetime) as start_date, DATE(end_datetime) as end_date')
+            ->get();
+
+        return response()->json([
+            'booked_dates' => $bookedDates
         ]);
     }
 
@@ -47,6 +69,7 @@ class BookingController extends Controller
             'document_file' => 'required|file|mimes:jpg,png,pdf',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string',
+            'selected_bank' => 'required|exists:bank_accounts,id',
             'proof_image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ];
 
@@ -108,6 +131,7 @@ class BookingController extends Controller
                 'payment_type' => 'dp',
                 'amount' => $request->amount,
                 'payment_method' => $request->payment_method,
+                'bank_id' => $request->selected_bank,
                 'proof_image' => $proofImagePath, // ✅ SIMPAN PATH BUKTI
                 'status' => 'pending',
             ]);
@@ -125,7 +149,7 @@ class BookingController extends Controller
 
     public function index(Request $request)
     {
-        $query = Booking::with(['car', 'payments'])
+        $query = Booking::with(['user', 'car', 'payments.bankAccount'])
             ->where('user_id', auth()->id());
 
         if ($request->filled('status')) {
@@ -135,10 +159,9 @@ class BookingController extends Controller
         if ($request->filled('date_filter')) {
             $query->whereDate('start_datetime', $request->date_filter);
         }
-
         $allBookings = (clone $query)->get();
         $bookings = $query->latest()->paginate(10);
-        // dd($allBookings->toArray());
+
         return view('bookings.index', [
             'bookings' => $bookings,
             'allBookings' => $allBookings

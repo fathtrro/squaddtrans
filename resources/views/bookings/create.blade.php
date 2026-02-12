@@ -1,4 +1,6 @@
 <x-app-layout>
+        <x-alert />
+
 {{-- Booking Form - SQUADTRANS --}}
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -1397,15 +1399,8 @@ textarea.form-input {
                             <i><i class="fa-solid fa-wallet" style="font-size:0.6rem;"></i></i> Metode Pembayaran
                         </label>
                         <div class="card-radio-grid" id="paymentGrid">
-                            <label class="card-radio selected" data-value="cash">
-                                <input type="radio" name="payment_method" value="cash" checked>
-                                <div class="tick"><i class="fa-solid fa-check"></i></div>
-                                <div class="card-radio-icon icon-green"><i class="fa-solid fa-money-bill-wave"></i></div>
-                                <div class="card-radio-title">Cash</div>
-                                <div class="card-radio-sub">Bayar tunai</div>
-                            </label>
-                            <label class="card-radio" data-value="transfer">
-                                <input type="radio" name="payment_method" value="transfer">
+                            <label class="card-radio selected" data-value="transfer">
+                                <input type="radio" name="payment_method" value="transfer" checked>
                                 <div class="tick"><i class="fa-solid fa-check"></i></div>
                                 <div class="card-radio-icon icon-blue"><i class="fa-solid fa-building-columns"></i></div>
                                 <div class="card-radio-title">Transfer Bank</div>
@@ -1414,17 +1409,18 @@ textarea.form-input {
                         </div>
                     </div>
 
-                    <!-- Bank Selection (shown only for transfer) -->
-                    <div class="field hidden" id="fieldBank">
+                    <!-- Bank Selection (for transfer) -->
+                    <div class="field" id="fieldBank">
                         <label class="field-label">
                             <i><i class="fa-solid fa-building-columns" style="font-size:0.6rem;"></i></i> Pilih Bank
                         </label>
                         <select name="selected_bank" id="bankSelect" class="form-input" style="appearance:none; background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 12px center; padding-right:2.5rem; cursor:pointer;">
                             <option value="">— Pilih Bank —</option>
-                            <option value="BCA">BCA - 1234567890 (a.n. SQUADTRANS)</option>
-                            <option value="Mandiri">Mandiri - 0987654321 (a.n. SQUADTRANS)</option>
-                            <option value="BRI">BRI - 5678901234 (a.n. SQUADTRANS)</option>
-                            <option value="BNI">BNI - 4321098765 (a.n. SQUADTRANS)</option>
+                            @forelse($bankAccounts as $bank)
+                                <option value="{{ $bank->id }}" data-bank-name="{{ $bank->bank_name }}" data-account="{{ $bank->account_number }}" data-holder="{{ $bank->account_holder_name }}">{{ $bank->bank_name }} - {{ $bank->account_number }} (a.n. {{ $bank->account_holder_name }})</option>
+                            @empty
+                                <option value="" disabled>Tidak ada rekening bank</option>
+                            @endforelse
                         </select>
                         <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Pilih bank tujuan transfer</div>
                     </div>
@@ -1437,8 +1433,20 @@ textarea.form-input {
                         <div id="bankInfoContent"></div>
                     </div>
 
-                    <!-- ✅ UPLOAD BUKTI PEMBAYARAN (hanya untuk Transfer) -->
-                    <div class="field hidden" id="fieldProofImage">
+                     <div class="field" id="fieldDP">
+                        <label class="field-label">
+                            <i><i class="fa-solid fa-hand-holding-dollar" style="font-size:0.6rem;"></i></i> Jumlah DP
+                        </label>
+                        <div class="input-prefix-wrap">
+                            <div class="input-prefix">Rp</div>
+                            <input type="number" name="amount" id="dpInput" class="form-input" placeholder="Masukkan jumlah DP" required min="0">
+                        </div>
+                        <div class="field-hint"><i class="fa-solid fa-info-circle"></i> Minimal DP: <strong id="minDpText">Rp 0</strong> (30% dari total)</div>
+                        <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> DP harus minimal <span id="minDpErr">Rp 0</span></div>
+                    </div>
+
+                    <!-- ✅ UPLOAD BUKTI PEMBAYARAN -->
+                    <div class="field" id="fieldProofImage">
                         <label class="field-label">
                             <i><i class="fa-solid fa-receipt" style="font-size:0.6rem;"></i></i> Upload Bukti Pembayaran
                         </label>
@@ -1458,17 +1466,7 @@ textarea.form-input {
                         <div class="field-hint"><i class="fa-solid fa-info-circle"></i> Upload bukti transfer Anda</div>
                     </div>
 
-                    <div class="field" id="fieldDP">
-                        <label class="field-label">
-                            <i><i class="fa-solid fa-hand-holding-dollar" style="font-size:0.6rem;"></i></i> Jumlah DP
-                        </label>
-                        <div class="input-prefix-wrap">
-                            <div class="input-prefix">Rp</div>
-                            <input type="number" name="amount" id="dpInput" class="form-input" placeholder="Masukkan jumlah DP" required min="0">
-                        </div>
-                        <div class="field-hint"><i class="fa-solid fa-info-circle"></i> Minimal DP: <strong id="minDpText">Rp 0</strong> (30% dari total)</div>
-                        <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> DP harus minimal <span id="minDpErr">Rp 0</span></div>
-                    </div>
+
 
                     <!-- Payment Summary -->
                     <div class="pay-summary">
@@ -1535,12 +1533,12 @@ textarea.form-input {
     const PRICE_PER_DAY = {{ $car->price_24h ?? 300000 }};
     const CAR_NAME      = "{{ $car->brand }} {{ $car->name }}";
 
-    // Bank accounts and steps remain unchanged
+    // Bank accounts from database
     const BANK_ACCOUNTS = {
-        'BCA': { name: 'BCA', account: '1234567890', holder: 'SQUADTRANS' },
-        'Mandiri': { name: 'Bank Mandiri', account: '0987654321', holder: 'SQUADTRANS' },
-        'BRI': { name: 'Bank BRI', account: '5678901234', holder: 'SQUADTRANS' },
-        'BNI': { name: 'Bank BNI', account: '4321098765', holder: 'SQUADTRANS' }
+        @forelse($bankAccounts as $bank)
+            '{{ $bank->id }}': { name: '{{ $bank->bank_name }}', account: '{{ $bank->account_number }}', holder: '{{ $bank->account_holder_name }}' },
+        @empty
+        @endforelse
     };
 
     const STEPS = [
@@ -1722,7 +1720,7 @@ textarea.form-input {
     function initCardRadio(gridId) { const grid = document.getElementById(gridId); if (!grid) return; grid.querySelectorAll('.card-radio').forEach(card => { card.addEventListener('click', function() { grid.querySelectorAll('.card-radio').forEach(c => c.classList.remove('selected')); this.classList.add('selected'); const radio = this.querySelector('input[type="radio"]'); if (radio) radio.checked = true; }); }); }
     initCardRadio('guaranteeGrid'); initCardRadio('paymentGrid');
 
-    document.querySelectorAll('#paymentGrid .card-radio').forEach(card => { card.addEventListener('click', function() { const val = this.dataset.value; const bankField = document.getElementById('fieldBank'); const proofField = document.getElementById('fieldProofImage'); if (val === 'transfer') { bankField.classList.remove('hidden'); proofField.classList.remove('hidden'); if (bankSelect.value) showBankInfo(bankSelect.value); } else { bankField.classList.add('hidden'); proofField.classList.add('hidden'); bankInfoBox.classList.remove('show'); } }); });
+    document.querySelectorAll('#paymentGrid .card-radio').forEach(card => { card.addEventListener('click', function() { const val = this.dataset.value; if (val === 'transfer' && bankSelect.value) showBankInfo(bankSelect.value); }); });
 
     bankSelect.addEventListener('change', function() { clearError('fieldBank'); if (this.value) showBankInfo(this.value); else bankInfoBox.classList.remove('show'); });
     function showBankInfo(bankCode) { const bank = BANK_ACCOUNTS[bankCode]; if (!bank) return; const content = `<div class="bank-item"><div class="bank-name">${bank.name}</div><div class="bank-account"><span class="bank-number">${bank.account}</span><button type="button" class="copy-btn" onclick="copyToClipboard('${bank.account}')"><i class="fa-solid fa-copy"></i> Copy</button></div><div class="bank-holder">a.n. ${bank.holder}</div></div>`; document.getElementById('bankInfoContent').innerHTML = content; bankInfoBox.classList.add('show'); }

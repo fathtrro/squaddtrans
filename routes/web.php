@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\RenterController;
+use App\Http\Controllers\Admin\BankAccountController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BookingExtensionController;
 use App\Http\Controllers\CarsController;
@@ -73,6 +74,9 @@ Route::get('/Armada', [CarsController::class, 'index'])->name('cars.index');
 Route::get('/cars', [CarsController::class, 'index'])->name('cars.index');
 Route::get('/cars/{car}', [CarsController::class, 'show'])->name('cars.show');
 
+// API: Check booked dates (public)
+Route::get('/api/bookings/check-dates', [BookingController::class, 'checkBookedDates']);
+
 // Booking routes (requires authentication)
 Route::middleware(['auth'])->group(function () {
     Route::get('/bookings', [BookingController::class, 'index'])
@@ -130,6 +134,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::resource('car', CarController::class);
         Route::resource('inbox', InboxController::class);
         Route::resource('renter', RenterController::class);
+        Route::resource('bank-accounts', BankAccountController::class);
 
         // Booking extension management
         Route::get('/booking-extensions', [BookingExtensionController::class, 'index'])

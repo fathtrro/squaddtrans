@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-alert />
 
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -2116,7 +2117,12 @@
                 // 12 Hour Logic: Clicking a date selects it for start AND end
                 // Check if this single date is booked (redundant since onclick is prevented, but safe)
                 if (bookedDates.includes(dateStr)) {
-                    alert('Tanggal ini sudah dibooking');
+                    showAlert({
+                        type: 'warning',
+                        title: 'Tanggal Sudah Dibooking',
+                        message: 'Tanggal ini sudah dibooking. Silakan pilih tanggal lain.',
+                        buttons: '<button type="button" class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 font-semibold transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                    });
                     return;
                 }
                 selectedStartDate = dateStr;
@@ -2126,7 +2132,12 @@
                 if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
                     // Starting a new selection - set start date
                     if (bookedDates.includes(dateStr)) {
-                        alert('Tanggal ini sudah dibooking');
+                        showAlert({
+                            type: 'warning',
+                            title: 'Tanggal Sudah Dibooking',
+                            message: 'Tanggal ini sudah dibooking. Silakan pilih tanggal lain.',
+                            buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                        });
                         return;
                     }
                     selectedStartDate = dateStr;
@@ -2152,7 +2163,12 @@
                     const conflictDates = getBookedDatesInRange(tempStart, tempEnd);
                     if (conflictDates.length > 0) {
                         const formattedDates = conflictDates.map(d => formatDateForDisplay(d)).join(', ');
-                        alert(`Tanggal ${formattedDates} sudah dibooking. Pilih rentang tanggal lain.`);
+                        showAlert({
+                            type: 'warning',
+                            title: 'Tanggal Sudah Dibooking',
+                            message: `Tanggal ${formattedDates} sudah dibooking. Silakan pilih rentang tanggal lain.`,
+                            buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                        });
                         selectedStartDate = null;
                         selectedEndDate = null;
                         syncSelection();
@@ -2388,7 +2404,12 @@
                 const inputTime = document.getElementById('startTime').value;
 
                 if (!inputDate || !inputTime) {
-                    alert('Please select a date and start time');
+                    showAlert({
+                        type: 'warning',
+                        title: 'Pilih Tanggal dan Waktu',
+                        message: 'Silakan pilih tanggal dan waktu mulai untuk melanjutkan pemesanan.',
+                        buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                    });
                     return;
                 }
 
@@ -2407,7 +2428,12 @@
                 endDate = document.getElementById('endDate').value;
 
                 if (!startDate || !endDate) {
-                    alert('Please select start and end dates');
+                    showAlert({
+                        type: 'warning',
+                        title: 'Pilih Tanggal',
+                        message: 'Silakan pilih tanggal mulai dan tanggal akhir untuk melanjutkan pemesanan.',
+                        buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                    });
                     return;
                 }
             }
@@ -2418,7 +2444,12 @@
             const conflictDates = getBookedDatesInRange(startDate, endDate);
             if (conflictDates.length > 0) {
                 const formattedDates = conflictDates.map(dateStr => formatDateForDisplay(dateStr)).join(', ');
-                alert(`Tanggal ${formattedDates} sudah dibooking. Silakan pilih tanggal lain.`);
+                showAlert({
+                    type: 'warning',
+                    title: 'Tanggal Sudah Dibooking',
+                    message: `Tanggal ${formattedDates} sudah dibooking. Silakan pilih tanggal lain.`,
+                    buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                });
                 return;
             }
 
@@ -2464,7 +2495,12 @@
                     // Try to get error message from backend
                     const errorText = await availResponse.text();
                     console.error("Server Error:", errorText);
-                    alert('Error checking availability. Please ensure dates are valid.');
+                    showAlert({
+                        type: 'error',
+                        title: 'Kesalahan Memeriksa Ketersediaan',
+                        message: 'Terjadi kesalahan saat memeriksa ketersediaan. Silakan pastikan tanggal valid dan coba lagi.',
+                        buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                    });
                     button.disabled = false;
                     button.innerHTML = originalText;
                     return;
@@ -2473,7 +2509,12 @@
                 const availData = await availResponse.json();
 
                 if (!availData.available) {
-                    alert(availData.message || 'Car is not available for selected dates.');
+                    showAlert({
+                        type: 'warning',
+                        title: 'Mobil Tidak Tersedia',
+                        message: availData.message || 'Mobil tidak tersedia untuk tanggal yang dipilih.',
+                        buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                    });
                     button.disabled = false;
                     button.innerHTML = originalText;
                     return;
@@ -2490,7 +2531,12 @@
                 });
 
                 if (!priceResponse.ok) {
-                     alert('Error calculating price.');
+                     showAlert({
+                        type: 'error',
+                        title: 'Kesalahan Menghitung Harga',
+                        message: 'Terjadi kesalahan saat menghitung harga. Silakan coba lagi.',
+                        buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                    });
                      button.disabled = false;
                      button.innerHTML = originalText;
                      return;
@@ -2530,7 +2576,12 @@
 
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                showAlert({
+                    type: 'error',
+                    title: 'Kesalahan',
+                    message: 'Terjadi kesalahan. Silakan coba lagi.',
+                    buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
+                });
             } finally {
                 button.disabled = false;
                 button.innerHTML = originalText;

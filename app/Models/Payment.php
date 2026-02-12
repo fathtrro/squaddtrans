@@ -11,6 +11,7 @@ class Payment extends Model
         'payment_type',
         'amount',
         'payment_method',
+        'bank_id',
         'proof_image',
         'status',
         'paid_at'
@@ -19,5 +20,10 @@ class Payment extends Model
     public function booking()
     {
         return $this->belongsTo(Booking::class);
+    }
+
+    public function bankAccount()
+    {
+        return $this->belongsTo(BankAccount::class, 'bank_id');
     }
 }

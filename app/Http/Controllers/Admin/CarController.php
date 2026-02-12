@@ -23,7 +23,17 @@ class CarController extends Controller
             $query->where('status', $request->status);
         }
 
-        $cars = $query->latest()->paginate(12);
+        // Search by brand, model, or license plate
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('brand', 'like', '%' . $search . '%')
+                    ->orWhere('model', 'like', '%' . $search . '%')
+                    ->orWhere('license_plate', 'like', '%' . $search . '%');
+            });
+        }
+
+        $cars = $query->latest()->paginate(12)->withQueryString();
 
         // Count cars by status
         $totalCars = Car::count();
@@ -39,7 +49,6 @@ class CarController extends Controller
             'maintenanceCars'
         ));
     }
-
     /**
      * Show the form for creating a new resource.
      */

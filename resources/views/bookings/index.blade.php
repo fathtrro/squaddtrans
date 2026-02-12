@@ -173,7 +173,7 @@
                                                 <p class="font-bold text-gray-900 text-sm mb-0.5">
                                                     {{ $booking->car->name }}</p>
                                                 <p class="text-xs text-gray-600">
-                                                    {{ $booking->car->license_plate ?? 'N/A' }}</p>
+                                                    {{ $booking->car->plate_number ?? 'N/A' }}</p>
                                             </div>
 
                                             <!-- Payment Method -->
@@ -182,37 +182,18 @@
                                                 <div class="flex items-center gap-2">
                                                     @if ($booking->payments->first())
                                                         @php
-                                                            $paymentMethod = $booking->payments->first()
-                                                                ->payment_method;
+                                                            $firstPayment = $booking->payments->first();
+                                                            $paymentMethod = $firstPayment->payment_method;
                                                         @endphp
-                                                        @if ($paymentMethod == 'bank_transfer')
-                                                            <svg class="w-4 h-4 text-gray-600" fill="none"
-                                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                                                            </svg>
-                                                            <span class="text-sm text-gray-900 font-medium">Bank
-                                                                Transfer</span>
-                                                        @elseif($paymentMethod == 'credit_card')
-                                                            <svg class="w-4 h-4 text-gray-600" fill="none"
-                                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                                                            </svg>
-                                                            <span class="text-sm text-gray-900 font-medium">Credit
-                                                                Card</span>
-                                                        @else
-                                                            <svg class="w-4 h-4 text-gray-600" fill="none"
-                                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                                                            </svg>
-                                                            <span
-                                                                class="text-sm text-gray-900 font-medium">E-Wallet</span>
-                                                        @endif
+                                                        <svg class="w-4 h-4 text-gray-600" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                                                        </svg>
+                                                        <span class="text-sm text-gray-900 font-medium">
+                                                            Transfer via {{ $firstPayment->bankAccount?->bank_name ?? 'Bank' }}
+                                                        </span>
                                                     @else
                                                         <svg class="w-4 h-4 text-gray-400" fill="none"
                                                             stroke="currentColor" viewBox="0 0 24 24">
@@ -247,10 +228,18 @@
 
                                             <!-- Amount -->
                                             <div class="text-right">
-                                                <p class="text-xs text-gray-500 mb-1">JUMLAH</p>
-                                                <p class="font-bold text-gray-900 text-lg">
+                                                <p class="text-xs text-gray-500 mb-1">TOTAL HARGA</p>
+                                                <p class="font-bold text-gray-900 text-sm mb-1">
                                                     Rp {{ number_format($booking->total_price, 0, ',', '.') }}
                                                 </p>
+                                                @php
+                                                    $dpPaid = $booking->payments->where('payment_type', 'dp')->sum('amount');
+                                                    $remaining = $booking->total_price - $dpPaid;
+                                                @endphp
+                                                <div class="flex flex-col gap-0.5 text-xs">
+                                                    <span class="text-green-600">DP: Rp {{ number_format($dpPaid, 0, ',', '.') }}</span>
+                                                    <span class="text-orange-600">Sisa: Rp {{ number_format($remaining, 0, ',', '.') }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

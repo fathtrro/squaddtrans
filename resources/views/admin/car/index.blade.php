@@ -18,45 +18,66 @@
             </button>
         </div>
     @endif
-
-    <!-- Filter Bar -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
-        <div class="flex items-center justify-between flex-wrap gap-4">
-            <div class="flex items-center space-x-3 flex-wrap gap-2">
-                <div class="flex items-center px-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
-                    <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                    </svg>
-                    <span class="text-sm font-medium text-gray-700">Filter:</span>
-                </div>
-
-                <a href="{{ route('admin.car.index') }}"
-                   class="px-4 py-2 text-sm font-medium {{ !request('status') ? 'text-yellow-700 bg-yellow-50 border-2 border-yellow-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-yellow-100 transition-colors">
-                    SEMUA ({{ $totalCars }})
-                </a>
-                <a href="{{ route('admin.car.index', ['status' => 'available']) }}"
-                   class="px-4 py-2 text-sm font-medium {{ request('status') == 'available' ? 'text-green-700 bg-green-50 border-2 border-green-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-green-100 transition-colors">
-                    TERSEDIA ({{ $availableCars }})
-                </a>
-                <a href="{{ route('admin.car.index', ['status' => 'rented']) }}"
-                   class="px-4 py-2 text-sm font-medium {{ request('status') == 'rented' ? 'text-orange-700 bg-orange-50 border-2 border-orange-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-orange-100 transition-colors">
-                    DISEWA ({{ $rentedCars }})
-                </a>
-                <a href="{{ route('admin.car.index', ['status' => 'maintenance']) }}"
-                   class="px-4 py-2 text-sm font-medium {{ request('status') == 'maintenance' ? 'text-red-700 bg-red-50 border-2 border-red-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-red-100 transition-colors">
-                    SERVIS ({{ $maintenanceCars }})
-                </a>
-            </div>
-
-            <a href="{{ route('admin.car.create') }}"
-               class="flex items-center px-6 py-2.5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-lg hover:from-yellow-500 hover:to-yellow-600 shadow-sm font-medium transition-all">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+<!-- Filter Bar - Compact Version -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+    <div class="flex items-center justify-between gap-4 flex-wrap">
+        <!-- Search Bar -->
+        <form method="GET" action="{{ route('admin.car.index') }}" class="flex-1 max-w-md">
+            <div class="relative">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
-                Tambah Armada
+                <input type="text"
+                       name="search"
+                       value="{{ request('search') }}"
+                       placeholder="Cari armada..."
+                       class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all">
+                <input type="hidden" name="status" value="{{ request('status') }}">
+
+                @if(request('search'))
+                <a href="{{ route('admin.car.index', ['status' => request('status')]) }}"
+                   class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </a>
+                @endif
+            </div>
+        </form>
+
+        <!-- Status Filter Pills -->
+        <div class="flex items-center gap-2 flex-wrap">
+            <a href="{{ route('admin.car.index', array_filter(['search' => request('search')])) }}"
+               class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all {{ !request('status') ? 'bg-yellow-50 text-yellow-700 border border-yellow-200' : 'bg-gray-50 text-gray-600 border border-transparent hover:border-gray-200' }}">
+                Semua ({{ $totalCars }})
+            </a>
+
+            <a href="{{ route('admin.car.index', array_filter(['status' => 'available', 'search' => request('search')])) }}"
+               class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all {{ request('status') == 'available' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-gray-50 text-gray-600 border border-transparent hover:border-gray-200' }}">
+                Tersedia ({{ $availableCars }})
+            </a>
+
+            <a href="{{ route('admin.car.index', array_filter(['status' => 'rented', 'search' => request('search')])) }}"
+               class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all {{ request('status') == 'rented' ? 'bg-orange-50 text-orange-700 border border-orange-200' : 'bg-gray-50 text-gray-600 border border-transparent hover:border-gray-200' }}">
+                Disewa ({{ $rentedCars }})
+            </a>
+
+            <a href="{{ route('admin.car.index', array_filter(['status' => 'maintenance', 'search' => request('search')])) }}"
+               class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all {{ request('status') == 'maintenance' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-gray-50 text-gray-600 border border-transparent hover:border-gray-200' }}">
+                Servis ({{ $maintenanceCars }})
             </a>
         </div>
+
+        <!-- Add Button -->
+        <a href="{{ route('admin.car.create') }}"
+           class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-lg hover:from-yellow-500 hover:to-yellow-600 shadow-sm font-medium transition-all whitespace-nowrap">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Tambah Armada
+        </a>
     </div>
+</div>
 
     <!-- Fleet Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
