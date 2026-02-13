@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -13,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         // Modify payment_type enum to include 'extension'
-        DB::statement("ALTER TABLE payments MODIFY payment_type ENUM('dp', 'pelunasan', 'denda', 'extension')");
+        Schema::table('payments', function (Blueprint $table) {
+            $table->string('payment_type')->change();
+        });
     }
 
     /**
@@ -22,6 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         // Revert to original enum
-        DB::statement("ALTER TABLE payments MODIFY payment_type ENUM('dp', 'pelunasan', 'denda')");
+        Schema::table('payments', function (Blueprint $table) {
+            $table->string('payment_type')->change();
+        });
     }
 };
