@@ -32,60 +32,113 @@
     <div class="bg-gray-50">
         {{-- Hero Section --}}
         <header class="relative w-full h-[500px] overflow-hidden"
-    style="background-image: url('{{ asset('images/123.jpeg') }}');
+            style="background-image: url('{{ asset('images/123.jpeg') }}');
            background-size: cover;
            background-position: center;">
 
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-                    <div class="max-w-2xl">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent">
+                <div
+                    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col items-center justify-start pt-4">
+                    <div class="max-w-2xl text-center">
                         <span
                             class="inline-block py-1 px-4 bg-yellow-600/20 backdrop-blur-md border border-yellow-600/30 text-yellow-500 font-bold rounded-full text-xs tracking-widest uppercase mb-6">Premium
                             Travel Experience</span>
                         <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
                             Eksplorasi Tanpa Batas dengan <span class="text-yellow-500">Kenyamanan</span> Maksimal
                         </h1>
-                        <p class="text-xl text-slate-200 mb-10 leading-relaxed max-w-lg">
+                        <p class="text-xl text-slate-200 mb-10 leading-relaxed">
                             Layanan sewa mobil eksklusif dan paket wisata personal di Indonesia dengan standar pelayanan
                             bintang lima.
                         </p>
-                        <div class="flex flex-wrap gap-4">
-                            <a class="btn-primary flex items-center gap-2" href="#units">
-                                Pesan Sekarang <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                            </a>
-                            <a class="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-bold py-3 px-8 rounded-xl transition-all"
-                                href="#">
-                                Konsultasi Rute
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>
         </header>
 
-        {{-- Search Section --}}
-        <section class="relative z-20 max-w-6xl mx-auto -mt-24 px-4 mb-12">
-            <div
-                class="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border border-slate-100 flex flex-col md:flex-row gap-4 md:gap-6 items-end">
+        {{-- Search Section (pill over hero, no card) --}}
+        <section class="relative z-20 max-w-6xl mx-auto -mt-32 px-4 mb-0 pb-12">
+            <!-- Search pill sits above the card area and over the hero background -->
+            <div class="w-full flex justify-center -mt-0">
+                <div class="w-full md:w-3/4 lg:w-2/3">
+                    <div class="relative">
+                        <div
+                            class="flex items-center bg-white rounded-full p-2 shadow-2xl w-full border border-slate-200">
+                            <i class="fa-solid fa-car absolute left-6 text-slate-400 text-sm"></i>
+                            <input type="text" id="carSearchInput"
+                                placeholder="Cari merk atau model mobil yang Anda inginkan..."
+                                class="w-full pl-14 pr-4 py-3 bg-transparent border-none rounded-full focus:outline-none text-sm"
+                                autocomplete="off" />
 
-                <!-- Cari Mobil - Full Width -->
-                <div class="space-y-2 flex-1 w-full">
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">
-                        Cari Mobil
-                    </label>
-                    <div class="relative h-full">
-                        <i class="fa-solid fa-car absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="text" id="carSearchInput" placeholder="Cari merk atau model mobil yang Anda inginkan..."
-                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-yellow-600/20 text-sm" autocomplete="off" />
+                        </div>
 
                         <!-- Autocomplete dropdown -->
-                        <div id="carSearchResults" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-200 rounded-xl shadow-lg z-50 max-h-72 overflow-y-auto">
+                        <div id="carSearchResults"
+                            class="hidden absolute top-full left-0 right-0 mt-3 bg-white border-2 border-slate-200 rounded-xl shadow-lg z-50 max-h-72 overflow-y-auto">
                             <!-- Results akan ditampilkan di sini -->
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-0 overflow-hidden mt-6">
+                <!-- Feature / Quick Links pill bar -->
+                <div class="bg-[#f7f3ee] rounded-3xl p-3 lg:p-4">
+                    <div class="max-w-7xl mx-auto px-2">
+                        <div class="flex items-center justify-between gap-4">
+                            <div class="flex-1 overflow-x-auto">
+                                <div class="flex items-center divide-x divide-slate-200/60">
+                                    <div class="flex items-center gap-3 px-4 py-2">
+                                        <div
+                                            class="w-10 h-10 bg-slate-800 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa-solid fa-calendar-days"></i>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-sm text-slate-800">Holiday Listings</div>
+                                            <div class="text-xs text-slate-500">Pilih lokasi</div>
+                                        </div>
+                                    </div>
 
+                                    <div class="flex items-center gap-3 px-4 py-2">
+                                        <div
+                                            class="w-10 h-10 bg-slate-800 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa-solid fa-star"></i>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-sm text-slate-800">Featured Villas</div>
+                                            <div class="text-xs text-slate-500">Spesial</div>
+                                        </div>
+                                    </div>
 
+                                    <div class="flex items-center gap-3 px-4 py-2">
+                                        <div
+                                            class="w-10 h-10 bg-slate-800 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa-solid fa-car-side"></i>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-sm text-slate-800">Size Type</div>
+                                            <div class="text-xs text-slate-500">Kategori</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-3 px-4 py-2">
+                                        <div
+                                            class="w-10 h-10 bg-slate-800 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa-solid fa-users"></i>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-sm text-slate-800">About 4-6 Seats</div>
+                                            <div class="text-xs text-slate-500">Kapasitas</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-shrink-0 pl-4">
+                                <a href="{{ route('cars.index') }}"
+                                    class="bg-emerald-700 text-white px-6 py-2 rounded-full font-bold shadow hover:bg-emerald-800 transition">Reservasi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -93,6 +146,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const carSearchInput = document.getElementById('carSearchInput');
                 const carSearchResults = document.getElementById('carSearchResults');
+                const searchBtn = document.getElementById('searchBtn');
                 let searchTimeout;
 
                 // Handle input change
@@ -109,6 +163,16 @@
                     searchTimeout = setTimeout(function() {
                         fetchCarResults(query);
                     }, 300);
+                });
+
+                // Search button navigates to list page with query
+                searchBtn.addEventListener('click', function() {
+                    const q = carSearchInput.value.trim();
+                    if (q.length > 0) {
+                        window.location.href = `/cars?q=${encodeURIComponent(q)}`;
+                    } else {
+                        window.location.href = `{{ route('cars.index') }}`;
+                    }
                 });
 
                 // Fetch search results from API
@@ -148,7 +212,7 @@
 
                 // Close dropdown when clicking outside
                 document.addEventListener('click', function(event) {
-                    if (!event.target.closest('[id*="carSearch"]')) {
+                    if (!event.target.closest('[id*="carSearch"]') && !event.target.closest('#searchBtn')) {
                         carSearchResults.classList.add('hidden');
                     }
                 });
@@ -161,6 +225,8 @@
                 });
             });
         </script>
+
+
 
 
         {{-- Services Section --}}
@@ -319,7 +385,7 @@
                     </a>
                 </div>
 
-                       @include('cars.cars-list')
+                @include('cars.cars-list')
 
 
             </div>
@@ -391,7 +457,8 @@
                                         "{{ $review->comment ?? 'Pelanggan puas dengan layanan kami.' }}"
                                     </p>
 
-                                    <div class="flex items-center gap-2 sm:gap-3 border-t border-slate-100 pt-3 sm:pt-4">
+                                    <div
+                                        class="flex items-center gap-2 sm:gap-3 border-t border-slate-100 pt-3 sm:pt-4">
                                         <div
                                             class="w-10 sm:w-12 h-10 sm:h-12 bg-yellow-600/10 rounded-full flex items-center justify-center flex-shrink-0">
                                             <i class="fa-solid fa-user text-yellow-600 text-sm sm:text-lg"></i>
