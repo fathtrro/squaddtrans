@@ -153,6 +153,11 @@
                             <!-- Actions -->
                             <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                 <div class="flex items-center justify-center gap-2">
+                                    <a href="{{ route('admin.renter.workflow', $renter->id) }}"
+                                       class="text-green-600 hover:text-green-800 font-medium">
+                                        Workflow
+                                    </a>
+                                    <span class="text-gray-300">|</span>
                                     <a href="{{ route('admin.renter.show', $renter->id) }}"
                                        class="text-blue-600 hover:text-blue-800 font-medium">
                                         Detail
@@ -248,6 +253,10 @@
                 <!-- Actions -->
                 <div class="border-t border-gray-100 pt-3">
                     <div class="flex items-center justify-end gap-4">
+                        <a href="{{ route('admin.renter.workflow', $renter->id) }}"
+                           class="text-green-600 hover:text-green-800 font-medium text-sm">
+                            Workflow
+                        </a>
                         <a href="{{ route('admin.renter.show', $renter->id) }}"
                            class="text-blue-600 hover:text-blue-800 font-medium text-sm">
                             Detail

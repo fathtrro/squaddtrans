@@ -7,6 +7,17 @@ use Carbon\Carbon;
 
 class Booking extends Model
 {
+    /**
+     * Status constants
+     */
+    const STATUS_PENDING = 'pending';
+    const STATUS_CONFIRMED = 'confirmed';
+    const STATUS_RUNNING = 'running';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_CANCELLED = 'cancelled';
+    const STATUS_WAITING_PENALTY = 'waiting_penalty';
+    const STATUS_WAITING_PAYMENT = 'waiting_payment';
+
     protected $fillable = [
         'booking_code',
         'user_id',
@@ -156,6 +167,10 @@ class Booking extends Model
      */
     public function getDurationInDaysAttribute()
     {
+        if (!$this->start_datetime || !$this->end_datetime) {
+            return 1;
+        }
+
         $start = $this->start_datetime instanceof Carbon
             ? $this->start_datetime
             : Carbon::parse($this->start_datetime);
@@ -164,7 +179,10 @@ class Booking extends Model
             ? $this->end_datetime
             : Carbon::parse($this->end_datetime);
 
-        return $start->diffInDays($end) ?: 1;
+        $days = $start->diffInDays($end);
+
+        // If duration is 0 or negative, return 1 day minimum
+        return $days > 0 ? $days : 1;
     }
 
     /**
@@ -178,6 +196,8 @@ class Booking extends Model
             'running' => 'bg-green-100 text-green-800 border-green-300',
             'completed' => 'bg-gray-100 text-gray-800 border-gray-300',
             'cancelled' => 'bg-red-100 text-red-800 border-red-300',
+            'waiting_penalty' => 'bg-orange-100 text-orange-800 border-orange-300',
+            'waiting_payment' => 'bg-purple-100 text-purple-800 border-purple-300',
         ];
 
         return $badges[$this->status] ?? 'bg-gray-100 text-gray-800 border-gray-300';
@@ -194,6 +214,8 @@ class Booking extends Model
             'running' => 'Sedang Berjalan',
             'completed' => 'Selesai',
             'cancelled' => 'Dibatalkan',
+            'waiting_penalty' => 'Menunggu Denda',
+            'waiting_payment' => 'Menunggu Pembayaran',
         ];
 
         return $labels[$this->status] ?? 'Unknown';
@@ -241,9 +263,24 @@ class Booking extends Model
         return $query->where('status', 'cancelled');
     }
 
+    public function scopeWaitingPenalty($query)
+    {
+        return $query->where('status', 'waiting_penalty');
+    }
+
+    public function scopeWaitingPayment($query)
+    {
+        return $query->where('status', 'waiting_payment');
+    }
+
     public function scopeActive($query)
     {
         return $query->whereIn('status', ['pending', 'confirmed', 'running']);
+    }
+
+    public function scopeAwaitingCompletion($query)
+    {
+        return $query->whereIn('status', ['waiting_penalty', 'waiting_payment', 'running']);
     }
 
     /**
@@ -344,5 +381,110 @@ class Booking extends Model
     public function isOverdue()
     {
         return $this->end_datetime < now() && !in_array($this->status, ['completed', 'cancelled']);
+    }
+
+    /**
+     * Check if before checklist exists
+     */
+    public function hasBeforeChecklist()
+    {
+        return $this->checklists()->where('checklist_type', 'before')->exists();
+    }
+
+    /**
+     * Check if after checklist exists
+     */
+    public function hasAfterChecklist()
+    {
+        return $this->checklists()->where('checklist_type', 'after')->exists();
+    }
+
+    /**
+     * Get before checklist
+     */
+    public function getBeforeChecklist()
+    {
+        return $this->checklists()->where('checklist_type', 'before')->first();
+    }
+
+    /**
+     * Get after checklist
+     */
+    public function getAfterChecklist()
+    {
+        return $this->checklists()->where('checklist_type', 'after')->first();
+    }
+
+    /**
+     * Check if has unpaid penalties
+     */
+    public function hasUnpaidPenalties()
+    {
+        return $this->penalties()->where('status', 'unpaid')->exists();
+    }
+
+    /**
+     * Get total unpaid penalties
+     */
+    public function getTotalUnpaidPenalties()
+    {
+        return $this->penalties()->where('status', 'unpaid')->sum('amount');
+    }
+
+    /**
+     * Get total paid penalties
+     */
+    public function getTotalPaidPenalties()
+    {
+        return $this->penalties()->where('status', 'paid')->sum('amount');
+    }
+
+    /**
+     * Check can be returned (status running)
+     */
+    public function canBeReturned()
+    {
+        return $this->status === self::STATUS_RUNNING;
+    }
+
+    /**
+     * Check can complete booking
+     */
+    public function canBeCompleted()
+    {
+        // Must have after checklist and no unpaid penalties
+        return $this->hasAfterChecklist() && !$this->hasUnpaidPenalties();
+    }
+
+    /**
+     * Get total with penalties
+     */
+    public function getTotalWithPenalties()
+    {
+        return $this->total_price + $this->getTotalUnpaidPenalties();
+    }
+
+    /**
+     * Check if booking has extensions
+     */
+    public function hasExtensions()
+    {
+        return $this->extensions()->exists();
+    }
+
+    /**
+     * Get total extensions amount
+     */
+    public function getExtensionsTotal()
+    {
+        return $this->extensions()->sum('price');
+    }
+
+    /**
+     * Accessor for extensions total
+     */
+    public function getExtensionsTotalAttribute()
+    {
+        return $this->getExtensionsTotal();
     }
 }

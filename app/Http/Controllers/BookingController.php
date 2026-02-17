@@ -137,6 +137,7 @@ class BookingController extends Controller
             ]);
         });
 
+
         return redirect()->route('bookings.success', $booking->id);
     }
 

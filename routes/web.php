@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\RenterController;
+use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\Admin\BankAccountController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BookingExtensionController;
@@ -136,6 +137,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::resource('renter', RenterController::class);
         Route::resource('bank-accounts', BankAccountController::class);
 
+        // Booking Workflow View
+        Route::get('/renter/{id}/workflow', [RenterController::class, 'workflow'])
+            ->name('renter.workflow');
+
         // Booking extension management
         Route::get('/booking-extensions', [BookingExtensionController::class, 'index'])
             ->name('booking-extensions.index');
@@ -143,7 +148,48 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
             ->name('booking-extensions.approve');
         Route::post('/booking-extensions/{extension}/reject', [BookingExtensionController::class, 'reject'])
             ->name('booking-extensions.reject');
+
+        // ========== RETURN & CHECKLIST ROUTES ==========
+        // Before checklist form
+        Route::get('/booking/{id}/checklist-before', [ReturnController::class, 'beforeChecklistForm'])
+            ->name('booking.checklist.before');
+
+        // Submit before checklist
+        Route::post('/booking/{id}/checklist-before', [ReturnController::class, 'submitBeforeChecklist'])
+            ->name('booking.checklist.before.submit');
+
+        // Show return form
+        Route::get('/booking/{id}/return', [ReturnController::class, 'returnForm'])
+            ->name('booking.return.form');
+
+        // Submit return checklist
+        Route::post('/booking/{id}/return', [ReturnController::class, 'submitReturn'])
+            ->name('booking.return.submit');
+
+        // Penalties management
+        Route::get('/booking/{id}/penalties', [ReturnController::class, 'showPenalties'])
+            ->name('booking.penalties');
+
+        // Approve/mark penalty as paid
+        Route::post('/penalty/{id}/approve', [ReturnController::class, 'approvePenalty'])
+            ->name('penalty.approve');
+
+        // Booking completion
+        Route::get('/booking/{id}/complete', [ReturnController::class, 'completeForm'])
+            ->name('booking.complete.form');
+
+        // Complete booking
+        Route::post('/booking/{id}/complete', [ReturnController::class, 'completeBooking'])
+            ->name('booking.complete');
+
+        // AJAX endpoints for status updates
+        Route::get('/booking/{id}/penalties-summary', [ReturnController::class, 'getPenaltiesSummary'])
+            ->name('booking.penalties.summary');
+
+        Route::get('/booking/{id}/completion-status', [ReturnController::class, 'getCompletionStatus'])
+            ->name('booking.completion.status');
     });
+
 
 
 

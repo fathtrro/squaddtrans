@@ -1,6 +1,35 @@
 <x-admin-layout>
     <x-slot name="header">Detail Booking</x-slot>
 
+    <!-- Toast Notification -->
+    @if ($message = session('success'))
+        <div id="toast" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in-out z-50">
+            <div class="flex items-center gap-3">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>{{ $message }}</span>
+            </div>
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('toast').style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
+
+    <style>
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(20px); }
+            10% { opacity: 1; transform: translateX(0); }
+            90% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(20px); }
+        }
+        .animate-fade-in-out {
+            animation: fadeInOut 3s ease-in-out;
+        }
+    </style>
+
     <!-- Page Header -->
     <div class="mb-6">
         <div class="flex items-center justify-between">
@@ -266,4 +295,182 @@
         </div>
 
     </div>
+
+    <!-- CHECKLIST SECTION -->
+    <div class="mt-6 border-t-2 border-gray-200 pt-6">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Checklist Kendaraan</h2>
+            <p class="text-gray-600 mt-1">Kondisi mobil sebelum dan sesudah perjalanan</p>
+        </div>
+
+        <!-- Actionable Section - Return Form Button -->
+        @if($renter->status === 'running' && !$renter->hasAfterChecklist())
+        <div class="bg-blue-50 border border-blue-300 rounded-xl p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-blue-900">Kendaraan Siap untuk Return</h3>
+                    <p class="text-blue-700 text-sm mt-1">Silakan submit checklist kondisi kendaraan setelah perjalanan</p>
+                </div>
+                <a href="{{ route('admin.booking.return.form', $renter->id) }}"
+                   class="flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors shadow-md">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Isi Checklist Return
+                </a>
+            </div>
+        </div>
+        @endif
+
+        <!-- Before Checklist -->
+        @if($renter->hasBeforeChecklist())
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+            <div class="flex items-center gap-2 mb-4">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <h3 class="text-lg font-bold text-gray-900">Checklist Sebelum Perjalanan</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-xs font-medium text-gray-500 mb-2">Kondisi Bodi</p>
+                    <p class="text-sm text-gray-900">{{ $renter->checklists()->where('checklist_type', 'before')->first()->body_condition ?? '-' }}</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-xs font-medium text-gray-500 mb-2">Kondisi Interior</p>
+                    <p class="text-sm text-gray-900">{{ $renter->checklists()->where('checklist_type', 'before')->first()->interior_condition ?? '-' }}</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-xs font-medium text-gray-500 mb-2">Level Bahan Bakar</p>
+                    <p class="text-sm text-gray-900">{{ $renter->checklists()->where('checklist_type', 'before')->first()->fuel_level ?? '-' }}</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-xs font-medium text-gray-500 mb-2">Aksesori/Perlengkapan</p>
+                    <p class="text-sm text-gray-900">{{ $renter->checklists()->where('checklist_type', 'before')->first()->accessories ?? '-' }}</p>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- After Checklist -->
+        @if($renter->hasAfterChecklist())
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+            <div class="flex items-center gap-2 mb-4">
+                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <h3 class="text-lg font-bold text-gray-900">Checklist Sesudah Perjalanan</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-xs font-medium text-gray-500 mb-2">Kondisi Bodi</p>
+                    <p class="text-sm text-gray-900">{{ $renter->checklists()->where('checklist_type', 'after')->first()->body_condition ?? '-' }}</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-xs font-medium text-gray-500 mb-2">Kondisi Interior</p>
+                    <p class="text-sm text-gray-900">{{ $renter->checklists()->where('checklist_type', 'after')->first()->interior_condition ?? '-' }}</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-xs font-medium text-gray-500 mb-2">Level Bahan Bakar</p>
+                    <p class="text-sm text-gray-900">{{ $renter->checklists()->where('checklist_type', 'after')->first()->fuel_level ?? '-' }}</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-xs font-medium text-gray-500 mb-2">Aksesori/Perlengkapan</p>
+                    <p class="text-sm text-gray-900">{{ $renter->checklists()->where('checklist_type', 'after')->first()->accessories ?? '-' }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Penalties Section (if any) -->
+        @if($renter->penalties->count() > 0)
+        <div class="bg-white rounded-xl shadow-sm border border-red-200 p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 4v2M9 3h6c.61 0 1.194.062 1.757.175a9 9 0 1 0-8.514 15.65M9 3h6m0 0v0m0 0v0"/>
+                    </svg>
+                    <h3 class="text-lg font-bold text-gray-900">Daftar Denda</h3>
+                </div>
+                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">
+                    {{ $renter->penalties->count() }} Item
+                </span>
+            </div>
+
+            <div class="space-y-3">
+                @foreach($renter->penalties as $penalty)
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="font-semibold text-gray-900">{{ ucfirst(str_replace('_', ' ', $penalty->type)) }}</p>
+                            <p class="text-sm text-gray-600 mt-1">{{ $penalty->description ?? 'Tidak ada keterangan' }}</p>
+                            <p class="text-xs text-gray-500 mt-2">Severity: <span class="font-semibold capitalize">{{ $penalty->severity_level ?? 'normal' }}</span></p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold text-red-600">Rp {{ number_format($penalty->amount, 0, ',', '.') }}</p>
+                            <span class="inline-block mt-2 px-2 py-1 rounded text-xs font-semibold @if($penalty->status === 'approved') bg-green-100 text-green-700 @elseif($penalty->status === 'rejected') bg-gray-100 text-gray-700 @else bg-yellow-100 text-yellow-700 @endif">
+                                {{ ucfirst($penalty->status) }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <div class="bg-red-100 rounded-lg p-4 mt-4 flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-red-900">Total Denda</p>
+                    <p class="text-2xl font-bold text-red-700">Rp {{ number_format($renter->getTotalUnpaidPenalties(), 0, ',', '.') }}</p>
+                </div>
+                <a href="{{ route('admin.booking.penalties', $renter->id) }}"
+                   class="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                    </svg>
+                    Manage Denda
+                </a>
+            </div>
+        </div>
+        @endif
+
+        <!-- Completion Status -->
+        @if($renter->status === 'waiting_penalty' || $renter->status === 'completed')
+        <div class="bg-white rounded-xl shadow-sm border-2 @if($renter->status === 'completed') border-green-300 @else border-yellow-300 @endif p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    @if($renter->status === 'completed')
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div>
+                        <p class="font-bold text-green-900">Booking Selesai</p>
+                        <p class="text-sm text-green-700">Semua penalti telah dibayar dan booking telah diselesaikan</p>
+                    </div>
+                    @else
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div>
+                        <p class="font-bold text-yellow-900">Menunggu Pembayaran Denda</p>
+                        <p class="text-sm text-yellow-700">Tunggu hingga semua denda dibayar sebelum menyelesaikan booking</p>
+                    </div>
+                    @endif
+                </div>
+                @if($renter->status === 'waiting_penalty' && $renter->getTotalUnpaidPenalties() === 0)
+                <a href="{{ route('admin.booking.complete.form', $renter->id) }}"
+                   class="flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors shadow-md">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Selesaikan Booking
+                </a>
+                @endif
+            </div>
+        </div>
+        @endif
+        @endif
+
+    </div>
+
 </x-admin-layout>

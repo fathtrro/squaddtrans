@@ -233,12 +233,18 @@
                                                     Rp {{ number_format($booking->total_price, 0, ',', '.') }}
                                                 </p>
                                                 @php
+                                                    $totalPaid = $booking->payments->sum('amount');
                                                     $dpPaid = $booking->payments->where('payment_type', 'dp')->sum('amount');
-                                                    $remaining = $booking->total_price - $dpPaid;
+                                                    $remaining = $booking->total_price - $totalPaid;
                                                 @endphp
                                                 <div class="flex flex-col gap-0.5 text-xs">
-                                                    <span class="text-green-600">DP: Rp {{ number_format($dpPaid, 0, ',', '.') }}</span>
-                                                    <span class="text-orange-600">Sisa: Rp {{ number_format($remaining, 0, ',', '.') }}</span>
+                                                    @if($booking->status === 'completed')
+                                                        <span class="text-green-600 font-semibold">✓ Lunas</span>
+                                                        <span class="text-gray-600">Total: Rp {{ number_format($totalPaid, 0, ',', '.') }}</span>
+                                                    @else
+                                                        <span class="text-green-600">DP: Rp {{ number_format($dpPaid, 0, ',', '.') }}</span>
+                                                        <span class="text-orange-600">Sisa: Rp {{ number_format($remaining, 0, ',', '.') }}</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
