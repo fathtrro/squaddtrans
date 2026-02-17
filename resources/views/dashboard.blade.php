@@ -37,8 +37,7 @@
            background-position: center;">
 
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent">
-                <div
-                    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col items-center justify-start pt-4">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col items-center justify-start pt-4">
                     <div class="max-w-2xl text-center">
                         <span
                             class="inline-block py-1 px-4 bg-yellow-600/20 backdrop-blur-md border border-yellow-600/30 text-yellow-500 font-bold rounded-full text-xs tracking-widest uppercase mb-6">Premium
@@ -495,6 +494,5 @@
 
             </div>
         </section>
-
     </div>
 </x-app-layout>
