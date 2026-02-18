@@ -5,9 +5,7 @@
     @if ($message = session('success'))
         <div id="toast" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in-out z-50">
             <div class="flex items-center gap-3">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
+                <i class="fa-solid fa-circle-check w-5 h-5"></i>
                 <span>{{ $message }}</span>
             </div>
         </div>
@@ -40,9 +38,7 @@
 
             <a href="{{ route('admin.renter.index') }}"
                class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-700">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
+                <i class="fa-solid fa-arrow-left mr-2"></i>
                 Kembali
             </a>
         </div>
@@ -189,7 +185,7 @@
                 <!-- Penyewa Info Section -->
                 <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                     <h3 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
+                        <i class="fa-solid fa-user text-blue-600 w-5"></i>
                         Data Penyewa
                     </h3>
                     <div class="grid grid-cols-2 gap-4">
@@ -236,7 +232,7 @@
                 <!-- Vehicle Info Section -->
                 <div class="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
                     <h3 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/><path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"/></svg>
+                        <i class="fa-solid fa-car text-green-600 w-5"></i>
                         Data Kendaraan
                     </h3>
                     <div class="grid grid-cols-2 gap-4">
@@ -265,7 +261,7 @@
                 @endphp
                 <div class="mb-6 p-4 @if($dpPayment) bg-purple-50 border border-purple-200 @else bg-red-50 border border-red-200 @endif rounded-lg">
                     <h3 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 @if($dpPayment) text-purple-600 @else text-red-600 @endif" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"/></svg>
+                        <i class="fa-solid fa-credit-card @if($dpPayment) text-purple-600 @else text-red-600 @endif w-5"></i>
                         Bukti Transfer DP
                     </h3>
                     @if($dpPayment)
@@ -334,9 +330,7 @@
                         @method('PATCH')
                         <input type="hidden" name="status" value="confirmed">
                         <button type="submit" class="flex items-center px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
+                            <i class="fa-solid fa-check mr-2"></i>
                             Setujui Pesanan
                         </button>
                     </form>
@@ -379,9 +373,7 @@
                         <p class="text-sm text-blue-700 mb-4">Silakan lakukan pengecekan kondisi kendaraan sebelum penyewaan dimulai</p>
                         <a href="{{ route('admin.booking.checklist.before', $booking->id) }}"
                            class="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
+                            <i class="fa-solid fa-plus mr-2"></i>
                             Mulai Check Sebelum
                         </a>
                     </div>
@@ -460,6 +452,7 @@
                             </div>
                             <a href="{{ route('admin.booking.penalties', $booking->id) }}"
                                class="inline-flex items-center mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded">
+                                <i class="fa-solid fa-warning mr-2"></i>
                                 Kelola Denda
                             </a>
                         </div>
@@ -479,9 +472,7 @@
                         @endif
                         <a href="{{ route('admin.booking.return.form', $booking->id) }}"
                            class="inline-flex items-center px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
+                            <i class="fa-solid fa-plus mr-2"></i>
                             Isi Check Pengembalian
                         </a>
                     </div>
@@ -496,9 +487,7 @@
 
                 @if($booking->status === 'completed')
                     <div class="bg-green-50 rounded-lg p-4 text-center">
-                        <svg class="w-12 h-12 text-green-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                        <i class="fa-solid fa-circle-check text-green-600 text-5xl mx-auto mb-3 block"></i>
                         <p class="text-lg font-bold text-green-900">Booking Selesai!</p>
                         <p class="text-sm text-green-700 mt-1">Semua pembayaran telah diselesaikan</p>
                     </div>
@@ -513,9 +502,7 @@
                             <p class="text-green-700 font-semibold mb-3">✓ Semua denda sudah dibayar!</p>
                             <a href="{{ route('admin.booking.complete.form', $booking->id) }}"
                                class="inline-flex items-center px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
+                                <i class="fa-solid fa-check mr-2"></i>
                                 Selesaikan Booking
                             </a>
                         @endif
