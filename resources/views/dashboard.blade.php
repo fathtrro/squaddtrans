@@ -37,15 +37,15 @@
            background-position: center;">
 
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col items-center justify-start pt-4">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col items-center justify-start pt-8">
                     <div class="max-w-2xl text-center">
                         <span
                             class="inline-block py-1 px-4 bg-yellow-600/20 backdrop-blur-md border border-yellow-600/30 text-yellow-500 font-bold rounded-full text-xs tracking-widest uppercase mb-6">Premium
                             Travel Experience</span>
-                        <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+                        <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
                             Eksplorasi Tanpa Batas dengan <span class="text-yellow-500">Kenyamanan</span> Maksimal
                         </h1>
-                        <p class="text-xl text-slate-200 mb-10 leading-relaxed">
+                        <p class="text-lg text-slate-200 mb-10 leading-relaxed">
                             Layanan sewa mobil eksklusif dan paket wisata personal di Indonesia dengan standar pelayanan
                             bintang lima.
                         </p>
