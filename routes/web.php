@@ -23,7 +23,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 
 Route::get('/', function () {
-    $cars = Car::with('images')->where('status', 'available')->limit(3)->get();
+    $cars = Car::with('images')->where('status', 'available')->limit(4)->get();
     return view('dashboard', compact('cars'));
 });
 
@@ -35,13 +35,13 @@ Route::get('/api/search-cars', function (Illuminate\Http\Request $request) {
         return response()->json([]);
     }
 
-    $cars = Car::where('status', 'available')
+    $cars = Car::with('images') // ✅ tambahkan ini
+        ->where('status', 'available')
         ->where(function ($query) use ($search) {
             $query->where('brand', 'LIKE', "%{$search}%")
                 ->orWhere('name', 'LIKE', "%{$search}%")
                 ->orWhereRaw("CONCAT(brand, ' ', name) LIKE ?", ["%{$search}%"]);
         })
-        ->select('id', 'brand', 'name', 'price_24h')
         ->limit(10)
         ->get()
         ->map(function ($car) {
@@ -51,6 +51,9 @@ Route::get('/api/search-cars', function (Illuminate\Http\Request $request) {
                 'brand' => $car->brand,
                 'name' => $car->name,
                 'price' => 'Rp ' . number_format($car->price_24h, 0, ',', '.'),
+                'image' => $car->images->first()
+                    ? asset('storage/' . $car->images->first()->image_path)
+                    : null,
             ];
         });
 

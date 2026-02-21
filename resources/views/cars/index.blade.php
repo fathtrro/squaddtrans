@@ -285,7 +285,7 @@
         }
     </style>
 
-    <main class="max-w-7xl mx-auto px-4 py-6 pt-24">
+    <main class="max-w-7xl mx-auto px-8 py-6 pt-24">
 
         {{-- Hero Banner - Compact --}}
         <div class="hero-banner mb-6 relative overflow-hidden">
