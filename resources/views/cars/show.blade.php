@@ -1666,23 +1666,25 @@
             {{-- Right Column: Price Card --}}
             <div>
                 <div class="price-card">
-                    <h3>Rental Price</h3>
+                    <div id="rentalPriceSection">
+                        <h3>Rental Price</h3>
 
-                    <div class="price-option featured active" data-duration="24" data-price="{{ $car->price_24h }}"
-                        onclick="selectPrice(this, '24', {{ $car->price_24h }})">
-                        <div class="price-option-header">
-                            <span class="price-option-label">24 Hours</span>
-                            <span class="badge badge-premium" style="font-size: 0.625rem;">BEST</span>
+                        <div class="price-option featured active" data-duration="24" data-price="{{ $car->price_24h }}"
+                            onclick="selectPrice(this, '24', {{ $car->price_24h }})">
+                            <div class="price-option-header">
+                                <span class="price-option-label">24 Hours</span>
+                                <span class="badge badge-premium" style="font-size: 0.625rem;">BEST</span>
+                            </div>
+                            <div class="price-option-value">Rp {{ number_format($car->price_24h, 0, ',', '.') }}</div>
                         </div>
-                        <div class="price-option-value">Rp {{ number_format($car->price_24h, 0, ',', '.') }}</div>
-                    </div>
 
-                    <div class="price-option" data-duration="12" data-price="{{ $car->price_24h * 0.7 }}"
-                        onclick="selectPrice(this, '12', {{ $car->price_24h * 0.7 }})">
-                        <div class="price-option-header">
-                            <span class="price-option-label">12 Hours</span>
-                        </div>
-                        <div class="price-option-value">Rp {{ number_format($car->price_24h * 0.7, 0, ',', '.') }}
+                        <div class="price-option" data-duration="12" data-price="{{ $car->price_24h * 0.7 }}"
+                            onclick="selectPrice(this, '12', {{ $car->price_24h * 0.7 }})">
+                            <div class="price-option-header">
+                                <span class="price-option-label">12 Hours</span>
+                            </div>
+                            <div class="price-option-value">Rp {{ number_format($car->price_24h * 0.7, 0, ',', '.') }}
+                            </div>
                         </div>
                     </div>
 
@@ -2080,11 +2082,14 @@
             // Show/hide appropriate sections
             const availabilitySection = document.getElementById('availabilitySection');
             const whatsappBtn = document.getElementById('whatsappBtn');
+            const rentalPriceSection = document.getElementById('rentalPriceSection');
 
             if (type === 'lepas_kunci') {
+                rentalPriceSection.style.display = 'block';
                 availabilitySection.style.display = 'block';
                 whatsappBtn.style.display = 'none';
             } else {
+                rentalPriceSection.style.display = 'none';
                 availabilitySection.style.display = 'none';
                 whatsappBtn.style.display = 'flex';
 

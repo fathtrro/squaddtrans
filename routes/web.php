@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\InboxController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ReportController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 
 
 Route::get('/', function () {
@@ -139,6 +140,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::resource('inbox', InboxController::class);
         Route::resource('renter', RenterController::class);
         Route::resource('bank-accounts', BankAccountController::class);
+        Route::resource('reviews', AdminReviewController::class)->only(['index', 'destroy']);
 
         // Booking Workflow View
         Route::get('/renter/{id}/workflow', [RenterController::class, 'workflow'])

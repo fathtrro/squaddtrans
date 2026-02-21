@@ -16,6 +16,11 @@ class BookingController extends Controller
 {
     public function create(Request $request)
     {
+        // Prevent access to create page if user just booked
+        if (session('just_booked')) {
+            return redirect()->route('cars.index')->with('info', 'Anda baru saja melakukan booking. Silakan pilih mobil lain jika diperlukan.');
+        }
+
         $car = null;
 
         if ($request->filled('car')) {
@@ -74,6 +79,21 @@ class BookingController extends Controller
         ];
 
         $validated = $request->validate($rules);
+
+        // Check for overlapping bookings
+        $existingBooking = Booking::where('car_id', $request->car_id)
+            ->whereIn('status', ['confirmed', 'running', 'pending'])
+            ->where(function ($query) use ($request) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('start_datetime', '<', $request->end_datetime)
+                      ->where('end_datetime', '>', $request->start_datetime);
+                });
+            })
+            ->exists();
+
+        if ($existingBooking) {
+            return back()->withErrors(['start_datetime' => 'Mobil ini sudah dipesan untuk tanggal tersebut. Silakan pilih tanggal lain.'])->withInput();
+        }
 
         // If frontend provided a minimum deposit, validate amount meets it
         if ($request->filled('min_deposit')) {
@@ -144,6 +164,9 @@ class BookingController extends Controller
     public function success(Booking $booking)
     {
         $booking->load(['car', 'user', 'payments']);
+
+        // Set session to indicate user just booked
+        session(['just_booked' => true]);
 
         return view('bookings.success', compact('booking'));
     }

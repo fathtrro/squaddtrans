@@ -10,6 +10,9 @@ class CarsController extends Controller
 {
     public function index(Request $request)
     {
+        // Clear the just_booked session when viewing cars
+        session()->forget('just_booked');
+
         $query = Car::with(['images', 'reviews'])->where('status', '!=', 'maintenance');
 
         // Search functionality
