@@ -297,11 +297,19 @@
                         </div>
 
                         {{-- Action Button --}}
-                        <a href="{{ route('cars.show', $car) }}"
-                            class="block w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-semibold text-sm text-center transition-all duration-300 shadow-sm hover:shadow-md">
-                            <i class="fa-solid fa-calendar-check mr-2"></i>
-                            Pesan Sekarang
-                        </a>
+                        @if(session('just_booked'))
+                            <button disabled
+                                class="block w-full bg-gray-400 text-gray-600 py-3 rounded-lg font-semibold text-sm text-center cursor-not-allowed">
+                                <i class="fa-solid fa-calendar-check mr-2"></i>
+                                Baru Saja Booking
+                            </button>
+                        @else
+                            <a href="{{ route('cars.show', $car) }}"
+                                class="block w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-semibold text-sm text-center transition-all duration-300 shadow-sm hover:shadow-md">
+                                <i class="fa-solid fa-calendar-check mr-2"></i>
+                                Pesan Sekarang
+                            </a>
+                        @endif
                     </div>
                 </div>
             @empty
