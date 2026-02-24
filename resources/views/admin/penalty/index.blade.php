@@ -171,7 +171,7 @@
                         class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
                         <option value="">-- Pilih Bank --</option>
                         {{-- Load from database --}}
-                        @foreach(\App\Models\BankAccount::all() as $bank)
+                        @foreach(\App\Models\BankAccount::where('is_active', true)->get() as $bank)
                             <option value="{{ $bank->id }}">{{ $bank->bank_name }} ({{ $bank->account_number }})</option>
                         @endforeach
                     </select>

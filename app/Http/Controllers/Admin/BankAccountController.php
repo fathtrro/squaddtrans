@@ -44,8 +44,9 @@ class BankAccountController extends Controller
             'bank_name' => 'required|string|max:50',
             'account_number' => 'required|string|unique:bank_accounts,account_number,' . $bankAccount->id,
             'account_holder_name' => 'required|string|max:100',
-            'is_active' => 'boolean',
         ]);
+
+        $validated['is_active'] = $request->has('is_active');
 
         $bankAccount->update($validated);
 
