@@ -31,7 +31,8 @@ class Booking extends Model
         'alamat',
         'dp_amount',
         'total_price',
-        'status'
+        'status',
+        'cancellation_reason'
     ];
 
 

@@ -207,6 +207,35 @@ class BookingController extends Controller
     }
 
     /**
+     * Cancel a booking
+     */
+    public function cancel(Request $request, Booking $booking)
+    {
+        // Validate that the user owns this booking
+        if ($booking->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Validate that booking can be cancelled
+        if (!in_array($booking->status, ['pending', 'confirmed'])) {
+            return redirect()->back()->with('error', 'Booking tidak dapat dibatalkan pada status saat ini.');
+        }
+
+        // Validate cancellation reason
+        $request->validate([
+            'cancellation_reason' => 'required|string|max:1000'
+        ]);
+
+        // Update booking status and cancellation reason
+        $booking->update([
+            'status' => 'cancelled',
+            'cancellation_reason' => $request->cancellation_reason
+        ]);
+
+        return redirect()->back()->with('success', 'Booking berhasil dibatalkan.');
+    }
+
+    /**
      * Download bukti pembayaran PDF
      */
     public function downloadReceipt($id)

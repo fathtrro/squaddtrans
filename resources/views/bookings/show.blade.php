@@ -160,17 +160,14 @@
                     {{-- ACTIONS --}}
                     <div class="space-y-3">
                         @if($booking->canBeCancelled())
-                            <form method="POST" action="#" class="w-full">
-                                @csrf
-                                <button type="submit"
-                                        onclick="return confirm('Apakah Anda yakin ingin membatalkan booking ini?')"
-                                        class="w-full px-6 py-3 bg-white border-2 border-red-500 text-red-600 rounded-xl font-bold hover:bg-red-50 transition-all duration-200 flex items-center justify-center group">
-                                    <svg class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Batalkan Booking
-                                </button>
-                            </form>
+                            <button type="button"
+                                    onclick="document.getElementById('cancelModal').showModal()"
+                                    class="w-full px-6 py-3 bg-white border-2 border-red-500 text-red-600 rounded-xl font-bold hover:bg-red-50 transition-all duration-200 flex items-center justify-center group">
+                                <svg class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                                Batalkan Booking
+                            </button>
                         @endif
 
                         <button class="w-full px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-xl font-bold hover:from-yellow-500 hover:to-orange-600 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group">
@@ -234,6 +231,19 @@
             {{-- Modal Body --}}
             <form id="extendForm" action="{{ route('bookings.extend', $booking->id) }}" method="POST" class="p-6 space-y-4">
                 @csrf
+
+                {{-- Current End Date Info --}}
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <p class="text-sm font-semibold text-blue-900">Tanggal Berakhir Saat Ini</p>
+                            <p class="text-sm text-blue-700">{{ $booking->end_datetime->format('d M Y, H:i') }}</p>
+                        </div>
+                    </div>
+                </div>
 
                 <div>
                     <label for="new_end_datetime" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -427,4 +437,32 @@
             if (e.target === this) closeExtendModal();
         });
     </script>
+
+    {{-- CANCEL MODAL --}}
+    <dialog id="cancelModal" class="rounded-2xl shadow-2xl border-0 max-w-md w-full">
+        <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Batalkan Booking</h3>
+            <p class="text-gray-600 mb-4">Berikan alasan pembatalan booking Anda:</p>
+
+            <form method="POST" action="{{ route('bookings.cancel', $booking) }}">
+                @csrf
+                <div class="mb-4">
+                    <textarea name="cancellation_reason" rows="4" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                        placeholder="Jelaskan alasan pembatalan..."></textarea>
+                </div>
+
+                <div class="flex gap-3">
+                    <button type="button" onclick="document.getElementById('cancelModal').close()"
+                        class="flex-1 bg-gray-100 hover:bg-gray-200 rounded-lg py-2 font-semibold transition">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 bg-red-600 text-white rounded-lg py-2 font-semibold hover:bg-red-700 transition">
+                        Konfirmasi Pembatalan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
 </x-app-layout>

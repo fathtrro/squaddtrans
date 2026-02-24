@@ -122,6 +122,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [BookingController::class, 'store'])->name('store');
         Route::get('/success/{booking}', [BookingController::class, 'success'])->name('success');
         Route::get('/{booking}', [BookingController::class, 'show'])->name('show');
+        Route::post('/{booking}/cancel', [BookingController::class, 'cancel'])->name('cancel');
         Route::get('/{booking}/download', [BookingController::class, 'downloadReceipt'])->name('download');
         Route::post('/{booking}/extend', [BookingExtensionController::class, 'store'])->name('extend');
         Route::post('/{booking}/extend-conflict', [BookingExtensionController::class, 'checkConflict'])->name('extend-conflict');
