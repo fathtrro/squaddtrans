@@ -149,7 +149,8 @@
             z-index: 20;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             pointer-events: auto;
-            border: 2px solid red; /* Temporary for visibility */
+            border: 2px solid red;
+            /* Temporary for visibility */
         }
 
         .back-button:hover {
@@ -297,71 +298,95 @@
         }
 
         /* ============================================= */
-        /* SPECIFICATIONS */
+        /* SPECIFICATIONS - ULTRA COMPACT STYLE */
         /* ============================================= */
         .specs-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.75rem;
+            gap: 1px;
+            background-color: #E5E7EB;
+            /* Border color */
+            border-top: 1px solid #E5E7EB;
+            border-bottom: 1px solid #E5E7EB;
         }
 
         .spec-item {
-            background: linear-gradient(135deg, var(--light) 0%, #FFFFFF 100%);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .spec-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            background-color: #FFFFFF;
+            padding: 0.75rem 1rem;
+            /* Padding sangat kecil */
+            display: flex;
+            align-items: center;
+            /* Sejajar secara horizontal */
+            justify-content: flex-start;
+            /* Rata kiri */
+            gap: 0.75rem;
+            /* Jarak antara ikon dan teks */
+            transition: background-color 0.2s ease;
         }
 
         .spec-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.2);
-            border-color: var(--primary);
-        }
-
-        .spec-item:hover::before {
-            transform: scaleX(1);
+            background-color: #FAFAFA;
         }
 
         .spec-item i {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            transition: transform 0.3s ease;
+            font-size: 1rem;
+            color: #9CA3AF;
+            width: 20px;
+            /* Lebar tetap agar ikon rapi */
+            text-align: center;
         }
 
         .spec-item:hover i {
-            transform: scale(1.2);
+            color: var(--primary);
+        }
+
+        .spec-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* Teks rata kiri */
         }
 
         .spec-label {
-            font-size: 0.75rem;
-            color: var(--gray);
-            margin-bottom: 0.25rem;
-            font-weight: 600;
+            font-size: 0.65rem;
+            /* Ukuran font sangat kecil */
+            color: #9CA3AF;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            line-height: 1.2;
         }
 
         .spec-value {
-            font-weight: 700;
-            font-size: 0.9375rem;
-            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.875rem;
+            /* Ukuran font standar */
+            color: #1F2937;
+            line-height: 1.2;
+        }
+
+        /* Responsive: Tablet 2 kolom, Mobile 1 kolom (List View) */
+        @media (max-width: 768px) {
+            .specs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .specs-grid {
+                grid-template-columns: 1fr;
+                /* 1 Kolom penuh di HP */
+            }
+
+            .spec-item {
+                padding: 0.5rem 1rem;
+                /* Lebih tipis lagi di HP */
+                border-bottom: 1px solid #f3f4f6;
+                /* Pemisah halus antar item di HP */
+            }
+
+            .spec-item:last-child {
+                border-bottom: none;
+            }
         }
 
         /* ============================================= */
@@ -1569,9 +1594,7 @@
                         </div>
 
                         {{-- Back Button --}}
-                        <a href="{{ route('cars.index') }}"
-                            class="back-button"
-                            title="Kembali ke Daftar Mobil">
+                        <a href="{{ route('cars.index') }}" class="back-button" title="Kembali ke Daftar Mobil">
                             <i class="fa-solid fa-arrow-left"></i>
                         </a>
 
@@ -1606,29 +1629,37 @@
                 {{-- Specifications --}}
                 <div class="card">
                     <div class="section-title">
-                        <i class="fa-solid fa-gauge"></i> Specifications
+                        <i class="fa-solid fa-gauge-high"></i> Specifications
                     </div>
 
                     <div class="specs-grid">
                         <div class="spec-item">
-                            <i class="fa-solid fa-calendar"></i>
-                            <div class="spec-label">Year</div>
-                            <div class="spec-value">{{ $car->year }}</div>
+                            <i class="fa-regular fa-calendar-check"></i>
+                            <div class="spec-content">
+                                <div class="spec-label">Year</div>
+                                <div class="spec-value">{{ $car->year }}</div>
+                            </div>
                         </div>
                         <div class="spec-item">
-                            <i class="fa-solid fa-users"></i>
-                            <div class="spec-label">Seats</div>
-                            <div class="spec-value">{{ $car->seats }}</div>
+                            <i class="fa-solid fa-chair"></i>
+                            <div class="spec-content">
+                                <div class="spec-label">Seats</div>
+                                <div class="spec-value">{{ $car->seats }}</div>
+                            </div>
                         </div>
                         <div class="spec-item">
                             <i class="fa-solid fa-gears"></i>
-                            <div class="spec-label">Trans</div>
-                            <div class="spec-value">{{ ucfirst($car->transmission) }}</div>
+                            <div class="spec-content">
+                                <div class="spec-label">Trans</div>
+                                <div class="spec-value">{{ ucfirst($car->transmission) }}</div>
+                            </div>
                         </div>
                         <div class="spec-item">
                             <i class="fa-solid fa-gas-pump"></i>
-                            <div class="spec-label">Fuel</div>
-                            <div class="spec-value">{{ $car->fuel_type }}</div>
+                            <div class="spec-content">
+                                <div class="spec-label">Fuel</div>
+                                <div class="spec-value">{{ $car->fuel_type }}</div>
+                            </div>
                         </div>
                     </div>
 
@@ -1640,11 +1671,11 @@
                             <span>Air Conditioner</span>
                         </div>
                         <div class="feature-item">
-                            <i class="fa-solid fa-shield"></i>
+                            <i class="fa-solid fa-shield-halved"></i>
                             <span>Safety Features</span>
                         </div>
                         <div class="feature-item">
-                            <i class="fa-brands fa-bluetooth"></i>
+                            <i class="fa-brands fa-bluetooth-b"></i>
                             <span>Bluetooth</span>
                         </div>
                         <div class="feature-item">
@@ -1653,7 +1684,6 @@
                         </div>
                     </div>
                 </div>
-
                 {{-- Related Cars --}}
                 @if ($relatedCars->count() > 0)
                     <div style="margin-top: 1.5rem;">
@@ -1704,7 +1734,8 @@
                     <div id="rentalPriceSection">
                         <h3>Rental Price</h3>
 
-                        <div class="price-option featured active" data-duration="24" data-price="{{ $car->price_24h }}"
+                        <div class="price-option featured active" data-duration="24"
+                            data-price="{{ $car->price_24h }}"
                             onclick="selectPrice(this, '24', {{ $car->price_24h }})">
                             <div class="price-option-header">
                                 <span class="price-option-label">24 Hours</span>
@@ -2095,7 +2126,7 @@
             if (basePriceElement && totalPriceElement) {
                 basePriceElement.textContent = `Rp ${formatPriceIndonesia(rentalPrice)}`;
                 if (serviceChrageElement) serviceChrageElement.parentElement.style.display =
-                'none'; // Hide service charge row
+                    'none'; // Hide service charge row
                 totalPriceElement.textContent = `Rp ${formatPriceIndonesia(rentalPrice)}`;
                 if (minDepositElement) minDepositElement.textContent =
                     `Rp ${formatPriceIndonesia(Math.round(rentalPrice * 0.3))}`;
@@ -2417,7 +2448,8 @@
 
             let currentDate = new Date(startDate);
             while (currentDate <= endDate) {
-                const dateStr = `${currentDate.getFullYear()}-${pad2(currentDate.getMonth() + 1)}-${pad2(currentDate.getDate())}`;
+                const dateStr =
+                    `${currentDate.getFullYear()}-${pad2(currentDate.getMonth() + 1)}-${pad2(currentDate.getDate())}`;
                 if (bookedDates.includes(dateStr)) {
                     conflictDates.push(dateStr);
                 }
@@ -2552,7 +2584,8 @@
                     showAlert({
                         type: 'warning',
                         title: 'Mobil Tidak Tersedia',
-                        message: availData.message || 'Mobil tidak tersedia untuk tanggal yang dipilih.',
+                        message: availData.message ||
+                            'Mobil tidak tersedia untuk tanggal yang dipilih.',
                         buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
                     });
                     button.disabled = false;
@@ -2571,15 +2604,15 @@
                 });
 
                 if (!priceResponse.ok) {
-                     showAlert({
+                    showAlert({
                         type: 'error',
                         title: 'Kesalahan Menghitung Harga',
                         message: 'Terjadi kesalahan saat menghitung harga. Silakan coba lagi.',
                         buttons: '<button type="button" class="px-8 py-3 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95" onclick="closeAlert()">OK</button>'
                     });
-                     button.disabled = false;
-                     button.innerHTML = originalText;
-                     return;
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                    return;
                 }
 
                 const priceData = await priceResponse.json();
@@ -2647,7 +2680,7 @@
         // ============================================================
         // BACK BUTTON PREVENTION & RELOAD
         // ============================================================
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Push multiple history states to prevent going back to previous page
             try {
                 history.pushState(null, '', location.href);
@@ -2657,13 +2690,13 @@
             }
 
             // Listen for back button click
-            window.addEventListener('popstate', function (event) {
+            window.addEventListener('popstate', function(event) {
                 // Reload the current page instead of going back
                 window.location.href = location.href;
             });
 
             // Handle back-forward cache (bfcache)
-            window.onpageshow = function (event) {
+            window.onpageshow = function(event) {
                 if (event.persisted) {
                     window.location.reload();
                 }
