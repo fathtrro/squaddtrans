@@ -49,7 +49,7 @@
         <header id="heroParallax" class="relative w-full min-h-[120svh] overflow-hidden pt-32"
             style="background-image: url('{{ asset('images/hand.png') }}');
                    background-size: cover;
-                   background-position: center;">
+                   background-position: center 90%;">
   <!-- Overlay Gelap -->
     <div class="absolute inset-0 bg-black/10"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
@@ -61,7 +61,7 @@
 
     <!-- Badge -->
     <span class="inline-block py-1 px-4 
-        bg-yellow-500/10 
+        bg-yellow-100/10 
         border border-yellow-400/30 
         text-yellow-400 
         rounded-full text-xs tracking-widest uppercase mb-6">
@@ -72,7 +72,7 @@
     <h1 class="text-4xl md:text-4xl text-white leading-tight text"
         style="font-weight:400; font-family:'Plus Jakarta Sans', sans-serif; letter-spacing:-0.02em;">
         
-        Eksplorasi Tanpa Batas<br> dengan 
+        Eksplorasi Tanpa Batas<br> Dengan 
        
             Kenyamanan
      
@@ -125,9 +125,9 @@
                     </section>
 
                     {{-- Fleet --}}
-                    <section class="py-24 pt-0 bg-slate-50" id="units">
+                    <section class="py-24 pb-0 pt-15 bg-slate-50" id="units">
                         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
                                 <div>
                                     <span class="text-yellow-600 font-bold tracking-widest uppercase text-xs mb-3 block">Armada Kami</span>
                                     <h2 class="section-title">Pilih Unit Favorit Anda</h2>
