@@ -1,3 +1,4 @@
+@if(!in_array(request()->route()->getName(), ['profile.edit', 'bookings.create']))
 <nav x-data="{ open: false, scrolled: false }"
     @scroll.window="scrolled = window.pageYOffset > 20"
     :class="scrolled
@@ -196,3 +197,4 @@
     </div>
 
 </nav>
+@endif

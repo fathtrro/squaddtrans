@@ -130,6 +130,34 @@
             transform: scale(1.05);
         }
 
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+            z-index: 20;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            pointer-events: auto;
+            border: 2px solid red; /* Temporary for visibility */
+        }
+
+        .back-button:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+
         .car-title {
             position: absolute;
             bottom: 0;
@@ -1539,6 +1567,13 @@
                                 <i class="fa-solid fa-crown"></i> Premium
                             </span>
                         </div>
+
+                        {{-- Back Button --}}
+                        <a href="{{ route('cars.index') }}"
+                            class="back-button"
+                            title="Kembali ke Daftar Mobil">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
 
                         @if ($averageRating > 0)
                             <div class="rating-badge">
