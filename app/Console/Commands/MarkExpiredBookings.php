@@ -27,7 +27,7 @@ class MarkExpiredBookings extends Command
     public function handle()
     {
         $isDryRun = $this->option('dry-run');
-        
+
         // Cari semua booking yang expired
         $expiredBookings = Booking::expired()->get();
 
