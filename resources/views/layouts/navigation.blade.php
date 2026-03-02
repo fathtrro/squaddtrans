@@ -5,7 +5,8 @@
         ? 'bg-white/80 backdrop-blur-2xl shadow-2xl border border-white/60'
         : 'bg-white/70 backdrop-blur-xl border border-white/40'"
     class="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl
-           rounded-3xl z-50 transition-all duration-300">
+           rounded-3xl z-50 transition-all duration-300
+           [box-shadow:inset_0_2px_4px_rgba(0,0,0,0.05),0_10px_25px_rgba(0,0,0,0.1)]">
 
     <div class="px-6 lg:px-8">
         <div class="flex items-center justify-between h-14 md:h-16">
@@ -13,9 +14,9 @@
             {{-- ================= LOGO ================= --}}
             <a href="/" class="flex items-center gap-3">
 
-                {{-- Logo (Always Show) --}}
+                {{-- Logo (Mobile Only) --}}
                 <img src="{{ asset('images/lg.png') }}"
-                    class="h-10 w-10 drop-shadow-md"
+                    class="h-10 w-10 drop-shadow-md md:hidden"
                     alt="Logo">
 
                 {{-- Text Logo (Desktop Only) --}}
