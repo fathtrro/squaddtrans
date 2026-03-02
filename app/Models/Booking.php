@@ -11,12 +11,15 @@ class Booking extends Model
      * Status constants
      */
     const STATUS_PENDING = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_REJECTED = 'rejected';
     const STATUS_CONFIRMED = 'confirmed';
     const STATUS_RUNNING = 'running';
     const STATUS_COMPLETED = 'completed';
     const STATUS_CANCELLED = 'cancelled';
     const STATUS_WAITING_PENALTY = 'waiting_penalty';
     const STATUS_WAITING_PAYMENT = 'waiting_payment';
+    const STATUS_EXPIRED = 'expired';
 
     protected $fillable = [
         'booking_code',
@@ -487,5 +490,32 @@ class Booking extends Model
     public function getExtensionsTotalAttribute()
     {
         return $this->getExtensionsTotal();
+    }
+
+    /**
+     * Check if booking is expired
+     * Booking dianggap expired jika start_datetime sudah terlampaui dan status masih pending
+     */
+    public function isExpired(): bool
+    {
+        return $this->start_datetime < now() && $this->status === self::STATUS_PENDING;
+    }
+
+    /**
+     * Mark booking as expired
+     */
+    public function markAsExpired()
+    {
+        $this->update(['status' => self::STATUS_EXPIRED]);
+        return $this;
+    }
+
+    /**
+     * Scope untuk query booking yang expired
+     */
+    public function scopeExpired($query)
+    {
+        return $query->where('status', self::STATUS_PENDING)
+                     ->where('start_datetime', '<', now());
     }
 }

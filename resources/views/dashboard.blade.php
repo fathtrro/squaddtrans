@@ -60,10 +60,10 @@
                     <div class="max-w-3xl">
 
     <!-- Badge -->
-    <span class="inline-block py-1 px-4 
-        bg-yellow-100/10 
-        border border-yellow-400/30 
-        text-yellow-400 
+    <span class="inline-block py-1 px-4
+        bg-yellow-100/10
+        border border-yellow-400/30
+        text-yellow-400
         rounded-full text-xs tracking-widest uppercase mb-6">
         Premium Travel Experience
     </span>
@@ -71,13 +71,13 @@
     <!-- Heading -->
     <h1 class="text-4xl md:text-4xl text-white leading-tight text"
         style="font-weight:400; font-family:'Plus Jakarta Sans', sans-serif; letter-spacing:-0.02em;">
-        
-        Eksplorasi Tanpa Batas<br> Dengan 
-       
+
+        Eksplorasi Tanpa Batas<br> Dengan
+
             Kenyamanan
-     
+
         yang Maksimal
-        
+
     </h1>
 
 </div>
@@ -140,7 +140,7 @@
                         </div>
                     </section>
 
-                   
+
                     {{-- Reviews --}}
                     <section class="py-12 sm:py-24 bg-slate-50" id="ulasan">
                         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
