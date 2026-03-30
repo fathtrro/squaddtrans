@@ -35,6 +35,10 @@ Route::get('/', function () {
 
     return view('dashboard', compact('cars', 'mobil', 'bookings'));
 });
+Route::get('/tentang', function () {return view(view: 'tentang');
+});
+Route::get('/blog', function () {return view(view: 'blog');
+});
 
 // Cars
 Route::get('/cars', [CarsController::class, 'index'])->name('cars.index');

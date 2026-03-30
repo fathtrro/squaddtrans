@@ -16,51 +16,22 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        // Total Revenue (from completed payments)
+        // Total Revenue (from completed payments and bookings)
         $totalRevenue = Payment::where('status', 'approved')
             ->sum('amount');
 
-        // Active Rentals (bookings currently running or overlapping now)
-        $activeRentals = Booking::where('status', 'running')
-            ->orWhere(function ($query) {
-                $query->where('start_datetime', '<=', now())
-                    ->where('end_datetime', '>=', now());
-            })
-            ->count();
+        // Active Rentals (bookings currently running)
+        $activeRentals = Booking::where('status', 'running')->count();
 
-        // Pending Approvals (pending payments)
+        // Pending Approvals (pending payments and booking extensions)
         $pendingApprovals = Payment::where('status', 'pending')->count();
 
-        // Maintenance (detect checklist entries that likely indicate issues)
-        // The `car_checklists` table in your schema has fields like
-        // body_condition, interior_condition, fuel_level, accessories, notes.
-        // We'll count checklists where any of those fields suggest a non-ok state.
-        $maintenanceUrgent = CarChecklist::where(function ($q) {
-                $q->whereNotNull('body_condition')->where('body_condition', '!=', 'ok')
-                  ->orWhere(function ($q2) {
-                      $q2->whereNotNull('interior_condition')->where('interior_condition', '!=', 'ok');
-                  })
-                  ->orWhere(function ($q3) {
-                      $q3->whereNotNull('accessories')->where('accessories', '!=', 'ok');
-                  })
-                  ->orWhere(function ($q4) {
-                      $q4->whereNotNull('fuel_level')->where('fuel_level', '!=', 'full');
-                  })
-                  ->orWhere(function ($q5) {
-                      $q5->whereNotNull('notes')->where('notes', '!=', '');
-                  });
-            })->count();
+        // Maintenance Issues (cars in maintenance status)
+        $maintenanceUrgent = Car::where('status', 'maintenance')->count();
 
         // Fleet Status
         $totalCars = Car::count();
-        $carsRented = Booking::where('status', 'running')
-            ->orWhere(function ($query) {
-                $query->where('start_datetime', '<=', now())
-                    ->where('end_datetime', '>=', now());
-            })
-            ->distinct('car_id')
-            ->count('car_id');
-
+        $carsRented = Car::where('status', 'rented')->count();
         $carsAvailable = Car::where('status', 'available')->count();
         $carsInService = Car::where('status', 'maintenance')->count();
 
@@ -80,28 +51,37 @@ class DashboardController extends Controller
 
         // Ensure all 12 months are represented
         $revenueData = [];
+        $monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DES'];
         for ($i = 1; $i <= 12; $i++) {
-            $revenueData[$i] = $monthlyRevenue->get($i, 0);
+            $revenueData[$monthNames[$i-1]] = $monthlyRevenue->get($i, 0);
         }
 
-        // Recent Bookings
+        // Recent Bookings (last 10)
         $recentBookings = Booking::with('user', 'car')
             ->latest('created_at')
-            ->take(5)
+            ->take(10)
             ->get();
 
         // Calculate max revenue for chart scaling
-        $maxRevenue = max($revenueData) > 0 ? max($revenueData) : 1;
+        $maxRevenue = max(array_values($revenueData)) > 0 ? max(array_values($revenueData)) : 1;
 
         // Revenue trend (percentage change from last month)
         $currentMonth = Carbon::now()->month;
         $previousMonth = $currentMonth === 1 ? 12 : $currentMonth - 1;
-        $currentMonthRevenue = $revenueData[$currentMonth] ?? 0;
-        $previousMonthRevenue = $revenueData[$previousMonth] ?? 0;
+        $currentMonthCode = $monthNames[$currentMonth - 1];
+        $previousMonthCode = $monthNames[$previousMonth - 1];
+        
+        $currentMonthRevenue = $revenueData[$currentMonthCode] ?? 0;
+        $previousMonthRevenue = $revenueData[$previousMonthCode] ?? 0;
 
         $revenueTrend = $previousMonthRevenue > 0
             ? (($currentMonthRevenue - $previousMonthRevenue) / $previousMonthRevenue) * 100
             : 0;
+
+        // Total Bookings Count
+        $totalBookings = Booking::count();
+        $completedBookings = Booking::where('status', 'completed')->count();
+        $cancelledBookings = Booking::where('status', 'cancelled')->count();
 
         return view('admin.dashboard', [
             'totalRevenue' => $totalRevenue,
@@ -119,6 +99,9 @@ class DashboardController extends Controller
             'maxRevenue' => $maxRevenue,
             'recentBookings' => $recentBookings,
             'revenueTrend' => $revenueTrend,
+            'totalBookings' => $totalBookings,
+            'completedBookings' => $completedBookings,
+            'cancelledBookings' => $cancelledBookings,
         ]);
     }
 }

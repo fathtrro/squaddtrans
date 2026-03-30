@@ -1,9 +1,38 @@
 <x-admin-layout>
     <x-slot name="header">Data Penyewaan</x-slot>
 
-    <!-- Page Header -->
+    <!-- Page Header with Description -->
     <div class="mb-6">
-        <p class="text-gray-600">Kelola dan pantau seluruh transaksi penyewaan kendaraan.</p>
+        <p class="text-gray-600 text-sm">Kelola dan pantau seluruh data pemesanan kendaraan dari pelanggan</p>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+        <!-- Total -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Total</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $allBookings ?? 0 }}</p>
+        </div>
+        <!-- Pending -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Menunggu</p>
+            <p class="text-2xl font-bold text-yellow-600">{{ $renters->where('status', 'pending')->count() }}</p>
+        </div>
+        <!-- Confirmed -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Dikonfirmasi</p>
+            <p class="text-2xl font-bold text-blue-600">{{ $renters->where('status', 'confirmed')->count() }}</p>
+        </div>
+        <!-- Running -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Berjalan</p>
+            <p class="text-2xl font-bold text-purple-600">{{ $renters->where('status', 'running')->count() }}</p>
+        </div>
+        <!-- Completed -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Selesai</p>
+            <p class="text-2xl font-bold text-green-600">{{ $renters->where('status', 'completed')->count() }}</p>
+        </div>
     </div>
 
     <!-- Success Message -->
@@ -18,85 +47,116 @@
         </div>
     @endif
 
-    <!-- Filter Bar -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3 sm:p-4 mb-6">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <!-- Filter Labels and Buttons -->
-            <div class="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
-                <!-- Filter Label -->
-                <div class="flex items-center px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 w-fit">
-                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                    </svg>
-                    <span class="text-xs sm:text-sm font-medium text-gray-700">Filter:</span>
+    <!-- Advanced Filter Bar -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-6">
+        <form method="GET" action="{{ route('admin.renter.index') }}" class="space-y-4">
+            <!-- Top Row: Search + Dropdowns -->
+            <div class="flex flex-col lg:flex-row lg:items-center gap-4">
+                <!-- Search Input -->
+                <div class="flex-1 min-w-0">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Cari Nomor Booking / Customer"
+                            class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm transition-all"
+                        >
+                    </div>
                 </div>
 
-                <!-- Filter Buttons - Mobile: Grid, Desktop: Flex -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:flex gap-2">
-                    <a href="{{ route('admin.renter.index') }}"
-                       class="px-3 py-2 text-xs sm:text-sm font-medium text-center {{ !request('status') ? 'text-yellow-700 bg-yellow-50 border-2 border-yellow-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-yellow-100 transition-colors">
-                        SEMUA
-                    </a>
-                    <a href="{{ route('admin.renter.index', ['status' => 'pending']) }}"
-                       class="px-3 py-2 text-xs sm:text-sm font-medium text-center {{ request('status') == 'pending' ? 'text-yellow-700 bg-yellow-50 border-2 border-yellow-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-yellow-100 transition-colors">
-                        PENDING
-                    </a>
-                    <a href="{{ route('admin.renter.index', ['status' => 'confirmed']) }}"
-                       class="px-3 py-2 text-xs sm:text-sm font-medium text-center {{ request('status') == 'confirmed' ? 'text-blue-700 bg-blue-50 border-2 border-blue-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-blue-100 transition-colors">
-                        CONFIRMED
-                    </a>
-                    <a href="{{ route('admin.renter.index', ['status' => 'running']) }}"
-                       class="px-3 py-2 text-xs sm:text-sm font-medium text-center {{ request('status') == 'running' ? 'text-purple-700 bg-purple-50 border-2 border-purple-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-purple-100 transition-colors">
-                        RUNNING
-                    </a>
-                    <a href="{{ route('admin.renter.index', ['status' => 'completed']) }}"
-                       class="px-3 py-2 text-xs sm:text-sm font-medium text-center {{ request('status') == 'completed' ? 'text-green-700 bg-green-50 border-2 border-green-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-green-100 transition-colors">
-                        COMPLETED
-                    </a>
-                    <a href="{{ route('admin.renter.index', ['status' => 'cancelled']) }}"
-                       class="px-3 py-2 text-xs sm:text-sm font-medium text-center {{ request('status') == 'cancelled' ? 'text-red-700 bg-red-50 border-2 border-red-400' : 'text-gray-700 bg-white border border-gray-200' }} rounded-lg hover:bg-red-100 transition-colors">
-                        CANCELLED
-                    </a>
+                <!-- Status Filter -->
+                <div class="relative">
+                    <select
+                        name="status"
+                        class="px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent appearance-none cursor-pointer pr-10 transition-all"
+                        onchange="this.form.submit()">
+                        <option value="">Semua Status</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
+                        <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Dikonfirmasi</option>
+                        <option value="running" {{ request('status') == 'running' ? 'selected' : '' }}>Sedang Berjalan</option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+                    </select>
+                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </div>
+
+                <!-- Date Filter -->
+                <div class="relative">
+                    <select
+                        name="date_range"
+                        class="px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent appearance-none cursor-pointer pr-10 transition-all"
+                        onchange="this.form.submit()">
+                        <option value="">Pilih Tanggal</option>
+                        <option value="today" {{ request('date_range') == 'today' ? 'selected' : '' }}>Hari Ini</option>
+                        <option value="7days" {{ request('date_range') == '7days' ? 'selected' : '' }}>7 Hari Terakhir</option>
+                        <option value="30days" {{ request('date_range') == '30days' ? 'selected' : '' }}>30 Hari Terakhir</option>
+                        <option value="this_month" {{ request('date_range') == 'this_month' ? 'selected' : '' }}>Bulan Ini</option>
+                        <option value="custom" {{ request('date_range') == 'custom' ? 'selected' : '' }}>Rentang Custom</option>
+                    </select>
+                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-2">
+                    <!-- Print Button -->
+                    <button
+                        type="button"
+                        onclick="window.print()"
+                        class="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 rounded-lg text-sm font-medium text-gray-700 transition-all whitespace-nowrap">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                        </svg>
+                        Cetak
+                    </button>
+                    
+                    <!-- Reset Filters -->
+                    @if(request('search') || request('status') || request('date_range'))
+                        <a href="{{ route('admin.renter.index') }}"
+                           class="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-gray-200 hover:bg-red-50 hover:border-red-300 hover:text-red-600 rounded-lg text-sm font-medium text-gray-700 transition-all whitespace-nowrap">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Reset
+                        </a>
+                    @endif
                 </div>
             </div>
-
-            <!-- Print Button -->
-            <div class="flex justify-center sm:justify-end">
-                <button onclick="window.print()" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-xs sm:text-sm font-medium text-gray-700 transition-all w-full sm:w-auto justify-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-                    </svg>
-                    Print
-                </button>
-            </div>
-        </div>
+        </form>
     </div>
 
     <!-- Desktop Table View (hidden on mobile) -->
     <div class="hidden lg:block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+                <thead class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                             Booking
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                             Customer
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                             Kendaraan
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                             Periode
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                             Total
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                             Status
                         </th>
-                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
                             Aksi
                         </th>
                     </tr>
@@ -151,28 +211,44 @@
                             </td>
 
                             <!-- Actions -->
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                <div class="flex items-center justify-center gap-2">
-                                    <a href="{{ route('admin.renter.workflow', $renter->id) }}"
-                                       class="text-green-600 hover:text-green-800 font-medium">
-                                        Workflow
-                                    </a>
-                                    <span class="text-gray-300">|</span>
-                                    <a href="{{ route('admin.renter.show', $renter->id) }}"
-                                       class="text-blue-600 hover:text-blue-800 font-medium">
-                                        Detail
-                                    </a>
-                                    <span class="text-gray-300">|</span>
-                                    <form action="{{ route('admin.renter.destroy', $renter->id) }}"
-                                          method="POST"
-                                          class="inline"
-                                          onsubmit="return confirm('Yakin hapus data penyewaan ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-800 font-medium">
-                                            Hapus
-                                        </button>
-                                    </form>
+                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                <div class="relative inline-block group">
+                                    <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-all duration-200">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-xl border border-gray-150 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 scale-95 group-hover:scale-100 origin-top-right">
+                                        <div class="py-1.5">
+                                            <a href="{{ route('admin.renter.workflow', $renter->id) }}"
+                                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:text-green-600 hover:bg-green-50 transition-colors duration-150 first:rounded-t-xl">
+                                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                                </svg>
+                                                <span>Alur Kerja</span>
+                                            </a>
+                                            <a href="{{ route('admin.renter.show', $renter->id) }}"
+                                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-150">
+                                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                <span>Detail</span>
+                                            </a>
+                                            <div class="border-t border-gray-100 my-1"></div>
+                                            <form action="{{ route('admin.renter.destroy', $renter->id) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Yakin hapus data penyewaan ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors duration-150 last:rounded-b-xl">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                    </svg>
+                                                    <span>Hapus</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -255,7 +331,7 @@
                     <div class="flex items-center justify-end gap-4">
                         <a href="{{ route('admin.renter.workflow', $renter->id) }}"
                            class="text-green-600 hover:text-green-800 font-medium text-sm">
-                            Workflow
+                            Alur Kerja
                         </a>
                         <a href="{{ route('admin.renter.show', $renter->id) }}"
                            class="text-blue-600 hover:text-blue-800 font-medium text-sm">

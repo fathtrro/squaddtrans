@@ -6,6 +6,32 @@
         <p class="text-gray-600">Kelola ulasan pelanggan yang telah diberikan untuk layanan kami.</p>
     </div>
 
+    <!-- Summary Stats -->
+    @if ($reviews->count())
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <!-- Total -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Total Ulasan</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $reviews->count() }}</p>
+        </div>
+        <!-- Average Rating -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Rating Rata-rata</p>
+            <p class="text-2xl font-bold text-yellow-600">{{ number_format($reviews->avg('rating'), 1) }}/5</p>
+        </div>
+        <!-- Excellent (5) -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Sangat Baik</p>
+            <p class="text-2xl font-bold text-green-600">{{ $reviews->where('rating', 5)->count() }}</p>
+        </div>
+        <!-- Poor (1-2) -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Kurang Baik</p>
+            <p class="text-2xl font-bold text-red-600">{{ $reviews->whereIn('rating', [1, 2])->count() }}</p>
+        </div>
+    </div>
+    @endif
+
     <!-- Success Message -->
     @if(session('success'))
         <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center justify-between">

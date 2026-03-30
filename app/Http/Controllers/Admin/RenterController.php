@@ -21,39 +21,51 @@ class RenterController extends Controller
             $query->where('status', $request->status);
         }
 
-        // Search by booking code
-        if ($request->has('booking_code') && $request->booking_code != '') {
-            $query->where('booking_code', 'LIKE', '%' . $request->booking_code . '%');
-        }
-
-        // Search by customer name
-        if ($request->has('customer_name') && $request->customer_name != '') {
-            $query->whereHas('user', function ($q) {
-                $q->where('name', 'LIKE', '%' . request('customer_name') . '%');
+        // Search by booking code or customer name
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('booking_code', 'LIKE', '%' . $searchTerm . '%')
+                  ->orWhereHas('user', function ($subQ) use ($searchTerm) {
+                      $subQ->where('name', 'LIKE', '%' . $searchTerm . '%');
+                  });
             });
         }
 
-        // Search by vehicle name
-        if ($request->has('vehicle_name') && $request->vehicle_name != '') {
-            $query->whereHas('car', function ($q) {
-                $q->where('name', 'LIKE', '%' . request('vehicle_name') . '%');
-            });
+        // Filter by date range
+        if ($request->has('date_range') && $request->date_range != '') {
+            $today = now()->startOfDay();
+
+            switch ($request->date_range) {
+                case 'today':
+                    $query->whereDate('start_datetime', $today);
+                    break;
+                case '7days':
+                    $query->whereBetween('start_datetime', [
+                        $today->copy()->subDays(7),
+                        $today->copy()->addDay()
+                    ]);
+                    break;
+                case '30days':
+                    $query->whereBetween('start_datetime', [
+                        $today->copy()->subDays(30),
+                        $today->copy()->addDay()
+                    ]);
+                    break;
+                case 'this_month':
+                    $query->whereYear('start_datetime', $today->year)
+                          ->whereMonth('start_datetime', $today->month);
+                    break;
+            }
         }
 
-        // Filter by start date
-        if ($request->has('start_date') && $request->start_date != '') {
-            $query->whereDate('start_datetime', '>=', $request->start_date);
-        }
+        // Get all bookings count
+        $allBookings = Booking::count();
 
-        // Filter by end date
-        if ($request->has('end_date') && $request->end_date != '') {
-            $query->whereDate('end_datetime', '<=', $request->end_date);
-        }
+        // Paginate results
+        $renters = $query->paginate(10);
 
-        // Use paginate instead of get
-        $renters = $query->paginate(10); // 10 items per page
-
-        return view('admin.renter.index', compact('renters'));
+        return view('admin.renter.index', compact('renters', 'allBookings'));
     }
 
     /**

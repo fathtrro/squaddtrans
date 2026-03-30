@@ -184,7 +184,7 @@ class BookingController extends Controller
             $query->whereDate('start_datetime', $request->date_filter);
         }
         $allBookings = (clone $query)->get();
-        $bookings = $query->latest()->paginate(10);
+        $bookings = $query->latest()->paginate(3);
 
         return view('bookings.index', [
             'bookings' => $bookings,

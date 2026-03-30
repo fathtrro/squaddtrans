@@ -28,6 +28,11 @@ class CarsController extends Controller
             $query->where('category', $request->category);
         }
 
+        // Transmission filter
+        if ($request->has('transmission') && $request->transmission != '') {
+            $query->where('transmission', $request->transmission);
+        }
+
         // Price range filter
         if ($request->has('min_price') && $request->has('max_price')) {
             $query->whereBetween('price_24h', [$request->min_price, $request->max_price]);

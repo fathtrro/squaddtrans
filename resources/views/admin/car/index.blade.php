@@ -7,6 +7,30 @@
         <p class="text-gray-600">Kelola dan pantau seluruh unit kendaraan operasional.</p>
     </div>
 
+    <!-- Summary Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <!-- Total -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Total Armada</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $totalCars }}</p>
+        </div>
+        <!-- Available -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Tersedia</p>
+            <p class="text-2xl font-bold text-green-600">{{ $availableCars }}</p>
+        </div>
+        <!-- Rented -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Disewa</p>
+            <p class="text-2xl font-bold text-orange-600">{{ $rentedCars }}</p>
+        </div>
+        <!-- Maintenance -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Servis</p>
+            <p class="text-2xl font-bold text-red-600">{{ $maintenanceCars }}</p>
+        </div>
+    </div>
+
     <!-- Success Message -->
     @if(session('success'))
         <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center justify-between">
@@ -19,7 +43,7 @@
         </div>
     @endif
 <!-- Filter Bar - Compact Version -->
-<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-6">
     <div class="flex items-center justify-between gap-4 flex-wrap">
         <!-- Search Bar -->
         <form method="GET" action="{{ route('admin.car.index') }}" class="flex-1 max-w-md">
@@ -31,7 +55,7 @@
                        name="search"
                        value="{{ request('search') }}"
                        placeholder="Cari armada..."
-                       class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all">
+                       class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all">
                 <input type="hidden" name="status" value="{{ request('status') }}">
 
                 @if(request('search'))
@@ -70,7 +94,7 @@
 
         <!-- Add Button -->
         <a href="{{ route('admin.car.create') }}"
-           class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-lg hover:from-yellow-500 hover:to-yellow-600 shadow-sm font-medium transition-all whitespace-nowrap">
+           class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-lg hover:from-yellow-500 hover:to-yellow-600 shadow-sm font-medium transition-all whitespace-nowrap">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>

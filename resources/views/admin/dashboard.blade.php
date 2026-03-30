@@ -1,4 +1,3 @@
-
 {{-- resources/views/admin/dashboard.blade.php --}}
 <x-admin-layout>
     <x-slot name="header">Dashboard Overview</x-slot>
@@ -6,70 +5,78 @@
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Total Revenue -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-sm font-medium text-gray-600">TOTAL REVENUE</h3>
-                <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 class="text-sm font-bold text-gray-600 uppercase tracking-wider">Total Revenue</h3>
+                <div class="w-12 h-12 bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
             </div>
-            <div class="space-y-1">
+            <div class="space-y-2">
                 <p class="text-3xl font-bold text-gray-800">IDR {{ number_format($totalRevenue, 0, ',', '.') }}</p>
-                <p class="text-sm {{ $revenueTrend >= 0 ? 'text-green-600' : 'text-red-600' }}">{{ $revenueTrend >= 0 ? '↑' : '↓' }} {{ abs(round($revenueTrend, 1)) }}% dari bulan lalu</p>
+                <p class="text-sm font-semibold {{ $revenueTrend >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                    <span class="text-lg">{{ $revenueTrend >= 0 ? '↑' : '↓' }}</span> {{ abs(round($revenueTrend, 1)) }}% bulan ini
+                </p>
+            </div>
+        </div>
+
+        <!-- Total Bookings -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-bold text-gray-600 uppercase tracking-wider">Total Pesanan</h3>
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <p class="text-3xl font-bold text-gray-800">{{ $totalBookings }}</p>
+                <p class="text-sm text-gray-600">
+                    <span class="font-semibold text-green-600">{{ $completedBookings }} ✓</span> Selesai • 
+                    <span class="font-semibold text-red-600">{{ $cancelledBookings }} ✕</span> Batal
+                </p>
             </div>
         </div>
 
         <!-- Active Rentals -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-sm font-medium text-gray-600">ACTIVE RENTALS</h3>
-                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+                <h3 class="text-sm font-bold text-gray-600 uppercase tracking-wider">Rental Aktif</h3>
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
                 </div>
             </div>
-            <div class="space-y-1">
-                <p class="text-3xl font-bold text-gray-800">{{ $activeRentals }} Units</p>
-                <p class="text-sm text-green-600">↑ Aktif saat ini</p>
+            <div class="space-y-2">
+                <p class="text-3xl font-bold text-gray-800">{{ $activeRentals }}</p>
+                <p class="text-sm font-semibold text-green-600">Kendaraan sedang disewa</p>
             </div>
         </div>
 
-        <!-- Pending Approvals -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <!-- Maintenance Issues -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-sm font-medium text-gray-600">PENDING APPROVALS</h3>
-                <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-            </div>
-            <div class="space-y-1">
-                <p class="text-3xl font-bold text-gray-800">{{ $pendingApprovals }} Tasks</p>
-                <p class="text-sm {{ $pendingApprovals > 0 ? 'text-red-600' : 'text-green-600' }}">{{ $pendingApprovals > 0 ? '! Butuh perhatian segera' : '✓ Semua tersetujui' }}</p>
-            </div>
-        </div>
-
-        <!-- Maintenance -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-sm font-medium text-gray-600">MAINTENANCE</h3>
-                <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 class="text-sm font-bold text-gray-600 uppercase tracking-wider">Servis</h3>
+                <div class="w-12 h-12 bg-gradient-to-br from-red-100 to-red-50 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                     </svg>
                 </div>
             </div>
-            <div class="space-y-1">
-                <p class="text-3xl font-bold text-gray-800">{{ $maintenanceUrgent }} Issues</p>
-                <p class="text-sm text-gray-600">⏱ Perlu penanganan</p>
+            <div class="space-y-2">
+                <p class="text-3xl font-bold text-gray-800">{{ $maintenanceUrgent }}</p>
+                <p class="text-sm {{ $maintenanceUrgent > 0 ? 'font-semibold text-red-600' : 'font-semibold text-green-600' }}">
+                    {{ $maintenanceUrgent > 0 ? '⚠ Ada kendaraan servis' : '✓ Semua normal' }}
+                </p>
             </div>
         </div>
     </div>
 
+    <!-- Charts & Fleet Status Section -->
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <!-- Revenue Chart -->
@@ -77,29 +84,29 @@
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h3 class="text-lg font-bold text-gray-800">Pendapatan Bulanan</h3>
-                    <p class="text-sm text-gray-500">Tren pendapatan selama 12 bulan terakhir</p>
+                    <p class="text-sm text-gray-500">Tren pendapatan 12 bulan terakhir</p>
                 </div>
                 <div class="flex space-x-2">
-                    <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Unduh Report</button>
-                    <button class="px-4 py-2 text-sm bg-gray-800 text-white rounded-lg hover:bg-gray-700">{{ date('Y') }}</button>
+                    <a href="{{ route('admin.laporan') }}" class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700 transition-colors">Lihat Report</a>
+                    <button class="px-4 py-2 text-sm bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-lg hover:from-yellow-500 hover:to-yellow-600 font-medium transition-all">{{ date('Y') }}</button>
                 </div>
             </div>
-            <div class="h-64 flex items-end justify-between space-x-2">
+            <div class="h-72 flex items-end justify-between gap-2">
                 @foreach($revenueData as $month => $amount)
                     @php
                         $percentage = $maxRevenue > 0 ? ($amount / $maxRevenue) * 100 : 0;
+                        $percentage = max($percentage, 5); // Minimum height for visibility
                     @endphp
-                    <div class="flex-1 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg" style="height: {{ $percentage }}%" title="Bulan {{ $month }}: IDR {{ number_format($amount, 0, ',', '.') }}"></div>
+                    <div class="flex-1 relative group">
+                        <div class="bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg hover:shadow-lg transition-all" style="height: {{ $percentage }}%"></div>
+                        <div class="absolute -bottom-8 left-0 right-0 text-xs font-semibold text-gray-600 text-center group-hover:text-yellow-600 transition-colors">{{ $month }}</div>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                            IDR {{ number_format($amount, 0, ',', '.') }}
+                        </div>
+                    </div>
                 @endforeach
             </div>
-            <div class="flex justify-between mt-4 text-xs text-gray-500">
-                <span>JAN</span>
-                <span>MAR</span>
-                <span>MEI</span>
-                <span>JUL</span>
-                <span>SEP</span>
-                <span>NOV</span>
-            </div>
+            <div class="mt-16"></div>
         </div>
 
         <!-- Fleet Status -->
@@ -109,43 +116,63 @@
 
             <div class="flex items-center justify-center mb-6">
                 <div class="relative w-48 h-48">
-                    <svg class="w-full h-full transform -rotate-90">
-                        <circle cx="96" cy="96" r="80" stroke="#FEF3C7" stroke-width="16" fill="none"/>
-                        <circle cx="96" cy="96" r="80" stroke="#F59E0B" stroke-width="16" fill="none"
-                                stroke-dasharray="301.59" stroke-dashoffset="{{ 301.59 - (($carsRented / $totalCars) * 301.59) }}" stroke-linecap="round"/>
-                        <circle cx="96" cy="96" r="80" stroke="#10B981" stroke-width="16" fill="none"
-                                stroke-dasharray="301.59" stroke-dashoffset="{{ 301.59 - (($carsAvailable / $totalCars) * 301.59) }}" stroke-linecap="round"/>
-                        <circle cx="96" cy="96" r="80" stroke="#EF4444" stroke-width="16" fill="none"
-                                stroke-dasharray="301.59" stroke-dashoffset="{{ 301.59 - (($carsInService / $totalCars) * 301.59) }}" stroke-linecap="round"/>
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
+                        <!-- Background circle -->
+                        <circle cx="100" cy="100" r="90" stroke="#F5F5F5" stroke-width="20" fill="none"/>
+                        
+                        <!-- Rented (Yellow) -->
+                        @php
+                            $rentedDegrees = ($carsRented / $totalCars) * 360;
+                            $rentedRadians = deg2rad($rentedDegrees);
+                        @endphp
+                        <circle cx="100" cy="100" r="90" stroke="#FBBF24" stroke-width="20" fill="none"
+                                stroke-dasharray="{{ $rentedDegrees * 1.57 / 180 }}, 564.6"
+                                stroke-linecap="round"/>
+                        
+                        <!-- Available (Green) - offset by rented -->
+                        @php
+                            $availableDegrees = ($carsAvailable / $totalCars) * 360;
+                            $totalBefore = $rentedDegrees;
+                        @endphp
+                        <circle cx="100" cy="100" r="90" stroke="#10B981" stroke-width="20" fill="none"
+                                stroke-dasharray="{{ $availableDegrees * 1.57 / 180 }}, 564.6"
+                                stroke-dashoffset="-{{ $totalBefore * 1.57 / 180 }}"
+                                stroke-linecap="round"/>
+                        
+                        <!-- Service (Red) -->
+                        <circle cx="100" cy="100" r="90" stroke="#EF4444" stroke-width="20" fill="none"
+                                stroke-dasharray="{{ $servicePercentage * 5.64 / 100 }}, 564.6"
+                                stroke-dashoffset="-{{ ($totalBefore + $availableDegrees) * 1.57 / 180 }}"
+                                stroke-linecap="round"/>
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
                         <span class="text-4xl font-bold text-gray-800">{{ $totalCars }}</span>
-                        <span class="text-sm text-gray-500">UNITS</span>
+                        <span class="text-sm text-gray-500 font-semibold">UNITS</span>
                     </div>
                 </div>
             </div>
 
             <div class="space-y-3">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
                     <div class="flex items-center">
-                        <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                        <span class="text-sm text-gray-700">Disewa</span>
+                        <div class="w-3 h-3 bg-yellow-400 rounded-full mr-2"></div>
+                        <span class="text-sm font-medium text-gray-700">Disewa</span>
                     </div>
-                    <span class="text-sm font-semibold text-gray-800">{{ $carsRented }} Units ({{ $rentedPercentage }}%)</span>
+                    <span class="text-sm font-bold text-gray-800">{{ $carsRented }} ({{ $rentedPercentage }}%)</span>
                 </div>
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
                     <div class="flex items-center">
                         <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                        <span class="text-sm text-gray-700">Tersedia</span>
+                        <span class="text-sm font-medium text-gray-700">Tersedia</span>
                     </div>
-                    <span class="text-sm font-semibold text-gray-800">{{ $carsAvailable }} Units ({{ $availablePercentage }}%)</span>
+                    <span class="text-sm font-bold text-gray-800">{{ $carsAvailable }} ({{ $availablePercentage }}%)</span>
                 </div>
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
                     <div class="flex items-center">
                         <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
-                        <span class="text-sm text-gray-700">Servis</span>
+                        <span class="text-sm font-medium text-gray-700">Servis</span>
                     </div>
-                    <span class="text-sm font-semibold text-gray-800">{{ $carsInService }} Units ({{ $servicePercentage }}%)</span>
+                    <span class="text-sm font-bold text-gray-800">{{ $carsInService }} ({{ $servicePercentage }}%)</span>
                 </div>
             </div>
         </div>
@@ -153,63 +180,77 @@
 
     <!-- Recent Bookings Table -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="text-lg font-bold text-gray-800">Penyewaan Terbaru</h3>
-            <a href="{{ route('admin.renter.index') }}" class="text-sm font-medium text-yellow-600 hover:text-yellow-700">Lihat Semua →</a>
+        <div class="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
+            <div>
+                <h3 class="text-lg font-bold text-gray-800">Penyewaan Terbaru</h3>
+                <p class="text-sm text-gray-500 mt-1">10 booking terakhir</p>
+            </div>
+            <a href="{{ route('admin.renter.index') }}" class="text-sm font-semibold text-yellow-600 hover:text-yellow-700 hover:underline transition-colors">
+                Lihat Semua →
+            </a>
         </div>
 
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Booking</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pelanggan</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kendaraan</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">ID Booking</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Pelanggan</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Kendaraan</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Durasi</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Total</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="divide-y divide-gray-100">
                     @forelse($recentBookings as $booking)
                             @php
                             $statusColorMap = [
-                                'pending' => ['bg' => '#FEF3C7', 'text' => '#B45309'],
-                                'confirmed' => ['bg' => '#FEF3C7', 'text' => '#92400E'],
-                                'running' => ['bg' => '#DCFCE7', 'text' => '#166534'],
-                                'completed' => ['bg' => '#DBEAFE', 'text' => '#1E40AF'],
-                                'cancelled' => ['bg' => '#FEE2E2', 'text' => '#991B1B'],
-                            ];
-                            $statusLabel = [
-                                'pending' => 'MENUNGGU',
-                                'confirmed' => 'DIKONFIRMASI',
-                                'running' => 'BERJALAN',
-                                'completed' => 'SELESAI',
-                                'cancelled' => 'DIBATALKAN',
+                                'pending' => ['bg' => '#FEF3C7', 'text' => '#B45309', 'label' => 'MENUNGGU'],
+                                'confirmed' => ['bg' => '#DBEAFE', 'text' => '#1E40AF', 'label' => 'DIKONFIRMASI'],
+                                'running' => ['bg' => '#DCFCE7', 'text' => '#166534', 'label' => 'BERJALAN'],
+                                'completed' => ['bg' => '#D1D5DB', 'text' => '#374151', 'label' => 'SELESAI'],
+                                'cancelled' => ['bg' => '#FEE2E2', 'text' => '#991B1B', 'label' => 'DIBATALKAN'],
                             ];
                             $colorData = $statusColorMap[$booking->status] ?? $statusColorMap['pending'];
-                            $statusText = $statusLabel[$booking->status] ?? strtoupper($booking->status);
                             $duration = $booking->start_datetime->diffInDays($booking->end_datetime) + 1;
                             $initials = strtoupper(substr($booking->user->name, 0, 2));
                         @endphp
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $booking->booking_code }}</td>
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm font-bold text-gray-900">{{ $booking->booking_code }}</span>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold mr-3" style="background-color: {{ $colorData['bg'] }}; color: {{ $colorData['text'] }};">{{ $initials }}</div>
-                                    <span class="text-sm text-gray-900">{{ $booking->user->name }}</span>
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold mr-3" style="background-color: {{ $colorData['bg'] }}; color: {{ $colorData['text'] }};">{{ $initials }}</div>
+                                    <span class="text-sm font-medium text-gray-900">{{ $booking->user->name }}</span>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $booking->car->brand }} {{ $booking->car->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $duration }} {{ $duration > 1 ? 'Hari' : 'Hari' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background-color: {{ $colorData['bg'] }}; color: {{ $colorData['text'] }};">{{ $statusText }}</span>
+                                <span class="text-sm text-gray-700">{{ $booking->car->brand ?? 'N/A' }} {{ $booking->car->name ?? '' }}</span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">IDR {{ number_format($booking->total_price, 0, ',', '.') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm font-medium text-gray-700">{{ $duration }} {{ $duration > 1 ? 'hari' : 'hari' }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-3 py-1 text-xs font-bold rounded-full transition-colors" style="background-color: {{ $colorData['bg'] }}; color: {{ $colorData['text'] }};">
+                                    {{ $colorData['label'] }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm font-bold text-gray-900">IDR {{ number_format($booking->total_price, 0, ',', '.') }}</span>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada data booking</td>
+                            <td colspan="6" class="px-6 py-12 text-center">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg class="w-12 h-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <p class="text-sm text-gray-500 font-medium">Tidak ada data booking</p>
+                                </div>
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
