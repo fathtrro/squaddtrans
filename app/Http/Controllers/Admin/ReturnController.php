@@ -12,6 +12,7 @@ use App\Services\ReturnBookingService;
 use App\Services\BookingCompletionService;
 use App\Services\PenaltyManagementService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ReturnController extends Controller
 {
@@ -87,6 +88,43 @@ class ReturnController extends Controller
             ? 'admin.penalty.index'
             : 'admin.renter.show';
 
+        // Send WA notification for return checklist
+        try {
+            $target = $booking->contact ?? $booking->user->phone ?? null;
+            if ($target) {
+                $target = preg_replace('/[^0-9+]/', '', $target);
+                if (str_starts_with($target, '0')) {
+                    $target = '62' . substr($target, 1);
+                } elseif (str_starts_with($target, '+')) {
+                    $target = substr($target, 1);
+                }
+
+                $afterChecklist = $result['after_checklist'];
+                $returnMessage = "Return Kendaraan untuk booking {$booking->booking_code} selesai.\n" .
+                                 "Isi form checklist setelah perjalanan sebelum menyelesaikan booking.\n" .
+                                 "Referensi Checklist Setelah: Bandingkan kondisi kendaraan dengan kondisi awal untuk identifikasi kerusakan.\n\n" .
+                                 "- Kondisi Bodi: " . ($afterChecklist->body_condition ?? 'N/A') . "\n" .
+                                 "- Kondisi Interior: " . ($afterChecklist->interior_condition ?? 'N/A') . "\n" .
+                                 "- Level BBM: " . ($afterChecklist->fuel_level ?? 'N/A') . "\n" .
+                                 "- Aksesori: " . ($afterChecklist->accessories ?? 'N/A') . "\n" .
+                                 "- Catatan: " . ($afterChecklist->notes ?: 'Tidak ada') . "\n" .
+                                 "Status: " . strtoupper($booking->status) . ".";
+
+                Http::withHeaders(["Authorization" => "1nBBrr338eUrS7zdXTnV"])
+                    ->asForm()
+                    ->post('https://api.fonnte.com/send', [
+                        'target' => $target,
+                        'message' => $returnMessage,
+                        'source' => '6287739904530',
+                        'countryCode' => '62',
+                        'typing' => 'false',
+                        'schedule' => '0',
+                    ]);
+            }
+        } catch (\Throwable $e) {
+            logger()->warning('Fonnte return notification error: ' . $e->getMessage());
+        }
+
         $redirectBookingId = $booking->id;
 
         if ($result['penalties']->isEmpty()) {
@@ -139,6 +177,17 @@ class ReturnController extends Controller
             return redirect()->back()
                 ->with('error', $result['message']);
         }
+
+        // Kirim notifikasi WA denda sudah dibayar
+        $target = $booking->contact ?? ($booking->user->phone ?? null);
+        $penaltyMessage = "Denda booking " . $booking->booking_code . " telah dibayar.\n" .
+            "Tipe denda: " . $penalty->type_label . "\n" .
+            "Deskripsi: " . $penalty->description . "\n" .
+            "Jumlah: " . $penalty->formatted_amount . "\n" .
+            "Status: Sudah Dibayar.\n" .
+            "Terima kasih atas konfirmasi pembayarannya.";
+
+        $this->sendFonnteWhatsApp($target, $penaltyMessage);
 
         return redirect()->back()
             ->with('success', $result['message'])
@@ -262,6 +311,40 @@ class ReturnController extends Controller
 
         // Update status to running
         $booking->update(['status' => 'running']);
+
+        // Send Fonnte WA notification (optional, best-effort)
+        try {
+            $target = $booking->contact ?? $booking->user->phone ?? null;
+            if ($target) {
+                $target = preg_replace('/[^0-9+]/', '', $target);
+                if (str_starts_with($target, '0')) {
+                    $target = '62' . substr($target, 1);
+                } elseif (str_starts_with($target, '+')) {
+                    $target = substr($target, 1);
+                }
+
+                Http::withHeaders([
+                    'Authorization' => '1nBBrr338eUrS7zdXTnV',
+                ])->asForm()->post('https://api.fonnte.com/send', [
+                    'target' => $target,
+                    'message' => "Checklist Kendaraan Sebelum Perjalanan untuk booking {$booking->booking_code} sudah selesai.\n" .
+                                 "Referensi Checklist Sebelum: Bandingkan kondisi mobil dengan checklist sebelum perjalanan untuk mengidentifikasi kerusakan.\n\n" .
+                                 "- Kondisi Bodi: " . $request->input('body_condition') . "\n" .
+                                 "- Kondisi Interior: " . $request->input('interior_condition') . "\n" .
+                                 "- Level BBM: " . $request->input('fuel_level') . "\n" .
+                                 "- Aksesori: " . $request->input('accessories') . "\n" .
+                                 "- Catatan: " . ($request->input('notes') ?: 'Tidak ada') . "\n" .
+                                 "Status: RUNNING.",
+                    'source' => '6287739904530',
+                    'countryCode' => '62',
+                    'typing' => 'false',
+                    'schedule' => '0',
+                ]);
+            }
+        } catch (\Throwable $e) {
+            // log but do not block user flow
+            logger()->warning('Fonnte checklist notification error: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.renter.workflow', $booking->id)
             ->with('success', 'Checklist sebelum berhasil disimpan. Booking sekarang dalam status BERLANGSUNG.');

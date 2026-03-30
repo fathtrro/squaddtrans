@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Car;
 use App\Models\Driver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class RenterController extends Controller
 {
@@ -150,7 +151,9 @@ class RenterController extends Controller
         $booking = Booking::findOrFail($id);
 
         // If the request contains a 'status' field only, update only status
-        if ($request->has('status') && (count($request->except('_method')) == 1 || count($request->all()) <= 3)) {
+        // (exclude _token and _method from count checks, because FormMethod patch adds _method)
+        $payload = $request->except(['_token', '_method']);
+        if ($request->has('status') && count($payload) === 1) {
             $request->validate([
                 'status' => 'required|in:pending,confirmed,running,completed,cancelled,waiting_penalty,waiting_payment',
             ]);
@@ -160,6 +163,16 @@ class RenterController extends Controller
             ]);
 
             if ($request->status === 'confirmed') {
+                // Kirim notifikasi WA via Fonnte
+                $target = $booking->contact ?? ($booking->user->phone ?? null);
+                $confirmMessage = "Pesanan dengan kode " . $booking->booking_code . " telah disetujui oleh admin.\n" .
+                    "Detail: Mobil " . $booking->car->name . " (" . $booking->car->plate_number . ")\n" .
+                    "Tanggal Sewa: " . $booking->start_datetime->format('d M Y H:i') . " s/d " . $booking->end_datetime->format('d M Y H:i') . "\n" .
+                    "Silakan cek flow booking untuk langkah berikutnya.\n" .
+                    "Terima kasih!";
+
+                $this->sendFonnteWhatsApp($target, $confirmMessage);
+
                 return redirect()
                     ->route('admin.renter.workflow', $id)
                     ->with('success', 'Pesanan berhasil disetujui! ✓');
