@@ -624,13 +624,13 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
                         <div class="field" id="fieldStart">
                             <label class="field-label"><i><i class="fa-solid fa-play" style="font-size:0.6rem;"></i></i> Tanggal Mulai</label>
                             <input type="datetime-local" name="start_datetime" id="startInput" class="form-input"
-                                   value="{{ request('start') ? \Carbon\Carbon::parse(request('start'))->format('Y-m-d') . 'T08:00' : '' }}" required>
+                                   value="{{ $startDate ? \Carbon\Carbon::parse($startDate)->format('Y-m-d') . 'T08:00' : (request('start') ? \Carbon\Carbon::parse(request('start'))->format('Y-m-d') . 'T08:00' : '') }}" required>
                             <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Pilih tanggal mulai</div>
                         </div>
                         <div class="field" id="fieldEnd">
                             <label class="field-label"><i><i class="fa-solid fa-stop" style="font-size:0.6rem;"></i></i> Tanggal Selesai</label>
                             <input type="datetime-local" name="end_datetime" id="endInput" class="form-input"
-                                   value="{{ request('end') ? \Carbon\Carbon::parse(request('end'))->format('Y-m-d') . 'T08:00' : '' }}" required>
+                                   value="{{ $endDate ? \Carbon\Carbon::parse($endDate)->format('Y-m-d') . 'T08:00' : (request('end') ? \Carbon\Carbon::parse(request('end'))->format('Y-m-d') . 'T08:00' : '') }}" required>
                             <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> Pilih tanggal selesai</div>
                         </div>
                     </div>

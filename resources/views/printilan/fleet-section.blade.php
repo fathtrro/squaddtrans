@@ -97,7 +97,7 @@
                                             <span class="text-sm font-normal text-slate-400">/hari</span>
                                         </p>
 
-                                        <a href="{{ route('bookings.create', $car) }}"
+                                        <a href="{{ route('bookings.select-dates') }}"
                                             class="bg-slate-900 text-white p-3 rounded-xl hover:bg-yellow-600 transition-colors">
                                             <i class="fa-solid fa-cart-shopping"></i>
                                         </a>

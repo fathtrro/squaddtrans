@@ -532,7 +532,7 @@
                     <div class="price-row"><span>Service:</span><span id="serviceCharge" style="font-weight:600;">Rp 0</span></div>
                     <div class="price-row total"><span>Total:</span><span id="totalPrice">Rp 0</span></div>
                     <div style="font-size:0.75rem;color:#34d399;margin-top:0.375rem;">Min. DP: <span id="minDeposit" style="font-weight:600;">Rp 0</span></div>
-                    <a href="{{ route('bookings.create', ['car' => $car->id]) }}" id="bookNowBtn" class="btn btn-success" style="margin-top:0.75rem;">
+                    <a href="{{ route('bookings.select-dates') }}" id="bookNowBtn" class="btn btn-success" style="margin-top:0.75rem;">
                         <i class="fa-solid fa-calendar-check"></i> Book Now
                     </a>
                 </div>
@@ -782,7 +782,7 @@
                             <div class="price-row"><span>Service:</span><span id="serviceChargeDesktop" style="font-weight:600;">Rp 0</span></div>
                             <div class="price-row total"><span>Total:</span><span id="totalPriceDesktop">Rp 0</span></div>
                             <div style="font-size:0.75rem;color:#34d399;margin-top:0.375rem;">Min. DP: <span id="minDepositDesktop" style="font-weight:600;">Rp 0</span></div>
-                            <a href="{{ route('bookings.create', ['car' => $car->id]) }}" id="bookNowBtnDesktop" class="btn btn-success" style="margin-top:0.75rem;">
+                            <a href="{{ route('bookings.select-dates') }}" id="bookNowBtnDesktop" class="btn btn-success" style="margin-top:0.75rem;">
                                 <i class="fa-solid fa-calendar-check"></i> Book Now
                             </a>
                         </div>

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
-use App\Models\Renter; // sesuaikan dengan nama model kamu
+use App\Models\User;
+use App\Models\Car;
+use App\Models\Driver;
 use Illuminate\Http\Request;
 
 class RenterController extends Controller
@@ -69,6 +71,45 @@ class RenterController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $users = User::where('role', 'customer')->get();
+        $cars = Car::where('status', 'available')->get();
+        $drivers = Driver::all();
+
+        return view('admin.renter.create', compact('users', 'cars', 'drivers'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'car_id' => 'required|exists:cars,id',
+            'driver_id' => 'nullable|exists:drivers,id',
+            'service_type' => 'required|in:with_driver,without_driver,self_drive',
+            'start_datetime' => 'required|date_format:Y-m-d\TH:i',
+            'end_datetime' => 'required|date_format:Y-m-d\TH:i|after:start_datetime',
+            'destination' => 'nullable|string',
+            'contact' => 'nullable|string',
+            'alamat' => 'nullable|string',
+            'dp_amount' => 'required|numeric|min:0',
+            'total_price' => 'required|numeric|min:0',
+            'status' => 'required|in:pending,confirmed,running,completed,cancelled',
+        ]);
+
+        $booking = Booking::create($validated);
+
+        return redirect()
+            ->route('admin.renter.show', $booking->id)
+            ->with('success', 'Penyewa berhasil ditambahkan! ✓');
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show($id)
@@ -89,45 +130,73 @@ class RenterController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $users = User::where('role', 'customer')->get();
+        $cars = Car::all();
+        $drivers = Driver::all();
+
+        return view('admin.renter.edit', compact('booking', 'users', 'cars', 'drivers'));
+    }
+
+    /**
      * Update status booking (opsional tapi kepake banget buat admin)
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'status' => 'required|in:pending,confirmed,running,completed,cancelled,waiting_penalty,waiting_payment',
-        ]);
-
         $booking = Booking::findOrFail($id);
-        $oldStatus = $booking->status;
 
-        $booking->update([
-            'status' => $request->status,
+        // If the request contains a 'status' field only, update only status
+        if ($request->has('status') && count($request->all()) == 2) { // 2 because of CSRF token
+            $request->validate([
+                'status' => 'required|in:pending,confirmed,running,completed,cancelled,waiting_penalty,waiting_payment',
+            ]);
+
+            $booking->update([
+                'status' => $request->status,
+            ]);
+
+            if ($request->status === 'confirmed') {
+                return redirect()
+                    ->route('admin.renter.workflow', $id)
+                    ->with('success', 'Pesanan berhasil disetujui! ✓');
+            }
+
+            if ($request->status === 'cancelled') {
+                return redirect()
+                    ->route('admin.renter.workflow', $id)
+                    ->with('error', 'Pesanan telah dibatalkan.');
+            }
+
+            return redirect()
+                ->route('admin.renter.show', $id)
+                ->with('success', 'Status booking berhasil diperbarui menjadi ' . strtoupper($request->status));
+        }
+
+        // Otherwise, update all fields
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'car_id' => 'required|exists:cars,id',
+            'driver_id' => 'nullable|exists:drivers,id',
+            'service_type' => 'required|in:with_driver,without_driver,self_drive',
+            'start_datetime' => 'required|date_format:Y-m-d\TH:i',
+            'end_datetime' => 'required|date_format:Y-m-d\TH:i|after:start_datetime',
+            'destination' => 'nullable|string',
+            'contact' => 'nullable|string',
+            'alamat' => 'nullable|string',
+            'dp_amount' => 'required|numeric|min:0',
+            'total_price' => 'required|numeric|min:0',
+            'status' => 'required|in:pending,confirmed,running,completed,cancelled',
         ]);
 
-        if ($request->status === 'confirmed') {
-            return redirect()
-                ->route('admin.renter.workflow', $id)
-                ->with('success', 'Pesanan berhasil disetujui! ✓');
-        }
+        $booking->update($validated);
 
-        if ($request->status === 'cancelled') {
-            return redirect()
-                ->route('admin.renter.workflow', $id)
-                ->with('error', 'Pesanan telah dibatalkan.');
-        }
-
-        if ($request->status === 'running') {
-            // Booking starts
-        }
-
-        if ($request->status === 'completed') {
-            // Booking completed
-        }
-
-        // Untuk status lain, redirect ke show page
         return redirect()
             ->route('admin.renter.show', $id)
-            ->with('success', 'Status booking berhasil diperbarui menjadi ' . strtoupper($request->status));
+            ->with('success', 'Data penyewa berhasil diperbarui! ✓');
     }
 
     /**

@@ -1,4 +1,4 @@
-@if(!in_array(request()->route()->getName(), ['profile.edit', 'bookings.create']))
+@if(!in_array(request()->route()->getName(), ['profile.edit', 'bookings.create', 'bookings.select-dates', 'bookings.select-car']))
 <nav x-data="{ open: false, scrolled: false, openInfo: false }"
     @scroll.window="scrolled = window.pageYOffset > 20"
     :class="scrolled

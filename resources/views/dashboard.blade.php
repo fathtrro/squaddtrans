@@ -50,8 +50,8 @@
             style="background-image: url('{{ asset('images/hand.png') }}');
                    background-size: cover;
                    background-position: center 90%;">
-  <!-- Overlay Gelap -->
-    <div class="absolute inset-0 bg-black/10"></div>
+            <!-- Overlay Gelap -->
+            <div class="absolute inset-0 bg-black/10"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
 
             <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col">
@@ -59,50 +59,153 @@
                 <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10">
                     <div class="max-w-3xl">
 
-    <!-- Badge -->
-    <span class="inline-block py-1 px-4
-        bg-yellow-100/10
-        border border-yellow-400/30
-        text-yellow-400
-        rounded-full text-xs tracking-widest uppercase mb-6">
-        Premium Travel Experience
-    </span>
+                        <!-- Badge -->
+                        <span class="inline-block py-1 px-4
+                            bg-yellow-100/10
+                            border border-yellow-400/30
+                            text-yellow-400
+                            rounded-full text-xs tracking-widest uppercase mb-6">
+                            Premium Travel Experience
+                        </span>
 
-    <!-- Heading -->
-    <h1 class="text-4xl md:text-4xl text-white leading-tight text"
-        style="font-weight:400; font-family:'Plus Jakarta Sans', sans-serif; letter-spacing:-0.02em;">
+                        <!-- Heading -->
+                        <h1 class="text-4xl md:text-4xl text-white leading-tight text"
+                            style="font-weight:400; font-family:'Plus Jakarta Sans', sans-serif; letter-spacing:-0.02em;">
 
-        Eksplorasi Tanpa Batas<br> Dengan
+                            Eksplorasi Tanpa Batas<br> Dengan
 
-            Kenyamanan
+                                Kenyamanan
 
-        yang Maksimal
+                            yang Maksimal
 
-    </h1>
+                        </h1>
 
-</div>
+                    </div>
 
-                    <div class="flex items-center gap-4 mt-6 lg:mt-0">
-                        <div class="flex -space-x-3">
-                            <img src="https://i.pravatar.cc/40?img=1" class="w-10 h-10 rounded-full border-2 border-white object-cover">
-                            <img src="https://i.pravatar.cc/40?img=2" class="w-10 h-10 rounded-full border-2 border-white object-cover">
-                            <img src="https://i.pravatar.cc/40?img=3" class="w-10 h-10 rounded-full border-2 border-white object-cover">
-                        </div>
-                        <div class="text-white">
-                            <div class="text-lg font-semibold">500+</div>
-                            <div class="text-sm text-slate-300">Happy Customers</div>
+                    <div class="flex items-center gap-4 mt-6 lg:mt-0 w-full lg:w-auto">
+                        <div class="bg-white/15 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden w-full lg:max-w-md border border-white/30">
+                            <!-- Form Header dengan Blurmorphism -->
+                            <div class="relative overflow-hidden bg-gradient-to-r from-yellow-600/80 via-amber-600/70 to-yellow-700/80 backdrop-blur-xl px-6 py-6 border-b border-white/20">
+                                <div class="absolute inset-0 opacity-30">
+                                    <div class="absolute top-0 right-0 w-48 h-48 bg-white/20 rounded-full blur-3xl"></div>
+                                    <div class="absolute -bottom-16 -left-16 w-40 h-40 bg-yellow-400/20 rounded-full blur-3xl"></div>
+                                </div>
+                                <h3 class="text-lg font-bold text-white flex items-center gap-3 relative z-10">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/30 shadow-lg">
+                                        <i class="fas fa-search text-white text-base"></i>
+                                    </div>
+                                    <span>Cari Kendaraan</span>
+                                </h3>
+                            </div>
+
+                            <!-- Form Body dengan Blurmorphism -->
+                            <div class="p-6 space-y-5 bg-white/10 backdrop-blur-xl relative">
+                                <!-- Background blur elements -->
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl pointer-events-none"></div>
+                                <div class="absolute bottom-0 left-0 w-40 h-40 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                                <form id="dashboardDateForm" class="space-y-5 relative z-10">
+                                    <!-- Start Date -->
+                                    <div class="group">
+                                        <label class="block text-xs font-bold text-white/90 mb-2 uppercase tracking-wider flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-300/80 to-amber-400/80 backdrop-blur-md flex items-center justify-center border border-white/30">
+                                                <i class="fas fa-calendar-check text-white text-xs"></i>
+                                            </div>
+                                            Tanggal Mulai
+                                        </label>
+                                        <input
+                                            type="date"
+                                            id="dashboardStartDate"
+                                            class="w-full px-4 py-3 bg-white/20 backdrop-blur-md border-2 border-white/40 rounded-xl focus:border-white/60 focus:ring-4 focus:ring-white/30 focus:outline-none text-white font-medium transition-all duration-200 group-hover:border-white/50 group-hover:bg-white/25 shadow-lg placeholder-white/50"
+                                            required
+                                            min="{{ date('Y-m-d') }}"
+                                        >
+                                    </div>
+
+                                    <!-- Durasi Rental Dropdown -->
+                                    <div class="group">
+                                        <label class="block text-xs font-bold text-white/90 mb-2 uppercase tracking-wider flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-300/80 to-amber-400/80 backdrop-blur-md flex items-center justify-center border border-white/30">
+                                                <i class="fas fa-hourglass-half text-white text-xs"></i>
+                                            </div>
+                                            Durasi Rental
+                                        </label>
+                                        <select
+                                            id="dashboardDays"
+                                            class="w-full px-4 py-3 bg-white/20 backdrop-blur-md border-2 border-white/40 rounded-xl focus:border-white/60 focus:ring-4 focus:ring-white/30 focus:outline-none text-white font-medium transition-all duration-200 group-hover:border-white/50 group-hover:bg-white/25 shadow-lg appearance-none cursor-pointer"
+                                            required
+                                        >
+                                            <option value="" class="bg-slate-900">-- Pilih Durasi --</option>
+                                            <option value="1" class="bg-slate-900">1 Hari</option>
+                                            <option value="2" class="bg-slate-900">2 Hari</option>
+                                            <option value="3" class="bg-slate-900">3 Hari</option>
+                                            <option value="4" class="bg-slate-900">4 Hari</option>
+                                            <option value="5" class="bg-slate-900">5 Hari</option>
+                                            <option value="6" class="bg-slate-900">6 Hari</option>
+                                            <option value="7" class="bg-slate-900">7 Hari</option>
+                                            <option value="8" class="bg-slate-900">8 Hari</option>
+                                            <option value="9" class="bg-slate-900">9 Hari</option>
+                                            <option value="10" class="bg-slate-900">10 Hari</option>
+                                            <option value="11" class="bg-slate-900">11 Hari</option>
+                                            <option value="12" class="bg-slate-900">12 Hari</option>
+                                            <option value="13" class="bg-slate-900">13 Hari</option>
+                                            <option value="14" class="bg-slate-900">14 Hari</option>
+                                            <option value="15" class="bg-slate-900">15 Hari</option>
+                                            <option value="16" class="bg-slate-900">16 Hari</option>
+                                            <option value="17" class="bg-slate-900">17 Hari</option>
+                                            <option value="18" class="bg-slate-900">18 Hari</option>
+                                            <option value="19" class="bg-slate-900">19 Hari</option>
+                                            <option value="20" class="bg-slate-900">20 Hari</option>
+                                        </select>
+                                        <!-- Custom arrow icon untuk select -->
+                                        <style>
+                                            #dashboardDays {
+                                                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+                                                background-repeat: no-repeat;
+                                                background-position: right 1rem center;
+                                                padding-right: 2.5rem;
+                                            }
+                                        </style>
+                                    </div>
+
+                                    <!-- End Date Display dengan Blurmorphism -->
+                                    <div id="dashboardEndDateInfo" class="bg-white/15 backdrop-blur-xl border-2 border-white/30 rounded-xl p-3">
+                                        <p class="text-xs font-semibold text-white/70 uppercase tracking-wide mb-1">Tanggal Selesai</p>
+                                        <p id="dashboardEndDateDisplay" class="text-lg font-bold text-white">-</p>
+                                    </div>
+
+                                    <!-- Duration Display dengan Blurmorphism -->
+                                    <div id="dashboardDurationInfo" class="hidden">
+                                        <div class="bg-white/15 backdrop-blur-xl border-2 border-white/30 rounded-2xl p-4 text-center group hover:bg-white/20 transition-all">
+                                            <p class="text-xs font-semibold text-white/80 uppercase tracking-wide mb-2">Total Durasi</p>
+                                            <p id="dashboardDurationDays" class="text-4xl font-bold text-white drop-shadow-lg">1 Hari</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button dengan Blurmorphism -->
+                                    <button
+                                        type="submit"
+                                        class="w-full px-4 py-3 bg-gradient-to-r from-yellow-400/90 via-yellow-300/85 to-amber-400/90 backdrop-blur-md text-slate-900 font-bold rounded-2xl hover:shadow-2xl hover:shadow-yellow-500/50 transition-all duration-300 border border-white/40 group hover:scale-105 relative overflow-hidden text-sm uppercase tracking-wider font-semibold"
+                                    >
+                                        <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        <span class="relative flex items-center justify-center gap-2">
+                                            <i class="fas fa-search"></i>
+                                            Cari Kendaraan
+                                        </span>
+                                    </button>
+
+                                    <!-- Helper Text -->
+                                    <p class="text-xs text-white/70 text-center mt-3">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Pilih tanggal rental Anda
+                                    </p>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
 
             </div>
-
-            <section id="units">
-                <div class="max-w-7xl mx-auto pt-0 px-4 sm:px-6 lg:px-8">
-                    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"></div>
-                    @include('carlistdb')
-                </div>
-            </section>
 
         </header>
 
@@ -315,6 +418,74 @@
     {{-- JAVASCRIPT                                                        --}}
     {{-- ================================================================ --}}
     <script>
+        // ── Dashboard Date Form ──────────────────────────────────────────
+        const dashboardStartDate = document.getElementById('dashboardStartDate');
+        const dashboardDays = document.getElementById('dashboardDays');
+        const dashboardEndDateDisplay = document.getElementById('dashboardEndDateDisplay');
+        const dashboardDurationInfo = document.getElementById('dashboardDurationInfo');
+        const dashboardDurationDays = document.getElementById('dashboardDurationDays');
+        const dashboardDateForm = document.getElementById('dashboardDateForm');
+
+        // Function to format date for display
+        function formatDateDisplay(date) {
+            return new Intl.DateTimeFormat('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }).format(date);
+        }
+
+        // Calculate end date and duration when start date or days change
+        function calculateEndDate() {
+            if (dashboardStartDate.value && dashboardDays.value) {
+                const start = new Date(dashboardStartDate.value);
+                const days = parseInt(dashboardDays.value) || 1;
+
+                // Create end date by adding days to start date
+                const end = new Date(start);
+                end.setDate(end.getDate() + days - 1);
+
+                // Display end date
+                dashboardEndDateDisplay.textContent = formatDateDisplay(end);
+                dashboardDurationDays.textContent = days + ' Hari';
+                dashboardDurationInfo.classList.remove('hidden');
+
+                return end;
+            } else {
+                dashboardDurationInfo.classList.add('hidden');
+                dashboardEndDateDisplay.textContent = '-';
+            }
+        }
+
+        dashboardStartDate.addEventListener('change', calculateEndDate);
+        dashboardDays.addEventListener('change', calculateEndDate);
+        dashboardDays.addEventListener('input', calculateEndDate);
+
+        // Form submission
+        dashboardDateForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const startDate = dashboardStartDate.value;
+            const days = dashboardDays.value;
+
+            if (!startDate || !days) {
+                alert('Harap isi tanggal mulai dan jumlah hari');
+                return;
+            }
+
+            // Calculate end date
+            const start = new Date(startDate);
+            const end = new Date(start);
+            end.setDate(end.getDate() + parseInt(days) - 1);
+
+            // Format end date as YYYY-MM-DD
+            const endDateFormatted = end.toISOString().split('T')[0];
+
+            // Redirect to available cars list page
+            window.location.href = `/bookings/select-car?start_date=${startDate}&end_date=${endDateFormatted}`;
+        });
+
         // ── Klik backdrop dialog → tutup ─────────────────────────────────
         const reviewDialog = document.getElementById('reviewDialog');
         reviewDialog.addEventListener('click', function (e) {

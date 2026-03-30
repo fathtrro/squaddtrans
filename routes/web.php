@@ -95,6 +95,7 @@ Route::prefix('api')->group(function () {
 
     // Booking date check
     Route::get('/bookings/check-dates', [BookingController::class, 'checkBookedDates']);
+    Route::get('/bookings/available-cars', [BookingController::class, 'getAvailableCars']);
 });
 
 /* ============================================================
@@ -122,6 +123,11 @@ Route::middleware(['auth'])->group(function () {
     // Bookings
     Route::prefix('bookings')->name('bookings.')->group(function () {
         Route::get('/', [BookingController::class, 'index'])->name('index');
+        Route::get('/select-dates', [BookingController::class, 'selectDates'])->name('select-dates');
+        Route::get('/select-car', function () {
+            return view('bookings.select-car');
+        })->name('select-car');
+        Route::get('/car-detail/{car}', [BookingController::class, 'showCarDetail'])->name('car-detail');
         Route::get('/create', [BookingController::class, 'create'])->name('create');
         Route::post('/store', [BookingController::class, 'store'])->name('store');
         Route::get('/success/{booking}', [BookingController::class, 'success'])->name('success');

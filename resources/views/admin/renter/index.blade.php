@@ -105,7 +105,16 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex gap-2">
+                <div class="flex gap-2 flex-wrap">
+                    <!-- Add Renter Button -->
+                    <a href="{{ route('admin.renter.create') }}"
+                       class="flex items-center justify-center gap-2 px-4 py-2.5 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold rounded-lg transition-all whitespace-nowrap">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Tambah Penyewa
+                    </a>
+
                     <!-- Print Button -->
                     <button
                         type="button"
@@ -116,7 +125,7 @@
                         </svg>
                         Cetak
                     </button>
-                    
+
                     <!-- Reset Filters -->
                     @if(request('search') || request('status') || request('date_range'))
                         <a href="{{ route('admin.renter.index') }}"
@@ -234,6 +243,13 @@
                                                 </svg>
                                                 <span>Detail</span>
                                             </a>
+                                            <a href="{{ route('admin.renter.edit', $renter->id) }}"
+                                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors duration-150">
+                                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                </svg>
+                                                <span>Edit</span>
+                                            </a>
                                             <div class="border-t border-gray-100 my-1"></div>
                                             <form action="{{ route('admin.renter.destroy', $renter->id) }}"
                                                   method="POST"
@@ -336,6 +352,10 @@
                         <a href="{{ route('admin.renter.show', $renter->id) }}"
                            class="text-blue-600 hover:text-blue-800 font-medium text-sm">
                             Detail
+                        </a>
+                        <a href="{{ route('admin.renter.edit', $renter->id) }}"
+                           class="text-purple-600 hover:text-purple-800 font-medium text-sm">
+                            Edit
                         </a>
                         <form action="{{ route('admin.renter.destroy', $renter->id) }}"
                               method="POST"

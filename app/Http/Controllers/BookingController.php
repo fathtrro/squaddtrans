@@ -11,9 +11,115 @@ use App\Models\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
+    /**
+     * Show date selection form
+     */
+    public function selectDates()
+    {
+        return view('bookings.select-dates');
+    }
+
+    /**
+     * Show car detail page for booking
+     */
+    public function showCarDetail(Request $request, Car $car)
+    {
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        // Validate dates
+        $request->validate([
+            'start_date' => 'required|date_format:Y-m-d',
+            'end_date' => 'required|date_format:Y-m-d|after:start_date',
+        ]);
+
+        // Calculate duration
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+        $duration = $start->diffInDays($end) + 1;
+
+        // Get daily price (use price_24h)
+        $dailyPrice = $car->price_24h;
+
+        // Check if car is available for these dates
+        $isAvailable = !Booking::where('car_id', $car->id)
+            ->whereIn('status', ['confirmed', 'running', 'pending'])
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->where('start_datetime', '<', $endDate . ' 23:59:59')
+                      ->where('end_datetime', '>', $startDate . ' 00:00:00');
+            })
+            ->exists();
+
+        // Get reviews for this car
+        $reviews = $car->reviews()->with('user')->latest()->get();
+        $averageRating = $reviews->avg('rating') ?? 0;
+        $reviewCount = $reviews->count();
+
+        return view('bookings.car-detail', [
+            'car' => $car->load('images'),
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'duration' => $duration,
+            'dailyPrice' => $dailyPrice,
+            'isAvailable' => $isAvailable,
+            'reviews' => $reviews,
+            'averageRating' => $averageRating,
+            'reviewCount' => $reviewCount,
+        ]);
+    }
+
+    /**
+     * Get available cars for selected dates via AJAX
+     */
+    public function getAvailableCars(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date|date_format:Y-m-d',
+            'end_date' => 'required|date|date_format:Y-m-d|after:start_date',
+        ]);
+
+        $startDate = $request->start_date . ' 00:00:00';
+        $endDate = $request->end_date . ' 23:59:59';
+
+        // Get all cars with their images
+        $cars = Car::with('images')
+            ->where('status', 'available')
+            ->get()
+            ->map(function ($car) use ($startDate, $endDate) {
+                // Check if this car has any conflicting bookings
+                $hasConflict = Booking::where('car_id', $car->id)
+                    ->whereIn('status', ['confirmed', 'running', 'pending'])
+                    ->where(function ($query) use ($startDate, $endDate) {
+                        $query->where('start_datetime', '<', $endDate)
+                              ->where('end_datetime', '>', $startDate);
+                    })
+                    ->exists();
+
+                $car->is_available = !$hasConflict;
+                $car->main_image_url = $car->images->first()
+                    ? asset('storage/' . $car->images->first()->image_path)
+                    : asset('images/default-car.png');
+
+                // Map field names for frontend compatibility
+                $car->car_plate = $car->plate_number;
+                $car->number_of_seats = $car->seats;
+                $car->daily_rent_price = $car->price_24h;
+                $car->engine_capacity = '1.5L'; // Default value since not in database
+
+                return $car;
+            });
+
+        return response()->json([
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'cars' => $cars,
+        ]);
+    }
+
     public function create(Request $request)
     {
         // Prevent access to create page if user just booked
@@ -22,6 +128,8 @@ class BookingController extends Controller
         }
 
         $car = null;
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
 
         if ($request->filled('car')) {
             $car = Car::with('images')->find($request->query('car'));
@@ -33,6 +141,8 @@ class BookingController extends Controller
             'bankAccounts' => BankAccount::where('is_active', true)->get(),
             'car' => $car,
             'selectedServiceType' => $request->query('service_type'),
+            'startDate' => $startDate,
+            'endDate' => $endDate,
         ]);
     }
 
