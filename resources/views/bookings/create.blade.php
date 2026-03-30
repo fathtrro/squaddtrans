@@ -1213,11 +1213,67 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
     btnSubmitDesktop.addEventListener('click', openConfirm);
     document.getElementById('confirmBack').addEventListener('click', closeConfirm);
     document.getElementById('confirmOverlay').addEventListener('click', function(e) { if (e.target === this) closeConfirm(); });
+
+    function getSelectedOptionText(selectEl) {
+        if (!selectEl) return '–';
+        const opt = selectEl.options[selectEl.selectedIndex];
+        return opt ? opt.text : '–';
+    }
+
+    function buildWhatsAppBookingMessage() {
+        const destination   = document.querySelector('input[name="destination"]').value || '-';
+        const guaranteeType = document.querySelector('input[name="guarantee_type"]:checked').value || '-';
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value || '-';
+        const bankText      = bankSelect.value ? getSelectedOptionText(bankSelect) : '-';
+        const proofFileName = proofFile.files.length ? proofFile.files[0].name : 'Tidak ada';
+
+        const formatDate = (val) => {
+            if (!val) return '-';
+            const d = new Date(val);
+            return d.toLocaleDateString('id-ID', { weekday:'short', day:'numeric', month:'short', year:'numeric' }) + ' ' + d.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+        };
+
+        const startText = formatDate(startInput.value);
+        const endText   = formatDate(endInput.value);
+        const durText   = durationMode === '12' ? '12 Jam' : `${days} Hari`;
+
+        const dpValue = Number(dpInput.value) || 0;
+
+        return `Halo Admin, saya ingin melakukan booking mobil:\n` +
+               `- Mobil: ${CAR_NAME} (Lepas Kunci)\n` +
+               `- Tanggal Mulai: ${startText}\n` +
+               `- Tanggal Selesai: ${endText}\n` +
+               `- Durasi: ${durText}\n` +
+               `- Tujuan: ${destination}\n` +
+               `- Kontak: ${contactInput.value || '-'}\n` +
+               `- Alamat: ${alamatInput.value || '-'}\n` +
+               `- Jaminan: ${guaranteeType.toUpperCase()}\n` +
+               `- Dokumen Jaminan: ${docFile.files.length ? docFile.files[0].name : 'Belum diupload'}\n` +
+               `- Metode Pembayaran: ${paymentMethod === 'transfer' ? 'Transfer Bank' : paymentMethod}\n` +
+               `- Bank Tujuan: ${bankText}\n` +
+               `- Total Harga: Rp ${totalPrice.toLocaleString('id-ID')}\n` +
+               `- DP Dibayar: Rp ${dpValue.toLocaleString('id-ID')}\n` +
+               `- Bukti Transfer: ${proofFileName} (tidak disertakan di pesan otomatis)\n\n` +
+               `Upload Dokumen Jaminan\n` +
+               `Upload Bukti Pembayaran\n\n` +
+               `Jika sudah, kembali ke website untuk menyelesaikan booking. Terima kasih!`;
+    }
+
+    function sendWhatsAppMessage() {
+        const baseNumber = '6287739904530';
+        const text = buildWhatsAppBookingMessage();
+        const url = `https://wa.me/${baseNumber}?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    }
+
     document.getElementById('confirmSubmit').addEventListener('click', () => {
         clearDraft();
         closeConfirm();
+        sendWhatsAppMessage();
         document.getElementById('loadingOverlay').classList.add('active');
-        document.getElementById('bookingForm').submit();
+        setTimeout(() => {
+            document.getElementById('bookingForm').submit();
+        }, 300);
     });
 
     // ============================================================
