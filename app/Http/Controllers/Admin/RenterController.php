@@ -150,7 +150,7 @@ class RenterController extends Controller
         $booking = Booking::findOrFail($id);
 
         // If the request contains a 'status' field only, update only status
-        if ($request->has('status') && count($request->all()) == 2) { // 2 because of CSRF token
+        if ($request->has('status') && (count($request->except('_method')) == 1 || count($request->all()) <= 3)) {
             $request->validate([
                 'status' => 'required|in:pending,confirmed,running,completed,cancelled,waiting_penalty,waiting_payment',
             ]);
