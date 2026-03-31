@@ -1253,7 +1253,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
                `- Bank Tujuan: ${bankText}\n` +
                `- Total Harga: Rp ${totalPrice.toLocaleString('id-ID')}\n` +
                `- DP Dibayar: Rp ${dpValue.toLocaleString('id-ID')}\n` +
-               `- Bukti Transfer: ${proofFileName} (tidak disertakan di pesan otomatis)\n\n` +
+               `- Bukti Transfer: ${proofFileName}\n\n` +
                `Upload Dokumen Jaminan\n` +
                `Upload Bukti Pembayaran\n\n` +
                `Jika sudah, kembali ke website untuk menyelesaikan booking. Terima kasih!`;
