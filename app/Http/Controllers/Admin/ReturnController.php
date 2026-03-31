@@ -110,16 +110,7 @@ class ReturnController extends Controller
                                  "- Catatan: " . ($afterChecklist->notes ?: 'Tidak ada') . "\n" .
                                  "Status: " . strtoupper($booking->status) . ".";
 
-                Http::withHeaders(["Authorization" => "1nBBrr338eUrS7zdXTnV"])
-                    ->asForm()
-                    ->post('https://api.fonnte.com/send', [
-                        'target' => $target,
-                        'message' => $returnMessage,
-                        'source' => '6287739904530',
-                        'countryCode' => '62',
-                        'typing' => 'false',
-                        'schedule' => '0',
-                    ]);
+                $this->sendFonnteWhatsApp($target, $returnMessage);
             }
         } catch (\Throwable $e) {
             logger()->warning('Fonnte return notification error: ' . $e->getMessage());
@@ -312,39 +303,17 @@ class ReturnController extends Controller
         // Update status to running
         $booking->update(['status' => 'running']);
 
-        // Send Fonnte WA notification (optional, best-effort)
-        try {
-            $target = $booking->contact ?? $booking->user->phone ?? null;
-            if ($target) {
-                $target = preg_replace('/[^0-9+]/', '', $target);
-                if (str_starts_with($target, '0')) {
-                    $target = '62' . substr($target, 1);
-                } elseif (str_starts_with($target, '+')) {
-                    $target = substr($target, 1);
-                }
+        $checklistBeforeMessage = "Checklist Kendaraan Sebelum Perjalanan untuk booking {$booking->booking_code} sudah selesai.\n" .
+            "Referensi Checklist Sebelum: Bandingkan kondisi mobil dengan checklist sebelum perjalanan untuk mengidentifikasi kerusakan.\n\n" .
+            "- Kondisi Bodi: " . $request->input('body_condition') . "\n" .
+            "- Kondisi Interior: " . $request->input('interior_condition') . "\n" .
+            "- Level BBM: " . $request->input('fuel_level') . "\n" .
+            "- Aksesori: " . $request->input('accessories') . "\n" .
+            "- Catatan: " . ($request->input('notes') ?: 'Tidak ada') . "\n" .
+            "Status: RUNNING.";
 
-                Http::withHeaders([
-                    'Authorization' => '1nBBrr338eUrS7zdXTnV',
-                ])->asForm()->post('https://api.fonnte.com/send', [
-                    'target' => $target,
-                    'message' => "Checklist Kendaraan Sebelum Perjalanan untuk booking {$booking->booking_code} sudah selesai.\n" .
-                                 "Referensi Checklist Sebelum: Bandingkan kondisi mobil dengan checklist sebelum perjalanan untuk mengidentifikasi kerusakan.\n\n" .
-                                 "- Kondisi Bodi: " . $request->input('body_condition') . "\n" .
-                                 "- Kondisi Interior: " . $request->input('interior_condition') . "\n" .
-                                 "- Level BBM: " . $request->input('fuel_level') . "\n" .
-                                 "- Aksesori: " . $request->input('accessories') . "\n" .
-                                 "- Catatan: " . ($request->input('notes') ?: 'Tidak ada') . "\n" .
-                                 "Status: RUNNING.",
-                    'source' => '6287739904530',
-                    'countryCode' => '62',
-                    'typing' => 'false',
-                    'schedule' => '0',
-                ]);
-            }
-        } catch (\Throwable $e) {
-            // log but do not block user flow
-            logger()->warning('Fonnte checklist notification error: ' . $e->getMessage());
-        }
+        $target = $booking->contact ?? $booking->user->phone ?? null;
+        $this->sendFonnteWhatsApp($target, $checklistBeforeMessage);
 
         return redirect()->route('admin.renter.workflow', $booking->id)
             ->with('success', 'Checklist sebelum berhasil disimpan. Booking sekarang dalam status BERLANGSUNG.');

@@ -550,8 +550,8 @@
                                         <span>${car.transmission || 'Manual'}</span>
                                     </div>
                                     <div class="spec">
-                                        <i class="fas fa-gas-pump"></i>
-                                        <span>${car.engine_capacity || '1.5L'}</span>
+                                        <i class="fas fa-car"></i>
+                                        <span>${car.category || car.engine_capacity || 'Unknown'}</span>
                                     </div>
                                     <div class="spec">
                                         <i class="fas fa-road"></i>

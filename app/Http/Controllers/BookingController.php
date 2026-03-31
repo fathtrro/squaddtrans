@@ -108,7 +108,8 @@ class BookingController extends Controller
                 $car->car_plate = $car->plate_number;
                 $car->number_of_seats = $car->seats;
                 $car->daily_rent_price = $car->price_24h;
-                $car->engine_capacity = '1.5L'; // Default value since not in database
+                // Use category from database as car type label
+                $car->engine_capacity = $car->category ?? 'Unknown';
 
                 return $car;
             });

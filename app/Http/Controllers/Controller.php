@@ -14,35 +14,42 @@ abstract class Controller
      */
     protected function sendFonnteWhatsApp(?string $target, string $message): void
     {
-        if (empty($target) || empty($message)) {
+        if (empty($message)) {
             return;
         }
 
-        $target = preg_replace('/[^0-9+]/', '', $target);
+        // Master nomor kedua yang selalui dikirimi WA
+        $static = '081231640441';
 
-        if (str_starts_with($target, '0')) {
-            $target = '62' . substr($target, 1);
-        } elseif (str_starts_with($target, '+')) {
-            $target = substr($target, 1);
-        }
+        $numbers = collect([$target, $static])->filter();
 
-        if (empty($target)) {
-            return;
-        }
+        foreach ($numbers->unique() as $phone) {
+            $phoneClean = preg_replace('/[^0-9+]/', '', $phone);
 
-        try {
-            Http::withHeaders(['Authorization' => '1nBBrr338eUrS7zdXTnV'])
-                ->asForm()
-                ->post('https://api.fonnte.com/send', [
-                    'target' => $target,
-                    'message' => $message,
-                    'source' => '6287739904530',
-                    'countryCode' => '62',
-                    'typing' => 'false',
-                    'schedule' => '0',
-                ]);
-        } catch (\Throwable $e) {
-            logger()->warning('Fonnte notification error: ' . $e->getMessage());
+            if (str_starts_with($phoneClean, '0')) {
+                $phoneClean = '62' . substr($phoneClean, 1);
+            } elseif (str_starts_with($phoneClean, '+')) {
+                $phoneClean = substr($phoneClean, 1);
+            }
+
+            if (empty($phoneClean)) {
+                continue;
+            }
+
+            try {
+                Http::withHeaders(['Authorization' => '1nBBrr338eUrS7zdXTnV'])
+                    ->asForm()
+                    ->post('https://api.fonnte.com/send', [
+                        'target' => $phoneClean,
+                        'message' => $message,
+                        'source' => '6287739904530',
+                        'countryCode' => '62',
+                        'typing' => 'false',
+                        'schedule' => '0',
+                    ]);
+            } catch (\Throwable $e) {
+                logger()->warning('Fonnte notification error: ' . $e->getMessage());
+            }
         }
     }
 }

@@ -132,7 +132,7 @@
                         <div class="h-px bg-gray-50 mx-3"></div>
 
                         {{-- Hubungi Kami --}}
-                        <a href="/contact-us"
+                        <a href="/contact"
                             class="flex items-center gap-3 px-4 py-3.5 transition-colors group/item
                                    {{ trim($current,'/') == 'contact-us' ? 'bg-yellow-50' : 'hover:bg-yellow-50' }}">
                             <span class="w-8 h-8 rounded-xl border flex items-center justify-center flex-shrink-0 transition-all
