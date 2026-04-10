@@ -10,7 +10,6 @@
             .card-shadow { @apply shadow-lg hover:shadow-xl transition-shadow duration-300; }
 
             .fleet-card img { backface-visibility: hidden; perspective: 1000px; }
-            #heroParallax { will-change: transform, filter; transform: scale(1.05); }
             .fleet-card { will-change: transform; transition: box-shadow 0.4s ease; }
             .fleet-card img { will-change: transform; transform: scale(1.08); }
             .reveal-section { opacity: 0; transform: translateY(60px); transition: all 1.2s cubic-bezier(.17, .67, .3, 1); }
@@ -56,9 +55,9 @@
 
             <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col">
 
-                <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10">
-                    <div class="max-w-3xl">
-
+                <div class="flex flex-col items-center justify-center gap-12 w-full">
+                    <!-- Heading Section -->
+                    <div class="max-w-3xl text-center">
                         <!-- Badge -->
                         <span class="inline-block py-1 px-4
                             bg-yellow-100/10
@@ -69,138 +68,103 @@
                         </span>
 
                         <!-- Heading -->
-                        <h1 class="text-4xl md:text-4xl text-white leading-tight text"
+                        <h1 class="text-4xl md:text-5xl text-white leading-tight mb-4"
                             style="font-weight:400; font-family:'Plus Jakarta Sans', sans-serif; letter-spacing:-0.02em;">
-
-                            Eksplorasi Tanpa Batas<br> Dengan
-
-                                Kenyamanan
-
-                            yang Maksimal
-
+                            Eksplorasi Tanpa Batas<br>Dengan Kenyamanan yang Maksimal
                         </h1>
 
+                        <!-- Description -->
+                        <p class="text-lg text-white/80 max-w-2xl mx-auto">
+                            Temukan kendaraan impian Anda untuk setiap petualangan. Pesan sekarang dan nikmati perjalanan yang nyaman dengan layanan terbaik.
+                        </p>
                     </div>
 
-                    <div class="flex items-center gap-4 mt-6 lg:mt-0 w-full lg:w-auto">
-                        <div class="bg-white/15 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden w-full lg:max-w-md border border-white/30">
-                            <!-- Form Header dengan Blurmorphism -->
-                            <div class="relative overflow-hidden bg-gradient-to-r from-yellow-600/80 via-amber-600/70 to-yellow-700/80 backdrop-blur-xl px-6 py-6 border-b border-white/20">
-                                <div class="absolute inset-0 opacity-30">
-                                    <div class="absolute top-0 right-0 w-48 h-48 bg-white/20 rounded-full blur-3xl"></div>
-                                    <div class="absolute -bottom-16 -left-16 w-40 h-40 bg-yellow-400/20 rounded-full blur-3xl"></div>
-                                </div>
-                                <h3 class="text-lg font-bold text-white flex items-center gap-3 relative z-10">
-                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/30 shadow-lg">
-                                        <i class="fas fa-search text-white text-base"></i>
-                                    </div>
-                                    <span>Cari Kendaraan</span>
+                    <!-- Search Form Container -->
+                    <div class="w-full max-w-7xl">
+                        <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl shadow-2xl overflow-hidden hover:shadow-2xl transition-all">
+                            <!-- Form Header -->
+                            <div class="bg-white-600/30 backdrop-blur-sm border-b border-white/20 px-6 py-5">
+                                <h3 class="text-md font-semibold text-white text-left">
+                                    <i class=" text-yellow-300 mr-2"></i>Setiap perjalanan jadi lebih mudah dengan #SquadTrans
                                 </h3>
                             </div>
 
-                            <!-- Form Body dengan Blurmorphism -->
-                            <div class="p-6 space-y-5 bg-white/10 backdrop-blur-xl relative">
-                                <!-- Background blur elements -->
-                                <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl pointer-events-none"></div>
-                                <div class="absolute bottom-0 left-0 w-40 h-40 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+                          <div class="p-6 space-y-4 bg-white/5 backdrop-blur-sm relative">
 
-                                <form id="dashboardDateForm" class="space-y-5 relative z-10">
-                                    <!-- Start Date -->
-                                    <div class="group">
-                                        <label class="block text-xs font-bold text-white/90 mb-2 uppercase tracking-wider flex items-center gap-2">
-                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-300/80 to-amber-400/80 backdrop-blur-md flex items-center justify-center border border-white/30">
-                                                <i class="fas fa-calendar-check text-white text-xs"></i>
-                                            </div>
-                                            Tanggal Mulai
-                                        </label>
-                                        <input
-                                            type="date"
-                                            id="dashboardStartDate"
-                                            class="w-full px-4 py-3 bg-white/20 backdrop-blur-md border-2 border-white/40 rounded-xl focus:border-white/60 focus:ring-4 focus:ring-white/30 focus:outline-none text-white font-medium transition-all duration-200 group-hover:border-white/50 group-hover:bg-white/25 shadow-lg placeholder-white/50"
-                                            required
-                                            min="{{ date('Y-m-d') }}"
-                                        >
-                                    </div>
+    <form id="dashboardDateForm" class="space-y-0">
 
-                                    <!-- Durasi Rental Dropdown -->
-                                    <div class="group">
-                                        <label class="block text-xs font-bold text-white/90 mb-2 uppercase tracking-wider flex items-center gap-2">
-                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-300/80 to-amber-400/80 backdrop-blur-md flex items-center justify-center border border-white/30">
-                                                <i class="fas fa-hourglass-half text-white text-xs"></i>
-                                            </div>
-                                            Durasi Rental
-                                        </label>
-                                        <select
-                                            id="dashboardDays"
-                                            class="w-full px-4 py-3 bg-white/20 backdrop-blur-md border-2 border-white/40 rounded-xl focus:border-white/60 focus:ring-4 focus:ring-white/30 focus:outline-none text-white font-medium transition-all duration-200 group-hover:border-white/50 group-hover:bg-white/25 shadow-lg appearance-none cursor-pointer"
-                                            required
-                                        >
-                                            <option value="" class="bg-slate-900">-- Pilih Durasi --</option>
-                                            <option value="1" class="bg-slate-900">1 Hari</option>
-                                            <option value="2" class="bg-slate-900">2 Hari</option>
-                                            <option value="3" class="bg-slate-900">3 Hari</option>
-                                            <option value="4" class="bg-slate-900">4 Hari</option>
-                                            <option value="5" class="bg-slate-900">5 Hari</option>
-                                            <option value="6" class="bg-slate-900">6 Hari</option>
-                                            <option value="7" class="bg-slate-900">7 Hari</option>
-                                            <option value="8" class="bg-slate-900">8 Hari</option>
-                                            <option value="9" class="bg-slate-900">9 Hari</option>
-                                            <option value="10" class="bg-slate-900">10 Hari</option>
-                                            <option value="11" class="bg-slate-900">11 Hari</option>
-                                            <option value="12" class="bg-slate-900">12 Hari</option>
-                                            <option value="13" class="bg-slate-900">13 Hari</option>
-                                            <option value="14" class="bg-slate-900">14 Hari</option>
-                                            <option value="15" class="bg-slate-900">15 Hari</option>
-                                            <option value="16" class="bg-slate-900">16 Hari</option>
-                                            <option value="17" class="bg-slate-900">17 Hari</option>
-                                            <option value="18" class="bg-slate-900">18 Hari</option>
-                                            <option value="19" class="bg-slate-900">19 Hari</option>
-                                            <option value="20" class="bg-slate-900">20 Hari</option>
-                                        </select>
-                                        <!-- Custom arrow icon untuk select -->
-                                        <style>
-                                            #dashboardDays {
-                                                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-                                                background-repeat: no-repeat;
-                                                background-position: right 1rem center;
-                                                padding-right: 2.5rem;
-                                            }
-                                        </style>
-                                    </div>
+        <div class="grid grid-cols-12 gap-3 items-stretch">
 
-                                    <!-- End Date Display dengan Blurmorphism -->
-                                    <div id="dashboardEndDateInfo" class="bg-white/15 backdrop-blur-xl border-2 border-white/30 rounded-xl p-3">
-                                        <p class="text-xs font-semibold text-white/70 uppercase tracking-wide mb-1">Tanggal Selesai</p>
-                                        <p id="dashboardEndDateDisplay" class="text-lg font-bold text-white">-</p>
-                                    </div>
+            <!-- Tanggal Mulai -->
+            <div class="col-span-3 flex flex-col h-full">
+                <div class="flex-1 flex flex-col px-3 py-2 border-2 border-white/40 rounded-lg">
 
-                                    <!-- Duration Display dengan Blurmorphism -->
-                                    <div id="dashboardDurationInfo" class="hidden">
-                                        <div class="bg-white/15 backdrop-blur-xl border-2 border-white/30 rounded-2xl p-4 text-center group hover:bg-white/20 transition-all">
-                                            <p class="text-xs font-semibold text-white/80 uppercase tracking-wide mb-2">Total Durasi</p>
-                                            <p id="dashboardDurationDays" class="text-4xl font-bold text-white drop-shadow-lg">1 Hari</p>
-                                        </div>
-                                    </div>
+                    <label class="text-xs font-semibold text-white/75 uppercase tracking-wide mb-1">
+                        Tanggal mulai
+                    </label>
 
-                                    <!-- Submit Button dengan Blurmorphism -->
-                                    <button
-                                        type="submit"
-                                        class="w-full px-4 py-3 bg-gradient-to-r from-yellow-400/90 via-yellow-300/85 to-amber-400/90 backdrop-blur-md text-slate-900 font-bold rounded-2xl hover:shadow-2xl hover:shadow-yellow-500/50 transition-all duration-300 border border-white/40 group hover:scale-105 relative overflow-hidden text-sm uppercase tracking-wider font-semibold"
-                                    >
-                                        <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                        <span class="relative flex items-center justify-center gap-2">
-                                            <i class="fas fa-search"></i>
-                                            Cari Kendaraan
-                                        </span>
-                                    </button>
+                    <input
+                        type="date"
+                        id="dashboardStartDate"
+                        class="bg-transparent outline-none border-0 text-white text-sm font-medium p-0 m-0 appearance-none"
+                        required
+                        min="{{ date('Y-m-d') }}"
+                    >
+                </div>
+            </div>
 
-                                    <!-- Helper Text -->
-                                    <p class="text-xs text-white/70 text-center mt-3">
-                                        <i class="fas fa-info-circle mr-1"></i>
-                                        Pilih tanggal rental Anda
-                                    </p>
-                                </form>
-                            </div>
+            <!-- Durasi Rental -->
+            <div class="col-span-3 flex flex-col h-full">
+                <div class="flex-1 flex flex-col px-3 py-2 border-2 border-white/40 rounded-lg">
+
+                    <label class="text-xs font-semibold text-white/75 uppercase tracking-wide mb-1">
+                        Durasi Rental
+                    </label>
+
+                    <select
+                        id="dashboardDays"
+                        class="bg-transparent outline-none border-0 text-white text-sm font-medium p-0 m-0 appearance-none cursor-pointer"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2714%27 height=%2714%27 viewBox=%270 0 14 14%27%3E%3Cpath fill=%22%23fbbf24%22 d=%22M7 10L1 4h12z%22/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right center; padding-right: 1.5rem;"
+                    >
+                        <!-- Generate 1–20 hari -->
+                        <script>
+                            for (let i = 1; i <= 20; i++) {
+                                document.write(`<option value="${i}" style="background:#1e293b;color:white;">${i} Hari</option>`);
+                            }
+                        </script>
+                    </select>
+
+                </div>
+            </div>
+
+            <!-- Tanggal Selesai -->
+            <div class="col-span-4 flex flex-col h-full">
+                <div class="flex-1 flex flex-col px-3 py-2 border-2 border-white/40 rounded-lg">
+
+                    <label class="text-xs font-semibold text-white/75 uppercase tracking-wide mb-1">
+                        Selesai
+                    </label>
+
+                    <p id="dashboardEndDateDisplay" class="text-white text-sm font-medium m-0 p-0">
+                        -
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="col-span-2">
+                <button
+                    type="submit"
+                    class="w-full px-3 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold rounded-lg transition-all duration-300 uppercase tracking-wider shadow-lg text-xs h-full flex items-center justify-center gap-2"
+                >
+                    🔍 Cari
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>
                         </div>
                     </div>
                 </div>
@@ -422,45 +386,49 @@
         const dashboardStartDate = document.getElementById('dashboardStartDate');
         const dashboardDays = document.getElementById('dashboardDays');
         const dashboardEndDateDisplay = document.getElementById('dashboardEndDateDisplay');
-        const dashboardDurationInfo = document.getElementById('dashboardDurationInfo');
-        const dashboardDurationDays = document.getElementById('dashboardDurationDays');
         const dashboardDateForm = document.getElementById('dashboardDateForm');
 
-        // Function to format date for display
+        // Format date for display
         function formatDateDisplay(date) {
-            return new Intl.DateTimeFormat('id-ID', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            }).format(date);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = date.toLocaleDateString('id-ID', { month: 'short' });
+            const year = date.getFullYear();
+            return `hari ${day} ${month} ${year}`;
         }
 
-        // Calculate end date and duration when start date or days change
+        // Calculate and display end date
         function calculateEndDate() {
             if (dashboardStartDate.value && dashboardDays.value) {
                 const start = new Date(dashboardStartDate.value);
                 const days = parseInt(dashboardDays.value) || 1;
-
-                // Create end date by adding days to start date
                 const end = new Date(start);
                 end.setDate(end.getDate() + days - 1);
-
-                // Display end date
-                dashboardEndDateDisplay.textContent = formatDateDisplay(end);
-                dashboardDurationDays.textContent = days + ' Hari';
-                dashboardDurationInfo.classList.remove('hidden');
-
+                dashboardEndDateDisplay.textContent = `Selesai ${formatDateDisplay(end)}`;
                 return end;
             } else {
-                dashboardDurationInfo.classList.add('hidden');
                 dashboardEndDateDisplay.textContent = '-';
             }
         }
 
+        // Set default values on page load
+        function setDefaultValues() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const todayString = `${year}-${month}-${day}`;
+
+            dashboardStartDate.value = todayString;
+            dashboardDays.value = '1';
+            calculateEndDate();
+        }
+
+        // Initialize with default values
+        setDefaultValues();
+
+        // Update end date when start date or duration changes
         dashboardStartDate.addEventListener('change', calculateEndDate);
         dashboardDays.addEventListener('change', calculateEndDate);
-        dashboardDays.addEventListener('input', calculateEndDate);
 
         // Form submission
         dashboardDateForm.addEventListener('submit', async function (e) {
@@ -526,18 +494,6 @@
             window.addEventListener('scroll', onScroll, { passive: true });
             onScroll();
         });
-
-        // ── Parallax Hero ────────────────────────────────────────────────
-        const hero = document.getElementById('heroParallax');
-        let current = 0, target = 0;
-        function lerp(start, end, factor) { return start + (end - start) * factor; }
-        function smoothParallax() {
-            current = lerp(current, target, 0.08);
-            if (hero) hero.style.transform = `translate3d(0, ${current * 0.3}px, 0)`;
-            requestAnimationFrame(smoothParallax);
-        }
-        window.addEventListener('scroll', () => { target = window.scrollY; }, { passive: true });
-        smoothParallax();
     </script>
 
 </x-app-layout>

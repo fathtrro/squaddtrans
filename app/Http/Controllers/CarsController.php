@@ -132,10 +132,10 @@ class CarsController extends Controller
                 'end_time' => 'required|date_format:H:i',
             ]);
         } else {
-            // For 24-hour: end_date must be after start_date
+            // For 24-hour: end_date must be after or equal to start_date
             $validated = $request->validate([
                 'start_date' => 'required|date|after_or_equal:today',
-                'end_date' => 'required|date|after:start_date',
+                'end_date' => 'required|date|after_or_equal:start_date',
                 'duration_mode' => 'required|in:24',
             ]);
         }
@@ -332,10 +332,10 @@ class CarsController extends Controller
                 'end_time' => 'required|date_format:H:i',
             ]);
         } else {
-            // For 24-hour: end_date must be after start_date
+            // For 24-hour: end_date must be after or equal to start_date
             $validated = $request->validate([
                 'start_date' => 'required|date',
-                'end_date' => 'required|date|after:start_date',
+                'end_date' => 'required|date|after_or_equal:start_date',
                 'service_type' => 'required|in:lepas_kunci,dengan_sopir,carter',
                 'duration_mode' => 'required|in:24',
             ]);

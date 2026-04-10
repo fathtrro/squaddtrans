@@ -34,7 +34,7 @@ class BookingController extends Controller
         // Validate dates
         $request->validate([
             'start_date' => 'required|date_format:Y-m-d',
-            'end_date' => 'required|date_format:Y-m-d|after:start_date',
+            'end_date' => 'required|date_format:Y-m-d|after_or_equal:start_date',
         ]);
 
         // Calculate duration
@@ -79,7 +79,7 @@ class BookingController extends Controller
     {
         $request->validate([
             'start_date' => 'required|date|date_format:Y-m-d',
-            'end_date' => 'required|date|date_format:Y-m-d|after:start_date',
+            'end_date' => 'required|date|date_format:Y-m-d|after_or_equal:start_date',
         ]);
 
         $startDate = $request->start_date . ' 00:00:00';

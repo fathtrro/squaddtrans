@@ -1,651 +1,918 @@
 <x-app-layout>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
-    :root {
-        --primary: #d97706;
-        --primary-light: #f59e0b;
-        --dark: #1f2937;
-        --dark-light: #374151;
-        --light: #f8fafc;
-        --border: #e5e7eb;
-        --success: #10b981;
-        --danger: #ef4444;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: var(--light);
-        color: var(--dark);
-    }
-
-    .detail-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: white;
-        border-radius: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-    }
-
-    /* Header with back button */
-    .detail-header {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 28px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .back-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background-color: var(--light);
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        color: var(--dark);
-        font-size: 18px;
-        transition: all 0.3s ease;
-    }
-
-    .back-btn:hover {
-        background-color: var(--primary-light);
-        color: white;
-        transform: translateX(-2px);
-    }
-
-    .header-info h1 {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 4px;
-    }
-
-    .header-info p {
-        color: #6b7280;
-        font-size: 14px;
-    }
-
-    /* Main grid layout */
-    .detail-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 32px;
-        margin-bottom: 32px;
-    }
-
-    /* Image carousel */
-    .image-section {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .main-image {
-        position: relative;
-        width: 100%;
-        height: 400px;
-        border-radius: 16px;
-        overflow: hidden;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .main-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.4s ease;
-    }
-
-    .main-image:hover img {
-        transform: scale(1.05);
-    }
-
-    .image-badge {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        background: rgba(16, 185, 129, 0.95);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 50px;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .image-badge.unavailable {
-        background: rgba(239, 68, 68, 0.95);
-    }
-
-    .thumb-gallery {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
-    }
-
-    .thumb {
-        width: 100%;
-        height: 80px;
-        border-radius: 10px;
-        overflow: hidden;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: all 0.3s ease;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .thumb img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .thumb.active {
-        border-color: var(--primary);
-        box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
-    }
-
-    .thumb:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-    }
-
-    /* Info section */
-    .info-section {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-    }
-
-    /* Price card */
-    .price-card {
-        background: linear-gradient(135deg, var(--primary) 0%, #dc2626 100%);
-        color: white;
-        padding: 24px;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(217, 119, 6, 0.3);
-    }
-
-    .price-label {
-        font-size: 13px;
-        opacity: 0.9;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
-    }
-
-    .price-main {
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 16px;
-    }
-
-    .price-breakdown {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 13px;
-        opacity: 0.9;
-        padding-top: 16px;
-        border-top: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .price-duration {
-        display: flex;
-        gap: 4px;
-    }
-
-    /* Specs grid */
-    .specs-card {
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 20px;
-        background-color: #fafafa;
-    }
-
-    .specs-title {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 16px;
-        color: var(--dark);
-    }
-
-    .specs-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
-
-    .spec-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .spec-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 18px;
-        flex-shrink: 0;
-    }
-
-    .spec-content {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .spec-label {
-        font-size: 12px;
-        color: #6b7280;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-    }
-
-    .spec-value {
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--dark);
-    }
-
-    /* Reviews section */
-    .reviews-section {
-        padding: 24px;
-        background-color: #fafafa;
-        border-radius: 14px;
-        border: 1px solid var(--border);
-    }
-
-    .reviews-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 20px;
-    }
-
-    .review-rating-badge {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
-        color: white;
-        border-radius: 12px;
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .reviews-info h3 {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 4px;
-    }
-
-    .reviews-info p {
-        font-size: 13px;
-        color: #6b7280;
-    }
-
-    .review-list {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    .review-item {
-        background: white;
-        padding: 16px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-    }
-
-    .review-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 12px;
-    }
-
-    .reviewer-name {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--dark);
-    }
-
-    .review-rating {
-        display: flex;
-        gap: 4px;
-    }
-
-    .star {
-        color: var(--primary-light);
-        font-size: 14px;
-    }
-
-    .review-comment {
-        font-size: 13px;
-        color: #6b7280;
-        line-height: 1.6;
-    }
-
-    .review-date {
-        font-size: 12px;
-        color: #9ca3af;
-        margin-top: 8px;
-    }
-
-    .no-reviews {
-        text-align: center;
-        padding: 32px 16px;
-        color: #9ca3af;
-    }
-
-    .no-reviews i {
-        display: block;
-        font-size: 32px;
-        margin-bottom: 12px;
-        opacity: 0.5;
-    }
-
-    /* Action buttons */
-    .action-section {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-top: 32px;
-        padding-top: 32px;
-        border-top: 1px solid var(--border);
-    }
-
-    .btn {
-        padding: 14px 24px;
-        border: none;
-        border-radius: 12px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-family: 'Poppins', sans-serif;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
-
-    .btn-secondary {
-        background-color: var(--light);
-        color: var(--dark);
-        border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-        background-color: #f3f4f6;
-        transform: translateY(-2px);
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
-        color: white;
-        box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(217, 119, 6, 0.4);
-    }
-
-    .btn-primary:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .detail-grid {
-            grid-template-columns: 1fr;
-            gap: 24px;
-        }
-
-        .detail-header h1 {
-            font-size: 22px;
-        }
-
-        .price-main {
-            font-size: 24px;
-        }
-
-        .main-image {
-            height: 300px;
-        }
-
-        .specs-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .action-section {
-            grid-template-columns: 1fr;
-        }
-
-        .thumb-gallery {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-    @media (max-width: 480px) {
-        .detail-container {
-            padding: 16px;
-            border-radius: 16px;
-        }
-
-        .detail-header {
-            margin-bottom: 20px;
-        }
-
-        .main-image {
-            height: 250px;
-        }
-
-        .header-info h1 {
-            font-size: 20px;
-        }
-
-        .price-main {
-            font-size: 20px;
-        }
-
-        .thumb-gallery {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
+:root {
+    --orange:      #f97316;
+    --orange-dark: #ea6c0a;
+    --orange-lt:   #fff7f0;
+    --orange-dim:  rgba(249,115,22,0.1);
+
+    --blue:        #0ea5e9;
+    --blue-lt:     #f0f9ff;
+
+    --green:       #16a34a;
+    --green-lt:    #f0fdf4;
+    --green-dim:   rgba(22,163,74,0.1);
+
+    --red:         #dc2626;
+    --red-lt:      #fff5f5;
+
+    --text:        #111827;
+    --text-2:      #374151;
+    --muted:       #6b7280;
+    --muted-lt:    #9ca3af;
+    --border:      #e5e7eb;
+    --border-med:  #d1d5db;
+    --bg:          #f3f4f6;
+    --surface:     #ffffff;
+
+    --r:     10px;
+    --r-sm:  6px;
+    --r-lg:  14px;
+    --r-xl:  20px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+footer, header, nav { display: none !important; }
+
+/* ══ TOP BAR ══════════════════════════════════ */
+.top-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    padding: 12px 16px;
+}
+
+.top-bar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.back-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    text-decoration: none;
+}
+.back-btn:hover { background: var(--bg); }
+
+.top-bar-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.2; }
+.top-bar-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.avail-tag {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    flex-shrink: 0;
+}
+.avail-tag.yes { background: var(--green-lt); color: var(--green); }
+.avail-tag.no  { background: var(--red-soft);   color: var(--red); }
+.avail-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* ══ PAGE LAYOUT ══════════════════════════════ */
+.page { max-width: 1120px; margin: 0 auto; padding: 24px 20px 120px; }
+
+/* Mobile: single column — Desktop: two cols */
+@media (min-width: 860px) {
+    .page { display: grid; grid-template-columns: 1fr 340px; gap: 24px; padding-bottom: 48px; align-items: start; }
+    .right-panel { position: sticky; top: 72px; display: flex; }
+}
+
+/* ══ SECTIONS (left col) ══════════════════════ */
+.col-left { display: flex; flex-direction: column; gap: 16px; }
+
+/* ── Card shell ── */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* ── Card section heading ── */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.card-header-icon {
+    width: 30px; height: 30px;
+    border-radius: var(--r-sm);
+    background: var(--orange-dim);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--orange-dark);
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.card-header-title { font-size: 13px; font-weight: 700; color: var(--text-2); }
+
+/* ══ IMAGE CARD ════════════════════════════════ */
+.img-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.img-stage {
+    background: var(--surface);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    min-height: 300px;
+    width: 100%;
+}
+
+.img-stage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.img-meta {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.car-name { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: .01em; }
+.car-sub  { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 500; }
+
+.quick-specs {
+    display: flex;
+    gap: 0;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.qs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+}
+
+.qs + .qs { border-left: 1px solid var(--border); }
+
+.qs-icon {
+    width: 28px; height: 28px;
+    border-radius: var(--r-sm);
+    background: var(--orange-dim);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--orange-dark);
+    font-size: 11px;
+}
+
+.qs-val { font-size: 12px; font-weight: 700; color: var(--text-2); }
+.qs-lbl { font-size: 10px; color: var(--muted); font-weight: 500; }
+
+/* Thumbnails */
+.thumb-row {
+    display: flex;
+    gap: 8px;
+    padding: 14px 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.thumb-row::-webkit-scrollbar { display: none; }
+
+.thumb {
+    width: 60px; height: 46px;
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color .15s, transform .15s;
+    background: var(--bg);
+}
+.thumb.active { border-color: var(--orange); }
+.thumb:hover  { transform: translateY(-2px); border-color: var(--orange-dark); }
+.thumb img    { width: 100%; height: 100%; object-fit: cover; }
+
+/* ══ INFO ROWS ═════════════════════════════════ */
+.info-rows {}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background .12s;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row:hover { background: #fafbfd; }
+
+.ir-icon {
+    width: 36px; height: 36px;
+    border-radius: var(--r);
+    background: var(--orange-dim);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--orange-dark);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.ir-body { flex: 1; min-width: 0; }
+.ir-label { font-size: 11px; color: var(--muted); font-weight: 500; margin-bottom: 2px; }
+.ir-value { font-size: 13px; font-weight: 700; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.ir-end { margin-left: auto; flex-shrink: 0; }
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--orange-soft);
+    color: var(--orange-deep);
+    border: 1px solid #fde68a;
+}
+
+/* ══ FACILITY LIST ══════════════════════════════ */
+.facility-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.fac-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    transition: background .12s;
+}
+
+.fac-item:nth-child(even) { border-right: none; }
+.fac-item:nth-last-child(-n+2) { border-bottom: none; }
+.fac-item:hover { background: #fafbfd; }
+
+.fac-icon {
+    width: 32px; height: 32px;
+    border-radius: var(--r-sm);
+    background: var(--orange-dim);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--orange-dark);
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.fac-text { font-size: 12px; font-weight: 600; color: var(--text-3); line-height: 1.35; }
+
+/* ══ SPECS GRID ════════════════════════════════ */
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.spec-cell {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    transition: background .12s;
+}
+
+.spec-cell:nth-child(3n) { border-right: none; }
+.spec-cell:nth-last-child(-n+3) { border-bottom: none; }
+.spec-cell:hover { background: #fafbfd; }
+
+.spec-icon {
+    width: 28px; height: 28px;
+    border-radius: var(--r-sm);
+    background: var(--orange-dim);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--orange-dark);
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.spec-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; margin-bottom: 3px; }
+.spec-val { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* ══ REVIEWS ═══════════════════════════════════ */
+.review-hero {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.rating-bubble {
+    width: 56px; height: 56px;
+    border-radius: var(--r-lg);
+    background: var(--orange);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+    letter-spacing: -.5px;
+}
+
+.rating-label  { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.rating-stars  { display: flex; gap: 2px; margin-bottom: 4px; }
+.star          { font-size: 12px; color: var(--orange); }
+.star.off      { color: var(--border); }
+.rating-count  { font-size: 11px; color: var(--muted); }
+
+.review-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background .12s;
+}
+.review-item:last-child { border-bottom: none; }
+.review-item:hover { background: #fafbfd; }
+
+.review-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.review-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--orange-dim);
+    border: 2px solid var(--orange-soft);
+    color: var(--orange-deep);
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+
+.reviewer-name { font-size: 12px; font-weight: 700; color: var(--text); }
+.reviewer-date { font-size: 10px; color: var(--muted-lt); margin-top: 1px; }
+.review-stars-sm { display: flex; gap: 1px; }
+.rs { font-size: 10px; color: var(--orange); }
+.rs.off { color: var(--border); }
+.review-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+.no-review {
+    text-align: center;
+    padding: 36px 20px;
+    color: var(--muted-lt);
+}
+.no-review i { font-size: 26px; margin-bottom: 8px; display: block; opacity: .5; }
+.no-review p { font-size: 13px; }
+
+/* ══ RIGHT PANEL ═══════════════════════════════ */
+.right-panel { display: none; flex-direction: column; gap: 14px; }
+
+@media (min-width: 860px) {
+    .right-panel { display: flex; }
+}
+
+.price-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.price-head {
+    background: var(--text);
+    padding: 22px 20px;
+}
+
+.ph-label { font-size: 10px; color: rgba(255,255,255,.55); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+
+.ph-total {
+    font-size: 30px; font-weight: 800; color: #fff; line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: -.5px;
+}
+
+.ph-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,.12);
+}
+
+.ph-breakdown { font-size: 12px; color: rgba(255,255,255,.65); font-weight: 500; }
+.ph-per       { font-size: 12px; color: var(--orange); font-weight: 700; }
+
+.price-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+
+.duration-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+}
+
+.ds-label { font-size: 11px; color: var(--muted); font-weight: 500; }
+.ds-val   { font-size: 13px; font-weight: 700; color: var(--text); }
+
+.btn-book {
+    width: 100%;
+    padding: 14px;
+    background: var(--orange);
+    color: var(--text);
+    border: none;
+    border-radius: var(--r-lg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    transition: background .15s, transform .12s;
+    text-decoration: none;
+    letter-spacing: .01em;
+}
+.btn-book:hover  { background: var(--orange-dark); transform: translateY(-1px); }
+.btn-book:active { transform: scale(.98); }
+.btn-book:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; transform: none; }
+
+.btn-back {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: var(--text-3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 7px;
+    transition: all .15s;
+}
+.btn-back:hover { border-color: var(--orange); color: var(--orange-deep); background: var(--orange-soft); }
+
+/* Guarantee pills */
+.guarantees {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+}
+
+.g-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.g-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--green-lt);
+    color: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    flex-shrink: 0;
+}
+
+/* ══ STICKY MOBILE BOTTOM ══════════════════════ */
+.mob-bottom {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 50;
+    box-shadow: 0 -4px 24px rgba(15,23,42,0.08);
+}
+
+.mob-price-lbl { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.mob-price-val { font-size: 20px; font-weight: 800; color: var(--text); line-height: 1; }
+.mob-price-per { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+.mob-btn {
+    flex-shrink: 0;
+    padding: 13px 24px;
+    background: var(--orange);
+    color: var(--text);
+    border: none;
+    border-radius: var(--r-lg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background .15s;
+}
+.mob-btn:hover { background: var(--orange-dark); }
+.mob-btn:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+
+@media (min-width: 860px) { .mob-bottom { display: none; } }
+
+/* ══ ANIMATIONS ════════════════════════════════ */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.col-left > *:nth-child(1) { animation: fadeUp .3s ease both; }
+.col-left > *:nth-child(2) { animation: fadeUp .3s ease .05s both; }
+.col-left > *:nth-child(3) { animation: fadeUp .3s ease .10s both; }
+.col-left > *:nth-child(4) { animation: fadeUp .3s ease .15s both; }
+.right-panel               { animation: fadeUp .3s ease .08s both; }
 </style>
 
-<div class="detail-container">
-    <!-- Header -->
-    <div class="detail-header">
-        <button class="back-btn" onclick="window.history.back()">
-            <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <div class="header-info">
-            <h1>{{ $car->brand }} {{ $car->name }}</h1>
-            <p>{{ $car->year }} • {{ $car->category }}</p>
+{{-- ── TOP BAR ─────────────────────────────── --}}
+<div class="top-bar">
+    <a class="back-btn" href="javascript:history.back()">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <div>
+        <div class="top-bar-title">{{ $car->brand }} {{ $car->name }}</div>
+        <div class="top-bar-sub">
+            {{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} – {{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}
+            · {{ $duration }} Hari · Lepas Kunci
         </div>
     </div>
+    <div class="avail-tag {{ $isAvailable ? 'yes' : 'no' }}">
+        <div class="avail-dot"></div>
+        {{ $isAvailable ? 'Tersedia' : 'Tidak Tersedia' }}
+    </div>
+</div>
 
-    <!-- Main content grid -->
-    <div class="detail-grid">
-        <!-- Left: Images -->
-        <div class="image-section">
-            <div class="main-image" id="mainImageContainer">
+{{-- ── PAGE ─────────────────────────────────── --}}
+<div class="page">
+
+    {{-- LEFT COLUMN --}}
+    <div class="col-left">
+
+        {{-- ── Image Card ── --}}
+        <div class="img-card">
+            <div class="img-meta">
+                <div class="car-name">{{ strtoupper($car->brand . ' ' . $car->name) }}</div>
+                <div class="car-sub">{{ $car->year }} · {{ $car->category }}</div>
+            </div>
+
+            <div class="img-stage">
                 @if($car->images->count() > 0)
-                    <img id="mainImage" src="{{ asset('storage/' . $car->images->first()->image_path) }}" alt="{{ $car->brand }} {{ $car->name }}">
+                    <img id="mainImg"
+                         src="{{ asset('storage/' . $car->images->first()->image_path) }}"
+                         alt="{{ $car->brand }} {{ $car->name }}">
                 @else
-                    <div style="color: white; text-align: center;">
-                        <i class="fa-solid fa-car" style="font-size: 64px; opacity: 0.3;"></i>
+                    <div style="opacity:.2;font-size:72px;color:var(--orange-dark)">
+                        <i class="fas fa-car"></i>
                     </div>
                 @endif
-                <div class="image-badge {{ !$isAvailable ? 'unavailable' : '' }}">
-                    {{ $isAvailable ? 'Tersedia' : 'Dipesan' }}
+            </div>
+
+            <div class="quick-specs">
+                <div class="qs">
+                    <div class="qs-icon"><i class="fas fa-users"></i></div>
+                    <div class="qs-val">{{ $car->seats ?? $car->number_of_seats ?? 6 }}</div>
+                    <div class="qs-lbl">Kursi</div>
+                </div>
+                <div class="qs">
+                    <div class="qs-icon"><i class="fas fa-cogs"></i></div>
+                    <div class="qs-val">{{ ucfirst($car->transmission ?? 'Auto') }}</div>
+                    <div class="qs-lbl">Transmisi</div>
+                </div>
+                <div class="qs">
+                    <div class="qs-icon"><i class="fas fa-gas-pump"></i></div>
+                    <div class="qs-val">{{ ucfirst($car->fuel_type ?? 'Bensin') }}</div>
+                    <div class="qs-lbl">BBM</div>
+                </div>
+                <div class="qs">
+                    <div class="qs-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="qs-val">Inkl.</div>
+                    <div class="qs-lbl">Asuransi</div>
                 </div>
             </div>
 
             @if($car->images->count() > 1)
-            <div class="thumb-gallery">
-                @foreach($car->images as $index => $image)
-                <div class="thumb {{ $index === 0 ? 'active' : '' }}" onclick="changeMainImage('{{ asset('storage/' . $image->image_path) }}', this)">
-                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="Thumb {{ $index + 1 }}">
+            <div class="thumb-row">
+                @foreach($car->images as $i => $img)
+                <div class="thumb {{ $i === 0 ? 'active' : '' }}"
+                     onclick="switchImg('{{ asset('storage/'.$img->image_path) }}', this)">
+                    <img src="{{ asset('storage/'.$img->image_path) }}" alt="foto {{ $i+1 }}">
                 </div>
                 @endforeach
             </div>
             @endif
         </div>
 
-        <!-- Right: Info -->
-        <div class="info-section">
-            <!-- Price Card -->
-            <div class="price-card">
-                <div class="price-label">Total Rental</div>
-                <div class="price-main" id="totalPrice">
-                    Rp {{ number_format($dailyPrice * $duration, 0, ',', '.') }}
-                </div>
-                <div class="price-breakdown">
-                    <span>
-                        <span class="price-duration">
-                            <span id="durationDays">{{ $duration }}</span>
-                            <span>hari</span>
-                        </span>
-                    </span>
-                    <span>@ Rp {{ number_format($dailyPrice, 0, ',', '.') }}/hari</span>
-                </div>
+        {{-- ── Rental Info ── --}}
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="card-header-title">Detail Sewa</div>
             </div>
-
-            <!-- Specs -->
-            <div class="specs-card">
-                <div class="specs-title">Spesifikasi Mobil</div>
-                <div class="specs-grid">
-                    <div class="spec-item">
-                        <div class="spec-icon">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
-                        <div class="spec-content">
-                            <div class="spec-label">Kapasitas</div>
-                            <div class="spec-value">{{ $car->seats }} Penumpang</div>
+            <div class="info-rows">
+                <div class="info-row">
+                    <div class="ir-icon"><i class="fas fa-car"></i></div>
+                    <div class="ir-body">
+                        <div class="ir-label">Tipe Sewa</div>
+                        <div class="ir-value">Rental Harian</div>
+                    </div>
+                    <div class="ir-end"><div class="chip"><i class="fas fa-key"></i> Lepas Kunci</div></div>
+                </div>
+                <div class="info-row">
+                    <div class="ir-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="ir-body">
+                        <div class="ir-label">Periode Sewa</div>
+                        <div class="ir-value">
+                            {{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} – {{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}
                         </div>
                     </div>
-                    <div class="spec-item">
-                        <div class="spec-icon">
-                            <i class="fa-solid fa-cogs"></i>
-                        </div>
-                        <div class="spec-content">
-                            <div class="spec-label">Transmisi</div>
-                            <div class="spec-value">{{ ucfirst($car->transmission) }}</div>
-                        </div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-icon">
-                            <i class="fa-solid fa-gas-pump"></i>
-                        </div>
-                        <div class="spec-content">
-                            <div class="spec-label">Bahan Bakar</div>
-                            <div class="spec-value">{{ ucfirst($car->fuel_type) }}</div>
-                        </div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-icon">
-                            <i class="fa-solid fa-number"></i>
-                        </div>
-                        <div class="spec-content">
-                            <div class="spec-label">Plat Nomor</div>
-                            <div class="spec-value">{{ $car->plate_number }}</div>
-                        </div>
+                    <div class="ir-end"><div class="chip">{{ $duration }} Hari</div></div>
+                </div>
+                <div class="info-row">
+                    <div class="ir-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="ir-body">
+                        <div class="ir-label">Lokasi Pengambilan</div>
+                        <div class="ir-value">Sesuai Kesepakatan</div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Reviews -->
-            <div class="reviews-section">
-                <div class="reviews-header">
-                    <div class="review-rating-badge">
-                        {{ number_format($averageRating, 1) }}
-                    </div>
-                    <div class="reviews-info">
-                        <h3>Rating & Review</h3>
-                        <p>{{ $reviewCount }} ulasan</p>
-                    </div>
-                </div>
-
-                @if($reviews->count() > 0)
-                <div class="review-list" id="reviewList">
-                    @foreach($reviews->take(3) as $review)
-                    <div class="review-item">
-                        <div class="review-header">
-                            <div class="reviewer-name">{{ $review->user->name ?? 'Anonymous' }}</div>
-                            <div class="review-rating">
-                                @for($i = 0; $i < $review->rating; $i++)
-                                <span class="star">★</span>
-                                @endfor
-                                @for($i = $review->rating; $i < 5; $i++)
-                                <span class="star" style="opacity: 0.3;">★</span>
-                                @endfor
-                            </div>
-                        </div>
-                        <div class="review-comment">{{ $review->comment }}</div>
-                        <div class="review-date">{{ $review->created_at->format('d M Y') }}</div>
-                    </div>
-                    @endforeach
-                </div>
-                @else
-                <div class="no-reviews">
-                    <i class="fa-solid fa-star"></i>
-                    <p>Belum ada ulasan untuk mobil ini</p>
-                </div>
-                @endif
             </div>
         </div>
+
+        {{-- ── Fasilitas ── --}}
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-icon"><i class="fas fa-star"></i></div>
+                <div class="card-header-title">Fasilitas & Keuntungan</div>
+            </div>
+            <div class="facility-grid">
+                <div class="fac-item">
+                    <div class="fac-icon"><i class="fas fa-headset"></i></div>
+                    <div class="fac-text">Layanan darurat<br>24 jam</div>
+                </div>
+                <div class="fac-item">
+                    <div class="fac-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="fac-text">Asuransi<br>comprehensive</div>
+                </div>
+                <div class="fac-item">
+                    <div class="fac-icon"><i class="fas fa-undo-alt"></i></div>
+                    <div class="fac-text">Refund<br>(ketentuan berlaku)</div>
+                </div>
+                <div class="fac-item">
+                    <div class="fac-icon"><i class="fas fa-car-side"></i></div>
+                    <div class="fac-text">Mobil pengganti<br>jika dibutuhkan</div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ── Spesifikasi ── --}}
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-icon"><i class="fas fa-cogs"></i></div>
+                <div class="card-header-title">Spesifikasi Kendaraan</div>
+            </div>
+            <div class="specs-grid">
+                <div class="spec-cell">
+                    <div class="spec-icon"><i class="fas fa-users"></i></div>
+                    <div class="spec-lbl">Kapasitas</div>
+                    <div class="spec-val">{{ $car->seats ?? $car->number_of_seats ?? '—' }} Kursi</div>
+                </div>
+                <div class="spec-cell">
+                    <div class="spec-icon"><i class="fas fa-cogs"></i></div>
+                    <div class="spec-lbl">Transmisi</div>
+                    <div class="spec-val">{{ ucfirst($car->transmission ?? 'Automatic') }}</div>
+                </div>
+                <div class="spec-cell">
+                    <div class="spec-icon"><i class="fas fa-gas-pump"></i></div>
+                    <div class="spec-lbl">Bahan Bakar</div>
+                    <div class="spec-val">{{ ucfirst($car->fuel_type ?? 'Bensin') }}</div>
+                </div>
+                <div class="spec-cell">
+                    <div class="spec-icon"><i class="fas fa-id-card"></i></div>
+                    <div class="spec-lbl">Plat Nomor</div>
+                    <div class="spec-val">{{ $car->plate_number ?? $car->car_plate ?? '—' }}</div>
+                </div>
+                <div class="spec-cell">
+                    <div class="spec-icon"><i class="fas fa-calendar"></i></div>
+                    <div class="spec-lbl">Tahun</div>
+                    <div class="spec-val">{{ $car->year ?? '—' }}</div>
+                </div>
+                <div class="spec-cell">
+                    <div class="spec-icon"><i class="fas fa-tag"></i></div>
+                    <div class="spec-lbl">Kategori</div>
+                    <div class="spec-val">{{ $car->category ?? '—' }}</div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ── Reviews ── --}}
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-icon"><i class="fas fa-star"></i></div>
+                <div class="card-header-title">Rating & Ulasan</div>
+            </div>
+
+            <div class="review-hero">
+                <div class="rating-bubble">{{ number_format($averageRating ?? 4.8, 1) }}</div>
+                <div>
+                    <div class="rating-label">Rating Keseluruhan</div>
+                    <div class="rating-stars">
+                        @for($i = 1; $i <= 5; $i++)
+                            <i class="fas fa-star star {{ $i <= round($averageRating ?? 5) ? '' : 'off' }}"></i>
+                        @endfor
+                    </div>
+                    <div class="rating-count">{{ $reviewCount ?? 0 }} ulasan</div>
+                </div>
+            </div>
+
+            @if(isset($reviews) && $reviews->count() > 0)
+                @foreach($reviews->take(3) as $review)
+                <div class="review-item">
+                    <div class="review-header">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <div class="review-avatar">{{ strtoupper(substr($review->user->name ?? 'A', 0, 1)) }}</div>
+                            <div>
+                                <div class="reviewer-name">{{ $review->user->name ?? 'Anonymous' }}</div>
+                                <div class="reviewer-date">{{ $review->created_at->format('d M Y') }}</div>
+                            </div>
+                        </div>
+                        <div class="review-stars-sm">
+                            @for($i = 1; $i <= 5; $i++)
+                                <i class="fas fa-star rs {{ $i <= $review->rating ? '' : 'off' }}"></i>
+                            @endfor
+                        </div>
+                    </div>
+                    <div class="review-body">{{ $review->comment }}</div>
+                </div>
+                @endforeach
+            @else
+                <div class="no-review">
+                    <i class="far fa-star"></i>
+                    <p>Belum ada ulasan untuk kendaraan ini</p>
+                </div>
+            @endif
+        </div>
+
+    </div>{{-- /col-left --}}
+
+    {{-- RIGHT PANEL --}}
+    <div class="right-panel">
+
+        <div class="price-card">
+            <div class="price-head">
+                <div class="ph-label">Total Pembayaran</div>
+                <div class="ph-total">Rp {{ number_format(($dailyPrice ?? 0) * ($duration ?? 1), 0, ',', '.') }}</div>
+                <div class="ph-row">
+                    <div class="ph-breakdown">{{ $duration ?? 1 }} hari × Rp {{ number_format($dailyPrice ?? 0, 0, ',', '.') }}</div>
+                    <div class="ph-per">per hari</div>
+                </div>
+            </div>
+
+            <div class="price-body">
+
+                <div class="duration-strip">
+                    <div>
+                        <div class="ds-label">Mulai</div>
+                        <div class="ds-val">{{ \Carbon\Carbon::parse($startDate)->format('d M Y') }}</div>
+                    </div>
+                    <i class="fas fa-arrow-right" style="color:var(--muted);font-size:12px"></i>
+                    <div style="text-align:right">
+                        <div class="ds-label">Selesai</div>
+                        <div class="ds-val">{{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}</div>
+                    </div>
+                </div>
+
+                @if($isAvailable)
+                <form method="GET" action="{{ route('bookings.create') }}">
+                    <input type="hidden" name="car"        value="{{ $car->id }}">
+                    <input type="hidden" name="start_date" value="{{ $startDate }}">
+                    <input type="hidden" name="end_date"   value="{{ $endDate }}">
+                    <button type="submit" class="btn-book">
+                        <i class="fas fa-check-circle"></i> Pesan Sekarang
+                    </button>
+                </form>
+                @else
+                <button class="btn-book" disabled>
+                    <i class="fas fa-ban"></i> Tidak Tersedia
+                </button>
+                @endif
+
+                <button class="btn-back" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </button>
+            </div>
+
+            <div class="guarantees">
+                <div class="g-item">
+                    <div class="g-dot"><i class="fas fa-check"></i></div>
+                    Pembatalan gratis (T&C berlaku)
+                </div>
+                <div class="g-item">
+                    <div class="g-dot"><i class="fas fa-check"></i></div>
+                    Asuransi comprehensive inklusif
+                </div>
+                <div class="g-item">
+                    <div class="g-dot"><i class="fas fa-check"></i></div>
+                    Dukungan 24 jam non-stop
+                </div>
+            </div>
+        </div>
+
+    </div>{{-- /right-panel --}}
+
+</div>{{-- /page --}}
+
+{{-- ── MOBILE STICKY BOTTOM ──────────────────── --}}
+<div class="mob-bottom">
+    <div style="flex:1;min-width:0">
+        <div class="mob-price-lbl">Total</div>
+        <div class="mob-price-val">Rp {{ number_format(($dailyPrice ?? 0) * ($duration ?? 1), 0, ',', '.') }}</div>
+        <div class="mob-price-per">{{ $duration }} hari · Rp {{ number_format($dailyPrice ?? 0, 0, ',', '.') }}/hari</div>
     </div>
 
-    <!-- Action buttons -->
-    <div class="action-section">
-        <button class="btn btn-secondary" onclick="window.history.back()">
-            <i class="fa-solid fa-arrow-left"></i> Kembali
+    @if($isAvailable)
+    <form method="GET" action="{{ route('bookings.create') }}">
+        <input type="hidden" name="car"        value="{{ $car->id }}">
+        <input type="hidden" name="start_date" value="{{ $startDate }}">
+        <input type="hidden" name="end_date"   value="{{ $endDate }}">
+        <button type="submit" class="mob-btn">
+            <i class="fas fa-check-circle"></i> Pesan
         </button>
-        <form id="proceedForm" method="GET" action="{{ route('bookings.create') }}" style="width: 100%;">
-            <input type="hidden" name="car" value="{{ $car->id }}">
-            <input type="hidden" name="start_date" value="{{ $startDate }}">
-            <input type="hidden" name="end_date" value="{{ $endDate }}">
-            <button type="submit" class="btn btn-primary" {{ !$isAvailable ? 'disabled' : '' }} style="width: 100%;">
-                <i class="fa-solid fa-check"></i> Lanjut ke Pemesanan
-            </button>
-        </form>
-    </div>
+    </form>
+    @else
+    <button class="mob-btn" disabled>
+        <i class="fas fa-ban"></i> Tidak Tersedia
+    </button>
+    @endif
 </div>
 
 <script>
-    function changeMainImage(imageSrc, element) {
-        document.getElementById('mainImage').src = imageSrc;
-        document.querySelectorAll('.thumb').forEach(thumb => thumb.classList.remove('active'));
-        element.classList.add('active');
-    }
+function switchImg(src, el) {
+    const img = document.getElementById('mainImg');
+    if (!img) return;
+    img.style.transition = 'opacity .18s, transform .18s';
+    img.style.opacity = '0';
+    img.style.transform = 'scale(.95)';
+    setTimeout(() => {
+        img.src = src;
+        img.style.opacity = '1';
+        img.style.transform = 'scale(1)';
+    }, 180);
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}
 </script>
+
 </x-app-layout>
+
+
+
