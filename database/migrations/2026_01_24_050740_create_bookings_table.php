@@ -22,11 +22,19 @@ return new class extends Migration
             $table->dateTime('start_datetime');
             $table->dateTime('end_datetime');
             $table->string('destination')->nullable();
+            $table->string('contact')->nullable();
+            $table->string('alamat')->nullable();
 
             $table->decimal('dp_amount', 12, 2)->default(0);
             $table->decimal('total_price', 12, 2)->default(0);
 
-            $table->enum('status', ['pending', 'confirmed', 'running', 'completed', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'confirmed', 'running', 'completed', 'cancelled', 'waiting_penalty', 'waiting_payment', 'expired', 'waiting_cancellation'])->default('pending');
+
+            // Cancellation fields
+            $table->text('cancellation_reason')->nullable();
+            $table->timestamp('cancellation_requested_at')->nullable();
+            $table->foreignId('cancellation_approved_by')->nullable()->constrained('users')->nullOnDelete();
+
             $table->timestamps();
         });
     }

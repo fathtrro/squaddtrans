@@ -33,12 +33,12 @@
                 </a>
 
                 {{-- Unit Armada --}}
-                <a href="/cars" class="relative text-sm font-medium transition-all duration-300
+                {{-- <a href="/cars" class="relative text-sm font-medium transition-all duration-300
                     {{ trim($current,'/') == 'cars' ? 'text-yellow-600' : 'text-gray-700' }}
                     hover:text-yellow-600 group">
                     Unit Armada
                     <span class="absolute -bottom-1 left-0 w-0 h-[2px] bg-yellow-500 rounded-full transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                </a> --}}
 
                 {{-- Dropdown: Informasi --}}
                 @php
@@ -236,7 +236,7 @@
                 @php
                 $mobileNav = [
                     '/'           => ['label' => 'Beranda',           'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>'],
-                    '/cars'       => ['label' => 'Unit Armada',        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 17h8M3 10l2-4h14l2 4M3 10h18v6H3v-6z"/>'],
+                    // '/cars'       => ['label' => 'Unit Armada',        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 17h8M3 10l2-4h14l2 4M3 10h18v6H3v-6z"/>'],
                     '/tentang'    => ['label' => 'Tentang Kami',       'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
                     '/blog'       => ['label' => 'Blog & Artikel',     'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2zM9 14h6M9 10h4"/>'],
                     '/contact-us' => ['label' => 'Hubungi Kami',       'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'],

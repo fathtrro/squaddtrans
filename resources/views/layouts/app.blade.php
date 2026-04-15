@@ -39,12 +39,23 @@
         </div>
         @include('layouts.footer')
 
+        @include('components.terms-modal')
+
         <!-- Owl Carousel JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
         <script>
 
             document.addEventListener('DOMContentLoaded', function() {
+                // Show terms modal only after successful login/register
+                @if(session('showTermsModal'))
+                    // Reset session flag so modal can be shown
+                    sessionStorage.removeItem('termsAgreedThisSession');
+                    setTimeout(() => {
+                        window.showTermsModal?.();
+                    }, 500);
+                @endif
+
                 $('.reviews-carousel').owlCarousel({
                     loop: true,
                     margin: 20,

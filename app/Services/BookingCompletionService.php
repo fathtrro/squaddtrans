@@ -4,11 +4,13 @@ namespace App\Services;
 
 use App\Models\Booking;
 use App\Models\Payment;
+use App\Traits\SendsWhatsAppNotifications;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
 class BookingCompletionService
 {
+    use SendsWhatsAppNotifications;
     /**
      * Complete a booking
      * Check all requirements and set status to completed
@@ -35,6 +37,57 @@ class BookingCompletionService
 
                 // Generate final report
                 $report = $this->generateFinalReport($booking);
+
+                // Send WhatsApp completion notification to user
+                try {
+                    $userPhone = $booking->contact ?? $booking->user->phone;
+                    if ($userPhone) {
+                        $totalCost = $report['payment']['total_price_final'];
+                        $completionMessage = "🎉 *Proses Rental Mobil Selesai!*\n\n" .
+                            "Halo " . ($booking->user->name ?? 'Pelanggan') . ",\n\n" .
+                            "Proses rental mobil Anda telah selesai dengan sempurna. Terima kasih telah menggunakan layanan kami!\n\n" .
+                            "📋 *Ringkasan Transaksi:*\n" .
+                            "🔖 Kode Booking: *" . $booking->booking_code . "*\n" .
+                            "🚗 Kendaraan: " . $booking->car->name . "\n" .
+                            "📅 Tanggal: " . $booking->start_datetime->format('d M Y') . " - " . $booking->end_datetime->format('d M Y') . "\n" .
+                            "⏱️ Durasi: " . $booking->duration_in_days . " hari\n\n" .
+                            "💳 *Rincian Biaya:*\n" .
+                            "• Total Biaya Sewa: Rp " . number_format($report['payment']['booking_price'], 0, ',', '.') . "\n" .
+                            "• Total Terbayar: Rp " . number_format($report['payment']['total_paid'], 0, ',', '.') . "\n";
+
+                        if ($report['payment']['penalty_paid'] > 0) {
+                            $completionMessage .= "• Denda: Rp " . number_format($report['payment']['penalty_paid'], 0, ',', '.') . "\n";
+                        }
+
+                        $completionMessage .= "\n✅ *Status: SELESAI*\n\n" .
+                            "📝 Terima kasih telah percaya pada kami. Kami berharap Anda puas dengan layanan kami.\n\n" .
+                            "⭐ Jika Anda puas, mohon tinggalkan ulasan di aplikasi kami.\n" .
+                            "📞 Jika ada pertanyaan atau masukan, hubungi kami: " . env('ADMIN_PHONE', '+62 812-3328-3578') . "\n\n" .
+                            "Semoga perjalanan Anda menyenangkan! 🙏";
+
+                        $this->sendFonnteWhatsApp($userPhone, $completionMessage);
+                    }
+                } catch (\Throwable $e) {
+                    logger()->warning('Failed to send WhatsApp completion to user: ' . $e->getMessage());
+                }
+
+                // Send WhatsApp notification to admin
+                try {
+                    $adminPhone = env('ADMIN_PHONE');
+                    if ($adminPhone) {
+                        $adminMessage = "✅ *Booking Selesai*\n\n" .
+                            "Booking Code: *" . $booking->booking_code . "*\n" .
+                            "Pelanggan: " . ($booking->user->name ?? 'N/A') . "\n" .
+                            "Kendaraan: " . $booking->car->name . "\n" .
+                            "Total Biaya: Rp " . number_format($report['payment']['total_price_final'], 0, ',', '.') . "\n" .
+                            "Total Terbayar: Rp " . number_format($report['payment']['total_paid'], 0, ',', '.') . "\n\n" .
+                            "Status: Booking sudah ditandai selesai di sistem.";
+
+                        $this->sendFonnteWhatsApp($adminPhone, $adminMessage);
+                    }
+                } catch (\Throwable $e) {
+                    logger()->warning('Failed to send WhatsApp completion to admin: ' . $e->getMessage());
+                }
 
                 return [
                     'success' => true,

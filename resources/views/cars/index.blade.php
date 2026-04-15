@@ -506,7 +506,7 @@
             .meta-pill-mobile { display: none; }
         }
 
-      
+
         .meta-pill-mobile .pill-icon i {
             font-size: 9px;
             color: #fff;
@@ -625,7 +625,7 @@
 
         {{-- ─── FILTER BAR ─────────────────────── --}}
         <div class="filter-bar">
-            <form method="GET" action="{{ route('cars.index') }}" id="filterForm">
+            <form method="GET" action="{{ route('dashboard') }}" id="filterForm">
 
                 <input type="hidden" name="category"     id="inp_category"     value="{{ request('category','all') }}">
                 <input type="hidden" name="transmission" id="inp_transmission" value="{{ request('transmission','') }}">

@@ -580,7 +580,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
                     <span class="value">Lepas Kunci</span>
                 </div>
             </div>
-            <a href="{{ route('cars.show', $car->id) }}" class="recap-change-link">
+            <a href="/bookings/select-car?start_date={{ request('start_date') ?? ($startDate ? \Carbon\Carbon::parse($startDate)->format('Y-m-d') : '') }}&end_date={{ request('end_date') ?? ($endDate ? \Carbon\Carbon::parse($endDate)->format('Y-m-d') : '') }}" class="recap-change-link">
                 <i class="fa-solid fa-pen-to-square"></i> Ganti Mobil
             </a>
         </div>
@@ -727,7 +727,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
 
                 <!-- STEP 2 – Pembayaran -->
                 <div class="step-panel" data-step="2">
-                    <div class="field">
+                    <div class="field" style="display: none;">
                         <label class="field-label"><i><i class="fa-solid fa-wallet" style="font-size:0.6rem;"></i></i> Metode Pembayaran</label>
                         <div class="card-radio-grid" id="paymentGrid">
                             <label class="card-radio selected" data-value="transfer">
@@ -1220,56 +1220,11 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         return opt ? opt.text : '–';
     }
 
-    function buildWhatsAppBookingMessage() {
-        const destination   = document.querySelector('input[name="destination"]').value || '-';
-        const guaranteeType = document.querySelector('input[name="guarantee_type"]:checked').value || '-';
-        const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value || '-';
-        const bankText      = bankSelect.value ? getSelectedOptionText(bankSelect) : '-';
-        const proofFileName = proofFile.files.length ? proofFile.files[0].name : 'Tidak ada';
-
-        const formatDate = (val) => {
-            if (!val) return '-';
-            const d = new Date(val);
-            return d.toLocaleDateString('id-ID', { weekday:'short', day:'numeric', month:'short', year:'numeric' }) + ' ' + d.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
-        };
-
-        const startText = formatDate(startInput.value);
-        const endText   = formatDate(endInput.value);
-        const durText   = durationMode === '12' ? '12 Jam' : `${days} Hari`;
-
-        const dpValue = Number(dpInput.value) || 0;
-
-        return `Halo Admin, saya ingin melakukan booking mobil:\n` +
-               `- Mobil: ${CAR_NAME} (Lepas Kunci)\n` +
-               `- Tanggal Mulai: ${startText}\n` +
-               `- Tanggal Selesai: ${endText}\n` +
-               `- Durasi: ${durText}\n` +
-               `- Tujuan: ${destination}\n` +
-               `- Kontak: ${contactInput.value || '-'}\n` +
-               `- Alamat: ${alamatInput.value || '-'}\n` +
-               `- Jaminan: ${guaranteeType.toUpperCase()}\n` +
-               `- Dokumen Jaminan: ${docFile.files.length ? docFile.files[0].name : 'Belum diupload'}\n` +
-               `- Metode Pembayaran: ${paymentMethod === 'transfer' ? 'Transfer Bank' : paymentMethod}\n` +
-               `- Bank Tujuan: ${bankText}\n` +
-               `- Total Harga: Rp ${totalPrice.toLocaleString('id-ID')}\n` +
-               `- DP Dibayar: Rp ${dpValue.toLocaleString('id-ID')}\n` +
-               `- Bukti Transfer: ${proofFileName}\n\n` +
-               `Upload Dokumen Jaminan\n` +
-               `Upload Bukti Pembayaran\n\n` +
-               `Jika sudah, kembali ke website untuk menyelesaikan booking. Terima kasih!`;
-    }
-
-    function sendWhatsAppMessage() {
-        const baseNumber = '6287739904530';
-        const text = buildWhatsAppBookingMessage();
-        const url = `https://wa.me/${baseNumber}?text=${encodeURIComponent(text)}`;
-        window.open(url, '_blank');
-    }
+    // WhatsApp API notifications now handled by backend (Fonnte)
 
     document.getElementById('confirmSubmit').addEventListener('click', () => {
         clearDraft();
         closeConfirm();
-        sendWhatsAppMessage();
         document.getElementById('loadingOverlay').classList.add('active');
         setTimeout(() => {
             document.getElementById('bookingForm').submit();

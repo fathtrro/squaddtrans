@@ -7,7 +7,7 @@
 
     {{-- Tailwind --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -132,6 +132,8 @@
 
 </div>
 
+@include('components.terms-modal')
+
 <!-- JavaScript for Sidebar Toggle -->
 <script>
     function toggleSidebar() {
@@ -147,6 +149,15 @@
 
     // Close sidebar when clicking on a link (mobile only)
     document.addEventListener('DOMContentLoaded', function() {
+        // Show terms modal only after successful login/register
+        @if(session('showTermsModal'))
+            // Reset session flag so modal can be shown
+            sessionStorage.removeItem('termsAgreedThisSession');
+            setTimeout(() => {
+                window.showTermsModal?.();
+            }, 500);
+        @endif
+
         const sidebarLinks = document.querySelectorAll('#sidebar a');
 
         sidebarLinks.forEach(link => {

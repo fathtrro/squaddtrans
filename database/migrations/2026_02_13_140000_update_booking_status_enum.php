@@ -16,7 +16,7 @@ return new class extends Migration
     {
         // For MySQL
         if (DB::connection()->getDriverName() === 'mysql') {
-            DB::statement("ALTER TABLE bookings MODIFY status ENUM('pending', 'approved', 'rejected', 'confirmed', 'running', 'completed', 'cancelled', 'waiting_penalty', 'waiting_payment', 'expired') DEFAULT 'pending'");
+            DB::statement("ALTER TABLE bookings MODIFY status ENUM('pending', 'approved', 'rejected', 'confirmed', 'running', 'completed', 'cancelled', 'waiting_penalty', 'waiting_payment', 'expired', 'waiting_cancellation') DEFAULT 'pending'");
         }
 
         // For SQLite (during testing)
@@ -30,7 +30,7 @@ return new class extends Migration
     public function down(): void
     {
         if (DB::connection()->getDriverName() === 'mysql') {
-            DB::statement("ALTER TABLE bookings MODIFY status ENUM('pending', 'confirmed', 'running', 'completed', 'cancelled') DEFAULT 'pending'");
+            DB::statement("ALTER TABLE bookings MODIFY status ENUM('pending', 'approved', 'rejected', 'confirmed', 'running', 'completed', 'cancelled', 'waiting_penalty', 'waiting_payment', 'expired', 'waiting_cancellation') DEFAULT 'pending'");
         }
     }
 };

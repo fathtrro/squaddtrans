@@ -184,11 +184,22 @@
                     <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition-colors">
                         <input type="file" name="proof_image" id="proof_image" accept="image/*"
                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                        <div class="text-center">
+                        <div class="text-center" id="uploadPlaceholder">
                             <svg class="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
                             <p class="mt-1 text-xs text-gray-600">Upload bukti pembayaran</p>
+                        </div>
+                    </div>
+                    <!-- Image Preview -->
+                    <div id="imagePreviewContainer" class="hidden mt-4">
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                            <p class="text-sm font-medium text-gray-700 mb-3">Preview Bukti Pembayaran:</p>
+                            <img id="imagePreview" class="max-w-xs h-auto rounded-lg border border-gray-300" alt="Preview">
+                            <button type="button" onclick="removeImagePreview()"
+                                class="mt-3 px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors font-medium">
+                                Hapus Gambar
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -215,11 +226,63 @@ function openApprovalModal(penaltyId, penaltyType, penaltyAmount) {
     document.getElementById('penaltyAmountDisplay').textContent = penaltyAmount;
     document.getElementById('approvalForm').action = `/admin/penalty/${penaltyId}/approve`;
     document.getElementById('approvalModal').classList.remove('hidden');
+
+    // Reset form and image preview when opening modal
+    document.getElementById('approvalForm').reset();
+    removeImagePreview();
 }
 
 function closeApprovalModal() {
     document.getElementById('approvalModal').classList.add('hidden');
+    removeImagePreview();
 }
+
+function removeImagePreview() {
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const fileInput = document.getElementById('proof_image');
+
+    previewContainer.classList.add('hidden');
+    uploadPlaceholder.style.display = 'block';
+    fileInput.value = '';
+}
+
+// Handle image preview
+document.getElementById('proof_image').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+        // Check file type
+        if (!file.type.startsWith('image/')) {
+            alert('Mohon pilih file gambar yang valid');
+            this.value = '';
+            removeImagePreview();
+            return;
+        }
+
+        // Check file size (max 5MB)
+        const maxSize = 5 * 1024 * 1024;
+        if (file.size > maxSize) {
+            alert('Ukuran file tidak boleh lebih dari 5MB');
+            this.value = '';
+            removeImagePreview();
+            return;
+        }
+
+        // Read and display image
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+
+            uploadPlaceholder.style.display = 'none';
+            imagePreview.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+});
 
 document.getElementById('payment_method').addEventListener('change', function() {
     const bankField = document.getElementById('bank_id').parentElement;

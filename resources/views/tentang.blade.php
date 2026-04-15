@@ -691,7 +691,7 @@
                     <p class="tn-cta-sub">Bergabung bersama 15.000+ pelanggan yang telah mempercayai SquadTrans.</p>
                 </div>
                 <div class="tn-cta-btns">
-                    <a href="{{ route('cars.index') }}" class="tn-btn tn-btn-amber">
+                    <a href="{{ route('dashboard') }}" class="tn-btn tn-btn-amber">
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17H5a2 2 0 01-2-2V5a2 2 0 012-2h11l4 4v10a2 2 0 01-2 2h-1"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
                         Lihat Armada
                     </a>

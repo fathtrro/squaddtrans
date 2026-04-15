@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Traits;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Http;
 
-abstract class Controller
+trait SendsWhatsAppNotifications
 {
-    use AuthorizesRequests;
-
     /**
-     * Send WhatsApp notification via Fonnte API (best effort, no throw)
+     * Send WhatsApp notification via Fonnte API
      */
     protected function sendFonnteWhatsApp(?string $target, string $message): void
     {
@@ -43,15 +40,14 @@ abstract class Controller
                     'typing' => 'false',
                     'schedule' => '0',
                 ]);
-            
-            // Log response
+
             if ($response->successful()) {
-                logger()->info('Fonnte message sent successfully to: ' . $phoneClean);
+                logger()->info('Fonnte message sent to: ' . $phoneClean);
             } else {
-                logger()->warning('Fonnte API error for ' . $phoneClean . ': ' . $response->status() . ' - ' . $response->body());
+                logger()->warning('Fonnte API error for ' . $phoneClean . ': ' . $response->status());
             }
         } catch (\Throwable $e) {
-            logger()->warning('Fonnte notification error for ' . $phoneClean . ': ' . $e->getMessage());
+            logger()->warning('Fonnte error: ' . $e->getMessage());
         }
     }
 }

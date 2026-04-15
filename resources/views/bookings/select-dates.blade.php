@@ -381,6 +381,38 @@
 
             <!-- Form Body -->
             <div class="select-dates-form-body">
+                @if($activeBooking)
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-red-800">Booking Aktif Terdeteksi</h3>
+                                <p class="text-red-700 mt-1">Anda memiliki booking aktif dengan kode <strong>{{ $activeBooking->booking_code }}</strong>. Silakan selesaikan atau batalkan booking tersebut sebelum membuat booking baru.</p>
+                                <a href="{{ route('bookings.show', $activeBooking->id) }}" class="inline-block mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium">
+                                    Lihat Booking Aktif
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        // Disable date selection if user has active booking
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const startDateInput = document.getElementById('startDate');
+                            const endDateInput = document.getElementById('endDate');
+                            const submitBtn = document.querySelector('[type="submit"]') || document.querySelector('.select-dates-submit');
+
+                            if (startDateInput) startDateInput.disabled = true;
+                            if (endDateInput) endDateInput.disabled = true;
+                            if (submitBtn) submitBtn.disabled = true;
+                        });
+                    </script>
+                @endif
+
                 <form id="dateForm">
                     <!-- Date Inputs Grid -->
                     <div class="select-dates-grid">
@@ -436,7 +468,7 @@
 
                     <!-- Buttons -->
                     <div class="select-dates-button-group">
-                        <a href="{{ route('cars.index') }}" class="select-dates-btn select-dates-btn-secondary">
+                        <a href="{{ route('dashboard') }}" class="select-dates-btn select-dates-btn-secondary">
                             <i class="fas fa-undo"></i> Kembali
                         </a>
                         <button type="submit" class="select-dates-btn select-dates-btn-primary" id="submitBtn">

@@ -37,6 +37,23 @@
                 </p>
             </div>
 
+            <!-- Error Alert -->
+            @if($errors->any())
+                <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div class="flex items-start gap-3">
+                        <i class="bi bi-exclamation-circle text-red-600 text-xl mt-0.5"></i>
+                        <div>
+                            <h3 class="text-red-800 font-semibold text-sm mb-2">Registrasi Gagal</h3>
+                            <ul class="text-red-700 text-sm space-y-1">
+                                @foreach($errors->all() as $error)
+                                    <li>• {{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <!-- FORM -->
             <form method="POST" action="{{ route('register') }}" class="space-y-4">
 @csrf
@@ -72,18 +89,28 @@
 <div class="grid grid-cols-2 gap-4">
     <div>
         <label class="text-sm font-medium">Password *</label>
-        <input name="password" type="password"
-            class="w-full rounded-lg border h-11 px-4 mt-1 @error('password') border-red-500 @enderror"
-            placeholder="Minimal 8 karakter"
-            required>
+        <div class="relative">
+            <input name="password" type="password" id="registerPassword"
+                class="w-full rounded-lg border h-11 px-4 pr-10 mt-1 @error('password') border-red-500 @enderror"
+                placeholder="Minimal 8 karakter"
+                required>
+            <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 mt-0.5 text-gray-500 hover:text-gray-700 togglePassword" data-target="registerPassword">
+                <i class="bi bi-eye"></i>
+            </button>
+        </div>
     </div>
 
     <div>
         <label class="text-sm font-medium">Konfirmasi *</label>
-        <input name="password_confirmation" type="password"
-            class="w-full rounded-lg border h-11 px-4 mt-1"
-            placeholder="Ulangi password"
-            required>
+        <div class="relative">
+            <input name="password_confirmation" type="password" id="registerPasswordConfirm"
+                class="w-full rounded-lg border h-11 px-4 pr-10 mt-1"
+                placeholder="Ulangi password"
+                required>
+            <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 mt-0.5 text-gray-500 hover:text-gray-700 togglePassword" data-target="registerPasswordConfirm">
+                <i class="bi bi-eye"></i>
+            </button>
+        </div>
     </div>
 </div>
 
@@ -107,4 +134,28 @@
     </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle password visibility
+    document.querySelectorAll('.togglePassword').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    });
+});
+</script>
 @endsection

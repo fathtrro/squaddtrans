@@ -100,15 +100,18 @@ class ReturnController extends Controller
                 }
 
                 $afterChecklist = $result['after_checklist'];
-                $returnMessage = "Return Kendaraan untuk booking {$booking->booking_code} selesai.\n" .
-                                 "Isi form checklist setelah perjalanan sebelum menyelesaikan booking.\n" .
-                                 "Referensi Checklist Setelah: Bandingkan kondisi kendaraan dengan kondisi awal untuk identifikasi kerusakan.\n\n" .
-                                 "- Kondisi Bodi: " . ($afterChecklist->body_condition ?? 'N/A') . "\n" .
-                                 "- Kondisi Interior: " . ($afterChecklist->interior_condition ?? 'N/A') . "\n" .
-                                 "- Level BBM: " . ($afterChecklist->fuel_level ?? 'N/A') . "\n" .
-                                 "- Aksesori: " . ($afterChecklist->accessories ?? 'N/A') . "\n" .
-                                 "- Catatan: " . ($afterChecklist->notes ?: 'Tidak ada') . "\n" .
-                                 "Status: " . strtoupper($booking->status) . ".";
+                $returnMessage = "📍 *Kendaraan Selesai Dikembalikan*\n\n" .
+                                 "Halo " . ($booking->user->name ?? 'Pelanggan') . ",\n\n" .
+                                 "Terima kasih telah mengembalikan kendaraan untuk booking *" . $booking->booking_code . "* tepat waktu.\n\n" .
+                                 "✅ *Kondisi Kendaraan Saat Dikembalikan:*\n" .
+                                 "📋 Bodi: " . ($afterChecklist->body_condition ?? 'N/A') . "\n" .
+                                 "🪑 Interior: " . ($afterChecklist->interior_condition ?? 'N/A') . "\n" .
+                                 "⛽ Level BBM: " . ($afterChecklist->fuel_level ?? 'N/A') . "\n" .
+                                 "🔧 Aksesori: " . ($afterChecklist->accessories ?? 'N/A') . "\n" .
+                                 "📝 Catatan: " . ($afterChecklist->notes ?: 'Tidak ada kerusakan') . "\n\n" .
+                                 "⏳ *Langkah Selanjutnya:*\n" .
+                                 "Admin kami akan mengecek kondisi kendaraan dan melakukan assessment. Jika ada denda, akan dikomunikasikan dalam waktu 1x24 jam.\n\n" .
+                                 "Terima kasih telah menggunakan layanan kami! 🙏";
 
                 $this->sendFonnteWhatsApp($target, $returnMessage);
             }
@@ -169,16 +172,7 @@ class ReturnController extends Controller
                 ->with('error', $result['message']);
         }
 
-        // Kirim notifikasi WA denda sudah dibayar
-        $target = $booking->contact ?? ($booking->user->phone ?? null);
-        $penaltyMessage = "Denda booking " . $booking->booking_code . " telah dibayar.\n" .
-            "Tipe denda: " . $penalty->type_label . "\n" .
-            "Deskripsi: " . $penalty->description . "\n" .
-            "Jumlah: " . $penalty->formatted_amount . "\n" .
-            "Status: Sudah Dibayar.\n" .
-            "Terima kasih atas konfirmasi pembayarannya.";
-
-        $this->sendFonnteWhatsApp($target, $penaltyMessage);
+        // WhatsApp penalty approval notification removed - handled by services
 
         return redirect()->back()
             ->with('success', $result['message'])
@@ -303,14 +297,21 @@ class ReturnController extends Controller
         // Update status to running
         $booking->update(['status' => 'running']);
 
-        $checklistBeforeMessage = "Checklist Kendaraan Sebelum Perjalanan untuk booking {$booking->booking_code} sudah selesai.\n" .
-            "Referensi Checklist Sebelum: Bandingkan kondisi mobil dengan checklist sebelum perjalanan untuk mengidentifikasi kerusakan.\n\n" .
-            "- Kondisi Bodi: " . $request->input('body_condition') . "\n" .
-            "- Kondisi Interior: " . $request->input('interior_condition') . "\n" .
-            "- Level BBM: " . $request->input('fuel_level') . "\n" .
-            "- Aksesori: " . $request->input('accessories') . "\n" .
-            "- Catatan: " . ($request->input('notes') ?: 'Tidak ada') . "\n" .
-            "Status: RUNNING.";
+        $checklistBeforeMessage = "🚗 *Perjalanan Dimulai!*\n\n" .
+            "Halo " . ($booking->user->name ?? 'Pelanggan') . ",\n\n" .
+            "Selamat! Proses checklist kendaraan sebelum perjalanan untuk booking *" . $booking->booking_code . "* sudah selesai.\n\n" .
+            "✅ *Kondisi Kendaraan Saat Pengambilan:*\n" .
+            "📋 Bodi: " . $request->input('body_condition') . "\n" .
+            "🪑 Interior: " . $request->input('interior_condition') . "\n" .
+            "⛽ Level BBM: " . $request->input('fuel_level') . "\n" .
+            "🔧 Aksesori: " . $request->input('accessories') . "\n" .
+            "📝 Catatan: " . ($request->input('notes') ?: 'Tidak ada catatan') . "\n\n" .
+            "🗓️ *Detail Sewa:*\n" .
+            "Mulai: " . $booking->start_datetime->format('d M Y, H:i') . "\n" .
+            "Selesai: " . $booking->end_datetime->format('d M Y, H:i') . "\n\n" .
+            "⚠️ *Penting:*\n" .
+            "Silakan jaga kondisi kendaraan dengan baik. Kembalikan dengan kondisi seperti saat pengambilan.\n\n" .
+            "Selamat berkendara dan berhati-hatilah di jalan! 🙏";
 
         $target = $booking->contact ?? $booking->user->phone ?? null;
         $this->sendFonnteWhatsApp($target, $checklistBeforeMessage);

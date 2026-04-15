@@ -187,6 +187,81 @@
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-6">
 
+            <!-- CANCELLATION REQUEST SECTION -->
+            @if ($booking->status === 'waiting_cancellation')
+                <div class="bg-white rounded-xl shadow-sm border-2 border-red-300 p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                            <i class="fa-solid fa-ban text-red-600 text-lg"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-900">⚠️ Permintaan Pembatalan Booking</h2>
+                            <p class="text-sm text-gray-600">User telah meminta pembatalan booking</p>
+                        </div>
+                    </div>
+
+                    <!-- Cancellation Reason -->
+                    <div class="bg-red-50 rounded-lg p-4 mb-6 border border-red-200">
+                        <p class="text-xs font-bold text-red-900 uppercase tracking-wide mb-2">Alasan Pembatalan</p>
+                        <p class="text-sm text-gray-800">{{ $booking->cancellation_reason }}</p>
+                    </div>
+
+                    <!-- Booking Summary Before Cancellation -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                            <p class="text-xs text-gray-600 font-semibold mb-1">PERIODE SEWA</p>
+                            <p class="text-sm font-bold text-gray-900">{{ $booking->formatted_start_date }}</p>
+                            <p class="text-xs text-gray-500">hingga</p>
+                            <p class="text-sm font-bold text-gray-900">{{ $booking->formatted_end_date }}</p>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4 border border-purple-200">
+                            <p class="text-xs text-gray-600 font-semibold mb-1">TOTAL HARGA</p>
+                            <p class="text-lg font-bold text-gray-900">Rp {{ number_format($booking->total_price, 0, ',', '.') }}</p>
+                            <p class="text-xs text-gray-600 mt-1">DP Terbayar: Rp {{ number_format($booking->dp_amount, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Admin Decision Buttons -->
+                    <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200 mb-6">
+                        <p class="text-sm text-yellow-900 font-semibold mb-4">
+                            <i class="fa-solid fa-triangle-exclamation mr-2"></i>
+                            Silakan pilih aksi untuk memproses permintaan pembatalan ini:
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <!-- Approve Button -->
+                            <form action="{{ route('admin.bookings.approve-cancellation', $booking->id) }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors" onclick="return confirm('Setujui pembatalan booking ini?')">
+                                    <i class="fa-solid fa-check"></i>
+                                    Setujui Pembatalan
+                                </button>
+                            </form>
+
+                            <!-- Reject Button -->
+                            <button type="button" onclick="openRejectModal()" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors">
+                                <i class="fa-solid fa-times"></i>
+                                Tolak Pembatalan
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- User & Car Info -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-xs font-bold text-gray-600 uppercase mb-3">Penyewa</p>
+                            <p class="text-sm font-semibold text-gray-900">{{ $booking->user->name }}</p>
+                            <p class="text-xs text-gray-600 mt-1">{{ $booking->user->email }}</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-xs font-bold text-gray-600 uppercase mb-3">Kendaraan</p>
+                            <p class="text-sm font-semibold text-gray-900">{{ $booking->car->name }}</p>
+                            <p class="text-xs text-gray-600 mt-1">{{ $booking->car->license_plate }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <!-- STEP 1: Approval Section -->
             @if ($booking->status === 'pending')
                 <div class="bg-white rounded-xl shadow-sm border-2 border-yellow-300 p-6">
@@ -624,7 +699,7 @@
                             $extensionCost = $booking
                                 ->extensions()
                                 ->where('status', 'approved')
-                                ->sum('additional_price');
+                                ->sum('extra_price');
                         }
                     @endphp
                     @if ($extensionCost > 0)
@@ -721,3 +796,52 @@
     </div>
 
 </x-admin-layout>
+
+<!-- Reject Cancellation Modal -->
+<dialog id="rejectModal" class="rounded-2xl shadow-2xl border-0 w-full max-w-md backdrop:bg-black/60">
+    <div class="p-6">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-red-600"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900">Tolak Pembatalan</h3>
+        </div>
+
+        <p class="text-sm text-gray-600 mb-4">
+            Komentar (opsional) akan dikirim ke user. Booking akan dikembalikan ke status pending.
+        </p>
+
+        <form id="rejectForm" method="POST" action="{{ route('admin.bookings.reject-cancellation', $booking->id) }}" class="space-y-4">
+            @csrf
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Komentar Penolakan</label>
+                <textarea name="rejection_comment" rows="3"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-0 focus:border-red-500 transition-colors resize-none"
+                    placeholder="Jelaskan alasan penolakan pembatalan..."></textarea>
+            </div>
+
+            <div class="flex gap-3">
+                <button type="button" onclick="closeRejectModal()"
+                    class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg font-semibold text-gray-700 transition text-sm">
+                    Batal
+                </button>
+                <button type="submit"
+                    class="flex-1 py-2 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition text-sm"
+                    onclick="return confirm('Tolak pembatalan booking ini?')">
+                    Tolak Pembatalan
+                </button>
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<script>
+    function openRejectModal() {
+        document.getElementById('rejectModal').showModal();
+    }
+
+    function closeRejectModal() {
+        document.getElementById('rejectModal').close();
+        document.getElementById('rejectForm').reset();
+    }
+</script>

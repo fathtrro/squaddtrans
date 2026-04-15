@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
             $url = "admin/dashboard";
         }
 
-        return redirect()->intended($url);
+        return redirect()->intended($url)->with('showTermsModal', true);
     }
 
     /**

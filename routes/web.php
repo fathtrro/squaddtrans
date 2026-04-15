@@ -110,7 +110,12 @@ Route::middleware(['auth'])->group(function () {
         $mobil = Car::with('images')->where('status', 'available')->limit(10)->get();
         $bookings = \App\Models\Booking::with('car')->where('user_id', auth()->id())->get();
 
-        return view('dashboard', compact('cars', 'mobil', 'bookings'));
+        // Check for incomplete bookings
+        $incompleteBooking = \App\Models\Booking::where('user_id', auth()->id())
+            ->whereNotIn('status', ['completed', 'cancelled', 'rejected', 'expired', 'waiting_cancellation'])
+            ->first();
+
+        return view('dashboard', compact('cars', 'mobil', 'bookings', 'incompleteBooking'));
     })->middleware('verified')->name('dashboard');
 
     // Profile
@@ -125,7 +130,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [BookingController::class, 'index'])->name('index');
         Route::get('/select-dates', [BookingController::class, 'selectDates'])->name('select-dates');
         Route::get('/select-car', function () {
-            return view('bookings.select-car');
+            // Check for incomplete bookings
+            $incompleteBooking = \App\Models\Booking::where('user_id', auth()->id())
+                ->whereNotIn('status', ['completed', 'cancelled', 'rejected', 'expired', 'waiting_cancellation'])
+                ->first();
+
+            return view('bookings.select-car', compact('incompleteBooking'));
         })->name('select-car');
         Route::get('/car-detail/{car}', [BookingController::class, 'showCarDetail'])->name('car-detail');
         Route::get('/create', [BookingController::class, 'create'])->name('create');
@@ -161,6 +171,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('renter', RenterController::class);
     Route::resource('bank-accounts', BankAccountController::class);
     Route::resource('reviews', AdminReviewController::class)->only(['index', 'destroy']);
+
+    // Booking Cancellation Approval
+    Route::post('/bookings/{booking}/approve-cancellation', [BookingController::class, 'approveCancellation'])->name('bookings.approve-cancellation');
+    Route::post('/bookings/{booking}/reject-cancellation', [BookingController::class, 'rejectCancellation'])->name('bookings.reject-cancellation');
 
     // Renter Workflow
     Route::get('/renter/{id}/workflow', [RenterController::class, 'workflow'])->name('renter.workflow');

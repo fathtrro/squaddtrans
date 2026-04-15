@@ -20,7 +20,15 @@ class BookingController extends Controller
      */
     public function selectDates()
     {
-        return view('bookings.select-dates');
+        // Check if user has active bookings
+        $activeBooking = null;
+        if (auth()->check()) {
+            $activeBooking = Booking::where('user_id', auth()->id())
+                ->whereNotIn('status', ['completed', 'cancelled'])
+                ->first();
+        }
+        
+        return view('bookings.select-dates', compact('activeBooking'));
     }
 
     /**
@@ -28,6 +36,17 @@ class BookingController extends Controller
      */
     public function showCarDetail(Request $request, Car $car)
     {
+        // Check if user has active bookings (status not COMPLETED or CANCELLED)
+        if (auth()->check()) {
+            $activeBooking = Booking::where('user_id', auth()->id())
+                ->whereNotIn('status', ['completed', 'cancelled'])
+                ->first();
+            
+            if ($activeBooking) {
+                return back()->with('error', 'Anda tidak bisa melakukan booking baru. Selesaikan atau batalkan booking sebelumnya terlebih dahulu. Booking aktif Anda: ' . $activeBooking->booking_code);
+            }
+        }
+
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
 
@@ -169,6 +188,15 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+        // Check if user has active bookings (status not COMPLETED or CANCELLED)
+        $activeBooking = Booking::where('user_id', auth()->id())
+            ->whereNotIn('status', ['completed', 'cancelled'])
+            ->first();
+
+        if ($activeBooking) {
+            return back()->with('error', 'Anda tidak bisa melakukan booking baru. Selesaikan atau batalkan booking sebelumnya terlebih dahulu. Booking aktif Anda: ' . $activeBooking->booking_code)->withInput();
+        }
+
         // Allow destination to be optional (users may skip). If frontend passes min_deposit,
         // enforce amount >= min_deposit where applicable.
         $rules = [
@@ -268,6 +296,8 @@ class BookingController extends Controller
             ]);
         });
 
+        // Send WhatsApp notifications via Fonnte API
+        $this->sendNewBookingNotifications($booking, $request);
 
         return redirect()->route('bookings.success', $booking->id);
     }
@@ -318,7 +348,79 @@ class BookingController extends Controller
     }
 
     /**
-     * Cancel a booking
+     * Send WhatsApp notifications for new booking
+     */
+    private function sendNewBookingNotifications(Booking $booking, Request $request)
+    {
+        $booking->load(['car', 'user', 'payments.bankAccount']);
+
+        // Format dates
+        $startDate = Carbon::parse($booking->start_datetime)->format('D, d M Y H:i');
+        $endDate = Carbon::parse($booking->end_datetime)->format('D, d M Y H:i');
+        $durationDays = $booking->start_datetime->diffInDays($booking->end_datetime) + 1;
+
+        // Billing info
+        $guaranteeType = $request->guarantee_type;
+        $paymentMethod = $request->payment_method;
+        $bankAccount = $request->selected_bank ? 
+            \App\Models\BankAccount::find($request->selected_bank) : null;
+        $bankInfo = $bankAccount ? 
+            $bankAccount->bank_name . ' - ' . $bankAccount->account_number . ' (a.n. ' . $bankAccount->account_holder . ')' : 
+            'N/A';
+
+        // ==========================================
+        // MESSAGE TO ADMIN
+        // ==========================================
+        $adminMessage = "📋 *BOOKING BARU MASUK*\n\n" .
+            "🚗 Kode Booking: *" . $booking->booking_code . "*\n" .
+            "Mobil: " . $booking->car->brand . " " . $booking->car->name . " (" . ucfirst($request->service_type) . ")\n\n" .
+            "📅 *JADWAL SEWA*\n" .
+            "🕐 Mulai: " . $startDate . "\n" .
+            "🏁 Selesai: " . $endDate . "\n" .
+            "📆 Durasi: " . $durationDays . " Hari\n\n" .
+            "👤 *DATA PENYEWA*\n" .
+            "📱 Kontak: " . $booking->contact . "\n" .
+            "📍 Alamat: " . $booking->alamat . "\n" .
+            "🗺️ Tujuan: " . ($booking->destination ?? '-') . "\n\n" .
+            "🛡️ *JAMINAN*\n" .
+            "Tipe: " . $guaranteeType . "\n" .
+            "💳 *PEMBAYARAN*\n" .
+            "Metode: " . $paymentMethod . "\n" .
+            "Bank: " . $bankInfo . "\n" .
+            "Total Harga: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n" .
+            "DP Dibayar: Rp " . number_format($booking->dp_amount, 0, ',', '.') . "\n" .
+            "Sisa Bayar: Rp " . number_format($booking->total_price - $booking->dp_amount, 0, ',', '.') . "\n\n" .
+            "⚡ *SEGERA PROSES DI WEB*\n" .
+            "Periksa dokumen, foto, dan bukti transfer";
+
+        $this->sendFonnteWhatsApp(env('ADMIN_PHONE', null), $adminMessage);
+
+        // ==========================================
+        // MESSAGE TO USER
+        // ==========================================
+        $userMessage = "⏳ *PEMESANAN DIPROSES*\n\n" .
+            "Terima kasih telah mempercayai SQUADTRANS!\n\n" .
+            "🎫 Kode Booking: *" . $booking->booking_code . "*\n" .
+            "🚗 Mobil: " . $booking->car->brand . " " . $booking->car->name . "\n\n" .
+            "📅 *JADWAL SEWA ANDA*\n" .
+            "🕐 Mulai: " . $startDate . "\n" .
+            "🏁 Selesai: " . $endDate . "\n" .
+            "📆 Durasi: " . $durationDays . " Hari\n\n" .
+            "💰 *RINCIAN PEMBAYARAN*\n" .
+            "Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n" .
+            "DP/Bayar: Rp " . number_format($booking->dp_amount, 0, ',', '.') . "\n" .
+            "Sisa: Rp " . number_format($booking->total_price - $booking->dp_amount, 0, ',', '.') . "\n\n" .
+            "⏳ *STATUS*\n" .
+            "Admin sedang memverifikasi data Anda\n" .
+            "Kami akan menghubungi dalam waktu 1-2 jam\n\n" .
+            "❓ Ada pertanyaan? Hubungi +62 812-3328-3578\n" .
+            "atau balas pesan ini";
+
+        $this->sendFonnteWhatsApp($booking->contact ?? $booking->user->phone, $userMessage);
+    }
+
+    /**
+     * Cancel a booking (send notification to admin via Fonnte)
      */
     public function cancel(Request $request, Booking $booking)
     {
@@ -337,13 +439,186 @@ class BookingController extends Controller
             'cancellation_reason' => 'required|string|max:1000'
         ]);
 
-        // Update booking status and cancellation reason
+        // Update booking status to waiting_cancellation (admin must approve)
         $booking->update([
-            'status' => 'cancelled',
+            'status' => 'waiting_cancellation',
             'cancellation_reason' => $request->cancellation_reason
         ]);
 
-        return redirect()->back()->with('success', 'Booking berhasil dibatalkan.');
+        // Send WhatsApp notification to admin via Fonnte
+        $adminMessage = "📋 *PERMINTAAN PEMBATALAN BOOKING*
+
+" .
+            "🚗 Kode Booking: *" . $booking->booking_code . "*
+" .
+            "👤 Pengemudi: " . ($booking->user->name ?? 'N/A') . "
+" .
+            "📱 Kontak: " . $booking->contact . "
+" .
+            "🚙 Mobil: " . ($booking->car->name ?? 'N/A') . "
+" .
+            "📅 Tanggal: " . $booking->start_datetime->format('d M Y H:i') . " - " . $booking->end_datetime->format('d M Y H:i') . "
+" .
+            "💰 Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "
+" .
+            "⏳ Status: *MENUNGGU KONFIRMASI*
+" .
+            "\n⚠️ Silakan segera lakukan konfirmasi (Setujui/Tolak)";
+        $this->sendFonnteWhatsApp(env('ADMIN_PHONE', null), $adminMessage);
+
+        // Send WhatsApp notification to user (renter) via Fonnte
+        $userPhone = $booking->contact ?? $booking->user->phone;
+        if (!empty($userPhone)) {
+            $userMessage = "⏳ *Permintaan Pembatalan Diproses*
+" .
+                "\nKode Booking: *" . $booking->booking_code . "*
+" .
+                "Mobil: " . ($booking->car->name ?? 'N/A') . "
+" .
+                "\n⏳ Admin akan memproses dalam waktu singkat
+" .
+                "Kami akan notifikasi Anda saat ada update terbaru"
+                ;
+            $this->sendFonnteWhatsApp($userPhone, $userMessage);
+        }
+
+        return redirect()->back()->with('success', 'Permintaan pembatalan telah dikirim. Admin akan memprosesnya.');
+    }
+
+    /**
+     * Approve cancellation request (Admin only) - Send notification to renter and admin
+     */
+    public function approveCancellation(Booking $booking)
+    {
+        // Check if user is admin
+        if ($this->isNotAdmin()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Check if booking has pending cancellation request
+        if ($booking->status !== 'waiting_cancellation') {
+            return redirect()->back()->with('error', 'Tidak ada permintaan pembatalan untuk booking ini.');
+        }
+
+        // Update booking status to cancelled and record who approved it
+        $booking->update([
+            'status' => 'cancelled',
+            'cancellation_approved_by' => auth()->id()
+        ]);
+
+        // Send WhatsApp notification to renter via Fonnte
+        $renterPhone = $booking->contact ?? $booking->user->phone;
+        if (!empty($renterPhone)) {
+            $renterMessage = "✅ *PEMBATALAN DISETUJUI*
+" .
+                "\n🎉 Permintaan pembatalan Anda telah disetujui
+" .
+                "Kode Booking: *" . $booking->booking_code . "*
+" .
+                "\n📌 Informasi Pengembalian:
+" .
+                "📍 Lokasi: " . ($booking->alamat ?? 'Sesuai kesepakatan') . "
+" .
+                "🕐 Status: DIBATALKAN
+" .
+                "\n💵 Dana akan diproses sesuai kebijakan
+" .
+                "\n📞 Hubungi kami +62 812-3328-3578 jika ada pertanyaan"
+                ;
+            $this->sendFonnteWhatsApp($renterPhone, $renterMessage);
+        } else {
+            logger()->warning('Renter phone not found for booking #' . $booking->booking_code);
+        }
+
+        // Send WhatsApp notification to admin
+        $adminMessage = "✅ *PEMBATALAN DISETUJUI*
+" .
+            "\n🚗 Kode Booking: *" . $booking->booking_code . "*
+" .
+            "👤 Pengemudi: " . ($booking->user->name ?? 'N/A') . "
+" .
+            "📱 Kontak: " . $booking->contact . "
+" .
+            "📅 Tanggal: " . now()->format('d M Y H:i:s') . "
+" .
+            "🔄 Status: DIBATALKAN
+" .
+            "\n✨ Proses selesai. Data sudah tersimpan dalam sistem";
+        $this->sendFonnteWhatsApp(env('ADMIN_PHONE', null), $adminMessage);
+
+        return redirect()->back()->with('success', 'Permintaan pembatalan booking telah disetujui.');
+    }
+
+    /**
+     * Reject cancellation request (Admin only) - Send notification to renter and admin
+     */
+    public function rejectCancellation(Request $request, Booking $booking)
+    {
+        // Check if user is admin
+        if ($this->isNotAdmin()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Check if booking has pending cancellation request
+        if ($booking->status !== 'waiting_cancellation') {
+            return redirect()->back()->with('error', 'Tidak ada permintaan pembatalan untuk booking ini.');
+        }
+
+        // Revert status back to pending
+        $booking->update([
+            'status' => 'pending',
+            'cancellation_reason' => null,
+            'cancellation_requested_at' => null,
+            'cancellation_approved_by' => null
+        ]);
+
+        // Send WhatsApp notification to renter via Fonnte
+        $renterPhone = $booking->contact ?? $booking->user->phone;
+        if (!empty($renterPhone)) {
+            $rejectionMessage = "❌ *PEMBATALAN DITOLAK*
+" .
+                "\nPermintaan pembatalan Anda telah ditolak oleh admin
+" .
+                "Kode Booking: *" . $booking->booking_code . "*
+" .
+                "\n📌 Mohon Lanjutkan:
+" .
+                "🚙 Booking Anda masih berlaku
+" .
+                "📅 Tanggal: " . $booking->start_datetime->format('d M Y') . " - " . $booking->end_datetime->format('d M Y') . "
+" .
+                "\n📞 Hubungi admin berikut +62 812-3328-3578 jika ada kendala atau pertanyaan lebih lanjut"
+                ;
+            $this->sendFonnteWhatsApp($renterPhone, $rejectionMessage);
+        } else {
+            logger()->warning('Renter phone not found for booking #' . $booking->booking_code);
+        }
+
+        // Send WhatsApp notification to admin
+        $adminMessage = "❌ *PEMBATALAN DITOLAK*
+" .
+            "\n🚗 Kode Booking: *" . $booking->booking_code . "*
+" .
+            "👤 Pengemudi: " . ($booking->user->name ?? 'N/A') . "
+" .
+            "📱 Kontak: " . $booking->contact . "
+" .
+            "📅 Tanggal: " . now()->format('d M Y H:i:s') . "
+" .
+            "🔄 Status: DITOLAK - Kembali ke PENDING
+" .
+            "\n✨ Pengemudi akan melanjutkan proses rental";
+        $this->sendFonnteWhatsApp(env('ADMIN_PHONE', null), $adminMessage);
+
+        return redirect()->back()->with('success', 'Permintaan pembatalan booking telah ditolak.');
+    }
+
+    /**
+     * Check if user is admin
+     */
+    private function isNotAdmin()
+    {
+        return !auth()->check() || auth()->user()->role !== 'admin';
     }
 
     /**

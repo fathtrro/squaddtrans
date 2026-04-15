@@ -94,20 +94,78 @@
                 </div>
             </div>
 
-            @if($renter->status === 'cancelled' && $renter->cancellation_reason)
-            <!-- Cancellation Reason Card -->
-            <div class="bg-red-50 rounded-xl shadow-sm border border-red-200 p-6">
-                <div class="flex items-start gap-3">
-                    <div class="bg-red-100 rounded-lg p-2">
-                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            @if(($renter->status === 'cancelled' || $renter->status === 'waiting_cancellation') && $renter->cancellation_reason)
+            <!-- Cancellation Reason Card with WhatsApp Preview -->
+            <div class="bg-gradient-to-br from-red-50 to-rose-50 rounded-xl shadow-md border-2 border-red-200 p-6 overflow-hidden relative">
+                <!-- Decorative background -->
+                <div class="absolute top-0 right-0 w-32 h-32 bg-red-100 rounded-full opacity-20 -mr-8 -mt-8"></div>
+                
+                <div class="flex items-start gap-4 relative z-10">
+                    <div class="bg-gradient-to-br from-red-100 to-rose-100 rounded-xl p-3 flex-shrink-0">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
                         </svg>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-red-900 mb-2">Alasan Pembatalan</h3>
-                        <p class="text-red-700">{{ $renter->cancellation_reason }}</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-red-900">Alasan Pembatalan</h3>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-200 text-red-800">{{ $renter->status === 'waiting_cancellation' ? '⏳ Menunggu' : '✓ Dibatalkan' }}</span>
+                        </div>
+                        <p class="text-red-800 bg-white/50 rounded-lg p-3 border-l-4 border-red-400 text-sm leading-relaxed">{{ $renter->cancellation_reason }}</p>
                     </div>
                 </div>
+
+                @if($renter->status === 'waiting_cancellation')
+                <!-- WhatsApp Messages Preview -->
+                <div class="mt-6 pt-6 border-t border-red-200 space-y-4">
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.291-4.882 5.689-4.882 9.383 0 3.692 1.827 7.101 4.882 9.383 1.563 1.175 3.637 2.083 5.651 2.083.043 0 .088 0 .132-.001 4.338-.034 8.087-2.134 10.346-5.355 1.903-2.859 2.077-6.734 1.256-8.377-.957-1.88-2.773-2.932-4.88-3.505-1.02-.27-2.111-.41-3.286-.41zm10.906-9.659C19.501 0 15.424 0 12.529.001 5.823.001 0 5.823 0 12.529c0 2.215.505 4.329 1.469 6.214-.309 1.218-1.21 4.815-1.387 5.512-.099.416-.157.9.13 1.285.286.385.738.461 1.154.362.416-.099 4.294-1.078 5.512-1.387 1.885.964 4.003 1.469 6.214 1.469 6.707 0 12.529-5.823 12.529-12.529C24.999 5.823 19.237 0 12.529 0z"/>
+                            </svg>
+                            <span class="text-sm font-semibold text-gray-900">Pesan saat Setujui Pembatalan</span>
+                        </div>
+                        <div class="text-sm text-gray-700 bg-green-50 rounded p-2 border-l-4 border-green-500 italic">
+                            ✅ Permintaan Anda Di Setujui
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.291-4.882 5.689-4.882 9.383 0 3.692 1.827 7.101 4.882 9.383 1.563 1.175 3.637 2.083 5.651 2.083.043 0 .088 0 .132-.001 4.338-.034 8.087-2.134 10.346-5.355 1.903-2.859 2.077-6.734 1.256-8.377-.957-1.88-2.773-2.932-4.88-3.505-1.02-.27-2.111-.41-3.286-.41zm10.906-9.659C19.501 0 15.424 0 12.529.001 5.823.001 0 5.823 0 12.529c0 2.215.505 4.329 1.469 6.214-.309 1.218-1.21 4.815-1.387 5.512-.099.416-.157.9.13 1.285.286.385.738.461 1.154.362.416-.099 4.294-1.078 5.512-1.387 1.885.964 4.003 1.469 6.214 1.469 6.707 0 12.529-5.823 12.529-12.529C24.999 5.823 19.237 0 12.529 0z"/>
+                            </svg>
+                            <span class="text-sm font-semibold text-gray-900">Pesan saat Tolak Pembatalan</span>
+                        </div>
+                        <div class="text-sm text-gray-700 bg-red-50 rounded p-2 border-l-4 border-red-500 italic">
+                            ❌ Permintaan Anda Di Tolak
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Approval Actions -->
+                <div class="mt-6 pt-6 border-t border-red-200 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <form action="{{ route('admin.bookings.approve-cancellation', $renter->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-green-200 active:scale-95">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Setujui Pembatalan
+                        </button>
+                    </form>
+
+                    <form action="{{ route('admin.bookings.reject-cancellation', $renter->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-red-200 active:scale-95">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                            Tolak Pembatalan
+                        </button>
+                    </form>
+                </div>
+                @endif
             </div>
             @endif
 
@@ -311,6 +369,364 @@
 
         </div>
 
+    </div>
+
+    <!-- VEHICLE DETAILS SECTION -->
+    <div class="mt-10">
+        <!-- Vehicle Gallery Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                </svg>
+                Galeri Kendaraan
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                @php
+                    $images = $renter->car->images ?? [];
+                @endphp
+
+                @if(count($images) > 0)
+                    @foreach($images->take(6) as $image)
+                    <div class="bg-gray-50 rounded-lg overflow-hidden border border-gray-200 h-48">
+                        <img src="{{ asset('storage/' . $image->image) }}" alt="{{ $renter->car->name }}"
+                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                    </div>
+                    @endforeach
+                @else
+                    <div class="col-span-3 bg-gray-50 rounded-lg p-8 text-center border border-gray-200">
+                        <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <p class="text-gray-500">Tidak ada gambar tersedia</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Vehicle Specifications Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3M9 11h6m-6 4h6m2-7a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                Spesifikasi Kendaraan
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Car Brand -->
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <p class="text-xs font-medium text-gray-500 mb-1">Merek</p>
+                    <p class="text-sm font-semibold text-gray-900">{{ $renter->car->brand ?? '-' }}</p>
+                </div>
+
+                <!-- Car Name -->
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <p class="text-xs font-medium text-gray-500 mb-1">Model</p>
+                    <p class="text-sm font-semibold text-gray-900">{{ $renter->car->name ?? '-' }}</p>
+                </div>
+
+                <!-- Plate Number -->
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <p class="text-xs font-medium text-gray-500 mb-1">Nomor Polisi</p>
+                    <p class="text-sm font-semibold text-gray-900 uppercase">{{ $renter->car->plate_number ?? '-' }}</p>
+                </div>
+
+                <!-- Transmission -->
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <p class="text-xs font-medium text-gray-500 mb-1">Transmisi</p>
+                    <p class="text-sm font-semibold text-gray-900 capitalize">{{ $renter->car->transmission ?? '-' }}</p>
+                </div>
+
+                <!-- Seats -->
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <p class="text-xs font-medium text-gray-500 mb-1">Jumlah Kursi</p>
+                    <p class="text-sm font-semibold text-gray-900">{{ $renter->car->seats ?? '-' }} Penumpang</p>
+                </div>
+
+                <!-- Daily Rate -->
+                <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg p-4 border border-yellow-200">
+                    <p class="text-xs font-medium text-yellow-700 mb-1">Tarif Harian</p>
+                    <p class="text-sm font-semibold text-gray-900">Rp {{ number_format($renter->car->daily_rate ?? 0, 0, ',', '.') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RENTER INFORMATION SECTION -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Informasi Penyewa
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Contact Number -->
+            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <p class="text-xs font-medium text-gray-500 mb-2 flex items-center gap-2">
+                    <i class="fas fa-phone text-yellow-600"></i> Nomor Kontak
+                </p>
+                <p class="text-sm font-semibold text-gray-900">{{ $renter->contact ?? '-' }}</p>
+            </div>
+
+            <!-- Destination -->
+            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <p class="text-xs font-medium text-gray-500 mb-2 flex items-center gap-2">
+                    <i class="fas fa-map-marker-alt text-green-600"></i> Tujuan
+                </p>
+                <p class="text-sm font-semibold text-gray-900">{{ $renter->destination ?? '-' }}</p>
+            </div>
+
+            <!-- Address -->
+            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 md:col-span-2">
+                <p class="text-xs font-medium text-gray-500 mb-2 flex items-center gap-2">
+                    <i class="fas fa-home text-blue-600"></i> Alamat Penyewa
+                </p>
+                <p class="text-sm font-semibold text-gray-900">{{ $renter->alamat ?? '-' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GUARANTEE INFORMATION SECTION -->
+    @php
+        $guarantee = $renter->guarantees->first();
+        $guaranteeLabels = [
+            'ktp' => 'KTP (Kartu Tanda Penduduk)',
+            'sim' => 'SIM (Surat Izin Mengemudi)',
+            'motor' => 'BPKB Motor',
+        ];
+    @endphp
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Informasi Jaminan
+        </h2>
+
+        @if($guarantee)
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Guarantee Type -->
+            <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                <p class="text-xs font-medium text-blue-700 mb-2">Tipe Jaminan</p>
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-3 h-3 bg-blue-600 rounded-full"></span>
+                    <p class="text-sm font-semibold text-gray-900">{{ $guaranteeLabels[$guarantee->type] ?? ucfirst($guarantee->type) }}</p>
+                </div>
+            </div>
+
+            <!-- Guarantee Status -->
+            <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                <p class="text-xs font-medium text-green-700 mb-2">Status Jaminan</p>
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold @if($guarantee->status === 'approved') bg-green-200 text-green-700 @elseif($guarantee->status === 'rejected') bg-red-200 text-red-700 @else bg-yellow-200 text-yellow-700 @endif">
+                    {{ ucfirst($guarantee->status) }}
+                </span>
+            </div>
+
+            <!-- Document File -->
+            <div class="md:col-span-2 bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <p class="text-xs font-medium text-gray-500 mb-3">Dokumen Jaminan</p>
+                @if($guarantee->document_file)
+                    @php
+                        $fileExtension = strtolower(pathinfo($guarantee->document_file, PATHINFO_EXTENSION));
+                        $isPdf = in_array($fileExtension, ['pdf']);
+                        $isImage = in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                    @endphp
+                    <div class="flex items-center justify-between bg-white rounded-lg p-4 border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            @if($isImage)
+                                <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                                </svg>
+                            @elseif($isPdf)
+                                <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8 16.5a1 1 0 11-2 0 1 1 0 012 0zM15 16.5a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"/>
+                                    <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V5a1 1 0 00-1-1H3zm11 3a1 1 0 10-2 0 1 1 0 012 0z"/>
+                                </svg>
+                            @else
+                                <svg class="w-8 h-8 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8 16.5a1 1 0 11-2 0 1 1 0 012 0zM15 16.5a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"/>
+                                    <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V5a1 1 0 00-1-1H3zm11 3a1 1 0 10-2 0 1 1 0 012 0z"/>
+                                </svg>
+                            @endif
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900 break-all">{{ basename($guarantee->document_file) }}</p>
+                                <p class="text-xs text-gray-500">{{ strtoupper($fileExtension) }} File</p>
+                            </div>
+                        </div>
+                        <a href="{{ asset('storage/' . $guarantee->document_file) }}"
+                           target="_blank"
+                           class="flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            </svg>
+                            Download
+                        </a>
+                    </div>
+                    @if($isImage)
+                        <div class="mt-3 bg-gray-50 rounded-lg overflow-hidden border border-gray-200 h-64">
+                            <img src="{{ asset('storage/' . $guarantee->document_file) }}" alt="Guarantee Document"
+                                 class="w-full h-full object-cover">
+                        </div>
+                    @endif
+                @else
+                    <div class="bg-gray-100 rounded-lg p-6 text-center border border-gray-300">
+                        <p class="text-gray-500">Dokumen jaminan tidak tersedia</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+        @else
+        <div class="bg-yellow-50 rounded-lg p-6 text-center border border-yellow-200">
+            <svg class="w-8 h-8 text-yellow-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 4v2M9 3h6c.61 0 1.194.062 1.757.175a9 9 0 0 0-8.514 15.65M9 3h6m0 0v0m0 0v0"/>
+            </svg>
+            <p class="text-yellow-700 font-medium">Data jaminan belum tersedia</p>
+        </div>
+        @endif
+    </div>
+
+    <!-- PAYMENT INFORMATION SECTION -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h10m4 0a1 1 0 11-2 0 1 1 0 012 0z"/>
+            </svg>
+            Informasi Pembayaran
+        </h2>
+
+        @php
+            $payments = $renter->payments;
+            $dpPayments = $payments->where('payment_type', 'dp')->where('status', 'approved');
+            $totalPaid = $dpPayments->sum('amount');
+            $remainingPayment = $renter->total_price - $totalPaid;
+        @endphp
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <!-- DP Amount -->
+            <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                <p class="text-xs font-medium text-yellow-700 mb-2">Down Payment (DP)</p>
+                <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($renter->dp_amount, 0, ',', '.') }}</p>
+                <p class="text-xs text-gray-500 mt-1">Telah dibayar: Rp {{ number_format($totalPaid, 0, ',', '.') }}</p>
+            </div>
+
+            <!-- Total Price -->
+            <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                <p class="text-xs font-medium text-green-700 mb-2">Total Harga</p>
+                <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($renter->total_price, 0, ',', '.') }}</p>
+            </div>
+
+            <!-- Remaining Payment -->
+            <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                <p class="text-xs font-medium text-blue-700 mb-2">Sisa Pembayaran</p>
+                <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($remainingPayment, 0, ',', '.') }}</p>
+            </div>
+        </div>
+
+        <!-- Payment History Table -->
+        @if($payments->count() > 0)
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b-2 border-gray-200">
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Tanggal</th>
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Tipe</th>
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Metode</th>
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Jumlah</th>
+                        <th class="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($payments as $payment)
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="py-3 px-4 text-gray-900">{{ $payment->created_at->format('d M Y H:i') }}</td>
+                        <td class="py-3 px-4">
+                            <span class="inline-block px-2 py-1 rounded text-xs font-semibold @if($payment->payment_type === 'dp') bg-blue-100 text-blue-700 @elseif($payment->payment_type === 'pelunasan') bg-green-100 text-green-700 @elseif($payment->payment_type === 'denda') bg-red-100 text-red-700 @else bg-gray-100 text-gray-700 @endif">
+                                {{ ucfirst($payment->payment_type) }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-gray-900">
+                            @if($payment->payment_method === 'transfer')
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-university text-yellow-600"></i>
+                                    <span>{{ $payment->bankAccount->bank_name ?? 'Bank Transfer' }}</span>
+                                </div>
+                            @else
+                                {{ ucfirst($payment->payment_method) }}
+                            @endif
+                        </td>
+                        <td class="py-3 px-4 font-semibold text-gray-900">Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
+                        <td class="py-3 px-4">
+                            <span class="inline-block px-2 py-1 rounded text-xs font-semibold @if($payment->status === 'approved') bg-green-100 text-green-700 @elseif($payment->status === 'rejected') bg-red-100 text-red-700 @else bg-yellow-100 text-yellow-700 @endif">
+                                {{ ucfirst($payment->status) }}
+                            </span>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payment Proof Images -->
+        @php
+            $paymentsWithProof = $payments->whereNotNull('proof_image');
+        @endphp
+
+        @if($paymentsWithProof->count() > 0)
+        <div class="mt-6 pt-6 border-t-2 border-gray-200">
+            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                Bukti Pembayaran
+            </h3>
+
+            <div class="space-y-6">
+                @foreach($paymentsWithProof as $payment)
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <p class="font-semibold text-gray-900">
+                                {{ $payment->created_at->format('d M Y H:i') }} -
+                                <span class="inline-block px-2 py-1 rounded text-xs font-semibold @if($payment->payment_type === 'dp') bg-blue-100 text-blue-700 @elseif($payment->payment_type === 'pelunasan') bg-green-100 text-green-700 @elseif($payment->payment_type === 'denda') bg-red-100 text-red-700 @else bg-gray-100 text-gray-700 @endif">
+                                    {{ ucfirst($payment->payment_type) }}
+                                </span>
+                            </p>
+                            <p class="text-sm text-gray-600 mt-1">
+                                Rp {{ number_format($payment->amount, 0, ',', '.') }} - Status:
+                                <span class="font-semibold @if($payment->status === 'approved') text-green-600 @elseif($payment->status === 'rejected') text-red-600 @else text-yellow-600 @endif">{{ ucfirst($payment->status) }}</span>
+                            </p>
+                        </div>
+                        <a href="{{ asset('storage/' . $payment->proof_image) }}"
+                           target="_blank"
+                           class="flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            </svg>
+                            Unduh
+                        </a>
+                    </div>
+
+                    <div class="bg-white rounded-lg overflow-hidden border border-gray-200 h-72">
+                        <img src="{{ asset('storage/' . $payment->proof_image) }}" alt="Bukti Pembayaran"
+                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+        @else
+        <div class="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+            <svg class="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <p class="text-gray-500">Belum ada data pembayaran</p>
+        </div>
+        @endif
     </div>
 
     <!-- CHECKLIST SECTION -->

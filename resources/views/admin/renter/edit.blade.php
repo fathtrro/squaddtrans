@@ -28,26 +28,6 @@
                     <h3 class="text-lg font-semibold text-gray-900 mb-6">Informasi Pelanggan & Kendaraan</h3>
 
                     <div class="space-y-5">
-                        <!-- Customer Select -->
-                        <div>
-                            <label for="user_id" class="block text-sm font-semibold text-gray-700 mb-2">Pelanggan <span class="text-red-500">*</span></label>
-                            <select
-                                id="user_id"
-                                name="user_id"
-                                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-gray-900 @error('user_id') border-red-500 @enderror"
-                                required>
-                                <option value="">-- Pilih Pelanggan --</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ old('user_id', $booking->user_id) == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->email }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('user_id')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
                         <!-- Car Select -->
                         <div>
                             <label for="car_id" class="block text-sm font-semibold text-gray-700 mb-2">Kendaraan <span class="text-red-500">*</span></label>
@@ -67,40 +47,6 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-
-                        <!-- Service Type -->
-                        <div>
-                            <label for="service_type" class="block text-sm font-semibold text-gray-700 mb-2">Tipe Layanan <span class="text-red-500">*</span></label>
-                            <select
-                                id="service_type"
-                                name="service_type"
-                                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-gray-900 @error('service_type') border-red-500 @enderror"
-                                required>
-                                <option value="">-- Pilih Tipe Layanan --</option>
-                                <option value="with_driver" {{ old('service_type', $booking->service_type) == 'with_driver' ? 'selected' : '' }}>Dengan Sopir</option>
-                                <option value="without_driver" {{ old('service_type', $booking->service_type) == 'without_driver' ? 'selected' : '' }}>Tanpa Sopir</option>
-                                <option value="self_drive" {{ old('service_type', $booking->service_type) == 'self_drive' ? 'selected' : '' }}>Self Drive</option>
-                            </select>
-                            @error('service_type')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Driver Select (Optional) -->
-                        <div>
-                            <label for="driver_id" class="block text-sm font-semibold text-gray-700 mb-2">Sopir</label>
-                            <select
-                                id="driver_id"
-                                name="driver_id"
-                                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-gray-900">
-                                <option value="">-- Pilih Sopir (Opsional) --</option>
-                                @foreach($drivers as $driver)
-                                    <option value="{{ $driver->id }}" {{ old('driver_id', $booking->driver_id) == $driver->id ? 'selected' : '' }}>
-                                        {{ $driver->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
                     </div>
                 </div>
 
@@ -116,7 +62,7 @@
                                 type="datetime-local"
                                 id="start_datetime"
                                 name="start_datetime"
-                                value="{{ old('start_datetime', $booking->start_datetime->format('Y-m-d\TH:i')) }}"
+                                value="{{ old('start_datetime', $booking->start_datetime->format('Y-m-d\\TH:i')) }}"
                                 class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent @error('start_datetime') border-red-500 @enderror"
                                 required>
                             @error('start_datetime')
@@ -131,7 +77,7 @@
                                 type="datetime-local"
                                 id="end_datetime"
                                 name="end_datetime"
-                                value="{{ old('end_datetime', $booking->end_datetime->format('Y-m-d\TH:i')) }}"
+                                value="{{ old('end_datetime', $booking->end_datetime->format('Y-m-d\\TH:i')) }}"
                                 class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent @error('end_datetime') border-red-500 @enderror"
                                 required>
                             @error('end_datetime')
@@ -246,7 +192,7 @@
 
                 <!-- Form Actions -->
                 <div class="bg-gray-50 border-t border-gray-200 px-6 py-4 flex items-center justify-between">
-                    <a href="{{ route('admin.renter.show', $booking->id) }}" class="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
+                    <a href="{{ route('admin.renter.index') }}" class="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
                         Batal
                     </a>
                     <button

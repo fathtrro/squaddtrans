@@ -163,13 +163,26 @@ class RenterController extends Controller
             ]);
 
             if ($request->status === 'confirmed') {
-                // Kirim notifikasi WA via Fonnte
+                // Kirim notifikasi WA via Fonnte dengan pesan yang lebih detail
                 $target = $booking->contact ?? ($booking->user->phone ?? null);
-                $confirmMessage = "Pesanan dengan kode " . $booking->booking_code . " telah disetujui oleh admin.\n" .
-                    "Detail: Mobil " . $booking->car->name . " (" . $booking->car->plate_number . ")\n" .
-                    "Tanggal Sewa: " . $booking->start_datetime->format('d M Y H:i') . " s/d " . $booking->end_datetime->format('d M Y H:i') . "\n" .
-                    "Silakan cek flow booking untuk langkah berikutnya.\n" .
-                    "Terima kasih!";
+                $confirmMessage = "✅ *Pesanan Anda Telah Disetujui!*\n\n" .
+                    "Halo " . ($booking->user->name ?? 'Pelanggan') . ",\n\n" .
+                    "Selamat! Pesanan penyewaan mobil Anda dengan kode *" . $booking->booking_code . "* telah disetujui oleh tim admin kami.\n\n" .
+                    "🚗 *Detail Kendaraan:*\n" .
+                    "• Mobil: " . $booking->car->name . "\n" .
+                    "• Plat Nomor: " . $booking->car->plate_number . "\n" .
+                    "• Tipe Layanan: " . $booking->service_type_label . "\n\n" .
+                    "📅 *Jadwal Penyewaan:*\n" .
+                    "• Mulai: " . $booking->start_datetime->format('d M Y, H:i') . "\n" .
+                    "• Selesai: " . $booking->end_datetime->format('d M Y, H:i') . "\n" .
+                    "• Durasi: " . $booking->duration_in_days . " hari\n\n" .
+                    "💰 *Biaya Sewa:*\n" .
+                    "• Biaya Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n" .
+                    "• DP Dibayar: Rp " . number_format($booking->dp_amount, 0, ',', '.') . "\n\n" .
+                    "📍 *Langkah Selanjutnya:*\n" .
+                    "Silakan datang ke lokasi kami untuk pengambilan unit sesuai dengan waktu yang sudah ditentukan.\n\n" .
+                    "📞 Jika ada pertanyaan, hubungi kami: " . env('ADMIN_PHONE', '+62 812-3328-3578') . "\n\n" .
+                    "Terima kasih telah mempercayai layanan kami! 🙏";
 
                 $this->sendFonnteWhatsApp($target, $confirmMessage);
 
@@ -191,10 +204,7 @@ class RenterController extends Controller
 
         // Otherwise, update all fields
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'car_id' => 'required|exists:cars,id',
-            'driver_id' => 'nullable|exists:drivers,id',
-            'service_type' => 'required|in:with_driver,without_driver,self_drive',
             'start_datetime' => 'required|date_format:Y-m-d\TH:i',
             'end_datetime' => 'required|date_format:Y-m-d\TH:i|after:start_datetime',
             'destination' => 'nullable|string',
@@ -202,7 +212,7 @@ class RenterController extends Controller
             'alamat' => 'nullable|string',
             'dp_amount' => 'required|numeric|min:0',
             'total_price' => 'required|numeric|min:0',
-            'status' => 'required|in:pending,confirmed,running,completed,cancelled',
+            'status' => 'required|in:pending,confirmed,running,completed,cancelled,waiting_cancellation,approved,rejected,waiting_penalty,waiting_payment,expired',
         ]);
 
         $booking->update($validated);

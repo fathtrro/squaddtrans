@@ -578,9 +578,9 @@
 
         {{-- Breadcrumb --}}
         <div class="breadcrumb">
-            <a href="{{ route('cars.index') }}"><i class="fa-solid fa-home"></i> Home</a>
+            <a href="{{ route('dashboard') }}"><i class="fa-solid fa-home"></i> Home</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="{{ route('cars.index') }}">Cars</a>
+            <a href="{{ route('dashboard') }}">Cars</a>
             <i class="fa-solid fa-chevron-right"></i>
             <span style="color:var(--dark);font-weight:700;">{{ $car->name }}</span>
         </div>
@@ -608,7 +608,7 @@
                             <span class="badge badge-premium"><i class="fa-solid fa-crown"></i> Premium</span>
                         </div>
 
-                        <a href="{{ route('cars.index') }}" class="back-button" title="Kembali">
+                        <a href="{{ route('dashboard') }}" class="back-button" title="Kembali">
                             <i class="fa-solid fa-arrow-left"></i>
                         </a>
 

@@ -849,7 +849,7 @@ footer { display: none !important; }
 {{-- ─── TOP NAV BAR ─────────────────────────── --}}
 <div class="top-bar">
     <div class="top-bar-inner">
-        <a href="{{ route('cars.index') }}" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <a href="{{ route('dashboard') }}" class="back-btn"><i class="fas fa-arrow-left"></i></a>
         <div class="top-bar-info">
             <div class="top-bar-title" id="navTitle">Rental Mobil</div>
             <div class="top-bar-sub" id="navSub">Memuat...</div>
@@ -870,8 +870,70 @@ footer { display: none !important; }
     </div>
 </div>
 
+{{-- ─── INCOMPLETE BOOKING WARNING ─────────────────────────── --}}
+@if(isset($incompleteBooking) && $incompleteBooking)
+    <div style="padding: 16px; max-width: 1200px; margin: 0 auto;">
+        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 1.5px solid #f59e0b; border-radius: var(--r-lg); padding: 16px; box-shadow: 0 4px 6px rgba(245, 158, 11, 0.1);">
+            <div style="display: flex; align-items: flex-start; gap: 14px;">
+                <div style="flex-shrink: 0; color: #d97706;">
+                    <i class="fas fa-exclamation-circle" style="font-size: 20px;"></i>
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 700; color: #92400e; font-size: 14px; margin-bottom: 4px;">Perhatian!</div>
+                    <p style="font-size: 13px; color: #b45309; margin-bottom: 8px;"><strong>Anda belum menyelesaikan proses booking yang sebelumnya.</strong></p>
+                    <p style="font-size: 12px; color: #a16207; margin-bottom: 8px;">
+                        ID Booking: <span style="font-weight: 700;">{{ $incompleteBooking->booking_code }}</span> (Status: <span style="font-weight: 700; text-transform: uppercase;">{{ str_replace('_', ' ', $incompleteBooking->status) }}</span>)
+                    </p>
+                    <p style="font-size: 12px; color: #a16207;">Silakan selesaikan atau batalkan booking tersebut sebelum membuat booking baru.</p>
+                </div>
+                <a href="{{ route('bookings.index') }}" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: #d97706; color: white; border-radius: var(--r-sm); text-decoration: none; font-weight: 600; font-size: 12px; white-space: nowrap; transition: background 0.15s;">
+                    <i class="fas fa-clipboard-list"></i> Lihat
+                </a>
+            </div>
+        </div>
+    </div>
+@endif
+
 {{-- ─── MAIN LAYOUT ─────────────────────────── --}}
 <div class="layout">
+
+    {{-- ─── HERO SECTION WITH INFO ─────────────────────────── --}}
+    <div style="grid-column: 1 / -1; padding: 0 16px 16px; max-width: 1200px; margin: 0 auto; width: 100%;">
+        {{-- Hero Banner --}}
+        <div style="background: linear-gradient(135deg, #f97316 0%, #ea6c0a 100%); border-radius: var(--r-lg); padding: 24px 20px; margin-bottom: 16px; overflow: hidden; position: relative;">
+            <div style="position: absolute; inset: 0; background-image: linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.05) 49%, rgba(255,255,255,0.05) 51%, transparent 52%); background-size: 16px 16px; z-index: 0;"></div>
+            <div style="position: relative; z-index: 1;">
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 99px; margin-bottom: 12px;">
+                    <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);"></div>
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.9);">Mobil Tersedia</span>
+                </div>
+                <h2 style="color: white; font-size: 24px; font-weight: 700; margin: 0 0 8px; line-height: 1.3;">Pilih Kendaraan Terbaik Anda</h2>
+                <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; max-width: 400px; line-height: 1.5;">Kendaraan premium terpilih yang sesuai dengan kebutuhan dan tanggal penyewaan Anda.</p>
+            </div>
+        </div>
+
+        {{-- Info Box --}}
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px;">
+                <div style="padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Mulai</div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text);" id="infStartDate">-</div>
+                </div>
+                <div style="padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Selesai</div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text);" id="infoEndDate">-</div>
+                </div>
+                <div style="padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Durasi</div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--orange);" id="infoDuration">-</div>
+                </div>
+                <div style="padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Tersedia</div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text);" id="infoAvailable">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{-- ─── SIDEBAR ─────────────────────────── --}}
     <aside class="sidebar">
@@ -978,8 +1040,26 @@ function formatRupiah(num) {
 
 /* ── URL params ── */
 const params    = new URLSearchParams(window.location.search);
-const startDate = params.get('start_date');
-const endDate   = params.get('end_date');
+let startDate = params.get('start_date');
+let endDate   = params.get('end_date');
+
+console.log('📅 URL Params:', { startDate, endDate });
+
+// Jika parameter tidak ada, redirect ke dashboard
+if (!startDate || !endDate) {
+    console.error('❌ Parameter tanggal tidak ditemukan!');
+    document.body.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f3f4f6;">
+            <div style="background: white; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px;">
+                <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 10px; color: #111827;">Parameter Tidak Valid</h2>
+                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Silakan pilih tanggal perjalanan terlebih dahulu.</p>
+                <a href="{{ route('dashboard') }}" style="display: inline-block; padding: 10px 24px; background: #f97316; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">← Kembali ke Dashboard</a>
+            </div>
+        </div>
+    `;
+    throw new Error('Missing date parameters');
+}
 
 const fmt = s => new Intl.DateTimeFormat('id-ID', { day:'numeric', month:'short', year:'numeric' }).format(new Date(s));
 
@@ -987,11 +1067,16 @@ function getDuration() {
     return Math.ceil((new Date(endDate) - new Date(startDate)) / 86400000) + 1;
 }
 
-/* ── Fill nav bar ── */
+/* ── Fill nav bar and info box ── */
 const dur = getDuration();
 document.getElementById('navTitle').textContent = 'Rental Mobil';
 document.getElementById('navSub').textContent   = `${fmt(startDate)} – ${fmt(endDate)} • ${dur} Hari • Lepas Kunci`;
 document.getElementById('durationText').textContent = `${dur} Hari`;
+
+// Fill info box
+document.getElementById('infStartDate').textContent = fmt(startDate);
+document.getElementById('infoEndDate').textContent = fmt(endDate);
+document.getElementById('infoDuration').textContent = dur + ' Hari';
 
 /* ── State ── */
 let allCars      = [];
@@ -1004,17 +1089,28 @@ const itemsPerPage = 5;
 /* ── Load ── */
 async function loadCars() {
     try {
-        const res  = await fetch(`/api/bookings/available-cars?start_date=${startDate}&end_date=${endDate}`);
+        const url = `/api/bookings/available-cars?start_date=${startDate}&end_date=${endDate}`;
+        console.log('🚗 Fetching:', url);
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+
         const data = await res.json();
-        allCars    = data.cars || [];
+        console.log('✅ Data berhasil diambil:', data);
+
+        allCars = data.cars || [];
+        console.log('📊 Total mobil:', allCars.length);
+
         renderCars();
     } catch (e) {
+        console.error('❌ Error loading cars:', e);
         document.getElementById('carsContainer').innerHTML = `
             <div class="state-box">
                 <div class="state-icon"><i class="fas fa-exclamation-circle"></i></div>
-                <div class="state-title">Gagal Memuat</div>
-                <p class="state-text">Terjadi kesalahan. Silakan coba lagi.</p>
-                <a href="{{ route('cars.index') }}" class="state-link"><i class="fas fa-arrow-left"></i> Kembali</a>
+                <div class="state-title">Gagal Memuat Data</div>
+                <p class="state-text" style="color: #dc2626; font-weight: 600;">Error: ${e.message}</p>
+                <p class="state-text">Silakan refresh halaman atau hubungi support.</p>
+                <a href="{{ route('dashboard') }}" class="state-link"><i class="fas fa-arrow-left"></i> Kembali</a>
             </div>`;
     }
 }
@@ -1024,6 +1120,9 @@ function renderCars() {
     const dur    = getDuration();
     let avail    = allCars.filter(c =>  c.is_available);
     let booked   = allCars.filter(c => !c.is_available);
+
+    // Update available cars count
+    document.getElementById('infoAvailable').textContent = avail.length + ' Unit';
 
     /* filter transmisi */
     if (filterTrans.length) {
@@ -1058,7 +1157,7 @@ function renderCars() {
                 <div class="state-icon"><i class="fas fa-search"></i></div>
                 <div class="state-title">Tidak Ada Kendaraan</div>
                 <p class="state-text">Tidak ada mobil tersedia untuk tanggal ini. Coba ubah tanggal perjalanan Anda.</p>
-                <a href="{{ route('cars.index') }}" class="state-link"><i class="fas fa-arrow-left"></i> Ubah Tanggal</a>
+                <a href="{{ route('dashboard') }}" class="state-link"><i class="fas fa-arrow-left"></i> Ubah Tanggal</a>
             </div>`;
         document.getElementById('paginationContainer').style.display = 'none';
         return;

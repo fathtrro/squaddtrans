@@ -9,7 +9,7 @@
                         <h2 class="section-title">Pilih Unit Favorit Anda</h2>
                     </div>
 
-                    <a href="{{ route('cars.index') }}"
+                    <a href="{{ route('dashboard') }}"
                         class="text-yellow-600 hover:text-yellow-700 font-bold flex items-center gap-2 transition-colors">
                         Lihat Semua Armada
                         <i class="fa-solid fa-arrow-right text-sm"></i>

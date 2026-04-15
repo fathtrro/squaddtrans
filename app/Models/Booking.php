@@ -20,6 +20,7 @@ class Booking extends Model
     const STATUS_WAITING_PENALTY = 'waiting_penalty';
     const STATUS_WAITING_PAYMENT = 'waiting_payment';
     const STATUS_EXPIRED = 'expired';
+    const STATUS_WAITING_CANCELLATION = 'waiting_cancellation';
 
     protected $fillable = [
         'booking_code',
@@ -35,7 +36,9 @@ class Booking extends Model
         'dp_amount',
         'total_price',
         'status',
-        'cancellation_reason'
+        'cancellation_reason',
+        'cancellation_requested_at',
+        'cancellation_approved_by'
     ];
 
 
@@ -47,6 +50,7 @@ class Booking extends Model
         'end_datetime' => 'datetime',
         'dp_amount' => 'decimal:2',
         'total_price' => 'decimal:2',
+        'cancellation_requested_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -202,6 +206,7 @@ class Booking extends Model
             'cancelled' => 'bg-red-100 text-red-800 border-red-300',
             'waiting_penalty' => 'bg-orange-100 text-orange-800 border-orange-300',
             'waiting_payment' => 'bg-purple-100 text-purple-800 border-purple-300',
+            'waiting_cancellation' => 'bg-red-100 text-red-800 border-red-300',
         ];
 
         return $badges[$this->status] ?? 'bg-gray-100 text-gray-800 border-gray-300';
@@ -220,6 +225,7 @@ class Booking extends Model
             'cancelled' => 'Dibatalkan',
             'waiting_penalty' => 'Menunggu Denda',
             'waiting_payment' => 'Menunggu Pembayaran',
+            'waiting_cancellation' => 'Menunggu Konfirmasi Pembatalan',
         ];
 
         return $labels[$this->status] ?? 'Unknown';
@@ -481,7 +487,7 @@ class Booking extends Model
      */
     public function getExtensionsTotal()
     {
-        return $this->extensions()->sum('price');
+        return $this->extensions()->sum('extra_price');
     }
 
     /**
