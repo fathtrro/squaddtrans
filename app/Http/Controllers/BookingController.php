@@ -27,7 +27,7 @@ class BookingController extends Controller
                 ->whereNotIn('status', ['completed', 'cancelled'])
                 ->first();
         }
-        
+
         return view('bookings.select-dates', compact('activeBooking'));
     }
 
@@ -41,7 +41,7 @@ class BookingController extends Controller
             $activeBooking = Booking::where('user_id', auth()->id())
                 ->whereNotIn('status', ['completed', 'cancelled'])
                 ->first();
-            
+
             if ($activeBooking) {
                 return back()->with('error', 'Anda tidak bisa melakukan booking baru. Selesaikan atau batalkan booking sebelumnya terlebih dahulu. Booking aktif Anda: ' . $activeBooking->booking_code);
             }
@@ -49,17 +49,21 @@ class BookingController extends Controller
 
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
+        $startTime = $request->query('start_time', '09:00');
+        $endTime = $request->query('end_time', '09:00');
 
         // Validate dates
         $request->validate([
             'start_date' => 'required|date_format:Y-m-d',
             'end_date' => 'required|date_format:Y-m-d|after_or_equal:start_date',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i',
         ]);
 
-        // Calculate duration
-        $start = Carbon::parse($startDate);
-        $end = Carbon::parse($endDate);
-        $duration = $start->diffInDays($end) + 1;
+        // Calculate duration (exact days matching frontend calculation)
+        $start = Carbon::parse($startDate . ' ' . $startTime);
+        $end = Carbon::parse($endDate . ' ' . $endTime);
+        $duration = round(($end->timestamp - $start->timestamp) / 86400);
 
         // Get daily price (use price_24h)
         $dailyPrice = $car->price_24h;
@@ -82,6 +86,8 @@ class BookingController extends Controller
             'car' => $car->load('images'),
             'startDate' => $startDate,
             'endDate' => $endDate,
+            'startTime' => $startTime,
+            'endTime' => $endTime,
             'duration' => $duration,
             'dailyPrice' => $dailyPrice,
             'isAvailable' => $isAvailable,
@@ -325,7 +331,7 @@ class BookingController extends Controller
             $query->whereDate('start_datetime', $request->date_filter);
         }
         $allBookings = (clone $query)->get();
-        $bookings = $query->latest()->paginate(3);
+        $bookings = $query->latest()->paginate(5);
 
         return view('bookings.index', [
             'bookings' => $bookings,
@@ -362,10 +368,10 @@ class BookingController extends Controller
         // Billing info
         $guaranteeType = $request->guarantee_type;
         $paymentMethod = $request->payment_method;
-        $bankAccount = $request->selected_bank ? 
+        $bankAccount = $request->selected_bank ?
             \App\Models\BankAccount::find($request->selected_bank) : null;
-        $bankInfo = $bankAccount ? 
-            $bankAccount->bank_name . ' - ' . $bankAccount->account_number . ' (a.n. ' . $bankAccount->account_holder . ')' : 
+        $bankInfo = $bankAccount ?
+            $bankAccount->bank_name . ' - ' . $bankAccount->account_number . ' (a.n. ' . $bankAccount->account_holder . ')' :
             'N/A';
 
         // ==========================================

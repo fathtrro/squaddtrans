@@ -193,7 +193,7 @@
                     </label>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                         @php
-                            $accessories = ['Dongkrak', 'Kunci Roda', 'Segitiga Safety', 'Jek', 'Kunci Inggris', 'Odol', 'Kabel Jumper'];
+                            $accessories = ['Dongkrak', 'Stand Dongkrak', 'Kartu Barcode BBM', 'Stnk', 'Kunci Roda', 'Ban Cadangan'];
                             $selectedAccessories = old('accessories') ? explode(',', old('accessories')) : explode(',', $beforeChecklist->accessories ?? '');
                         @endphp
                         @foreach($accessories as $item)

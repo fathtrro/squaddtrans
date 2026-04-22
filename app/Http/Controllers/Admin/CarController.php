@@ -72,7 +72,6 @@ class CarController extends Controller
             'seats' => 'required|integer|min:1',
             'transmission' => 'required|string|max:255',
             'fuel_type' => 'required|string|max:255',
-            'price_12h' => 'required|numeric|min:0',
             'price_24h' => 'required|numeric|min:0',
 
             // multiple images
@@ -92,7 +91,6 @@ class CarController extends Controller
                 'seats' => $request->seats,
                 'transmission' => $request->transmission,
                 'fuel_type' => $request->fuel_type,
-                'price_12h' => $request->price_12h,
                 'price_24h' => $request->price_24h,
                 'status' => 'available',
             ]);
@@ -145,7 +143,6 @@ class CarController extends Controller
             'seats' => 'required|integer|min:1',
             'transmission' => 'required|string|max:255',
             'fuel_type' => 'required|string|max:255',
-            'price_12h' => 'required|numeric|min:0',
             'price_24h' => 'required|numeric|min:0',
             'status' => 'required|in:available,booked,rented,maintenance',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

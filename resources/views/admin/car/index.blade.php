@@ -147,11 +147,6 @@
                         </a>
 
                         <div class="relative dropdown">
-                            <button class="text-gray-400 hover:text-gray-600 dropdown-toggle" type="button">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                                </svg>
-                            </button>
                             <div class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10 py-1">
                                 <a href="{{ route('admin.car.show', $car->id) }}"
                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
@@ -195,10 +190,6 @@
 
                     <div class="pt-3 border-t border-gray-100">
                         <div class="space-y-1">
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs text-gray-500">12 Jam:</span>
-                                <span class="text-sm font-bold text-yellow-600">Rp {{ number_format($car->price_12h, 0, ',', '.') }}</span>
-                            </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-xs text-gray-500">24 Jam:</span>
                                 <span class="text-sm font-bold text-yellow-600">Rp {{ number_format($car->price_24h, 0, ',', '.') }}</span>

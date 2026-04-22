@@ -219,13 +219,13 @@
                     <span>Penyewaan</span>
                 </a>
 
-                <a href="{{ route('admin.booking-extensions.index') }}"
+                {{-- <a href="{{ route('admin.booking-extensions.index') }}"
                    class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.booking-extensions.*') ? 'text-white bg-gradient-to-r from-yellow-400 to-yellow-500 shadow-sm' : 'text-gray-700 hover:bg-gray-100' }}">
                     <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     <span>Perpanjangan</span>
-                </a>
+                </a> --}}
 
                 <!-- Settings Section -->
                 <div class="px-2 py-3 mt-4">

@@ -230,28 +230,6 @@
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Harga 12 Jam -->
-                        <div>
-                            <label for="price_12h" class="block text-sm font-medium text-gray-700 mb-2">
-                                Harga 12 Jam <span class="text-red-500">*</span>
-                            </label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">Rp</span>
-                                <input type="number"
-                                       name="price_12h"
-                                       id="price_12h"
-                                       value="{{ old('price_12h', $car->price_12h) }}"
-                                       min="0"
-                                       step="0.01"
-                                       class="w-full pl-12 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('price_12h') border-red-500 @enderror"
-                                       placeholder="500000"
-                                       required>
-                            </div>
-                            @error('price_12h')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
                         <!-- Harga 24 Jam -->
                         <div>
                             <label for="price_24h" class="block text-sm font-medium text-gray-700 mb-2">
@@ -294,14 +272,19 @@
                                     <div class="relative group">
                                         <img src="{{ asset('storage/' . $image->image_path) }}"
                                              alt="Car image"
-                                             class="w-full h-32 object-cover rounded-lg border border-gray-200">
-                                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all rounded-lg flex items-center justify-center">
-                                            <label class="cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                                             class="w-full h-32 object-cover rounded-lg border border-gray-200 peer-has-[:checked]:grayscale peer-has-[:checked]:opacity-50 transition-all"
+                                             id="img-{{ $image->id }}">
+                                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all rounded-lg flex items-center justify-center peer-has-[:checked]:bg-opacity-70"
+                                             id="overlay-{{ $image->id }}">
+                                            <label class="cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity peer-has-[:checked]:opacity-100"
+                                                   id="label-{{ $image->id }}">
                                                 <input type="checkbox"
                                                        name="remove_images[]"
                                                        value="{{ $image->id }}"
-                                                       class="sr-only peer">
-                                                <div class="w-8 h-8 bg-red-500 peer-checked:bg-red-700 rounded-full flex items-center justify-center text-white">
+                                                       class="sr-only peer"
+                                                       id="checkbox-{{ $image->id }}">
+                                                <div class="w-8 h-8 bg-red-500 peer-checked:bg-gray-400 rounded-full flex items-center justify-center text-white hover:bg-red-600 peer-checked:hover:bg-gray-500 transition-colors shadow-lg"
+                                                     id="btn-{{ $image->id }}">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                     </svg>
@@ -311,7 +294,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <p class="mt-2 text-xs text-gray-500">Klik gambar untuk menandai untuk dihapus</p>
+                            <p class="mt-2 text-xs text-gray-500">Klik icon sampah pada gambar untuk menandai akan dihapus</p>
                         </div>
                     @endif
 
@@ -321,7 +304,7 @@
                             Tambah Foto Baru (Opsional)
                         </label>
                         <div class="flex items-center justify-center w-full">
-                            <label for="images" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                            <label for="images" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors" id="dropZone">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -334,8 +317,7 @@
                                        type="file"
                                        class="hidden"
                                        accept="image/png,image/jpeg,image/jpg"
-                                       multiple
-                                       onchange="previewImages(event)">
+                                       multiple>
                             </label>
                         </div>
                         @error('images')
@@ -346,8 +328,11 @@
                         @enderror
                     </div>
 
-                    <!-- Image Preview -->
-                    <div id="imagePreview" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 hidden"></div>
+                    <!-- Image Preview Section -->
+                    <div id="imagePreviewSection" class="mt-6 hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Preview Foto Baru</label>
+                        <div id="imagePreview" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                    </div>
                 </div>
             </div>
 
@@ -461,40 +446,154 @@
 
     @push('scripts')
     <script>
-        function previewImages(event) {
-            const preview = document.getElementById('imagePreview');
-            const files = event.target.files;
+        document.addEventListener('DOMContentLoaded', function() {
+            const imagesInput = document.getElementById('images');
+            const dropZone = document.getElementById('dropZone');
+            const imagePreview = document.getElementById('imagePreview');
+            const imagePreviewSection = document.getElementById('imagePreviewSection');
+            let selectedFiles = new DataTransfer();
 
-            if (files.length === 0) {
-                preview.classList.add('hidden');
-                return;
-            }
+            // Handle delete checkbox toggle on current images
+            const deleteCheckboxes = document.querySelectorAll('input[name="remove_images[]"]');
+            deleteCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const imageId = this.value;
+                    const imgElement = document.getElementById(`img-${imageId}`);
+                    const overlayElement = document.getElementById(`overlay-${imageId}`);
+                    const btnElement = document.getElementById(`btn-${imageId}`);
+                    const labelElement = document.getElementById(`label-${imageId}`);
 
-            preview.innerHTML = '';
-            preview.classList.remove('hidden');
+                    if (this.checked) {
+                        // Foto akan dihapus - tampilkan visual feedback abu-abu
+                        imgElement.classList.add('grayscale', 'opacity-50');
+                        overlayElement.classList.add('bg-opacity-70');
+                        overlayElement.classList.remove('bg-opacity-0');
+                        btnElement.classList.remove('bg-red-500', 'hover:bg-red-600');
+                        btnElement.classList.add('bg-gray-400', 'hover:bg-gray-500');
+                        labelElement.classList.add('opacity-100');
+                    } else {
+                        // Foto tidak jadi dihapus - kembali ke normal
+                        imgElement.classList.remove('grayscale', 'opacity-50');
+                        overlayElement.classList.remove('bg-opacity-70');
+                        overlayElement.classList.add('bg-opacity-0');
+                        btnElement.classList.add('bg-red-500', 'hover:bg-red-600');
+                        btnElement.classList.remove('bg-gray-400', 'hover:bg-gray-500');
+                        labelElement.classList.remove('opacity-100');
+                    }
+                });
+            });
 
-            Array.from(files).forEach(file => {
-                if (file.type.startsWith('image/')) {
+            // Handle file input change
+            imagesInput.addEventListener('change', function(e) {
+                const files = Array.from(e.target.files);
+
+                files.forEach(file => {
+                    // Validate file type
+                    if (!file.type.match('image.*')) {
+                        alert('File harus berupa gambar!');
+                        return;
+                    }
+
+                    // Validate file size (5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Ukuran file maksimal 5MB!');
+                        return;
+                    }
+
+                    // Add file to DataTransfer object
+                    selectedFiles.items.add(file);
+                });
+
+                // Update input files
+                imagesInput.files = selectedFiles.files;
+
+                // Render previews
+                renderPreviews();
+            });
+
+            // Handle drag and drop
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.add('bg-yellow-100', 'border-yellow-400');
+            });
+
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.remove('bg-yellow-100', 'border-yellow-400');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.remove('bg-yellow-100', 'border-yellow-400');
+                const files = Array.from(e.dataTransfer.files);
+
+                files.forEach(file => {
+                    if (file.type.match('image.*') && file.size <= 5 * 1024 * 1024) {
+                        selectedFiles.items.add(file);
+                    }
+                });
+
+                imagesInput.files = selectedFiles.files;
+                renderPreviews();
+            });
+
+            function renderPreviews() {
+                imagePreview.innerHTML = '';
+
+                if (selectedFiles.files.length === 0) {
+                    imagePreviewSection.classList.add('hidden');
+                    return;
+                }
+
+                imagePreviewSection.classList.remove('hidden');
+
+                Array.from(selectedFiles.files).forEach((file, index) => {
                     const reader = new FileReader();
 
                     reader.onload = function(e) {
-                        const div = document.createElement('div');
-                        div.className = 'relative group';
-                        div.innerHTML = `
-                            <img src="${e.target.result}"
-                                 class="w-full h-32 object-cover rounded-lg border border-gray-200"
-                                 alt="Preview">
-                            <div class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs">
-                                Baru
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'relative group';
+                        previewDiv.innerHTML = `
+                            <div class="aspect-square rounded-lg overflow-hidden bg-gray-100 border-2 border-gray-200">
+                                <img src="${e.target.result}"
+                                     alt="Preview ${index + 1}"
+                                     class="w-full h-full object-cover">
                             </div>
+                            <button type="button"
+                                    onclick="removeImage(${index})"
+                                    class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                            ${index === 0 ? '<span class="absolute top-2 left-2 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">Utama</span>' : ''}
                         `;
-                        preview.appendChild(div);
+                        imagePreview.appendChild(previewDiv);
                     };
 
                     reader.readAsDataURL(file);
-                }
-            });
-        }
+                });
+            }
+
+            // Make removeImage function global
+            window.removeImage = function(index) {
+                const dt = new DataTransfer();
+                const files = Array.from(selectedFiles.files);
+
+                files.forEach((file, i) => {
+                    if (i !== index) {
+                        dt.items.add(file);
+                    }
+                });
+
+                selectedFiles = dt;
+                imagesInput.files = selectedFiles.files;
+                renderPreviews();
+            };
+        });
     </script>
     @endpush
 </x-admin-layout>

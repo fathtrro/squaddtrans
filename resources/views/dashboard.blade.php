@@ -220,30 +220,30 @@
 
                                     <div class="grid grid-cols-12 gap-3 items-stretch">
 
-                                        <!-- Tanggal Mulai -->
-                                        <div class="col-span-3 flex flex-col h-full">
+                                        <!-- Tanggal & Jam Mulai -->
+                                        <div class="col-span-4 flex flex-col h-full">
                                             <div
                                                 class="flex-1 flex flex-col px-3 py-2 border-2 border-white/40 rounded-lg">
 
                                                 <label
                                                     class="text-xs font-semibold text-white/75 uppercase tracking-wide mb-1">
-                                                    Tanggal mulai
+                                                    Tanggal & Jam Mulai
                                                 </label>
 
-                                                <input type="date" id="dashboardStartDate"
+                                                <input type="datetime-local" id="dashboardStartDateTime"
                                                     class="bg-transparent outline-none border-0 text-white text-sm font-medium p-0 m-0 appearance-none"
-                                                    required min="{{ date('Y-m-d') }}">
+                                                    required>
                                             </div>
                                         </div>
 
                                         <!-- Durasi Rental -->
-                                        <div class="col-span-3 flex flex-col h-full">
+                                        <div class="col-span-2 flex flex-col h-full">
                                             <div
                                                 class="flex-1 flex flex-col px-3 py-2 border-2 border-white/40 rounded-lg">
 
                                                 <label
                                                     class="text-xs font-semibold text-white/75 uppercase tracking-wide mb-1">
-                                                    Durasi Rental
+                                                    Durasi
                                                 </label>
 
                                                 <select id="dashboardDays"
@@ -260,8 +260,8 @@
                                             </div>
                                         </div>
 
-                                        <!-- Tanggal Selesai -->
-                                        <div class="col-span-4 flex flex-col h-full">
+                                        <!-- Tanggal & Jam Selesai -->
+                                        <div class="col-span-3 flex flex-col h-full">
                                             <div
                                                 class="flex-1 flex flex-col px-3 py-2 border-2 border-white/40 rounded-lg">
 
@@ -570,30 +570,38 @@
     {{-- ================================================================ --}}
     <script>
         // ── Dashboard Date Form ──────────────────────────────────────────
-        const dashboardStartDate = document.getElementById('dashboardStartDate');
+        const dashboardStartDateTime = document.getElementById('dashboardStartDateTime');
         const dashboardDays = document.getElementById('dashboardDays');
         const dashboardEndDateDisplay = document.getElementById('dashboardEndDateDisplay');
         const dashboardDateForm = document.getElementById('dashboardDateForm');
 
-        // Format date for display
-        function formatDateDisplay(date) {
+        // Format date and time for display
+        function formatDateTimeDisplay(date, time) {
             const day = String(date.getDate()).padStart(2, '0');
             const month = date.toLocaleDateString('id-ID', {
                 month: 'short'
             });
             const year = date.getFullYear();
-            return `hari ${day} ${month} ${year}`;
+            return `${day} ${month} ${year} ${time}`;
         }
 
-        // Calculate and display end date
+        // Calculate and display end date and time
         function calculateEndDate() {
-            if (dashboardStartDate.value && dashboardDays.value) {
-                const start = new Date(dashboardStartDate.value);
+            if (dashboardStartDateTime.value && dashboardDays.value) {
+                const startDateTime = new Date(dashboardStartDateTime.value);
                 const days = parseInt(dashboardDays.value) || 1;
-                const end = new Date(start);
-                end.setDate(end.getDate() + days - 1);
-                dashboardEndDateDisplay.textContent = `Selesai ${formatDateDisplay(end)}`;
-                return end;
+
+                // Calculate end date by adding days
+                const endDate = new Date(startDateTime);
+                endDate.setDate(endDate.getDate() + days);
+
+                // Format the time
+                const endHours = String(endDate.getHours()).padStart(2, '0');
+                const endMinutes = String(endDate.getMinutes()).padStart(2, '0');
+                const endTime = `${endHours}:${endMinutes}`;
+
+                dashboardEndDateDisplay.textContent = `Selesai ${formatDateTimeDisplay(endDate, endTime)}`;
+                return { date: endDate, time: endTime };
             } else {
                 dashboardEndDateDisplay.textContent = '-';
             }
@@ -605,9 +613,13 @@
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
-            const todayString = `${year}-${month}-${day}`;
+            const hours = '09'; // 9 AM default
+            const minutes = '00';
 
-            dashboardStartDate.value = todayString;
+            // Format as YYYY-MM-DDTHH:mm for datetime-local input
+            const defaultDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+            dashboardStartDateTime.value = defaultDateTime;
             dashboardDays.value = '1';
             calculateEndDate();
         }
@@ -615,32 +627,41 @@
         // Initialize with default values
         setDefaultValues();
 
-        // Update end date when start date or duration changes
-        dashboardStartDate.addEventListener('change', calculateEndDate);
+        // Update end date when start date/time or duration changes
+        dashboardStartDateTime.addEventListener('change', calculateEndDate);
         dashboardDays.addEventListener('change', calculateEndDate);
 
         // Form submission
         dashboardDateForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const startDate = dashboardStartDate.value;
+            const startDateTime = dashboardStartDateTime.value;
             const days = dashboardDays.value;
 
-            if (!startDate || !days) {
-                alert('Harap isi tanggal mulai dan jumlah hari');
+            if (!startDateTime || !days) {
+                alert('Harap isi tanggal dan jam mulai, serta jumlah hari');
                 return;
             }
 
-            // Calculate end date
-            const start = new Date(startDate);
+            // Parse the datetime-local value
+            const start = new Date(startDateTime);
+            const startDate = start.toISOString().split('T')[0];
+            const startHours = String(start.getHours()).padStart(2, '0');
+            const startMinutes = String(start.getMinutes()).padStart(2, '0');
+            const startTime = `${startHours}:${startMinutes}`;
+
+            // Calculate end date and time
             const end = new Date(start);
-            end.setDate(end.getDate() + parseInt(days) - 1);
+            end.setDate(end.getDate() + parseInt(days));
 
-            // Format end date as YYYY-MM-DD
-            const endDateFormatted = end.toISOString().split('T')[0];
+            // Format end date and time
+            const endDate = end.toISOString().split('T')[0];
+            const endHours = String(end.getHours()).padStart(2, '0');
+            const endMinutes = String(end.getMinutes()).padStart(2, '0');
+            const endTime = `${endHours}:${endMinutes}`;
 
-            // Redirect to available cars list page
-            window.location.href = `/bookings/select-car?start_date=${startDate}&end_date=${endDateFormatted}`;
+            // Redirect to available cars list page with time information
+            window.location.href = `/bookings/select-car?start_date=${startDate}&start_time=${startTime}&end_date=${endDate}&end_time=${endTime}`;
         });
 
         // ── Klik backdrop dialog → tutup ─────────────────────────────────

@@ -160,13 +160,6 @@
                 </h3>
                 <div class="space-y-4">
                     <div class="bg-white rounded-lg p-4 border border-yellow-300">
-                        <p class="text-sm text-gray-600 mb-1">Sewa 12 Jam</p>
-                        <p class="text-2xl font-bold text-yellow-600">
-                            Rp {{ number_format($car->price_12h, 0, ',', '.') }}
-                        </p>
-                        <p class="text-xs text-gray-500 mt-1">Per 12 jam</p>
-                    </div>
-                    <div class="bg-white rounded-lg p-4 border border-yellow-300">
                         <p class="text-sm text-gray-600 mb-1">Sewa 24 Jam</p>
                         <p class="text-2xl font-bold text-yellow-600">
                             Rp {{ number_format($car->price_24h, 0, ',', '.') }}

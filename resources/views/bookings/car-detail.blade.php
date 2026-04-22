@@ -821,13 +821,13 @@ footer, header, nav { display: none !important; }
 
                 <div class="duration-strip">
                     <div>
-                        <div class="ds-label">Mulai</div>
-                        <div class="ds-val">{{ \Carbon\Carbon::parse($startDate)->format('d M Y') }}</div>
+                        <div class="ds-label" style="color:white">Mulai</div>
+                        <div class="ds-val" style="color:white">{{ \Carbon\Carbon::parse($startDate)->format('d M Y') }}</div>
                     </div>
-                    <i class="fas fa-arrow-right" style="color:var(--muted);font-size:12px"></i>
+                    <i class="fas fa-arrow-right" style="color:white;font-size:12px"></i>
                     <div style="text-align:right">
-                        <div class="ds-label">Selesai</div>
-                        <div class="ds-val">{{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}</div>
+                        <div class="ds-label" style="color:white">Selesai</div>
+                        <div class="ds-val" style="color:white">{{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}</div>
                     </div>
                 </div>
 
@@ -835,7 +835,9 @@ footer, header, nav { display: none !important; }
                 <form method="GET" action="{{ route('bookings.create') }}">
                     <input type="hidden" name="car"        value="{{ $car->id }}">
                     <input type="hidden" name="start_date" value="{{ $startDate }}">
+                    <input type="hidden" name="start_time" value="{{ $startTime ?? '09:00' }}">
                     <input type="hidden" name="end_date"   value="{{ $endDate }}">
+                    <input type="hidden" name="end_time"   value="{{ $endTime ?? '09:00' }}">
                     <button type="submit" class="btn-book">
                         <i class="fas fa-check-circle"></i> Pesan Sekarang
                     </button>
@@ -883,7 +885,9 @@ footer, header, nav { display: none !important; }
     <form method="GET" action="{{ route('bookings.create') }}">
         <input type="hidden" name="car"        value="{{ $car->id }}">
         <input type="hidden" name="start_date" value="{{ $startDate }}">
+        <input type="hidden" name="start_time" value="{{ $startTime ?? '09:00' }}">
         <input type="hidden" name="end_date"   value="{{ $endDate }}">
+        <input type="hidden" name="end_time"   value="{{ $endTime ?? '09:00' }}">
         <button type="submit" class="mob-btn">
             <i class="fas fa-check-circle"></i> Pesan
         </button>

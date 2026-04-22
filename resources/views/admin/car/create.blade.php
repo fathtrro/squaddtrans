@@ -154,21 +154,6 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Harga 12 Jam *
-                            </label>
-                            <div class="relative">
-                                <span class="absolute left-4 top-3 text-gray-500 text-sm">Rp</span>
-                                <input type="number" name="price_12h" value="{{ old('price_12h') }}" required
-                                    min="0" step="0.01" placeholder="800000.00"
-                                    class="w-full pl-14 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('price_12h') border-red-500 @enderror">
-                            </div>
-                            @error('price_12h')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Harga 24 Jam *
                             </label>
                             <div class="relative">

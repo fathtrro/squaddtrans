@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('seats')->default(5);
             $table->string('transmission')->default('automatic');
             $table->string('fuel_type')->default('bensin');
-            $table->decimal('price_12h', 12, 2)->default(0);
             $table->decimal('price_24h', 12, 2)->default(0);
             $table->string('main_image')->nullable();
             $table->enum('status', ['available', 'booked', 'rented', 'maintenance'])->default('available');

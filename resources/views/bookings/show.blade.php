@@ -108,7 +108,7 @@
                     {{-- TAB NAVIGATION --}}
                     <div class="sticky top-16 lg:top-0 z-30 bg-[#F8F7F4] pb-3 pt-1 lg:pt-0">
                         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                            <nav class="grid grid-cols-4">
+                            <nav class="grid grid-cols-3">
                                 <button @click="activeTab = 'progres'"
                                     :class="activeTab === 'progres' ?
                                         'bg-orange-50 text-orange-600 border-b-2 border-orange-500' :
@@ -133,14 +133,14 @@
                                     <i class="fas fa-receipt text-base lg:text-lg"></i>
                                     <span>Biaya</span>
                                 </button>
-                                <button @click="activeTab = 'extension'"
+                                {{-- <button @click="activeTab = 'extension'"
                                     :class="activeTab === 'extension' ?
                                         'bg-orange-50 text-orange-600 border-b-2 border-orange-500' :
                                         'text-gray-500 hover:text-gray-800 hover:bg-gray-50 border-b-2 border-transparent'"
                                     class="flex flex-col items-center gap-1 px-2 py-3 lg:py-4 text-xs lg:text-sm font-semibold transition-all duration-200">
                                     <i class="fas fa-repeat text-base lg:text-lg"></i>
                                     <span>Perpanjang</span>
-                                </button>
+                                </button> --}}
                             </nav>
                         </div>
                     </div>

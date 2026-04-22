@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\Auth\DebugPasswordResetController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -33,6 +34,12 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+    // Debug Password Reset (Development only - auto hidden on production)
+    Route::get('debug/password-reset', [DebugPasswordResetController::class, 'index'])
+        ->name('password.debug');
+    Route::post('debug/password-reset/get-link', [DebugPasswordResetController::class, 'getLink'])
+        ->name('password.debug.get-link');
 });
 
 Route::middleware('auth')->group(function () {

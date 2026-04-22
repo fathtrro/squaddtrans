@@ -580,7 +580,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
                     <span class="value">Lepas Kunci</span>
                 </div>
             </div>
-            <a href="/bookings/select-car?start_date={{ request('start_date') ?? ($startDate ? \Carbon\Carbon::parse($startDate)->format('Y-m-d') : '') }}&end_date={{ request('end_date') ?? ($endDate ? \Carbon\Carbon::parse($endDate)->format('Y-m-d') : '') }}" class="recap-change-link">
+            <a href="/bookings/select-car?start_date={{ request('start_date') ?? ($startDate ? \Carbon\Carbon::parse($startDate)->format('Y-m-d') : '') }}&start_time={{ request('start_time', '09:00') }}&end_date={{ request('end_date') ?? ($endDate ? \Carbon\Carbon::parse($endDate)->format('Y-m-d') : '') }}&end_time={{ request('end_time', '09:00') }}" class="recap-change-link">
                 <i class="fa-solid fa-pen-to-square"></i> Ganti Mobil
             </a>
         </div>
@@ -829,8 +829,24 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
 <script>
 (function() {
     const params        = new URLSearchParams(window.location.search);
-    const paramStart    = params.get('start');
-    const paramEnd      = params.get('end');
+
+    // Support both old format (start/end) and new format (start_date/start_time/end_date/end_time)
+    let paramStart = params.get('start');
+    let paramEnd   = params.get('end');
+
+    // If new format parameters exist, combine them
+    const startDate = params.get('start_date');
+    const startTime = params.get('start_time');
+    const endDate = params.get('end_date');
+    const endTime = params.get('end_time');
+
+    if (startDate && startTime) {
+        paramStart = startDate + 'T' + startTime;
+    }
+    if (endDate && endTime) {
+        paramEnd = endDate + 'T' + endTime;
+    }
+
     const paramMode     = params.get('mode');
     const paramBasePrice  = params.get('base_price')  ? parseInt(params.get('base_price'))  : null;
     const paramTotalPrice = params.get('total_price') ? parseInt(params.get('total_price')) : null;
@@ -965,7 +981,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
     function calcPrice() {
         if (!startInput.value || !endInput.value) { durationBox.classList.remove('show'); return; }
         const s = new Date(startInput.value), e = new Date(endInput.value);
-        days = Math.ceil((e - s) / (1000 * 60 * 60 * 24));
+        days = Math.round((e - s) / (1000 * 60 * 60 * 24));
 
         if (days <= 0) {
             durationBox.classList.remove('show'); totalPrice = 0; minDP = 0;

@@ -7,11 +7,14 @@ use App\Models\Booking;
 use App\Models\User;
 use App\Models\Car;
 use App\Models\Driver;
+use App\Traits\SendsWhatsAppNotifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class RenterController extends Controller
 {
+    use SendsWhatsAppNotifications;
+
     /**
      * Display a listing of the resource.
      */
@@ -167,22 +170,22 @@ class RenterController extends Controller
                 $target = $booking->contact ?? ($booking->user->phone ?? null);
                 $confirmMessage = "✅ *Pesanan Anda Telah Disetujui!*\n\n" .
                     "Halo " . ($booking->user->name ?? 'Pelanggan') . ",\n\n" .
-                    "Selamat! Pesanan penyewaan mobil Anda dengan kode *" . $booking->booking_code . "* telah disetujui oleh tim admin kami.\n\n" .
+                    "Pesanan penyewaan mobil Anda dengan kode *" . $booking->booking_code . "* telah disetujui! 🎉\n\n" .
                     "🚗 *Detail Kendaraan:*\n" .
-                    "• Mobil: " . $booking->car->name . "\n" .
-                    "• Plat Nomor: " . $booking->car->plate_number . "\n" .
-                    "• Tipe Layanan: " . $booking->service_type_label . "\n\n" .
+                    "Mobil: " . $booking->car->brand . " " . $booking->car->name . "\n" .
+                    "Plat: " . $booking->car->plate_number . "\n\n" .
                     "📅 *Jadwal Penyewaan:*\n" .
-                    "• Mulai: " . $booking->start_datetime->format('d M Y, H:i') . "\n" .
-                    "• Selesai: " . $booking->end_datetime->format('d M Y, H:i') . "\n" .
-                    "• Durasi: " . $booking->duration_in_days . " hari\n\n" .
+                    "Mulai: " . $booking->start_datetime->format('d M Y, H:i') . "\n" .
+                    "Selesai: " . $booking->end_datetime->format('d M Y, H:i') . "\n\n" .
                     "💰 *Biaya Sewa:*\n" .
-                    "• Biaya Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n" .
-                    "• DP Dibayar: Rp " . number_format($booking->dp_amount, 0, ',', '.') . "\n\n" .
+                    "Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n" .
+                    "DP Dibayar: Rp " . number_format($booking->dp_amount, 0, ',', '.') . "\n" .
+                    "Sisa: Rp " . number_format($booking->total_price - $booking->dp_amount, 0, ',', '.') . "\n\n" .
                     "📍 *Langkah Selanjutnya:*\n" .
-                    "Silakan datang ke lokasi kami untuk pengambilan unit sesuai dengan waktu yang sudah ditentukan.\n\n" .
-                    "📞 Jika ada pertanyaan, hubungi kami: " . env('ADMIN_PHONE', '+62 812-3328-3578') . "\n\n" .
-                    "Terima kasih telah mempercayai layanan kami! 🙏";
+                    "✓ Silahkan melakukan pelunasan pembayaran\n" .
+                    "✓ Lalu lakukan pengambilan unit di lokasi kami\n\n" .
+                    "📞 Hubungi kami untuk info lebih lanjut: " . env('ADMIN_PHONE', '+62 812-3328-3578') . "\n\n" .
+                    "Terima kasih! 🙏";
 
                 $this->sendFonnteWhatsApp($target, $confirmMessage);
 

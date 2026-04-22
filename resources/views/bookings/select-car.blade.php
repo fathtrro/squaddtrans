@@ -1042,8 +1042,10 @@ function formatRupiah(num) {
 const params    = new URLSearchParams(window.location.search);
 let startDate = params.get('start_date');
 let endDate   = params.get('end_date');
+let startTime = params.get('start_time') || '00:00';
+let endTime = params.get('end_time') || '00:00';
 
-console.log('📅 URL Params:', { startDate, endDate });
+console.log('📅 URL Params:', { startDate, endDate, startTime, endTime });
 
 // Jika parameter tidak ada, redirect ke dashboard
 if (!startDate || !endDate) {
@@ -1062,20 +1064,25 @@ if (!startDate || !endDate) {
 }
 
 const fmt = s => new Intl.DateTimeFormat('id-ID', { day:'numeric', month:'short', year:'numeric' }).format(new Date(s));
+const fmtWithTime = (dateStr, timeStr) => {
+    const date = new Date(dateStr);
+    const dateFormatted = new Intl.DateTimeFormat('id-ID', { day:'numeric', month:'short', year:'numeric' }).format(date);
+    return `${dateFormatted} ${timeStr}`;
+};
 
 function getDuration() {
-    return Math.ceil((new Date(endDate) - new Date(startDate)) / 86400000) + 1;
+    return Math.round((new Date(endDate) - new Date(startDate)) / 86400000);
 }
 
 /* ── Fill nav bar and info box ── */
 const dur = getDuration();
 document.getElementById('navTitle').textContent = 'Rental Mobil';
-document.getElementById('navSub').textContent   = `${fmt(startDate)} – ${fmt(endDate)} • ${dur} Hari • Lepas Kunci`;
+document.getElementById('navSub').textContent   = `${fmtWithTime(startDate, startTime)} – ${fmtWithTime(endDate, endTime)} • ${dur} Hari • Lepas Kunci`;
 document.getElementById('durationText').textContent = `${dur} Hari`;
 
-// Fill info box
-document.getElementById('infStartDate').textContent = fmt(startDate);
-document.getElementById('infoEndDate').textContent = fmt(endDate);
+// Fill info box dengan waktu
+document.getElementById('infStartDate').textContent = fmtWithTime(startDate, startTime);
+document.getElementById('infoEndDate').textContent = fmtWithTime(endDate, endTime);
 document.getElementById('infoDuration').textContent = dur + ' Hari';
 
 /* ── State ── */
@@ -1221,7 +1228,7 @@ function changePage(page) {
 function buildCard(car, avail, dur, idx) {
     const basePrice  = car.daily_rent_price   || 0;
     const delay      = (idx * 0.05).toFixed(2);
-    const cardLink   = avail ? `/bookings/car-detail/${car.id}?start_date=${startDate}&end_date=${endDate}` : '#';
+    const cardLink   = avail ? `/bookings/car-detail/${car.id}?start_date=${startDate}&start_time=${startTime}&end_date=${endDate}&end_time=${endTime}` : '#';
 
     return `
     <a href="${cardLink}" class="car-card${avail ? '' : ' unavailable'}" style="animation-delay:${delay}s">

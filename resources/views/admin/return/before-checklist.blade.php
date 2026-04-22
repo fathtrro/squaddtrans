@@ -155,7 +155,7 @@
                     </label>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                         @php
-                            $accessories = ['Dongkrak', 'Kunci Roda', 'Segitiga Safety', 'Jek', 'Kunci Inggris', 'Odol', 'Kabel Jumper'];
+                            $accessories = ['Dongkrak', 'Stand Dongkrak', 'Kartu Barcode BBM', 'Stnk', 'Kunci Roda', 'Ban Cadangan'];
                             $oldAccessories = explode(',', old('accessories', ''));
                         @endphp
                         @foreach($accessories as $item)
