@@ -5,6 +5,9 @@
     <title>Admin Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo.jpeg') }}">
+
     {{-- Tailwind --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

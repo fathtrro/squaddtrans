@@ -42,7 +42,7 @@
 
                 {{-- Dropdown: Informasi --}}
                 @php
-                    $infoActive = in_array(trim($current,'/'), ['tentang', 'blog', 'contact-us']);
+                    $infoActive = in_array(trim($current,'/'), ['tentang', 'blog', 'contact']);
                 @endphp
                 <div class="relative" @click.outside="openInfo = false">
                     <button @click="openInfo = !openInfo"
@@ -106,7 +106,7 @@
                         <div class="h-px bg-gray-50 mx-3"></div>
 
                         {{-- Blog --}}
-                        <a href="/blog"
+                        {{-- <a href="/blog"
                             class="flex items-center gap-3 px-4 py-3.5 transition-colors group/item
                                    {{ trim($current,'/') == 'blog' ? 'bg-yellow-50' : 'hover:bg-yellow-50' }}">
                             <span class="w-8 h-8 rounded-xl border flex items-center justify-center flex-shrink-0 transition-all
@@ -127,20 +127,20 @@
                                 </p>
                                 <p class="text-xs text-gray-400 mt-0.5">Tips & inspirasi perjalanan</p>
                             </div>
-                        </a>
+                        </a> --}}
 
                         <div class="h-px bg-gray-50 mx-3"></div>
 
                         {{-- Hubungi Kami --}}
                         <a href="/contact"
                             class="flex items-center gap-3 px-4 py-3.5 transition-colors group/item
-                                   {{ trim($current,'/') == 'contact-us' ? 'bg-yellow-50' : 'hover:bg-yellow-50' }}">
+                                   {{ trim($current,'/') == 'contact' ? 'bg-yellow-50' : 'hover:bg-yellow-50' }}">
                             <span class="w-8 h-8 rounded-xl border flex items-center justify-center flex-shrink-0 transition-all
-                                         {{ trim($current,'/') == 'contact-us'
+                                         {{ trim($current,'/') == 'contact'
                                             ? 'bg-yellow-100 border-yellow-200'
                                             : 'bg-gray-50 border-gray-100 group-hover/item:bg-yellow-100 group-hover/item:border-yellow-200' }}">
                                 <svg class="w-4 h-4 transition-colors
-                                            {{ trim($current,'/') == 'contact-us' ? 'text-yellow-500' : 'text-gray-400 group-hover/item:text-yellow-500' }}"
+                                            {{ trim($current,'/') == 'contact' ? 'text-yellow-500' : 'text-gray-400 group-hover/item:text-yellow-500' }}"
                                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -148,7 +148,7 @@
                             </span>
                             <div>
                                 <p class="text-sm font-semibold transition-colors
-                                          {{ trim($current,'/') == 'contact-us' ? 'text-yellow-600' : 'text-gray-800 group-hover/item:text-yellow-600' }}">
+                                          {{ trim($current,'/') == 'contact' ? 'text-yellow-600' : 'text-gray-800 group-hover/item:text-yellow-600' }}">
                                     Hubungi Kami
                                 </p>
                                 <p class="text-xs text-gray-400 mt-0.5">Kontak &amp; lokasi</p>
@@ -239,7 +239,7 @@
                     // '/cars'       => ['label' => 'Unit Armada',        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 17h8M3 10l2-4h14l2 4M3 10h18v6H3v-6z"/>'],
                     '/tentang'    => ['label' => 'Tentang Kami',       'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
                     '/blog'       => ['label' => 'Blog & Artikel',     'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2zM9 14h6M9 10h4"/>'],
-                    '/contact-us' => ['label' => 'Hubungi Kami',       'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'],
+                    '/contact' => ['label' => 'Hubungi Kami',       'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'],
                 ];
                 @endphp
 

@@ -444,10 +444,13 @@
                         Sejak 2018, SquadTrans hadir dengan satu misi — membuat setiap perjalanan terasa aman, nyaman, dan tak terlupakan. Dari bandara hingga destinasi impian Anda.
                     </p>
                 </div>
-                <div class="tn-aside-card">
-                    <div class="tn-aside-year">2018</div>
-                    <div class="tn-aside-head">Berdiri & Terus Berkembang</div>
-                    <div class="tn-aside-text">Dari 3 unit menjadi 120+ armada premium di seluruh Indonesia dalam 6 tahun.</div>
+                <div style="position: relative; display: flex; flex-direction: column; gap: 20px; align-items: flex-end;">
+                    <img src="{{ asset('images/WhatsApp Image 2026-04-24 at 09.22.54.jpeg') }}" alt="SquadTrans Hero" style="width: 100%; height: 280px; object-fit: cover; border-radius: 16px;">
+                    <div class="tn-aside-card">
+                        <div class="tn-aside-year">2018</div>
+                        <div class="tn-aside-head">Berdiri & Terus Berkembang</div>
+                        <div class="tn-aside-text">Dari 3 unit menjadi 120+ armada premium di seluruh Indonesia dalam 6 tahun.</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -501,12 +504,12 @@
                     <p>Kini, dengan <strong>lebih dari 120 unit armada</strong>, tim pengemudi terlatih, dan platform pemesanan digital, SquadTrans telah menjadi mitra perjalanan pilihan ribuan keluarga dan profesional di Indonesia.</p>
                 </div>
                 <div class="tn-story-visual">
-                    <div class="tn-story-img">ST</div>
+                    <img src="{{ asset('images/WhatsApp Image 2026-04-24 at 09.22.55.jpeg') }}" alt="SquadTrans Fleet" class="tn-story-img" style="object-fit: cover; display: block;">
                     <div class="tn-float-card">
                         <div class="tn-float-num">6+</div>
                         <div class="tn-float-label">Tahun membangun kepercayaan</div>
                     </div>
-                </div>
+                </img>
             </div>
         </div>
     </section>
@@ -695,7 +698,7 @@
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17H5a2 2 0 01-2-2V5a2 2 0 012-2h11l4 4v10a2 2 0 01-2 2h-1"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
                         Lihat Armada
                     </a>
-                    <a href="/contact-us" class="tn-btn tn-btn-outline">
+                    <a href="/contact" class="tn-btn tn-btn-outline">
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         Hubungi Kami
                     </a>

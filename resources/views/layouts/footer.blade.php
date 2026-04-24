@@ -315,7 +315,7 @@
     <div class="fd-lower">
         <div class="fd-wrap">
             <div class="fd-lower-inner">
-                <p class="fd-copy">© 2024 <strong>Squad Trans Indonesia</strong>. All rights reserved.</p>
+                <p class="fd-copy">© 2026 <strong>KELOMPOK 09 SMK PGRI 2 PONOROGO </strong>- SQUAD TRANS PONOROGO </p>
                 <div class="fd-trust">
                     <span class="fd-trust-item"><span class="fd-trust-dot"></span>Aktif 24/7</span>
                     <span class="fd-sep"></span>
