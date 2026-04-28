@@ -544,24 +544,39 @@
         </div>
     </div>
 
-    @push('scripts')
     <script>
         function openDeleteModal(id, name) {
             document.getElementById('deleteModalSub').textContent = `Armada "${name}" akan dihapus permanen.`;
             document.getElementById('deleteForm').action = `/admin/car/${id}`;
             document.getElementById('deleteModal').classList.add('open');
         }
+
         function closeDeleteModal() {
             document.getElementById('deleteModal').classList.remove('open');
         }
-        document.getElementById('deleteModal').addEventListener('click', function(e) {
-            if (e.target === this) closeDeleteModal();
-        });
 
-        // Auto-submit search on enter
-        document.querySelector('.search-wrap input')?.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') this.closest('form').submit();
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteModal = document.getElementById('deleteModal');
+            if (deleteModal) {
+                deleteModal.addEventListener('click', function(e) {
+                    if (e.target === this) closeDeleteModal();
+                });
+            }
+
+            // Auto-submit search on enter
+            const searchInput = document.querySelector('.search-wrap input');
+            if (searchInput) {
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') this.closest('form').submit();
+                });
+            }
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && deleteModal && deleteModal.classList.contains('open')) {
+                    closeDeleteModal();
+                }
+            });
         });
     </script>
-    @endpush
 </x-admin-layout>
