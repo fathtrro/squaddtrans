@@ -100,6 +100,10 @@
         .b-completed { background:#f0fdf4;  color:#166534; }
         .b-cancelled { background:#fef2f2;  color:#991b1b; }
 
+        /* late badge */
+        .late-text { font-size:0.72rem; font-weight:700; color:#dc2626; line-height:1.3; }
+        .late-text .late-label { font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#ef4444; opacity:0.75; display:block; margin-bottom:1px; }
+
         .acts { display:inline-flex; gap:3px; align-items:center; }
         .ab { width:28px; height:28px; border-radius:7px; border:1px solid #e5e7eb; background:#fff; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; transition:all 0.15s; }
         .ab svg { width:13px; height:13px; color:#9ca3af; transition:color 0.15s; }
@@ -268,13 +272,13 @@
         <div class="table-wrap">
             <table class="rtable">
                 <colgroup>
-                    <col style="width:15%"><col style="width:22%"><col style="width:18%">
-                    <col style="width:16%"><col style="width:13%"><col style="width:10%"><col style="width:10%">
+                    <col style="width:15%"><col style="width:18%"><col style="width:16%">
+                    <col style="width:14%"><col style="width:10%"><col style="width:10%"><col style="width:10%"><col style="width:7%">
                 </colgroup>
                 <thead>
                     <tr>
                         <th>Booking</th><th>Customer</th><th>Kendaraan</th>
-                        <th>Periode</th><th>Total</th><th>Status</th><th class="tc">Aksi</th>
+                        <th>Periode</th><th>Terlambat</th><th>Total</th><th>Status</th><th class="tc">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -294,6 +298,29 @@
                                 'running'  =>'Berjalan','completed'=>'Selesai','cancelled'=>'Dibatalkan',
                                 default    =>ucfirst($renter->status),
                             };
+
+                            // ── Hitung keterlambatan ──
+                            $now     = \Carbon\Carbon::now();
+                            $endDt   = \Carbon\Carbon::parse($renter->end_datetime);
+                            // Hanya hitung untuk status yang masih aktif (running / confirmed)
+                            $isLate  = in_array($renter->status, ['running', 'confirmed']) && $now->gt($endDt);
+                            $lateStr = null;
+                            if ($isLate) {
+                                $diff  = $endDt->diff($now);
+                                $days  = (int) $diff->days;   // total hari penuh
+                                $hours = (int) $diff->h;      // sisa jam setelah hari
+                                $mins  = (int) $diff->i;      // sisa menit setelah jam
+
+                                if ($days > 0 && $hours > 0) {
+                                    $lateStr = "{$days} hari {$hours} jam";
+                                } elseif ($days > 0) {
+                                    $lateStr = "{$days} hari";
+                                } elseif ($hours > 0) {
+                                    $lateStr = "{$hours} jam";
+                                } else {
+                                    $lateStr = "{$mins} menit";
+                                }
+                            }
                         @endphp
                         <tr>
                             <td>
@@ -317,6 +344,26 @@
                                 <div class="p-start">{{ \Carbon\Carbon::parse($renter->start_datetime)->format('d M Y') }}</div>
                                 <div class="p-end">s/d {{ \Carbon\Carbon::parse($renter->end_datetime)->format('d M Y') }}</div>
                             </td>
+
+                            {{-- ── Kolom Terlambat (desktop) ── --}}
+                            <td>
+                                @if($renter->late_duration)
+                                    {{-- Jika late_duration sudah tersimpan di DB, tampilkan dari DB --}}
+                                    <div class="late-text">
+                                        <span class="late-label">Terlambat</span>
+                                        {{ $renter->late_duration }}
+                                    </div>
+                                @elseif($lateStr)
+                                    {{-- Hitung realtime dari Carbon --}}
+                                    <div class="late-text">
+                                        <span class="late-label">Terlambat</span>
+                                        {{ $lateStr }}
+                                    </div>
+                                @else
+                                    <div style="font-size:0.78rem;color:#9ca3af">-</div>
+                                @endif
+                            </td>
+
                             <td><div class="price">Rp {{ number_format($renter->total_price,0,',','.') }}</div></td>
                             <td><span class="badge b-{{ $renter->status }}">{{ $slbl }}</span></td>
                             <td class="tc">
@@ -339,7 +386,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7">
+                            <td colspan="8">
                                 <div class="empty-wrap">
                                     <div class="empty-icon">
                                         <svg style="width:24px;height:24px;color:#9ca3af" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -384,6 +431,28 @@
                         'running'  =>'Berjalan','completed'=>'Selesai','cancelled'=>'Dibatalkan',
                         default    =>ucfirst($renter->status),
                     };
+
+                    // ── Hitung keterlambatan (mobile) ──
+                    $nowM    = \Carbon\Carbon::now();
+                    $endDtM  = \Carbon\Carbon::parse($renter->end_datetime);
+                    $isLateM = in_array($renter->status, ['running', 'confirmed']) && $nowM->gt($endDtM);
+                    $lateStrM = null;
+                    if ($isLateM) {
+                        $diffM  = $endDtM->diff($nowM);
+                        $daysM  = (int) $diffM->days;
+                        $hoursM = (int) $diffM->h;
+                        $minsM  = (int) $diffM->i;
+
+                        if ($daysM > 0 && $hoursM > 0) {
+                            $lateStrM = "{$daysM} hari {$hoursM} jam";
+                        } elseif ($daysM > 0) {
+                            $lateStrM = "{$daysM} hari";
+                        } elseif ($hoursM > 0) {
+                            $lateStrM = "{$hoursM} jam";
+                        } else {
+                            $lateStrM = "{$minsM} menit";
+                        }
+                    }
                 @endphp
                 <div class="m-card">
                     {{-- Card Head: customer + status --}}
@@ -419,6 +488,20 @@
                         <div>
                             <div class="m-field-label">Selesai</div>
                             <div class="m-field-val">{{ \Carbon\Carbon::parse($renter->end_datetime)->format('d M Y') }}</div>
+                        </div>
+
+                        {{-- ── Field Terlambat (mobile) ── --}}
+                        <div>
+                            <div class="m-field-label">Terlambat</div>
+                            @if($renter->late_duration)
+                                {{-- Dari DB --}}
+                                <div class="late-text">{{ $renter->late_duration }}</div>
+                            @elseif($lateStrM)
+                                {{-- Realtime Carbon --}}
+                                <div class="late-text">{{ $lateStrM }}</div>
+                            @else
+                                <div style="font-size:0.78rem;color:#9ca3af">-</div>
+                            @endif
                         </div>
                     </div>
 

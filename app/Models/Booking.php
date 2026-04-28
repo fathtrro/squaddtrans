@@ -30,6 +30,7 @@ class Booking extends Model
         'service_type',
         'start_datetime',
         'end_datetime',
+        'return_datetime',
         'destination',
         'contact',
         'alamat',
@@ -48,6 +49,7 @@ class Booking extends Model
     protected $casts = [
         'start_datetime' => 'datetime',
         'end_datetime' => 'datetime',
+        'return_datetime' => 'datetime',
         'dp_amount' => 'decimal:2',
         'total_price' => 'decimal:2',
         'cancellation_requested_at' => 'datetime',
@@ -243,6 +245,54 @@ class Booking extends Model
         ];
 
         return $labels[$this->service_type] ?? ucwords(str_replace('_', ' ', $this->service_type));
+    }
+
+    /**
+     * Calculate late duration (keterlambatan)
+     * Menghitung durasi keterlambatan jika mobil dikembalikan melebihi end_datetime
+     * Format: "1 hari 22 jam" atau "1 hari 22 jam 30 menit" atau "22 jam 30 menit"
+     */
+    public function getLateDurationAttribute()
+    {
+        // Jika belum ada return_datetime, return null
+        if (!$this->return_datetime) {
+            return null;
+        }
+
+        $endTime = $this->end_datetime instanceof Carbon
+            ? $this->end_datetime
+            : Carbon::parse($this->end_datetime);
+
+        $returnTime = $this->return_datetime instanceof Carbon
+            ? $this->return_datetime
+            : Carbon::parse($this->return_datetime);
+
+        // Jika return lebih awal atau sama dengan end_datetime, tidak ada keterlambatan
+        if ($returnTime <= $endTime) {
+            return null;
+        }
+
+        // Hitung total perbedaan dalam menit
+        $totalMinutes = $endTime->diffInMinutes($returnTime);
+
+        // Konversi ke hari, jam, menit
+        $days = intdiv($totalMinutes, 1440);  // 1440 menit = 1 hari
+        $remainingMinutes = $totalMinutes % 1440;
+        $hours = intdiv($remainingMinutes, 60);
+        $minutes = $remainingMinutes % 60;
+
+        // Format hasil sesuai kondisi
+        if ($days > 0 && $hours > 0) {
+            return "{$days} hari lebih {$hours} jam";
+        } elseif ($days > 0) {
+            return "{$days} hari";
+        } elseif ($hours > 0) {
+            return "lebih {$hours} jam";
+        } elseif ($minutes > 0) {
+            return "lebih {$minutes} menit";
+        } else {
+            return "0 menit";
+        }
     }
 
     /**
