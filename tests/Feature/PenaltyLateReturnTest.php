@@ -53,7 +53,7 @@ class PenaltyLateReturnTest extends TestCase
         Carbon::setTestNow('2026-01-02 13:00:00');
 
         $penalty = $this->penaltyService->calculateLateReturnPenalty($booking);
-        
+
         // 3 jam × Rp 50.000 = Rp 150.000
         $this->assertEquals(150000, $penalty);
     }
@@ -76,7 +76,7 @@ class PenaltyLateReturnTest extends TestCase
         Carbon::setTestNow('2026-02-02 06:00:00');
 
         $penalty = $this->penaltyService->calculateLateReturnPenalty($booking);
-        
+
         // 66 jam × Rp 50.000 = Rp 3.300.000
         $hoursLate = 66; // 29 Jan 12:00 ke 2 Feb 06:00
         $expectedPenalty = $hoursLate * 50000;
@@ -100,7 +100,7 @@ class PenaltyLateReturnTest extends TestCase
         Carbon::setTestNow('2026-02-02 15:00:00');
 
         $penalty = $this->penaltyService->calculateLateReturnPenalty($booking);
-        
+
         // 75 jam × Rp 50.000 = Rp 3.750.000
         $hoursLate = 75; // 3 hari (72 jam) + 3 jam
         $expectedPenalty = $hoursLate * 50000;
