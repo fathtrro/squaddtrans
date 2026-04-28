@@ -237,7 +237,7 @@
                     </label>
                     <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-400 transition-colors">
                         <input type="file" name="photos[damage][]" id="photos_damage" multiple accept="image/*"
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer photo-input">
                         <div class="text-center">
                             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -245,6 +245,8 @@
                             <p class="mt-2 text-sm text-gray-600">Klik atau drag file foto kerusakan</p>
                         </div>
                     </div>
+                    <!-- Preview Gallery -->
+                    <div id="preview_damage" class="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
                     @error('photos.damage.*')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
@@ -257,7 +259,7 @@
                     </label>
                     <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-400 transition-colors">
                         <input type="file" name="photos[interior][]" id="photos_interior" multiple accept="image/*"
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer photo-input">
                         <div class="text-center">
                             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -265,6 +267,8 @@
                             <p class="mt-2 text-sm text-gray-600">Klik atau drag file foto interior</p>
                         </div>
                     </div>
+                    <!-- Preview Gallery -->
+                    <div id="preview_interior" class="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
                     @error('photos.interior.*')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
@@ -278,7 +282,7 @@
                         </label>
                         <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition-colors">
                             <input type="file" name="photos[fuel][]" id="photos_fuel" multiple accept="image/*"
-                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer photo-input">
                             <div class="text-center">
                                 <svg class="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -286,6 +290,8 @@
                                 <p class="mt-1 text-xs text-gray-600">Upload foto</p>
                             </div>
                         </div>
+                        <!-- Preview Gallery -->
+                        <div id="preview_fuel" class="mt-2 grid grid-cols-2 gap-2"></div>
                     </div>
 
                     <div>
@@ -294,7 +300,7 @@
                         </label>
                         <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition-colors">
                             <input type="file" name="photos[tire][]" id="photos_tire" multiple accept="image/*"
-                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer photo-input">
                             <div class="text-center">
                                 <svg class="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -302,6 +308,8 @@
                                 <p class="mt-1 text-xs text-gray-600">Upload foto</p>
                             </div>
                         </div>
+                        <!-- Preview Gallery -->
+                        <div id="preview_tire" class="mt-2 grid grid-cols-2 gap-2"></div>
                     </div>
 
                     <div>
@@ -310,7 +318,7 @@
                         </label>
                         <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition-colors">
                             <input type="file" name="photos[exterior][]" id="photos_exterior" multiple accept="image/*"
-                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer photo-input">
                             <div class="text-center">
                                 <svg class="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -318,6 +326,8 @@
                                 <p class="mt-1 text-xs text-gray-600">Upload foto</p>
                             </div>
                         </div>
+                        <!-- Preview Gallery -->
+                        <div id="preview_exterior" class="mt-2 grid grid-cols-2 gap-2"></div>
                     </div>
                 </div>
             </div>
@@ -418,6 +428,7 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', initializeConditionButtons);
+
         // Handle accessories checklist
         document.querySelectorAll('input[name="accessories_list[]"]').forEach(checkbox => {
             checkbox.addEventListener('change', updateAccessories);
@@ -432,6 +443,76 @@
 
         // Initialize accessories on load
         updateAccessories();
+
+        // Photo Preview Handler
+        const photoInputs = document.querySelectorAll('.photo-input');
+
+        photoInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const category = this.id.replace('photos_', '');
+                const previewContainer = document.getElementById(`preview_${category}`);
+                const files = this.files;
+
+                // Clear previous preview
+                previewContainer.innerHTML = '';
+
+                // Show preview for each selected file
+                Array.from(files).forEach((file, index) => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            const previewItem = document.createElement('div');
+                            previewItem.className = 'relative group';
+                            previewItem.innerHTML = `
+                                <div class="relative overflow-hidden rounded-lg border border-gray-200 hover:border-blue-400 transition-all">
+                                    <img src="${e.target.result}" alt="Preview ${index + 1}" class="w-full h-24 object-cover">
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-center justify-center">
+                                        <button type="button" class="opacity-0 group-hover:opacity-100 bg-red-500 text-white rounded-full p-1.5 hover:bg-red-600 transition-all delete-preview"
+                                            data-index="${index}" data-category="${category}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-600 mt-1 truncate">${file.name}</p>
+                            `;
+                            previewContainer.appendChild(previewItem);
+
+                            // Add delete handler
+                            previewItem.querySelector('.delete-preview').addEventListener('click', function(e) {
+                                e.preventDefault();
+                                removePreview(this);
+                            });
+                        };
+
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+        });
+
+        // Remove preview function
+        function removePreview(btn) {
+            const index = parseInt(btn.dataset.index);
+            const category = btn.dataset.category;
+            const inputElement = document.getElementById(`photos_${category}`);
+
+            // Create new FileList without the deleted item
+            const dt = new DataTransfer();
+            Array.from(inputElement.files).forEach((file, i) => {
+                if (i !== index) {
+                    dt.items.add(file);
+                }
+            });
+
+            inputElement.files = dt.files;
+
+            // Trigger change event to update preview
+            const event = new Event('change', { bubbles: true });
+            inputElement.dispatchEvent(event);
+        }
     </script>
 
 </x-admin-layout>

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('service_type', ['lepas_kunci', 'dengan_sopir', 'carter']);
             $table->dateTime('start_datetime');
             $table->dateTime('end_datetime');
+            $table->dateTime('return_datetime')->nullable()->comment('Waktu mobil benar-benar dikembalikan');
             $table->string('destination')->nullable();
             $table->string('contact')->nullable();
             $table->string('alamat')->nullable();
