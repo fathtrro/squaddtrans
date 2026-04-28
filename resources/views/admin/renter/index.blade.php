@@ -347,11 +347,11 @@
 
                             {{-- ── Kolom Terlambat (desktop) ── --}}
                             <td>
-                                @if($renter->late_duration)
-                                    {{-- Jika late_duration sudah tersimpan di DB, tampilkan dari DB --}}
+                                @if($renter->return_datetime)
+                                    {{-- Jika return_datetime sudah tersimpan di DB, tampilkan dari DB --}}
                                     <div class="late-text">
                                         <span class="late-label">Terlambat</span>
-                                        {{ $renter->late_duration }}
+                                        {{ $renter->return_datetime }}
                                     </div>
                                 @elseif($lateStr)
                                     {{-- Hitung realtime dari Carbon --}}
@@ -493,9 +493,9 @@
                         {{-- ── Field Terlambat (mobile) ── --}}
                         <div>
                             <div class="m-field-label">Terlambat</div>
-                            @if($renter->late_duration)
+                            @if($renter->return_datetime)
                                 {{-- Dari DB --}}
-                                <div class="late-text">{{ $renter->late_duration }}</div>
+                                <div class="late-text">{{ $renter->return_datetime }}</div>
                             @elseif($lateStrM)
                                 {{-- Realtime Carbon --}}
                                 <div class="late-text">{{ $lateStrM }}</div>
