@@ -355,23 +355,7 @@
                     </section>
 
                     {{-- Fleet --}}
-                    <section class="py-24 pb-0 pt-15 bg-slate-50" id="units">
-                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
-                                <div>
-                                    <span
-                                        class="text-yellow-600 font-bold tracking-widest uppercase text-xs mb-3 block">Armada
-                                        Kami</span>
-                                    <h2 class="section-title">Pilih Unit Favorit Anda</h2>
-                                </div>
-                                <a href="{{ route('dashboard') }}"
-                                    class="text-yellow-600 hover:text-yellow-700 font-normal flex items-center gap-2 transition-colors">
-                                    Lihat Semua Armada <i class="fa-solid fa-arrow-right text-sm"></i>
-                                </a>
-                            </div>
-                            @include('cars.dashboard-cars')
-                        </div>
-                    </section>
+
 
 
                     {{-- Reviews --}}
