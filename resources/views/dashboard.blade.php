@@ -620,13 +620,13 @@ select{-webkit-appearance:none;appearance:none;}
         var desktop = document.querySelector('.header-desktop');
         var mobile = document.querySelector('.header-mobile');
         var isMobile = window.innerWidth < 1024;
-        
+
         if(isMobile){
             desktop.style.setProperty('display', 'none', 'important');
             desktop.style.setProperty('visibility', 'hidden', 'important');
             desktop.style.setProperty('height', '0', 'important');
             desktop.style.setProperty('overflow', 'hidden', 'important');
-            
+
             mobile.style.setProperty('display', 'grid', 'important');
             mobile.style.setProperty('visibility', 'visible', 'important');
             mobile.style.setProperty('height', 'auto', 'important');
@@ -635,17 +635,17 @@ select{-webkit-appearance:none;appearance:none;}
             desktop.style.setProperty('visibility', 'visible', 'important');
             desktop.style.setProperty('height', 'auto', 'important');
             desktop.style.removeProperty('overflow');
-            
+
             mobile.style.setProperty('display', 'none', 'important');
             mobile.style.setProperty('visibility', 'hidden', 'important');
             mobile.style.setProperty('height', '0', 'important');
             mobile.style.setProperty('overflow', 'hidden', 'important');
         }
     }
-    
+
     updateHeaderVisibility();
     window.addEventListener('resize', updateHeaderVisibility);
-    
+
     /* ── Tab switching ── */
     window.switchHeroTab = function(tab) {
         var isLK = tab === 'lepas-kunci';
