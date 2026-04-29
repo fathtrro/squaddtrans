@@ -95,7 +95,7 @@
                                     +62 812-3328-3578
                                 </p>
                                 <p class="text-xs text-slate-500">
-                                    Sen - Jum, 08.00 - 20.00
+                                    Respon dalam 24 jam
                                 </p>
                             </div>
                         </div>
@@ -133,10 +133,10 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-semibold text-slate-900">
-                                        123 Rental Drive
+                                        Jl. Let. Jen S. Parman, Krajan, Keniten, Kec. Ponorogo, Kabupaten Ponorogo, Jawa Timur 63412
                                     </p>
                                     <p class="text-xs text-slate-500">
-                                        Pusat Kota
+                                        SQUAD TRANSWISATA (RENTAL MOBIL & CARWASH)
                                     </p>
                                 </div>
                             </div>

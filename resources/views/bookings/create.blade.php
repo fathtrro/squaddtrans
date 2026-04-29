@@ -771,7 +771,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
                     <div class="field" id="fieldProofImage">
                         <label class="field-label"><i><i class="fa-solid fa-receipt" style="font-size:0.6rem;"></i></i> Upload Bukti Pembayaran</label>
                         <div class="upload-zone" id="proofUploadZone">
-                            <input type="file" name="proof_image" id="proofFile" accept="image/*">
+                            <input type="file" name="proof_image" id="proofFile" accept="image/*" required>
                             <div class="upload-zone-prompt" id="proofUploadPrompt">
                                 <div class="upload-zone-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
                                 <p><strong>Ketuk untuk upload</strong></p>
@@ -1178,6 +1178,15 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
     // ── Confirm Modal ──────────────────────────────────────
     function openConfirm() {
         if (!validateCurrentStep()) return;
+        
+        // Validate proof image is uploaded
+        const proofFile = document.getElementById('proofFile');
+        if (!proofFile.files || proofFile.files.length === 0) {
+            alert('Silakan upload bukti pembayaran terlebih dahulu!');
+            proofFile.focus();
+            return;
+        }
+        
         const grnVal = document.querySelector('input[name="guarantee_type"]:checked').value;
         const payVal = document.querySelector('input[name="payment_method"]:checked').value;
         const grnMap = { ktp:'KTP', sim:'SIM', motor:'BPKB Motor' };
@@ -1239,6 +1248,13 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
     // WhatsApp API notifications now handled by backend (Fonnte)
 
     document.getElementById('confirmSubmit').addEventListener('click', () => {
+        // Validate proof image is uploaded
+        const proofFile = document.getElementById('proofFile');
+        if (!proofFile.files || proofFile.files.length === 0) {
+            alert('Silakan upload bukti pembayaran terlebih dahulu!');
+            proofFile.focus();
+            return;
+        }
         clearDraft();
         closeConfirm();
         document.getElementById('loadingOverlay').classList.add('active');

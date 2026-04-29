@@ -108,7 +108,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         $cars = Car::with('images')->where('status', 'available')->limit(4)->get();
         $mobil = Car::with('images')->where('status', 'available')->limit(10)->get();
-        $bookings = \App\Models\Booking::with('car')->where('user_id', auth()->id())->get();
+
+        // Get all user bookings
+        $allBookings = \App\Models\Booking::with('car')->where('user_id', auth()->id())->get();
+
+        // Filter bookings that can be reviewed (completed and no review yet)
+        $bookings = $allBookings->filter(function ($booking) {
+            return $booking->status === 'completed' && !$booking->reviews()->exists();
+        })->values();
 
         // Check for incomplete bookings
         $incompleteBooking = \App\Models\Booking::where('user_id', auth()->id())

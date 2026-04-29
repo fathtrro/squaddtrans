@@ -17,6 +17,7 @@
                         <span class="material-symbols-outlined text-yellow-500">search</span>
                     </div>
                     <input type="text"
+                           id="carSearchInput"
                            class="w-full h-14 pl-12 pr-4 rounded-xl bg-white border-2 border-gray-200 focus:border-yellow-400 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 text-gray-900 placeholder:text-gray-400"
                            placeholder="Cari model mobil (e.g. Pajero, Alphard)...">
                 </div>
@@ -24,23 +25,70 @@
 
             {{-- Filter Pills --}}
             <div class="flex gap-2 overflow-x-auto no-scrollbar w-full md:w-auto">
-                <button class="flex items-center gap-2 px-6 h-10 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full font-bold text-sm transition-all duration-300 shadow-lg whitespace-nowrap">
+                <button onclick="filterByCategory('all')" class="filter-pill-btn flex items-center gap-2 px-6 h-10 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full font-bold text-sm transition-all duration-300 shadow-lg whitespace-nowrap" data-category="all">
                     Semua
                 </button>
-                <button class="flex items-center gap-2 px-6 h-10 bg-white hover:bg-yellow-50 border-2 border-gray-200 hover:border-yellow-400 text-gray-700 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap">
+                <button onclick="filterByCategory('SUV')" class="filter-pill-btn flex items-center gap-2 px-6 h-10 bg-white hover:bg-yellow-50 border-2 border-gray-200 hover:border-yellow-400 text-gray-700 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap" data-category="SUV">
                     SUV
                 </button>
-                <button class="flex items-center gap-2 px-6 h-10 bg-white hover:bg-yellow-50 border-2 border-gray-200 hover:border-yellow-400 text-gray-700 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap">
+                <button onclick="filterByCategory('MPV')" class="filter-pill-btn flex items-center gap-2 px-6 h-10 bg-white hover:bg-yellow-50 border-2 border-gray-200 hover:border-yellow-400 text-gray-700 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap" data-category="MPV">
                     MPV
                 </button>
-                <button class="flex items-center gap-2 px-6 h-10 bg-white hover:bg-yellow-50 border-2 border-gray-200 hover:border-yellow-400 text-gray-700 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap">
+                <button onclick="filterByCategory('Luxury')" class="filter-pill-btn flex items-center gap-2 px-6 h-10 bg-white hover:bg-yellow-50 border-2 border-gray-200 hover:border-yellow-400 text-gray-700 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap" data-category="Luxury">
                     Luxury
                 </button>
-                <button class="flex items-center gap-2 px-6 h-10 bg-white hover:bg-yellow-50 border-2 border-gray-200 hover:border-yellow-400 text-gray-700 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap">
+                <button onclick="filterByCategory('Ekonomis')" class="filter-pill-btn flex items-center gap-2 px-6 h-10 bg-white hover:bg-yellow-50 border-2 border-gray-200 hover:border-yellow-400 text-gray-700 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap" data-category="Ekonomis">
                     Ekonomis
                 </button>
             </div>
         </div>
+
+        {{-- JavaScript for filtering --}}
+        @push('scripts')
+        <script>
+            // Filter by category function
+            function filterByCategory(category) {
+                // Update URL with category parameter
+                const url = new URL(window.location.href);
+                if (category === 'all') {
+                    url.searchParams.delete('category');
+                } else {
+                    url.searchParams.set('category', category);
+                }
+                window.location.href = url.toString();
+            }
+
+            // Search input handler
+            document.getElementById('carSearchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchValue = this.value.trim();
+                    const url = new URL(window.location.href);
+                    if (searchValue) {
+                        url.searchParams.set('search', searchValue);
+                    } else {
+                        url.searchParams.delete('search');
+                    }
+                    window.location.href = url.toString();
+                }
+            });
+
+            // Update active button state based on current category
+            document.addEventListener('DOMContentLoaded', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const currentCategory = urlParams.get('category') || 'all';
+
+                document.querySelectorAll('.filter-pill-btn').forEach(btn => {
+                    if (btn.dataset.category === currentCategory) {
+                        btn.classList.add('bg-yellow-500', 'text-white');
+                        btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
+                    } else {
+                        btn.classList.remove('bg-yellow-500', 'text-white');
+                        btn.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+                    }
+                });
+            });
+        </script>
+        @endpush
     </div>
 
     <div class="flex flex-col lg:flex-row gap-8">

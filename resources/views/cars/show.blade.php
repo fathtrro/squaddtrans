@@ -461,9 +461,9 @@
                 <div class="mf-amount">Rp {{ number_format($car->price_24h,0,',','.') }}</div>
                 <div class="mf-per">/ 24 jam</div>
             </div>
-            <button class="mf-btn" id="mobileOpenSheet">
+            <a href="{{ route('dashboard') }}" class="mf-btn" id="mobileOpenSheet">
                 <i class="fa-solid fa-calendar-check"></i> Pesan Sekarang
-            </button>
+            </a>
         </div>
     </div>
 
@@ -905,11 +905,13 @@
 
         const mobileSheet=document.getElementById('mobileSheet');
         const mobileOverlay=document.getElementById('mobileSheetOverlay');
-        document.getElementById('mobileOpenSheet').addEventListener('click',()=>{
+
+        function openMobileSheet() {
             mobileSheet.style.transform='translateY(0)';
             mobileOverlay.style.display='flex';
             document.body.style.overflow='hidden';
-        });
+        }
+
         function closeMobileSheet(){
             mobileSheet.style.transform='translateY(100%)';
             mobileOverlay.style.display='none';

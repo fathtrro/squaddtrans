@@ -6,7 +6,6 @@ use App\Models\Review;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class ReviewController extends Controller
 {
@@ -42,6 +41,18 @@ class ReviewController extends Controller
 
         if ($booking->user_id !== Auth::id()) {
             abort(403, 'Unauthorized');
+        }
+
+        // Check if booking is completed
+        if ($booking->status !== 'completed') {
+            return redirect()->back()
+                ->with('error', 'Anda hanya dapat mengulas pemesanan yang sudah selesai.');
+        }
+
+        // Check if user already reviewed this booking
+        if ($booking->reviews()->where('user_id', Auth::id())->exists()) {
+            return redirect()->back()
+                ->with('error', 'Anda sudah mengulas pemesanan ini.');
         }
 
         $imagePath = null;

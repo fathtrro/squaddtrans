@@ -611,7 +611,7 @@
                         <div class="stat-label">Unit</div>
                     </div>
                     <div class="stat-pill">
-                        <div class="stat-num">4.8</div>
+                        <div class="stat-num">5</div>
                         <div class="stat-label">Rating</div>
                     </div>
                     <div class="stat-pill">
@@ -625,7 +625,7 @@
 
         {{-- ─── FILTER BAR ─────────────────────── --}}
         <div class="filter-bar">
-            <form method="GET" action="{{ route('dashboard') }}" id="filterForm">
+            <form method="GET" action="{{ route('cars.index') }}" id="filterForm">
 
                 <input type="hidden" name="category"     id="inp_category"     value="{{ request('category','all') }}">
                 <input type="hidden" name="transmission" id="inp_transmission" value="{{ request('transmission','') }}">

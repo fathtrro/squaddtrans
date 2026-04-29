@@ -449,7 +449,7 @@
                     <div class="tn-aside-card">
                         <div class="tn-aside-year">2018</div>
                         <div class="tn-aside-head">Berdiri & Terus Berkembang</div>
-                        <div class="tn-aside-text">Dari 3 unit menjadi 120+ armada premium di seluruh Indonesia dalam 6 tahun.</div>
+                        <div class="tn-aside-text">Dari 3 unit menjadi 50+ armada premium di seluruh Indonesia dalam 6 tahun.</div>
                     </div>
                 </div>
             </div>
@@ -459,7 +459,7 @@
             <div class="tn-wrap">
                 <div class="tn-stats-grid">
                     <div class="tn-stat">
-                        <div class="tn-stat-num">120<em>+</em></div>
+                        <div class="tn-stat-num">50<em>+</em></div>
                         <div class="tn-stat-label">Unit Armada</div>
                     </div>
                     <div class="tn-stat">
@@ -501,7 +501,7 @@
                     </h2>
                     <p><strong>SquadTrans lahir dari frustrasi sederhana</strong> — sulitnya menemukan layanan transportasi yang benar-benar bisa diandalkan. Bukan sekadar harga murah, tapi kenyamanan, ketepatan waktu, dan rasa aman.</p>
                     <p>Dimulai dari 3 unit kendaraan dan tim kecil yang bersemangat, kami membangun satu demi satu kepercayaan pelanggan. Setiap ulasan positif menjadi bahan bakar untuk terus berkembang.</p>
-                    <p>Kini, dengan <strong>lebih dari 120 unit armada</strong>, tim pengemudi terlatih, dan platform pemesanan digital, SquadTrans telah menjadi mitra perjalanan pilihan ribuan keluarga dan profesional di Indonesia.</p>
+                    <p>Kini, dengan <strong>lebih dari 50 unit armada</strong>, tim pengemudi terlatih, dan platform pemesanan digital, SquadTrans telah menjadi mitra perjalanan pilihan ribuan keluarga dan profesional di Indonesia.</p>
                 </div>
                 <div class="tn-story-visual">
                     <img src="{{ asset('images/WhatsApp Image 2026-04-24 at 09.22.55.jpeg') }}" alt="SquadTrans Fleet" class="tn-story-img" style="object-fit: cover; display: block;">
@@ -614,56 +614,6 @@
         </div>
     </section>
 
-    {{-- ═══════════ TIMELINE ═══════════ --}}
-    <section class="tn-section tn-section-alt">
-        <div class="tn-wrap">
-            <div style="text-align:center;max-width:540px;margin:0 auto 0">
-                <p class="tn-sec-tag" style="justify-content:center">Perjalanan Kami</p>
-                <h2 class="tn-sec-title" style="margin-bottom:12px">Tumbuh Bersama <em>Kepercayaan</em></h2>
-                <p style="font-size:13.5px;color:#666;font-weight:300;line-height:1.8">Setiap tahun membawa lompatan baru dalam armada, layanan, dan jangkauan kota.</p>
-            </div>
-            <div class="tn-tl-grid">
-                <div class="tn-tl-col">
-                    <div class="tn-tl-card tn-fade">
-                        <p class="tn-tl-year">2018</p>
-                        <p class="tn-tl-title">Awal Perjalanan</p>
-                        <p class="tn-tl-desc">Mulai beroperasi di Jakarta dengan 3 unit. Fokus pada layanan antar-jemput bandara yang cepat dan andal.</p>
-                    </div>
-                    <div class="tn-tl-card tn-fade">
-                        <p class="tn-tl-year">2020</p>
-                        <p class="tn-tl-title">Bertahan & Berinovasi</p>
-                        <p class="tn-tl-desc">Di tengah pandemi, kami beralih ke layanan korporat dan pengiriman esensial — tetap melayani saat yang lain berhenti.</p>
-                    </div>
-                    <div class="tn-tl-card tn-fade">
-                        <p class="tn-tl-year">2023</p>
-                        <p class="tn-tl-title">80+ Unit & 8 Kota</p>
-                        <p class="tn-tl-desc">Ekspansi ke Bali, Surabaya, Yogyakarta, dan Medan. Armada terus bertumbuh dengan permintaan yang kian meningkat.</p>
-                    </div>
-                </div>
-
-                <div class="tn-tl-bar"></div>
-
-                <div class="tn-tl-col right">
-                    <div class="tn-tl-card tn-fade">
-                        <p class="tn-tl-year">2019</p>
-                        <p class="tn-tl-title">Ekspansi Pertama</p>
-                        <p class="tn-tl-desc">Armada tumbuh menjadi 25 unit. Layanan sewa harian dan paket wisata perdana ke Bali resmi diluncurkan.</p>
-                    </div>
-                    <div class="tn-tl-card tn-fade">
-                        <p class="tn-tl-year">2021</p>
-                        <p class="tn-tl-title">Platform Digital Lahir</p>
-                        <p class="tn-tl-desc">Sistem pemesanan online diluncurkan. Kini pelanggan bisa booking kapan saja, dari mana saja, dalam hitungan menit.</p>
-                    </div>
-                    <div class="tn-tl-card current tn-fade">
-                        <p class="tn-tl-year">2024 — Sekarang</p>
-                        <p class="tn-tl-title">120+ Unit, 12 Kota</p>
-                        <p class="tn-tl-desc">15.000+ pelanggan, armada premium lengkap, dan terus berkembang. Ini baru awal dari perjalanan panjang kami.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     {{-- ═══════════ MITRA ═══════════ --}}
     <section class="tn-section">
         <div class="tn-wrap">
@@ -694,7 +644,7 @@
                     <p class="tn-cta-sub">Bergabung bersama 15.000+ pelanggan yang telah mempercayai SquadTrans.</p>
                 </div>
                 <div class="tn-cta-btns">
-                    <a href="{{ route('dashboard') }}" class="tn-btn tn-btn-amber">
+                    <a href="{{ route('cars.index') }}" class="tn-btn tn-btn-amber">
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17H5a2 2 0 01-2-2V5a2 2 0 012-2h11l4 4v10a2 2 0 01-2 2h-1"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
                         Lihat Armada
                     </a>
