@@ -806,43 +806,40 @@ window.navigateToCategory = function(categoryType) {
     </div>
     <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
         <div class="flex flex-col lg:flex-row items-center gap-10">
-            <div class="reveal flex-shrink-0">
-                <div class="w-48 h-80 rounded-3xl shadow-2xl flex items-center justify-center"
-                     style="background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);">
-                    <div class="text-center text-white">
-                        <div class="text-6xl mb-3">📱</div>
-                        <p class="text-xs font-semibold opacity-70">Squad Trans App</p>
-                    </div>
-                </div>
-            </div>
+
+
+            {{-- Teks CTA --}}
             <div class="reveal text-white" style="transition-delay:.15s;">
-                <p class="text-xs font-bold uppercase tracking-widest mb-3 opacity-80">Aplikasi Mobile</p>
+                <p class="text-xs font-bold uppercase tracking-widest mb-3 opacity-80">Butuh Armada Sekarang?</p>
                 <h2 class="hf text-3xl sm:text-4xl font-bold mb-4 leading-tight">
-                    Bisnis atau Liburan,<br>Semua Lebih Praktis<br>dengan Squad Trans
+                    Bisnis atau Liburan,<br>Kami Siap Antarkan<br>ke Mana Saja
                 </h2>
-                <p class="text-base opacity-80 mb-1">Sewa Mobil, Bus atau Airport Transfer Langsung dari Aplikasi</p>
+                <p class="text-base opacity-80 mb-1">Sewa Mobil, Bus atau Airport Transfer — Pesan Langsung via WhatsApp</p>
                 <p class="text-sm font-semibold mb-7 opacity-90">#SquadTransDiSetiapOdometer</p>
                 <div class="flex flex-wrap gap-3">
-                    <a href="#" class="app-badge inline-flex items-center gap-3 px-5 py-3 rounded-xl text-sm font-semibold"
+                    <a href="https://wa.me/6281234567890?text=Halo, saya ingin memesan kendaraan Squad Trans"
+                       class="app-badge inline-flex items-center gap-3 px-5 py-3 rounded-xl text-sm font-semibold"
                        style="background:rgba(0,0,0,.85);color:#fff;text-decoration:none;">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.554 4.118 1.528 5.845L.057 23.03a.75.75 0 0 0 .914.913l5.188-1.47A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.95 9.95 0 0 1-5.07-1.384l-.363-.214-3.761 1.065 1.065-3.762-.213-.363A9.95 9.95 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
                         </svg>
-                        App Store
+                        Chat WhatsApp
                     </a>
-                    <a href="#" class="app-badge inline-flex items-center gap-3 px-5 py-3 rounded-xl text-sm font-semibold"
-                       style="background:rgba(0,0,0,.85);color:#fff;text-decoration:none;">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M3.18 23.76c.33.18.7.2 1.06.04l12.3-7.1-2.63-2.63-10.73 9.69zm16.51-10.32L17.35 12l2.35-1.44c.73-.45.73-1.67 0-2.12L4.24.17C3.88.01 3.51.03 3.18.21L13.9 12 3.18 23.79c.33.18.7.2 1.06.04l15.45-8.91c.73-.45.73-1.23 0-1.68z"/>
+                    <a href="tel:+6281234567890"
+                       class="app-badge inline-flex items-center gap-3 px-5 py-3 rounded-xl text-sm font-semibold"
+                       style="background:rgba(255,255,255,.2);color:#fff;text-decoration:none;border:1.5px solid rgba(255,255,255,.4);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 5.61 5.61l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
                         </svg>
-                        Google Play
+                        Hubungi Kami
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
-
 
 {{-- ================================================================ --}}
 {{-- REVIEW MODAL                                                       --}}
