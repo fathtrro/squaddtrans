@@ -58,6 +58,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator{
 
 /* ─── Fleet cards ─── */
 .fleet-item:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.1)!important;}
+
+/* ─── Responsive Header Versions ─── */
+.header-desktop{display:grid;visibility:visible;}
+.header-mobile{display:none;visibility:hidden;}
+
 .fleet-item{transition:all .3s}
 
 /* ─── Stats ─── */
@@ -114,7 +119,9 @@ select{-webkit-appearance:none;appearance:none;}
     <div class="relative z-10 max-w-6xl mx-auto w-full px-5 sm:px-8"
          style="flex:1;display:flex;align-items:center;padding-top:6rem;padding-bottom:5rem;">
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;width:100%;">
+        {{-- DESKTOP VERSION --}}
+        <div class="header-desktop"
+             style="grid-template-columns:1fr 1fr;gap:56px;align-items:center;width:100%">
 
             {{-- ── LEFT: Headline ── --}}
             <div style="padding-right:8px;">
@@ -418,6 +425,179 @@ select{-webkit-appearance:none;appearance:none;}
             </div>{{-- /fu4 --}}
 
         </div>
+
+        {{-- MOBILE VERSION --}}
+        <div class="header-mobile"
+             style="grid-template-columns:1fr;gap:24px;width:100%">
+
+            {{-- Mobile Headline Section --}}
+            <div style="text-align:center;">
+                {{-- Badge --}}
+                <div class="fu1"
+                     style="display:inline-flex;align-items:center;gap:8px;
+                            margin-bottom:16px;padding:6px 14px;
+                            background:rgba(234,179,8,.09);
+                            border:1px solid rgba(234,179,8,.28);
+                            border-radius:999px;">
+                    <span class="badge-dot"></span>
+                    <span style="color:#fbbf24;font-size:9px;font-weight:700;
+                                 letter-spacing:.14em;text-transform:uppercase;">
+                        Premium Travel Experience
+                    </span>
+                </div>
+
+                {{-- Headline --}}
+                <h1 class="fu2 hf"
+                    style="color:#fff;
+                           font-size:clamp(1.8rem,7vw,2.3rem);
+                           font-weight:800;
+                           line-height:1.2;
+                           letter-spacing:-.02em;
+                           margin:0 0 14px;">
+                    Jelajahi Lebih<br>Jauh, Lebih<br><span style="color:#f59e0b;">Nyaman</span>
+                </h1>
+
+                {{-- Sub --}}
+                <p class="fu3"
+                   style="color:rgba(255,255,255,.6);
+                          font-size:0.95rem;
+                          font-weight:300;
+                          line-height:1.5;
+                          margin:0 0 24px;">
+                    Sewa kendaraan premium dengan mudah dan terpercaya
+                </p>
+            </div>
+
+            {{-- Mobile Filter Card --}}
+            <div class="fu4">
+                {{-- Glass card --}}
+                <div style="position:relative;
+                            background:rgba(255,255,255,0.10);
+                            border:1px solid rgba(255,255,255,0.2);
+                            border-radius:20px;
+                            backdrop-filter:blur(20px) saturate(1.5);
+                            -webkit-backdrop-filter:blur(20px) saturate(1.5);
+                            box-shadow:0 8px 24px rgba(0,0,0,.25);
+                            padding:20px;">
+
+                    {{-- Mobile header --}}
+                    <div style="display:flex;align-items:center;justify-content:center;margin-bottom:16px;gap:4px;">
+                        <div style="width:4px;height:4px;border-radius:50%;background:#f59e0b;"></div>
+                        <span style="font-size:10px;font-weight:700;letter-spacing:.12em;
+                                     color:rgba(255,255,255,.4);text-transform:uppercase;">
+                            Pesan Sekarang
+                        </span>
+                    </div>
+
+                    {{-- Divider --}}
+                    <div style="height:1px;background:rgba(255,255,255,.1);margin-bottom:18px;"></div>
+
+                    {{-- Mobile form --}}
+                    <form id="dashboardDateFormMobile">
+
+                        {{-- Tanggal Mulai --}}
+                        <div style="position:relative;
+                                    background:rgba(255,255,255,.08);
+                                    border:1px solid rgba(255,255,255,.15);
+                                    border-radius:14px;
+                                    padding:12px 14px;
+                                    cursor:pointer;
+                                    transition:background .2s,border-color .2s;
+                                    margin-bottom:12px;"
+                             onmouseenter="this.style.background='rgba(255,255,255,.13)';this.style.borderColor='rgba(255,255,255,.25)'"
+                             onmouseleave="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(255,255,255,.15)'"
+                             onclick="document.getElementById('dashboardStartDateTimeMobile').showPicker?.() || document.getElementById('dashboardStartDateTimeMobile').click()">
+                            <span style="display:block;font-size:9px;font-weight:700;
+                                         letter-spacing:.14em;text-transform:uppercase;
+                                         color:rgba(255,255,255,.4);margin-bottom:6px;">
+                                Tanggal & Waktu Mulai
+                            </span>
+                            <input type="datetime-local"
+                                   id="dashboardStartDateTimeMobile"
+                                   style="position:absolute;inset:0;width:100%;height:100%;
+                                          opacity:0;cursor:pointer;z-index:10;"
+                                   required>
+                            <div style="pointer-events:none;">
+                                <p id="startDateLineMobile"
+                                   style="font-size:14px;font-weight:700;
+                                          color:rgba(255,255,255,.95);
+                                          margin:0;line-height:1.3;">—</p>
+                            </div>
+                        </div>
+
+                        {{-- Durasi --}}
+                        <div style="background:rgba(255,255,255,.08);
+                                    border:1px solid rgba(255,255,255,.15);
+                                    border-radius:14px;
+                                    padding:12px 14px;
+                                    margin-bottom:12px;">
+                            <span style="display:block;font-size:9px;font-weight:700;
+                                         letter-spacing:.14em;text-transform:uppercase;
+                                         color:rgba(255,255,255,.4);margin-bottom:6px;">
+                                Durasi Sewa
+                            </span>
+                            <select id="dashboardDaysMobile"
+                                    style="-webkit-appearance:none;appearance:none;
+                                           background:transparent;border:none;outline:none;
+                                           color:rgba(255,255,255,.95);font-size:14px;font-weight:700;
+                                           width:100%;cursor:pointer;
+                                           font-family:'DM Sans',sans-serif;">
+                                @for($i = 1; $i <= 20; $i++)
+                                    <option value="{{ $i }}" style="background:#1e2a3a;color:#fff;">{{ $i }} Hari</option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        {{-- Selesai Summary --}}
+                        <div style="background:rgba(245,158,11,.12);
+                                    border:1px solid rgba(245,158,11,.3);
+                                    border-radius:14px;
+                                    padding:12px 14px;
+                                    margin-bottom:16px;">
+                            <span style="display:block;font-size:9px;font-weight:700;
+                                         letter-spacing:.14em;text-transform:uppercase;
+                                         color:rgba(245,158,11,.5);margin-bottom:4px;">
+                                Waktu Selesai
+                            </span>
+                            <p id="dashboardEndDateDisplayMobile"
+                               style="font-size:13px;font-weight:700;
+                                      color:#fbbf24;margin:0;">
+                                —
+                            </p>
+                        </div>
+
+                        {{-- Cari button --}}
+                        <button type="submit"
+                                style="width:100%;
+                                       background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);
+                                       border:none;border-radius:14px;
+                                       padding:13px 16px;
+                                       color:#fff;font-weight:700;font-size:13px;
+                                       letter-spacing:.08em;text-transform:uppercase;
+                                       cursor:pointer;
+                                       display:flex;align-items:center;justify-content:center;gap:8px;
+                                       font-family:'DM Sans',sans-serif;
+                                       box-shadow:0 4px 16px rgba(245,158,11,.4);
+                                       transition:filter .2s,transform .15s;"
+                                onmouseenter="this.style.filter='brightness(1.1)';this.style.transform='translateY(-2px)'"
+                                onmouseleave="this.style.filter='brightness(1)';this.style.transform='translateY(0)'"
+                                onmousedown="this.style.transform='scale(.98)'"
+                                onmouseup="this.style.transform='translateY(-2px)'">
+                            <svg width="14" height="14" viewBox="0 0 20 20" fill="none"
+                                 stroke="currentColor" stroke-width="2.5"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="9" cy="9" r="7"/>
+                                <path d="M16 16l-3.5-3.5"/>
+                            </svg>
+                            Cari Kendaraan
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
     {{-- Scroll indicator --}}
@@ -435,6 +615,37 @@ select{-webkit-appearance:none;appearance:none;}
 {{-- ── Hero JS ── --}}
 <script>
 (function(){
+    /* ── Responsive Header Control via JS (Inline styles dengan priority) ── */
+    function updateHeaderVisibility(){
+        var desktop = document.querySelector('.header-desktop');
+        var mobile = document.querySelector('.header-mobile');
+        var isMobile = window.innerWidth < 1024;
+        
+        if(isMobile){
+            desktop.style.setProperty('display', 'none', 'important');
+            desktop.style.setProperty('visibility', 'hidden', 'important');
+            desktop.style.setProperty('height', '0', 'important');
+            desktop.style.setProperty('overflow', 'hidden', 'important');
+            
+            mobile.style.setProperty('display', 'grid', 'important');
+            mobile.style.setProperty('visibility', 'visible', 'important');
+            mobile.style.setProperty('height', 'auto', 'important');
+        } else {
+            desktop.style.setProperty('display', 'grid', 'important');
+            desktop.style.setProperty('visibility', 'visible', 'important');
+            desktop.style.setProperty('height', 'auto', 'important');
+            desktop.style.removeProperty('overflow');
+            
+            mobile.style.setProperty('display', 'none', 'important');
+            mobile.style.setProperty('visibility', 'hidden', 'important');
+            mobile.style.setProperty('height', '0', 'important');
+            mobile.style.setProperty('overflow', 'hidden', 'important');
+        }
+    }
+    
+    updateHeaderVisibility();
+    window.addEventListener('resize', updateHeaderVisibility);
+    
     /* ── Tab switching ── */
     window.switchHeroTab = function(tab) {
         var isLK = tab === 'lepas-kunci';
@@ -525,6 +736,58 @@ select{-webkit-appearance:none;appearance:none;}
         });
     },{threshold:.12});
     document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+    /* ── Mobile Form Handler ── */
+    var mobileStartInput  = document.getElementById('dashboardStartDateTimeMobile');
+    var mobileStartDateEl = document.getElementById('startDateLineMobile');
+    var mobileDaysInput   = document.getElementById('dashboardDaysMobile');
+    var mobileEndDisplay  = document.getElementById('dashboardEndDateDisplayMobile');
+
+    if(mobileStartInput) {
+        function updateStartMobile(){
+            if(!mobileStartInput.value){
+                mobileStartDateEl.textContent='—';
+                return;
+            }
+            var d=new Date(mobileStartInput.value);
+            mobileStartDateEl.textContent=fmtStartDate(d)+' '+fmtStartTime(d);
+        }
+
+        function calcEndMobile(){
+            if(!mobileStartInput.value||!mobileDaysInput.value){mobileEndDisplay.textContent='—';return;}
+            var end=new Date(mobileStartInput.value);
+            end.setDate(end.getDate()+parseInt(mobileDaysInput.value));
+            mobileEndDisplay.textContent=fmtEndDate(end);
+        }
+
+        function setDefaultsMobile(){
+            var n=new Date();
+            mobileStartInput.value=n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate())+'T09:00';
+            mobileDaysInput.value='1';
+            updateStartMobile();
+            calcEndMobile();
+        }
+
+        setDefaultsMobile();
+        mobileStartInput.addEventListener('change',function(){updateStartMobile();calcEndMobile();});
+        mobileDaysInput.addEventListener('change',calcEndMobile);
+
+        /* ── Mobile Form submit ── */
+        document.getElementById('dashboardDateFormMobile').addEventListener('submit',function(e){
+            e.preventDefault();
+            var start=new Date(mobileStartInput.value);
+            var days=parseInt(mobileDaysInput.value);
+            var end=new Date(start);
+            end.setDate(end.getDate()+days);
+            var fD=function(d){return d.toISOString().split('T')[0];};
+            var fT=function(d){return pad(d.getHours())+':'+pad(d.getMinutes());};
+            window.location.href='/bookings/select-car'
+                +'?start_date='+fD(start)
+                +'&start_time='+fT(start)
+                +'&end_date='+fD(end)
+                +'&end_time='+fT(end);
+        });
+    }
 })();
 
 /* ── Navigate to cars by category ── */
@@ -568,7 +831,7 @@ window.navigateToCategory = function(categoryType) {
             </div>
             <div class="reveal" style="transition-delay:.15s;">
                 <div class="rounded-2xl overflow-hidden shadow-xl" style="aspect-ratio:4/3;background:#e2e8f0;">
-                    <img src="{{ asset('images/garasi.png') }}" alt="Squad Trans" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/poster.png') }}" alt="Squad Trans" class="w-full object-cover">
                 </div>
             </div>
         </div>
