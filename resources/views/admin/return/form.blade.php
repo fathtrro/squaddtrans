@@ -194,15 +194,41 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                         @php
                             $accessories = ['Dongkrak', 'Stand Dongkrak', 'Kartu Barcode BBM', 'Stnk', 'Kunci Roda', 'Ban Cadangan'];
-                            $selectedAccessories = old('accessories') ? explode(',', old('accessories')) : explode(',', $beforeChecklist->accessories ?? '');
+
+                            // Get accessories checked in before-checklist
+                            $beforeChecklistAccessories = $beforeChecklist->accessories ?? '';
+                            $beforeAccessoriesList = array_filter(array_map('trim', explode(',', $beforeChecklistAccessories)));
+
+                            // Get current selected accessories
+                            $selectedAccessories = old('accessories') ? explode(',', old('accessories')) : explode(',', $beforeChecklistAccessories);
                         @endphp
                         @foreach($accessories as $item)
-                            <label class="flex items-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all">
-                                <input type="checkbox" name="accessories_list[]" value="{{ $item }}" class="rounded" @if(in_array(trim($item), array_map('trim', $selectedAccessories))) checked @endif>
-                                <span class="ml-2 text-sm font-semibold text-gray-700">{{ $item }}</span>
+                            @php
+                                $isAvailableInBefore = in_array(trim($item), $beforeAccessoriesList);
+                                $isSelected = in_array(trim($item), array_map('trim', $selectedAccessories));
+                            @endphp
+                            <label class="flex items-center p-3 border-2 rounded-lg transition-all {{ $isAvailableInBefore ? 'border-gray-200 cursor-pointer hover:border-blue-500 hover:bg-blue-50' : 'border-gray-100 bg-gray-50 cursor-not-allowed opacity-60' }}">
+                                <input
+                                    type="checkbox"
+                                    name="accessories_list[]"
+                                    value="{{ $item }}"
+                                    class="rounded"
+                                    @if($isSelected) checked @endif
+                                    @if(!$isAvailableInBefore) disabled @endif
+                                    data-available="{{ $isAvailableInBefore ? 'true' : 'false' }}"
+                                >
+                                <span class="ml-2 text-sm font-semibold {{ $isAvailableInBefore ? 'text-gray-700' : 'text-gray-400' }}">
+                                    {{ $item }}
+                                    @if(!$isAvailableInBefore)
+                                        <span class="text-xs text-gray-400 ml-1">(tidak tersedia sebelumnya)</span>
+                                    @endif
+                                </span>
                             </label>
                         @endforeach
                     </div>
+                    <p class="text-xs text-gray-500 mt-3">
+                        💡 Hanya aksesori yang tersedia saat checklist sebelumnya yang dapat diubah
+                    </p>
                     <input type="hidden" name="accessories" id="accessories">
                     @error('accessories')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
@@ -429,9 +455,26 @@
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', initializeConditionButtons);
 
-        // Handle accessories checklist
+        // Handle accessories checklist with availability check
         document.querySelectorAll('input[name="accessories_list[]"]').forEach(checkbox => {
-            checkbox.addEventListener('change', updateAccessories);
+            checkbox.addEventListener('change', function(e) {
+                // Prevent unchecking disabled (not available) checkboxes
+                if (this.disabled && !this.checked) {
+                    e.preventDefault();
+                    this.checked = true;
+                    return;
+                }
+                updateAccessories();
+            });
+
+            // Prevent clicking on disabled checkboxes
+            if (checkbox.disabled) {
+                checkbox.parentElement.addEventListener('click', function(e) {
+                    if (checkbox.disabled) {
+                        e.preventDefault();
+                    }
+                });
+            }
         });
 
         function updateAccessories() {
