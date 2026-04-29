@@ -25,7 +25,21 @@ class CarsController extends Controller
 
         // Category filter
         if ($request->has('category') && $request->category != 'all') {
-            $query->where('category', $request->category);
+            $category = $request->category;
+
+            // Handle grouped categories
+            if ($category === 'all') {
+                // Show all cars
+            } elseif ($category === 'Komersial') {
+                // Commercial vehicles - Van, minibus
+                $query->where('category', 'like', '%MPV%');
+            } elseif ($category === 'Bus') {
+                // Bus category
+                $query->where('category', 'like', '%Bus%');
+            } else {
+                // Exact match for specific categories like 'SUV (tangguh/medan berat)'
+                $query->where('category', $category);
+            }
         }
 
         // Transmission filter

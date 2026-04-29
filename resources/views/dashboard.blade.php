@@ -526,6 +526,19 @@ select{-webkit-appearance:none;appearance:none;}
     },{threshold:.12});
     document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
 })();
+
+/* ── Navigate to cars by category ── */
+window.navigateToCategory = function(categoryType) {
+    var categoryMap = {
+        'passenger': 'all',  // Shows all passenger vehicles: City Car, Sedan, MPV
+        'bus': 'Bus',
+        'offroad': 'SUV (tangguh/medan berat)',
+        'commercial': 'Komersial'
+    };
+
+    var dbCategory = categoryMap[categoryType] || 'all';
+    window.location.href = '/cars?category=' + encodeURIComponent(dbCategory);
+};
 </script>
 
 
@@ -545,7 +558,7 @@ select{-webkit-appearance:none;appearance:none;}
                     yang aman dan nyaman dengan pilihan kendaraan yang lengkap, reservasi yang mudah,
                     pengelolaan armada yang efisien, serta layanan pelanggan yang andal.
                 </p>
-                <a href="#" class="inline-flex items-center gap-2 text-sm font-semibold text-yellow-600 hover:text-yellow-700 transition">
+                <a href="contact" class="inline-flex items-center gap-2 text-sm font-semibold text-yellow-600 hover:text-yellow-700 transition">
                     Tentang Kami
                     <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor"
                          stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -555,7 +568,7 @@ select{-webkit-appearance:none;appearance:none;}
             </div>
             <div class="reveal" style="transition-delay:.15s;">
                 <div class="rounded-2xl overflow-hidden shadow-xl" style="aspect-ratio:4/3;background:#e2e8f0;">
-                    <img src="{{ asset('images/hand.png') }}" alt="Squad Trans" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/garasi.png') }}" alt="Squad Trans" class="w-full h-full object-cover">
                 </div>
             </div>
         </div>
@@ -600,7 +613,7 @@ select{-webkit-appearance:none;appearance:none;}
                     Semua Kendaraan untuk<br>Semua Perjalanan Anda
                 </h2>
             </div>
-            <a href="#" class="inline-flex items-center gap-2 text-sm font-semibold text-yellow-600 hover:text-yellow-700 transition whitespace-nowrap">
+            <a href="/cars" class="inline-flex items-center gap-2 text-sm font-semibold text-yellow-600 hover:text-yellow-700 transition whitespace-nowrap">
                 Lihat Semua Armada
                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor"
                      stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -611,19 +624,22 @@ select{-webkit-appearance:none;appearance:none;}
 
         @php
         $categories = [
-            ['label'=>'Mobil Penumpang','emoji'=>'🚗','desc'=>'Sedan, MPV, SUV nyaman untuk keluarga'],
-            ['label'=>'Bus','emoji'=>'🚌','desc'=>'Armada bus kapasitas besar & nyaman'],
-            ['label'=>'4WD / Off-road','emoji'=>'🛻','desc'=>'Kendaraan tangguh untuk medan berat'],
-            ['label'=>'Mobil Komersial','emoji'=>'🚐','desc'=>'Van dan pickup untuk kebutuhan bisnis'],
+            ['label'=>'Transportasi Reguler','image'=>'mobil.png','desc'=>'Pilihan kendaraan harian yang nyaman untuk keluarga dan perjalanan pribadi','type'=>'passenger'],
+            ['label'=>'Bus Pariwisata','image'=>'bus.png','desc'=>'Armada bus berkapasitas besar, ideal untuk rombongan dan perjalanan wisata','type'=>'bus'],
+            ['label'=>'Mobil Executive ⭐','image'=>'executive.png','desc'=>'Kendaraan premium untuk perjalanan bisnis dan layanan VIP yang lebih eksklusif','type'=>'offroad'],
+            ['label'=>'Transportasi Komersial','image'=>'truk.png','desc'=>'Solusi kendaraan untuk kebutuhan bisnis, logistik, dan operasional perusahaan','type'=>'commercial'],
         ];
         @endphp
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
             @foreach($categories as $i => $cat)
             <div class="fleet-item reveal bg-white rounded-2xl p-5 border border-slate-100
                         hover:border-yellow-300 cursor-pointer group"
-                 style="transition-delay:{{ $i * 0.08 }}s;">
-                <div class="w-full h-32 flex items-center justify-center rounded-xl mb-4 text-5xl"
-                     style="background:#fef9ee;">{{ $cat['emoji'] }}</div>
+                 style="transition-delay:{{ $i * 0.08 }}s;"
+                 onclick="navigateToCategory('{{ $cat['type'] }}')">
+                <div class="w-full h-32 flex items-center justify-center rounded-xl mb-4 overflow-hidden"
+                     style="background:#fef9ee;">
+                    <img src="{{ asset('images/'.$cat['image']) }}" alt="{{ $cat['label'] }}" style="width:100%;height:100%;object-fit:contain;">
+                </div>
                 <h3 class="hf text-sm font-bold text-slate-800 mb-1">{{ $cat['label'] }}</h3>
                 <p class="text-xs text-slate-400 leading-snug mb-3">{{ $cat['desc'] }}</p>
                 <span class="inline-flex items-center gap-1 text-xs font-semibold text-yellow-600 group-hover:gap-2 transition-all">
