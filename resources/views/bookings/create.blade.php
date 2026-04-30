@@ -1173,7 +1173,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
     // ── Confirm Modal ──────────────────────────────────────
     function openConfirm() {
         if (!validateCurrentStep()) return;
-        
+
         // Validate proof image is uploaded
         const proofFile = document.getElementById('proofFile');
         if (!proofFile.files || proofFile.files.length === 0) {
@@ -1181,7 +1181,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
             proofFile.focus();
             return;
         }
-        
+
         const grnVal = document.querySelector('input[name="guarantee_type"]:checked').value;
         const payVal = document.querySelector('input[name="payment_method"]:checked').value;
         const grnMap = { ktp:'KTP', sim:'SIM', motor:'BPKB Motor' };
