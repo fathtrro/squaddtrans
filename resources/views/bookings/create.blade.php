@@ -539,11 +539,6 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
                 <span class="ct-val" id="cfRemaining">Rp 0</span>
             </div>
         </div>
-
-        <div class="confirm-footer">
-            <button type="button" class="btn btn-confirm-back" id="confirmBack"><i class="fa-solid fa-arrow-left"></i> Edit Lagi</button>
-            <button type="button" class="btn btn-confirm-submit" id="confirmSubmit"><i class="fa-solid fa-check-circle"></i> Konfirmasi & Pesan</button>
-        </div>
     </div>
 </div>
 

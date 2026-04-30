@@ -360,98 +360,9 @@
         }
     </style>
 
-    {{-- LEAVE MODAL --}}
-    <div id="leaveModal">
-        <div id="leaveModalBox">
-            <div style="width:56px;height:56px;background:#FFF7ED;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
-                <i class="fa-solid fa-arrow-right-from-bracket" style="color:#EA580C;font-size:1.375rem;"></i>
-            </div>
-            <h4 style="font-size:1rem;font-weight:800;margin-bottom:0.5rem;">Tinggalkan halaman?</h4>
-            <p style="font-size:0.875rem;color:var(--gray);margin-bottom:1.5rem;">Pilihan tanggal kamu belum disimpan.</p>
-            <div style="display:flex;gap:0.75rem;">
-                <button id="leaveCancelBtn" style="flex:1;padding:0.75rem;border-radius:10px;border:1.5px solid var(--border);background:white;font-weight:600;font-size:0.875rem;cursor:pointer;font-family:inherit;">Batal</button>
-                <button id="leaveConfirmBtn" style="flex:1;padding:0.75rem;border-radius:10px;border:none;background:var(--orange);color:white;font-weight:700;font-size:0.875rem;cursor:pointer;font-family:inherit;">Tinggalkan</button>
-            </div>
-        </div>
-    </div>
+    {{-- LEAVE MODAL - REMOVED (not needed without bookings) --}}
 
     <div class="booking-tooltip" id="bookingTooltip"></div>
-
-    {{-- MOBILE SHEET OVERLAY --}}
-    <div id="mobileSheetOverlay" onclick="closeMobileSheet()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:800;"></div>
-
-    {{-- MOBILE BOTTOM SHEET --}}
-    <div id="mobileSheet" style="position:fixed;bottom:0;left:0;right:0;z-index:900;background:white;border-radius:24px 24px 0 0;max-height:90vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);box-shadow:0 -8px 40px rgba(0,0,0,0.15);">
-        <div style="display:flex;justify-content:center;padding:12px 0 4px;position:sticky;top:0;background:white;border-radius:24px 24px 0 0;z-index:10;">
-            <div style="width:40px;height:4px;background:#E5E7EB;border-radius:2px;"></div>
-        </div>
-        <div style="padding:0 1.25rem 2.5rem;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.875rem;margin-bottom:1.25rem;">
-                <div class="rental-opt active" data-type="lepas_kunci" onclick="selectRentalType('lepas_kunci')">
-                    <div class="rental-opt-icon"><i class="fa-solid fa-key"></i></div>
-                    <div class="rental-opt-title">Lepas Kunci</div>
-                    <div class="rental-opt-desc">Sewa tanpa sopir.</div>
-                </div>
-                <div class="rental-opt" data-type="carter" onclick="selectRentalType('carter')">
-                    <div class="rental-opt-icon"><i class="fa-solid fa-user-tie"></i></div>
-                    <div class="rental-opt-title">Carter</div>
-                    <div class="rental-opt-desc">Dengan sopir profesional.</div>
-                </div>
-            </div>
-
-            <div id="mobileAvailSection">
-                <div style="font-size:0.875rem;font-weight:700;color:var(--dark);margin-bottom:0.875rem;display:flex;align-items:center;gap:0.5rem;"><i class="fa-solid fa-calendar-check" style="color:var(--orange);"></i> Check Availability</div>
-                <div class="date-inputs" id="mobileInputs24">
-                    <div class="date-field"><label>Start Date</label><input type="date" id="startDate" min="{{ date('Y-m-d') }}"></div>
-                    <div class="date-field"><label>End Date</label><input type="date" id="endDate" min="{{ date('Y-m-d') }}"></div>
-                </div>
-                <div style="display:none;gap:0.75rem;margin-bottom:1rem;" id="mobileInputs12">
-                    <div class="date-field"><label>Date</label><input type="date" id="startDate12" min="{{ date('Y-m-d') }}"></div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-                        <div class="date-field"><label>Start Time</label><input type="time" id="startTime" value="09:00"></div>
-                        <div class="date-field"><label>End Time</label><input type="time" id="endTime" value="21:00" readonly style="opacity:0.5;cursor:not-allowed;"></div>
-                    </div>
-                </div>
-                <div class="cal-header">
-                    <button class="cal-nav-btn" id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
-                    <div class="cal-month-title" id="currentMonth"></div>
-                    <button class="cal-nav-btn" id="nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-                <div class="cal-grid" style="margin-bottom:0.5rem;">
-                    <div class="cal-day-hdr">Sun</div><div class="cal-day-hdr">Mon</div>
-                    <div class="cal-day-hdr">Tue</div><div class="cal-day-hdr">Wed</div>
-                    <div class="cal-day-hdr">Thu</div><div class="cal-day-hdr">Fri</div>
-                    <div class="cal-day-hdr">Sat</div>
-                </div>
-                <div class="cal-grid" id="calendarGrid"></div>
-                <div class="cal-legend" style="margin-bottom:1rem;">
-                    <div class="legend-item"><div class="legend-dot" style="background:#F3F4F6;border:1px solid var(--border);"></div> Tersedia</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#FEE2E2;"></div> Booked</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#DCFCE7;"></div> Dipilih</div>
-                </div>
-                <button class="btn-check" id="checkAvailability" style="width:100%;justify-content:center;">
-                    <i class="fa-solid fa-search"></i> Check Availability
-                </button>
-                <div class="price-estimate" id="priceEstimateBox">
-                    <div class="pe-header"><span><i class="fa-solid fa-check-circle"></i> Tersedia!</span><span id="rentalDuration"></span></div>
-                    <div class="pe-row"><span>Base Price:</span><span id="basePrice">Rp 0</span></div>
-                    <div class="pe-row"><span>Service:</span><span id="serviceCharge">Rp 0</span></div>
-                    <div class="pe-row total"><span>Total:</span><span id="totalPrice">Rp 0</span></div>
-                    <div class="pe-deposit">Min. DP: <span id="minDeposit">Rp 0</span></div>
-                    <a href="{{ route('bookings.select-dates') }}" id="bookNowBtn" class="btn-book">
-                        <i class="fa-solid fa-calendar-check"></i> Book Now
-                    </a>
-                </div>
-            </div>
-
-            <a href="#" id="whatsappBtn" style="display:none;align-items:center;justify-content:center;gap:0.5rem;padding:0.875rem;border-radius:10px;background:#25D366;color:white;font-weight:700;font-size:0.9375rem;text-decoration:none;margin-top:1rem;">
-                <i class="fa-brands fa-whatsapp"></i> Order via WhatsApp
-            </a>
-            <a href="https://wa.me/6281234567890?text=Hi, I'm interested in {{ $car->brand }} {{ $car->name }}" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.875rem;border-radius:10px;border:1.5px solid var(--border);color:var(--dark);font-weight:600;font-size:0.9375rem;text-decoration:none;margin-top:0.875rem;">
-                <i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> Hubungi Kami
-            </a>
-        </div>
-    </div>
 
     {{-- MOBILE FLOAT BAR --}}
     <div class="mobile-float">
@@ -461,8 +372,8 @@
                 <div class="mf-amount">Rp {{ number_format($car->price_24h,0,',','.') }}</div>
                 <div class="mf-per">/ 24 jam</div>
             </div>
-            <a href="{{ route('dashboard') }}" class="mf-btn" id="mobileOpenSheet">
-                <i class="fa-solid fa-calendar-check"></i> Pesan Sekarang
+            <a href="https://wa.me/6281234567890?text=Halo Squad Trans! Saya tertarik dengan {{ urlencode($car->brand.' '.$car->name) }}. Tolong info detail harga dan ketersediaan kendaraan ini." class="mf-btn">
+                <i class="fa-brands fa-whatsapp"></i> Pesan
             </a>
         </div>
     </div>
@@ -586,12 +497,22 @@
 
                 {{-- CTA --}}
                 <div class="cta-block">
-                    <div class="cta-label">Ingin Menggunakan Unit Ini?</div>
-                    <div class="cta-sub">Hubungi kami sekarang juga untuk mendapatkan informasi lebih lanjut dan detail ketersediaan kendaraan ini.</div>
-                    <a href="https://wa.me/6281234567890?text=Hi, saya tertarik dengan {{ $car->brand }} {{ $car->name }}"
-                       class="btn-cta" style="width:fit-content;">
-                        Hubungi Kami
-                    </a>
+                    <div style="text-align:center;padding:1.5rem;background:linear-gradient(135deg,#fbbf24 0%,#f59e0b 100%);border-radius:16px;color:white;">
+                        <div style="font-size:1.25rem;font-weight:800;margin-bottom:0.5rem;">Pesan Sekarang</div>
+                        <div style="font-size:0.9375rem;margin-bottom:1.25rem;opacity:0.95;">Hubungi kami via WhatsApp untuk pemesanan & info detail harga</div>
+                        <a href="https://wa.me/6281234567890?text=Halo Squad Trans! Saya tertarik dengan {{ urlencode($car->brand.' '.$car->name) }}. Tolong info detail harga dan ketersediaan kendaraan ini."
+                           class="btn-cta" style="width:fit-content;margin:0 auto;background:white;color:var(--orange);font-weight:800;display:inline-flex;">
+                            <i class="fa-brands fa-whatsapp" style="font-size:1.125rem;"></i> Chat WhatsApp
+                        </a>
+                    </div>
+                    
+                    <div style="margin-top:1.25rem;padding:1rem;background:#fef9e7;border-left:4px solid var(--orange);border-radius:8px;">
+                        <div style="font-size:0.875rem;color:var(--dark);line-height:1.6;">
+                            <strong>💰 Harga Mulai dari:</strong><br>
+                            Rp {{ number_format($car->price_24h,0,',','.') }} / 24 jam<br>
+                            <span style="font-size:0.8rem;color:var(--gray);">Paket hemat tersedia untuk booking jangka panjang</span>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -663,291 +584,21 @@
     @endif
 
     <script>
-        const carId   = {{ $car->id }};
-        const csrf    = document.querySelector('meta[name="csrf-token"]').content;
-        const carName = "{{ $car->brand }} {{ $car->name }}";
-        const MONTHS  = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-
-        let bookedDates = @json(
-            $car->bookings->map(function ($b) {
-                $dates = [];
-                $start = \Carbon\Carbon::parse($b->start_datetime);
-                $end   = \Carbon\Carbon::parse($b->end_datetime);
-                while ($start <= $end) { $dates[] = $start->format('Y-m-d'); $start->addDay(); }
-                return $dates;
-            })->flatten()->unique()->values()
-        );
-
-        let bookingDetailsMap = {};
-        let selectedStartDate = null;
-        let selectedEndDate   = null;
-        let currentDurationMode = '24';
-        let mainCalDate    = new Date();
-        let desktopCalDate = new Date();
-
-        function pad2(n){ return String(n).padStart(2,'0'); }
-        function formatRp(n){ return 'Rp '+new Intl.NumberFormat('id-ID').format(n); }
-        function fmtDate(s){ const[y,m,d]=s.split('-'); return `${parseInt(d)} ${MONTHS[parseInt(m)-1]}`; }
-
-        function calcEndDT(d,t){
-            const[y,mo,dy]=d.split('-').map(Number);
-            const[h,mi]=t.split(':').map(Number);
-            const dt=new Date(y,mo-1,dy,h,mi);
-            dt.setTime(dt.getTime()+12*3600000);
-            return{date:`${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`,time:`${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`};
-        }
-
-        function getConflicts(s,e){
-            const out=[]; let cur=new Date(s);
-            while(cur<=new Date(e)){
-                const st=`${cur.getFullYear()}-${pad2(cur.getMonth()+1)}-${pad2(cur.getDate())}`;
-                if(bookedDates.includes(st)) out.push(st);
-                cur.setDate(cur.getDate()+1);
-            }
-            return out;
-        }
-
-        function selectPrice(el,dur,price){
-            currentDurationMode=dur;
-            document.querySelectorAll('.price-opt').forEach(o=>o.classList.remove('active'));
-            el.classList.add('active');
-            const show12=dur==='12';
-            ['mobileInputs24','desktopInputs24'].forEach(id=>{ const e=document.getElementById(id); if(e) e.style.display=show12?'none':'grid'; });
-            ['mobileInputs12','desktopInputs12'].forEach(id=>{ const e=document.getElementById(id); if(e) e.style.display=show12?'block':'none'; });
-            ['priceEstimateBox','priceEstimateBoxDesktop'].forEach(id=>{ const e=document.getElementById(id); if(e) e.classList.remove('show'); });
-            renderCalendar('mobile'); renderCalendar('desktop');
-        }
-
-        function selectRentalType(type){
-            document.querySelectorAll('.rental-opt').forEach(c=>c.classList.remove('active'));
-            document.querySelectorAll(`.rental-opt[data-type="${type}"]`).forEach(c=>c.classList.add('active'));
-            const isCarter = type==='carter';
-            const mobileAvail=document.getElementById('mobileAvailSection');
-            const desktopAvail=document.getElementById('desktopAvailSection');
-            const desktopWA=document.getElementById('desktopWASection');
-            const wa=document.getElementById('whatsappBtn');
-            const waD=document.getElementById('whatsappBtnDesktop');
-            if(isCarter){
-                if(mobileAvail) mobileAvail.style.display='none';
-                if(desktopAvail) desktopAvail.style.display='none';
-                if(desktopWA) desktopWA.style.display='block';
-                if(wa){ wa.style.display='flex'; wa.href=`https://wa.me/6281234567890?text=${encodeURIComponent('Halo, saya ingin carter '+carName)}`; }
-                if(waD) waD.href=`https://wa.me/6281234567890?text=${encodeURIComponent('Halo, saya ingin carter '+carName)}`;
-            } else {
-                if(mobileAvail) mobileAvail.style.display='block';
-                if(desktopAvail) desktopAvail.style.display='block';
-                if(desktopWA) desktopWA.style.display='none';
-                if(wa) wa.style.display='none';
-            }
-        }
-
-        function syncInputs(){
-            if(currentDurationMode==='24'){
-                ['startDate','startDateDesktop'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=selectedStartDate||''; });
-                ['endDate','endDateDesktop'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=selectedEndDate||''; });
-            } else {
-                ['startDate12','startDate12Desktop'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=selectedStartDate||''; });
-            }
-            renderCalendar('mobile'); renderCalendar('desktop');
-        }
-
-        function selectDate(str){
-            if(currentDurationMode==='12'){
-                selectedStartDate=str; selectedEndDate=str;
-            } else {
-                if(!selectedStartDate||(selectedStartDate&&selectedEndDate)){
-                    selectedStartDate=str; selectedEndDate=null;
-                } else {
-                    let s=selectedStartDate,e=str;
-                    if(str<s){s=str;e=selectedStartDate;}
-                    else if(str===s){selectedStartDate=null;selectedEndDate=null;syncInputs();return;}
-                    const c=getConflicts(s,e);
-                    if(c.length){alert('Tanggal '+c.map(fmtDate).join(', ')+' sudah dibooking.');selectedStartDate=null;selectedEndDate=null;syncInputs();return;}
-                    selectedStartDate=s;selectedEndDate=e;
-                }
-            }
-            syncInputs();
-        }
-
-        async function loadBookingDetails(y,m){
-            try{
-                const r=await fetch(`/api/cars/${carId}/booked-dates?year=${y}&month=${m}`);
-                const d=await r.json();
-                if(d.booked_dates) bookedDates=d.booked_dates;
-                if(d.booking_details) bookingDetailsMap=d.booking_details;
-            }catch(e){console.error(e);}
-        }
-
-        async function renderCalendar(which){
-            const isMobile=which==='mobile';
-            const ref=isMobile?mainCalDate:desktopCalDate;
-            const gridId=isMobile?'calendarGrid':'calendarGridDesktop';
-            const monthId=isMobile?'currentMonth':'currentMonthDesktop';
-            const y=ref.getFullYear(),m=ref.getMonth();
-            const mEl=document.getElementById(monthId);
-            if(mEl) mEl.textContent=`${MONTHS[m]} ${y}`;
-            await loadBookingDetails(y,m+1);
-            const firstDay=new Date(y,m,1).getDay();
-            const daysInMonth=new Date(y,m+1,0).getDate();
-            const today=new Date(); today.setHours(0,0,0,0);
-            let html='';
-            for(let i=0;i<firstDay;i++) html+='<div class="cal-day empty"></div>';
-            for(let day=1;day<=daysInMonth;day++){
-                const dt=new Date(y,m,day);
-                const str=`${y}-${pad2(m+1)}-${pad2(day)}`;
-                const isBooked=bookedDates.includes(str);
-                const isPast=dt<today;
-                const isToday=dt.getTime()===today.getTime();
-                let cls='cal-day';
-                if(isPast) cls+=' past';
-                else if(isBooked) cls+=' booked';
-                else cls+=' available';
-                if(isToday) cls+=' today';
-                if(selectedStartDate===str) cls+=' selected-start';
-                if(selectedEndDate===str) cls+=' selected-end';
-                if(currentDurationMode==='24'&&selectedStartDate&&selectedEndDate&&str>selectedStartDate&&str<selectedEndDate) cls+=' selected-range';
-                const oc=(!isPast&&!isBooked)?`onclick="selectDate('${str}')"`:'';
-                const tip=isBooked?`onmouseover="showTip('${str}',this)" onmouseout="hideTip()"`:'';
-                html+=`<div class="${cls}" ${oc} ${tip}>${day}</div>`;
-            }
-            const grid=document.getElementById(gridId);
-            if(grid) grid.innerHTML=html;
-        }
-
-        async function doCheckAvail(isDesktop){
-            let startDate,endDate,startTime,endTime;
-            const sfx=isDesktop?'Desktop':'';
-            if(currentDurationMode==='12'){
-                const d=document.getElementById('startDate12'+sfx)?.value;
-                const t=document.getElementById('startTime'+sfx)?.value;
-                if(!d||!t){alert('Pilih tanggal dan waktu.');return;}
-                const ec=calcEndDT(d,t);
-                startDate=d;startTime=t;endDate=ec.date;endTime=ec.time;
-            } else {
-                startDate=document.getElementById('startDate'+sfx)?.value;
-                endDate=document.getElementById('endDate'+sfx)?.value;
-                if(!startDate||!endDate){alert('Pilih tanggal mulai dan selesai.');return;}
-            }
-            const c=getConflicts(startDate,endDate);
-            if(c.length){alert('Tanggal '+c.map(fmtDate).join(', ')+' sudah dibooking.');return;}
-            const btn=document.getElementById('checkAvailability'+sfx);
-            const orig=btn.innerHTML;
-            btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Checking...';
-            const payload={start_date:startDate,end_date:endDate,service_type:'lepas_kunci',duration_mode:currentDurationMode};
-            if(currentDurationMode==='12'){payload.start_time=startTime;payload.end_time=endTime;payload.start_datetime=`${startDate} ${startTime}`;payload.end_datetime=`${endDate} ${endTime}`;}
-            else{payload.start_datetime=`${startDate} 00:00`;payload.end_datetime=`${endDate} 23:59`;}
-            try{
-                const [avRes,prRes]=await Promise.all([
-                    fetch(`/api/cars/${carId}/check-availability`,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-TOKEN':csrf},body:JSON.stringify(payload)}),
-                    fetch(`/api/cars/${carId}/price-estimate`,    {method:'POST',headers:{'Content-Type':'application/json','X-CSRF-TOKEN':csrf},body:JSON.stringify(payload)}),
-                ]);
-                const av=await avRes.json();
-                if(!av.available){alert(av.message||'Mobil tidak tersedia.');btn.disabled=false;btn.innerHTML=orig;return;}
-                const pr=await prRes.json();
-                document.getElementById('rentalDuration'+sfx).textContent=`${pr.days} hari`;
-                document.getElementById('basePrice'+sfx).textContent=formatRp(pr.base_price);
-                document.getElementById('serviceCharge'+sfx).textContent=formatRp(pr.service_charge);
-                document.getElementById('totalPrice'+sfx).textContent=formatRp(pr.total_price);
-                document.getElementById('minDeposit'+sfx).textContent=formatRp(pr.min_deposit);
-                const bBtn=document.getElementById('bookNowBtn'+sfx);
-                const url=new URL(bBtn.href);
-                Object.entries({start:payload.start_datetime,end:payload.end_datetime,mode:currentDurationMode,base_price:pr.base_price,total_price:pr.total_price,min_deposit:pr.min_deposit,days:pr.days})
-                    .forEach(([k,v])=>url.searchParams.set(k,v));
-                bBtn.href=url.toString();
-                const box=document.getElementById('priceEstimateBox'+sfx);
-                box.classList.add('show');
-                box.scrollIntoView({behavior:'smooth',block:'nearest'});
-            }catch(e){console.error(e);alert('Terjadi kesalahan.');}
-            finally{btn.disabled=false;btn.innerHTML=orig;}
-        }
-
-        document.getElementById('checkAvailability').addEventListener('click',()=>doCheckAvail(false));
-        document.getElementById('checkAvailabilityDesktop').addEventListener('click',()=>doCheckAvail(true));
-
-        ['startDate','startDateDesktop'].forEach(id=>{ document.getElementById(id)?.addEventListener('change',function(){selectedStartDate=this.value||null;syncInputs();}); });
-        ['endDate','endDateDesktop'].forEach(id=>{ document.getElementById(id)?.addEventListener('change',function(){selectedEndDate=this.value||null;syncInputs();}); });
-        ['startDate12','startDate12Desktop'].forEach(id=>{ document.getElementById(id)?.addEventListener('change',function(){selectedStartDate=selectedEndDate=this.value||null;syncInputs();}); });
-        ['startTime','startTimeDesktop'].forEach(id=>{
-            document.getElementById(id)?.addEventListener('change',function(){
-                const d=document.getElementById(id==='startTime'?'startDate12':'startDate12Desktop')?.value;
-                if(d){const ec=calcEndDT(d,this.value);const etId=id==='startTime'?'endTime':'endTimeDesktop';const el=document.getElementById(etId);if(el)el.value=ec.time;}
-            });
-        });
-
-        document.getElementById('prevMonth').addEventListener('click',()=>{mainCalDate.setMonth(mainCalDate.getMonth()-1);renderCalendar('mobile');});
-        document.getElementById('nextMonth').addEventListener('click',()=>{mainCalDate.setMonth(mainCalDate.getMonth()+1);renderCalendar('mobile');});
-        document.getElementById('prevMonthDesktop').addEventListener('click',()=>{desktopCalDate.setMonth(desktopCalDate.getMonth()-1);renderCalendar('desktop');});
-        document.getElementById('nextMonthDesktop').addEventListener('click',()=>{desktopCalDate.setMonth(desktopCalDate.getMonth()+1);renderCalendar('desktop');});
-
-        function changeImg(src,thumb){
-            document.getElementById('mainImg').src=src;
-            document.querySelectorAll('.thumb-item').forEach(t=>t.classList.remove('active'));
+        // Gallery functions
+        function changeImg(src, thumb) {
+            document.getElementById('mainImg').src = src;
+            document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
             thumb.classList.add('active');
         }
-        function expandImage(){
-            const src=document.getElementById('mainImg').src;
-            const w=window.open('','_blank');
-            w.document.write(`<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${src}" style="max-width:100%;max-height:100vh;object-fit:contain;"></body>`);
+
+        function expandImage() {
+            const src = document.getElementById('mainImg').src;
+            const w = window.open('', '_blank');
+            w.document.write(`<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+                <img src="${src}" style="max-width:100%;max-height:100vh;object-fit:contain;">
+                <style>body{font-family:system-ui;}</style>
+            </body>`);
         }
-
-        const tooltip=document.getElementById('bookingTooltip');
-        function showTip(str,el){
-            const b=bookingDetailsMap[str];if(!b)return;
-            const cls=b.status==='confirmed'?'color:#1E40AF':'color:#065F46';
-            tooltip.innerHTML=`<div class="tip-title">${b.booking_code}</div><div class="tip-row"><span class="tip-lbl">Customer:</span><span>${b.user_name}</span></div><div class="tip-row"><span class="tip-lbl">Status:</span><span style="${cls};font-weight:700;">${b.status}</span></div><div class="tip-row"><span class="tip-lbl">Period:</span><span>${b.start} – ${b.end}</span></div>`;
-            const r=el.getBoundingClientRect();
-            tooltip.style.left=r.left+r.width/2+'px';
-            tooltip.style.top=(r.top+window.scrollY-10)+'px';
-            tooltip.style.transform='translate(-50%,-100%)';
-            tooltip.classList.add('show');
-        }
-        function hideTip(){tooltip.classList.remove('show');}
-
-        const mobileSheet=document.getElementById('mobileSheet');
-        const mobileOverlay=document.getElementById('mobileSheetOverlay');
-
-        function openMobileSheet() {
-            mobileSheet.style.transform='translateY(0)';
-            mobileOverlay.style.display='flex';
-            document.body.style.overflow='hidden';
-        }
-
-        function closeMobileSheet(){
-            mobileSheet.style.transform='translateY(100%)';
-            mobileOverlay.style.display='none';
-            document.body.style.overflow='';
-        }
-        let touchY=0;
-        mobileSheet.addEventListener('touchstart',e=>{touchY=e.touches[0].clientY;},{passive:true});
-        mobileSheet.addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-touchY>80)closeMobileSheet();},{passive:true});
-
-        (function(){
-            let pUrl=null,ok=false;
-            const mo=document.getElementById('leaveModal');
-            const bx=document.getElementById('leaveModalBox');
-            const WHITELIST=['bookings','login','register','logout','cars','wa.me','whatsapp'];
-            function isWL(url){try{const u=new URL(url,location.origin);return WHITELIST.some(w=>u.pathname.includes(w)||u.href.includes(w));}catch(e){return false;}}
-            function show(url){pUrl=url;mo.style.opacity='1';mo.style.pointerEvents='auto';bx.style.transform='scale(1)';}
-            function hide(){mo.style.opacity='0';mo.style.pointerEvents='none';bx.style.transform='scale(0.9)';pUrl=null;}
-            document.getElementById('leaveCancelBtn').addEventListener('click',hide);
-            mo.addEventListener('click',e=>{if(e.target===mo)hide();});
-            document.getElementById('leaveConfirmBtn').addEventListener('click',()=>{ok=true;hide();pUrl?window.location.href=pUrl:history.back();});
-            document.addEventListener('click',e=>{
-                const a=e.target.closest('a[href]');
-                if(!a||ok)return;
-                const h=a.getAttribute('href');
-                if(!h||h.startsWith('#')||h.startsWith('javascript')||a.target==='_blank')return;
-                if(a.href===location.href)return;
-                if(isWL(a.href))return;
-                e.preventDefault();show(a.href);
-            });
-            history.pushState(null,'',location.href);
-            window.addEventListener('popstate',()=>{if(ok)return;history.pushState(null,'',location.href);show(null);});
-        })();
-
-        renderCalendar('mobile');
-        renderCalendar('desktop');
-        selectRentalType('lepas_kunci');
     </script>
 
 </x-app-layout>
