@@ -1111,7 +1111,17 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         e.preventDefault(); uploadZone.classList.remove('dragover');
         if (e.dataTransfer.files.length) { docFile.files = e.dataTransfer.files; showDocPreview(e.dataTransfer.files[0]); }
     });
-    docFile.addEventListener('change', function() { if (this.files.length) showDocPreview(this.files[0]); });
+    docFile.addEventListener('change', function() { 
+        if (this.files.length) {
+            const file = this.files[0];
+            showDocPreview(file);
+            // Check file size (max 5MB, but warn if > 2MB)
+            const MAX_RECOMMENDED = 2 * 1024 * 1024; // 2MB
+            if (file.size > MAX_RECOMMENDED) {
+                console.warn('⚠️ File lebih dari 2MB, tapi bisa diupload ke max 5MB');
+            }
+        }
+    });
 
     function formatSize(bytes) {
         if (bytes < 1024) return bytes + ' B';
@@ -1157,7 +1167,17 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         e.preventDefault(); proofUploadZone.classList.remove('dragover');
         if (e.dataTransfer.files.length) { proofFile.files = e.dataTransfer.files; showProofPreview(e.dataTransfer.files[0]); }
     });
-    proofFile.addEventListener('change', function() { if (this.files.length) showProofPreview(this.files[0]); });
+    proofFile.addEventListener('change', function() { 
+        if (this.files.length) {
+            const file = this.files[0];
+            showProofPreview(file);
+            // Check file size dan notify user
+            const MAX_SIZE = 2 * 1024 * 1024; // 2MB
+            if (file.size > MAX_SIZE) {
+                console.warn('⚠️ File lebih dari 2MB, tapi bisa diupload ke max 5MB');
+            }
+        }
+    });
 
     function showProofPreview(file) {
         document.getElementById('proofUploadFileName').textContent = file.name;
@@ -1179,16 +1199,18 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
     function openConfirm() {
         if (!validateCurrentStep()) return;
 
-        // Validate proof image is uploaded
-        const proofFile = document.getElementById('proofFile');
-        if (!proofFile.files || proofFile.files.length === 0) {
-            alert('Silakan upload bukti pembayaran terlebih dahulu!');
-            proofFile.focus();
-            return;
-        }
-
         const grnVal = document.querySelector('input[name="guarantee_type"]:checked').value;
         const payVal = document.querySelector('input[name="payment_method"]:checked').value;
+        
+        // Validate proof image only if payment method is transfer
+        if (payVal === 'transfer') {
+            const proofFile = document.getElementById('proofFile');
+            if (!proofFile.files || proofFile.files.length === 0) {
+                alert('Silakan upload bukti pembayaran terlebih dahulu!');
+                proofFile.focus();
+                return;
+            }
+        }
         const grnMap = { ktp:'KTP', sim:'SIM', motor:'BPKB Motor' };
         const payMap = { cash:'Cash (Tunai)', transfer:'Transfer Bank' };
         const dp = Number(dpInput.value) || 0;
@@ -1255,11 +1277,13 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
             proofFile.focus();
             return;
         }
+        
         clearDraft();
         closeConfirm();
         document.getElementById('loadingOverlay').classList.add('active');
         setTimeout(() => {
-            document.getElementById('bookingForm').submit();
+            const form = document.getElementById('bookingForm');
+            form.submit();
         }, 300);
     });
 

@@ -70,13 +70,11 @@
     .fd-logo-mark {
         width: 40px;
         height: 40px;
-        background: var(--amber);
         border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        box-shadow: 0 4px 16px rgba(232, 160, 32, 0.25);
     }
 
     .fd-logo-name {
@@ -362,13 +360,7 @@
                 <div class="fd-brand-col">
                     <div class="fd-logo">
                         <div class="fd-logo-mark">
-                            <svg width="18" height="18" fill="none" stroke="white" stroke-width="2.2"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M9 17H5a2 2 0 01-2-2V5a2 2 0 012-2h11l4 4v10a2 2 0 01-2 2h-1" />
-                                <circle cx="9" cy="20" r="1.5" />
-                                <circle cx="18" cy="20" r="1.5" />
-                            </svg>
+                            <img src="{{ asset('images/lg.png') }}" alt="Squad Trans Logo" style="width: 100%; height: 100%; object-fit: contain;">
                         </div>
                         <div class="fd-logo-name">Squad<em>Trans</em></div>
                     </div>

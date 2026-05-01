@@ -216,11 +216,11 @@ class BookingController extends Controller
             'alamat' => 'required|string',
             'total_price' => 'required|numeric',
             'guarantee_type' => 'required|string',
-            'document_file' => 'required|file|mimes:jpg,png,pdf',
+            'document_file' => 'required|file|extensions:jpg,jpeg,png,pdf|max:5120',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string',
-            'selected_bank' => 'required|exists:bank_accounts,id',
-            'proof_image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'selected_bank' => 'required_if:payment_method,transfer|exists:bank_accounts,id',
+            'proof_image' => 'required_if:payment_method,transfer|file|extensions:jpg,jpeg,png|max:5120',
         ];
 
         $validated = $request->validate($rules);

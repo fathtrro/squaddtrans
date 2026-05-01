@@ -230,45 +230,13 @@
             transition: opacity 0.15s;
         }
 
-        .pill:hover {
-            opacity: 0.8;
-        }
-
-        .pill.all.on {
-            background: #fef9c3;
-            color: #92400e;
-            border-color: #fcd34d;
-        }
-
-        .pill.yellow.on {
-            background: #fefce8;
-            color: #92400e;
-            border-color: #fde68a;
-        }
-
-        .pill.blue.on {
-            background: #eff6ff;
-            color: #1e40af;
-            border-color: #93c5fd;
-        }
-
-        .pill.purple.on {
-            background: #f5f3ff;
-            color: #4c1d95;
-            border-color: #c4b5fd;
-        }
-
-        .pill.green.on {
-            background: #f0fdf4;
-            color: #166534;
-            border-color: #86efac;
-        }
-
-        .pill.red.on {
-            background: #fef2f2;
-            color: #991b1b;
-            border-color: #fca5a5;
-        }
+        .pill:hover { opacity: 0.8; }
+        .pill.all.on    { background: #fef9c3; color: #92400e; border-color: #fcd34d; }
+        .pill.yellow.on { background: #fefce8; color: #92400e; border-color: #fde68a; }
+        .pill.blue.on   { background: #eff6ff; color: #1e40af; border-color: #93c5fd; }
+        .pill.purple.on { background: #f5f3ff; color: #4c1d95; border-color: #c4b5fd; }
+        .pill.green.on  { background: #f0fdf4; color: #166534; border-color: #86efac; }
+        .pill.red.on    { background: #fef2f2; color: #991b1b; border-color: #fca5a5; }
 
         .date-sel {
             padding: 0.5rem 0.8rem;
@@ -283,9 +251,7 @@
             transition: border-color 0.15s;
         }
 
-        .date-sel:focus {
-            border-color: #f59e0b;
-        }
+        .date-sel:focus { border-color: #f59e0b; }
 
         /* ── DESKTOP TABLE ── */
         .table-wrap {
@@ -318,31 +284,22 @@
             white-space: nowrap;
         }
 
-        .rtable thead th.tc {
-            text-align: center;
-        }
+        .rtable thead th.tc { text-align: center; }
 
         .rtable tbody tr {
             border-bottom: 1px solid #f1f5f9;
             transition: background 0.12s;
         }
 
-        .rtable tbody tr:last-child {
-            border-bottom: none;
-        }
-
-        .rtable tbody tr:hover {
-            background: #fafbfc;
-        }
+        .rtable tbody tr:last-child { border-bottom: none; }
+        .rtable tbody tr:hover { background: #fafbfc; }
 
         .rtable tbody td {
             padding: 0.85rem 1rem;
             vertical-align: middle;
         }
 
-        .rtable tbody td.tc {
-            text-align: center;
-        }
+        .rtable tbody td.tc { text-align: center; }
 
         /* ── MOBILE CARDS ── */
         .mobile-list {
@@ -381,6 +338,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .m-field-label {
@@ -497,39 +456,13 @@
             white-space: nowrap;
         }
 
-        .b-pending {
-            background: #fefce8;
-            color: #92400e;
-        }
+        .b-pending   { background: #fefce8; color: #92400e; }
+        .b-confirmed { background: #eff6ff; color: #1e40af; }
+        .b-running   { background: #f5f3ff; color: #4c1d95; }
+        .b-completed { background: #f0fdf4; color: #166534; }
+        .b-cancelled { background: #fef2f2; color: #991b1b; }
 
-        .b-confirmed {
-            background: #eff6ff;
-            color: #1e40af;
-        }
-
-        .b-running {
-            background: #f5f3ff;
-            color: #4c1d95;
-        }
-
-        .b-completed {
-            background: #f0fdf4;
-            color: #166534;
-        }
-
-        .b-cancelled {
-            background: #fef2f2;
-            color: #991b1b;
-        }
-
-        /* late badge */
-        .late-text {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #dc2626;
-            line-height: 1.3;
-        }
-
+        .late-text { font-size: 0.72rem; font-weight: 700; color: #dc2626; line-height: 1.3; }
         .late-text .late-label {
             font-size: 0.6rem;
             font-weight: 700;
@@ -541,11 +474,7 @@
             margin-bottom: 1px;
         }
 
-        .acts {
-            display: inline-flex;
-            gap: 3px;
-            align-items: center;
-        }
+        .acts { display: inline-flex; gap: 3px; align-items: center; }
 
         .ab {
             width: 28px;
@@ -561,59 +490,18 @@
             transition: all 0.15s;
         }
 
-        .ab svg {
-            width: 13px;
-            height: 13px;
-            color: #9ca3af;
-            transition: color 0.15s;
-        }
+        .ab svg { width: 13px; height: 13px; color: #9ca3af; transition: color 0.15s; }
+        .ab:hover          { border-color: #d97706; background: #fef9c3; }
+        .ab:hover svg      { color: #d97706; }
+        .ab.g:hover        { border-color: #22c55e; background: #f0fdf4; }
+        .ab.g:hover svg    { color: #16a34a; }
+        .ab.b:hover        { border-color: #3b82f6; background: #eff6ff; }
+        .ab.b:hover svg    { color: #2563eb; }
+        .ab.p:hover        { border-color: #8b5cf6; background: #f5f3ff; }
+        .ab.p:hover svg    { color: #7c3aed; }
+        .ab.d:hover        { border-color: #ef4444; background: #fef2f2; }
+        .ab.d:hover svg    { color: #ef4444; }
 
-        .ab:hover {
-            border-color: #d97706;
-            background: #fef9c3;
-        }
-
-        .ab:hover svg {
-            color: #d97706;
-        }
-
-        .ab.g:hover {
-            border-color: #22c55e;
-            background: #f0fdf4;
-        }
-
-        .ab.g:hover svg {
-            color: #16a34a;
-        }
-
-        .ab.b:hover {
-            border-color: #3b82f6;
-            background: #eff6ff;
-        }
-
-        .ab.b:hover svg {
-            color: #2563eb;
-        }
-
-        .ab.p:hover {
-            border-color: #8b5cf6;
-            background: #f5f3ff;
-        }
-
-        .ab.p:hover svg {
-            color: #7c3aed;
-        }
-
-        .ab.d:hover {
-            border-color: #ef4444;
-            background: #fef2f2;
-        }
-
-        .ab.d:hover svg {
-            color: #ef4444;
-        }
-
-        /* mobile action links */
         .m-action-link {
             font-size: 0.75rem;
             font-weight: 600;
@@ -621,18 +509,9 @@
             padding: 5px 0;
         }
 
-        .m-action-link.wf {
-            color: #16a34a;
-        }
-
-        .m-action-link.dt {
-            color: #2563eb;
-        }
-
-        .m-action-link.ed {
-            color: #7c3aed;
-        }
-
+        .m-action-link.wf { color: #16a34a; }
+        .m-action-link.dt { color: #2563eb; }
+        .m-action-link.ed { color: #7c3aed; }
         .m-action-link.dl {
             color: #ef4444;
             background: none;
@@ -641,10 +520,14 @@
             font-family: inherit;
         }
 
-        .empty-wrap {
-            padding: 3.5rem 2rem;
-            text-align: center;
+        .m-actions-group {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            flex-wrap: wrap;
         }
+
+        .empty-wrap { padding: 3.5rem 2rem; text-align: center; }
 
         .empty-icon {
             width: 56px;
@@ -676,26 +559,22 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.2s;
+            padding: 1rem;
         }
 
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: all;
-        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
 
         .modal-box {
             background: #fff;
             border-radius: 16px;
             padding: 2rem;
             max-width: 370px;
-            width: 90%;
+            width: 100%;
             transform: scale(0.95);
             transition: transform 0.2s;
         }
 
-        .modal-overlay.open .modal-box {
-            transform: scale(1);
-        }
+        .modal-overlay.open .modal-box { transform: scale(1); }
 
         .modal-icon {
             width: 48px;
@@ -708,25 +587,10 @@
             margin: 0 auto 1rem;
         }
 
-        .modal-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #111827;
-            text-align: center;
-            margin-bottom: 5px;
-        }
+        .modal-title { font-size: 0.95rem; font-weight: 700; color: #111827; text-align: center; margin-bottom: 5px; }
+        .modal-sub   { font-size: 0.8rem; color: #6b7280; text-align: center; margin-bottom: 1.5rem; }
 
-        .modal-sub {
-            font-size: 0.8rem;
-            color: #6b7280;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-btns {
-            display: flex;
-            gap: 8px;
-        }
+        .modal-btns { display: flex; gap: 8px; }
 
         .m-cancel {
             flex: 1;
@@ -742,9 +606,7 @@
             transition: background 0.15s;
         }
 
-        .m-cancel:hover {
-            background: #e5e7eb;
-        }
+        .m-cancel:hover { background: #e5e7eb; }
 
         .m-confirm {
             flex: 1;
@@ -760,30 +622,39 @@
             transition: background 0.15s;
         }
 
-        .m-confirm:hover {
-            background: #dc2626;
-        }
+        .m-confirm:hover { background: #dc2626; }
 
         /* ── RESPONSIVE ── */
-        @media(max-width:1024px) {
+
+        /* Tablet landscape ~1024px: 3 kolom stat */
+        @media (max-width: 1024px) {
             .stat-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
 
-        @media(max-width:768px) {
+        /* Tablet portrait ~900px: tabel dengan scroll horizontal */
+        @media (max-width: 900px) {
+            .table-wrap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .rtable {
+                table-layout: auto;
+                min-width: 700px;
+            }
+        }
+
+        /* Tablet ~768px: sembunyikan tabel, tampilkan kartu */
+        @media (max-width: 768px) {
             .page-hero {
                 padding: 1.25rem 1.1rem;
                 border-radius: 14px;
             }
 
-            .hero-title {
-                font-size: 1.2rem;
-            }
-
-            .hero-sub {
-                font-size: 0.72rem;
-            }
+            .hero-title { font-size: 1.2rem; }
+            .hero-sub   { font-size: 0.72rem; }
 
             .stat-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -795,54 +666,79 @@
                 border-radius: 10px;
             }
 
-            .stat-val {
-                font-size: 1.3rem;
-            }
-
-            .stat-label {
-                font-size: 0.55rem;
-            }
+            .stat-val   { font-size: 1.3rem; }
+            .stat-label { font-size: 0.55rem; }
 
             .filter-bar {
                 padding: 0.75rem;
                 gap: 0.6rem;
             }
 
-            .pills {
-                gap: 4px;
-            }
+            .pills  { gap: 4px; }
+            .pill   { font-size: 0.65rem; padding: 3px 9px; }
 
-            .pill {
-                font-size: 0.65rem;
-                padding: 3px 9px;
-            }
-
-            /* hide desktop table, show mobile cards */
-            .table-wrap {
-                display: none;
-            }
-
-            .mobile-list {
-                display: flex;
-            }
+            /* Sembunyikan tabel desktop, tampilkan kartu mobile */
+            .table-wrap  { display: none; }
+            .mobile-list { display: flex; }
         }
 
-        @media(max-width:480px) {
+        /* Ponsel ~600px: filter bar full-width vertikal */
+        @media (max-width: 600px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-wrap { min-width: unset; }
+
+            .date-sel { width: 100%; }
+
+            .pills { justify-content: flex-start; }
+        }
+
+        /* Ponsel ~480px: stat 2 kolom */
+        @media (max-width: 480px) {
             .stat-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
             .stat-grid .stat-card:first-child {
-                grid-column: 1/-1;
+                grid-column: 1 / -1;
             }
 
             .m-card-body {
                 grid-template-columns: 1fr 1fr;
             }
 
-            .btn-add span {
-                display: none;
+            .btn-add span { display: none; }
+
+            .m-card-foot {
+                flex-direction: column;
+                align-items: flex-start;
             }
+
+            .m-actions-group {
+                gap: 10px;
+            }
+        }
+
+        /* Ponsel XS ~360px */
+        @media (max-width: 360px) {
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .m-card-body {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title { font-size: 1.05rem; }
+
+            .stat-val   { font-size: 1.1rem; }
+
+            .pill { font-size: 0.6rem; padding: 3px 7px; }
+
+            .modal-box { padding: 1.25rem; }
         }
     </style>
 
@@ -873,8 +769,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-label"><span class="stat-dot" style="background:#60a5fa"></span>Dikonfirmasi</div>
-                    <div class="stat-val" style="color:#60a5fa">{{ $renters->where('status', 'confirmed')->count() }}
-                    </div>
+                    <div class="stat-val" style="color:#60a5fa">{{ $renters->where('status', 'confirmed')->count() }}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label"><span class="stat-dot" style="background:#a78bfa"></span>Berjalan</div>
@@ -882,8 +777,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-label"><span class="stat-dot" style="background:#4ade80"></span>Selesai</div>
-                    <div class="stat-val" style="color:#4ade80">{{ $renters->where('status', 'completed')->count() }}
-                    </div>
+                    <div class="stat-val" style="color:#4ade80">{{ $renters->where('status', 'completed')->count() }}</div>
                 </div>
             </div>
         </div>
@@ -892,8 +786,7 @@
         @if (session('success'))
             <div class="toast-ok" id="toastOk">
                 <div style="display:flex;align-items:center;gap:8px">
-                    <svg style="width:15px;height:15px;color:#16a34a;flex-shrink:0" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
+                    <svg style="width:15px;height:15px;color:#16a34a;flex-shrink:0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
                     {{ session('success') }}
@@ -901,8 +794,7 @@
                 <button onclick="document.getElementById('toastOk').remove()"
                     style="background:none;border:none;cursor:pointer;color:#16a34a;padding:0">
                     <svg style="width:15px;height:15px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -923,10 +815,8 @@
                     @if (request('search'))
                         <a class="cx"
                             href="{{ route('admin.renter.index', array_filter(['status' => request('status'), 'date_range' => request('date_range')])) }}">
-                            <svg style="width:13px;height:13px" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12" />
+                            <svg style="width:13px;height:13px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </a>
                     @endif
@@ -939,16 +829,11 @@
                     $q = array_filter(['search' => request('search'), 'date_range' => request('date_range')]);
                 @endphp
                 <a href="{{ route('admin.renter.index', $q) }}" class="pill all    {{ !$s ? 'on' : '' }}">Semua</a>
-                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'pending'])) }}"
-                    class="pill yellow {{ $s == 'pending' ? 'on' : '' }}">Menunggu</a>
-                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'confirmed'])) }}"
-                    class="pill blue   {{ $s == 'confirmed' ? 'on' : '' }}">Dikonfirmasi</a>
-                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'running'])) }}"
-                    class="pill purple {{ $s == 'running' ? 'on' : '' }}">Berjalan</a>
-                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'completed'])) }}"
-                    class="pill green  {{ $s == 'completed' ? 'on' : '' }}">Selesai</a>
-                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'cancelled'])) }}"
-                    class="pill red    {{ $s == 'cancelled' ? 'on' : '' }}">Dibatalkan</a>
+                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'pending'])) }}"    class="pill yellow {{ $s == 'pending'   ? 'on' : '' }}">Menunggu</a>
+                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'confirmed'])) }}"  class="pill blue   {{ $s == 'confirmed' ? 'on' : '' }}">Dikonfirmasi</a>
+                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'running'])) }}"   class="pill purple {{ $s == 'running'   ? 'on' : '' }}">Berjalan</a>
+                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'completed'])) }}" class="pill green  {{ $s == 'completed' ? 'on' : '' }}">Selesai</a>
+                <a href="{{ route('admin.renter.index', array_merge($q, ['status' => 'cancelled'])) }}" class="pill red    {{ $s == 'cancelled' ? 'on' : '' }}">Dibatalkan</a>
             </div>
 
             <form method="GET" action="{{ route('admin.renter.index') }}">
@@ -956,13 +841,10 @@
                 <input type="hidden" name="status" value="{{ request('status') }}">
                 <select name="date_range" class="date-sel" onchange="this.form.submit()">
                     <option value="">Semua Tanggal</option>
-                    <option value="today" {{ request('date_range') == 'today' ? 'selected' : '' }}>Hari Ini</option>
-                    <option value="7days" {{ request('date_range') == '7days' ? 'selected' : '' }}>7 Hari Terakhir
-                    </option>
-                    <option value="30days" {{ request('date_range') == '30days' ? 'selected' : '' }}>30 Hari Terakhir
-                    </option>
-                    <option value="this_month" {{ request('date_range') == 'this_month' ? 'selected' : '' }}>Bulan Ini
-                    </option>
+                    <option value="today"      {{ request('date_range') == 'today'      ? 'selected' : '' }}>Hari Ini</option>
+                    <option value="7days"      {{ request('date_range') == '7days'      ? 'selected' : '' }}>7 Hari Terakhir</option>
+                    <option value="30days"     {{ request('date_range') == '30days'     ? 'selected' : '' }}>30 Hari Terakhir</option>
+                    <option value="this_month" {{ request('date_range') == 'this_month' ? 'selected' : '' }}>Bulan Ini</option>
                 </select>
             </form>
         </div>
@@ -996,47 +878,36 @@
                     @forelse($renters as $renter)
                         @php
                             $ini = collect(explode(' ', $renter->user->name))
-                                ->take(2)
-                                ->map(fn($w) => strtoupper($w[0]))
-                                ->implode('');
+                                ->take(2)->map(fn($w) => strtoupper($w[0]))->implode('');
                             $avc = match ($renter->status) {
-                                'pending' => ['bg' => '#fefce8', 'cl' => '#92400e'],
+                                'pending'   => ['bg' => '#fefce8', 'cl' => '#92400e'],
                                 'confirmed' => ['bg' => '#eff6ff', 'cl' => '#1e40af'],
-                                'running' => ['bg' => '#f5f3ff', 'cl' => '#4c1d95'],
+                                'running'   => ['bg' => '#f5f3ff', 'cl' => '#4c1d95'],
                                 'completed' => ['bg' => '#f0fdf4', 'cl' => '#166534'],
                                 'cancelled' => ['bg' => '#fef2f2', 'cl' => '#991b1b'],
-                                default => ['bg' => '#f3f4f6', 'cl' => '#374151'],
+                                default     => ['bg' => '#f3f4f6', 'cl' => '#374151'],
                             };
                             $slbl = match ($renter->status) {
-                                'pending' => 'Menunggu',
+                                'pending'   => 'Menunggu',
                                 'confirmed' => 'Dikonfirmasi',
-                                'running' => 'Berjalan',
+                                'running'   => 'Berjalan',
                                 'completed' => 'Selesai',
                                 'cancelled' => 'Dibatalkan',
-                                default => ucfirst($renter->status),
+                                default     => ucfirst($renter->status),
                             };
-
-                            // ── Hitung keterlambatan ──
-                            $now = \Carbon\Carbon::now();
+                            $now   = \Carbon\Carbon::now();
                             $endDt = \Carbon\Carbon::parse($renter->end_datetime);
-                            // Hanya hitung untuk status yang masih aktif (running / confirmed)
-                            $isLate = in_array($renter->status, ['running', 'confirmed']) && $now->gt($endDt);
+                            $isLate  = in_array($renter->status, ['running', 'confirmed']) && $now->gt($endDt);
                             $lateStr = null;
                             if ($isLate) {
-                                $diff = $endDt->diff($now);
-                                $days = (int) $diff->days; // total hari penuh
-                                $hours = (int) $diff->h; // sisa jam setelah hari
-                                $mins = (int) $diff->i; // sisa menit setelah jam
-
-                                if ($days > 0 && $hours > 0) {
-                                    $lateStr = "{$days} hari {$hours} jam";
-                                } elseif ($days > 0) {
-                                    $lateStr = "{$days} hari";
-                                } elseif ($hours > 0) {
-                                    $lateStr = "{$hours} jam";
-                                } else {
-                                    $lateStr = "{$mins} menit";
-                                }
+                                $diff  = $endDt->diff($now);
+                                $days  = (int) $diff->days;
+                                $hours = (int) $diff->h;
+                                $mins  = (int) $diff->i;
+                                if ($days > 0 && $hours > 0)    $lateStr = "{$days} hari {$hours} jam";
+                                elseif ($days > 0)              $lateStr = "{$days} hari";
+                                elseif ($hours > 0)             $lateStr = "{$hours} jam";
+                                else                            $lateStr = "{$mins} menit";
                             }
                         @endphp
                         <tr>
@@ -1046,9 +917,7 @@
                             </td>
                             <td>
                                 <div style="display:flex;align-items:center;gap:8px;min-width:0">
-                                    <div class="cust-av"
-                                        style="background:{{ $avc['bg'] }};color:{{ $avc['cl'] }}">
-                                        {{ $ini }}</div>
+                                    <div class="cust-av" style="background:{{ $avc['bg'] }};color:{{ $avc['cl'] }}">{{ $ini }}</div>
                                     <div style="min-width:0">
                                         <div class="cust-name">{{ $renter->user->name }}</div>
                                         <div class="cust-email">{{ $renter->user->email }}</div>
@@ -1060,22 +929,16 @@
                                 <div class="car-plate">{{ $renter->car->plate_number }}</div>
                             </td>
                             <td>
-                                <div class="p-start">
-                                    {{ \Carbon\Carbon::parse($renter->start_datetime)->format('d M Y') }}</div>
-                                <div class="p-end">s/d
-                                    {{ \Carbon\Carbon::parse($renter->end_datetime)->format('d M Y') }}</div>
+                                <div class="p-start">{{ \Carbon\Carbon::parse($renter->start_datetime)->format('d M Y') }}</div>
+                                <div class="p-end">s/d {{ \Carbon\Carbon::parse($renter->end_datetime)->format('d M Y') }}</div>
                             </td>
-
-                            {{-- ── Kolom Terlambat (desktop) ── --}}
                             <td>
                                 @if ($renter->return_datetime)
-                                    {{-- Jika return_datetime sudah tersimpan di DB, tampilkan dari DB --}}
                                     <div class="late-text">
                                         <span class="late-label">Terlambat</span>
                                         {{ $renter->return_datetime }}
                                     </div>
-                                @elseif($lateStr)
-                                    {{-- Hitung realtime dari Carbon --}}
+                                @elseif ($lateStr)
                                     <div class="late-text">
                                         <span class="late-label">Terlambat</span>
                                         {{ $lateStr }}
@@ -1084,41 +947,32 @@
                                     <div style="font-size:0.78rem;color:#9ca3af">-</div>
                                 @endif
                             </td>
-
                             <td>
                                 <div class="price">Rp {{ number_format($renter->total_price, 0, ',', '.') }}</div>
                             </td>
                             <td><span class="badge b-{{ $renter->status }}">{{ $slbl }}</span></td>
                             <td class="tc">
                                 <div class="acts">
-                                    <a href="{{ route('admin.renter.workflow', $renter->id) }}" class="ab g"
-                                        title="Alur Kerja">
+                                    <a href="{{ route('admin.renter.workflow', $renter->id) }}" class="ab g" title="Alur Kerja">
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                         </svg>
                                     </a>
-                                    <a href="{{ route('admin.renter.show', $renter->id) }}" class="ab b"
-                                        title="Detail">
+                                    <a href="{{ route('admin.renter.show', $renter->id) }}" class="ab b" title="Detail">
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
                                     </a>
-                                    <a href="{{ route('admin.renter.edit', $renter->id) }}" class="ab p"
-                                        title="Edit">
+                                    <a href="{{ route('admin.renter.edit', $renter->id) }}" class="ab p" title="Edit">
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
                                     </a>
                                     <button type="button" class="ab d" title="Hapus"
                                         onclick="openDel({{ $renter->id }},'{{ addslashes($renter->booking_code) }}')">
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
                                     </button>
                                 </div>
@@ -1129,10 +983,8 @@
                             <td colspan="8">
                                 <div class="empty-wrap">
                                     <div class="empty-icon">
-                                        <svg style="width:24px;height:24px;color:#9ca3af" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        <svg style="width:24px;height:24px;color:#9ca3af" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                     </div>
                                     <div style="font-size:0.95rem;font-weight:700;color:#374151;margin-bottom:5px">
@@ -1141,17 +993,15 @@
                                     <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:1.1rem">
                                         @if (request('search'))
                                             Tidak ada penyewaan cocok dengan "{{ request('search') }}"
-                                        @elseif(request('status'))
+                                        @elseif (request('status'))
                                             Tidak ada penyewaan dengan status tersebut
                                         @else
                                             Data penyewaan akan muncul di sini setelah ada pemesanan
                                         @endif
                                     </div>
                                     <a href="{{ route('admin.renter.create') }}" class="btn-add">
-                                        <svg style="width:13px;height:13px" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M12 4v16m8-8H4" />
+                                        <svg style="width:13px;height:13px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                                         </svg>
                                         Tambah Penyewa
                                     </a>
@@ -1168,57 +1018,45 @@
             @forelse($renters as $renter)
                 @php
                     $ini = collect(explode(' ', $renter->user->name))
-                        ->take(2)
-                        ->map(fn($w) => strtoupper($w[0]))
-                        ->implode('');
+                        ->take(2)->map(fn($w) => strtoupper($w[0]))->implode('');
                     $avc = match ($renter->status) {
-                        'pending' => ['bg' => '#fefce8', 'cl' => '#92400e'],
+                        'pending'   => ['bg' => '#fefce8', 'cl' => '#92400e'],
                         'confirmed' => ['bg' => '#eff6ff', 'cl' => '#1e40af'],
-                        'running' => ['bg' => '#f5f3ff', 'cl' => '#4c1d95'],
+                        'running'   => ['bg' => '#f5f3ff', 'cl' => '#4c1d95'],
                         'completed' => ['bg' => '#f0fdf4', 'cl' => '#166534'],
                         'cancelled' => ['bg' => '#fef2f2', 'cl' => '#991b1b'],
-                        default => ['bg' => '#f3f4f6', 'cl' => '#374151'],
+                        default     => ['bg' => '#f3f4f6', 'cl' => '#374151'],
                     };
                     $slbl = match ($renter->status) {
-                        'pending' => 'Menunggu',
+                        'pending'   => 'Menunggu',
                         'confirmed' => 'Dikonfirmasi',
-                        'running' => 'Berjalan',
+                        'running'   => 'Berjalan',
                         'completed' => 'Selesai',
                         'cancelled' => 'Dibatalkan',
-                        default => ucfirst($renter->status),
+                        default     => ucfirst($renter->status),
                     };
-
-                    // ── Hitung keterlambatan (mobile) ──
-                    $nowM = \Carbon\Carbon::now();
+                    $nowM   = \Carbon\Carbon::now();
                     $endDtM = \Carbon\Carbon::parse($renter->end_datetime);
-                    $isLateM = in_array($renter->status, ['running', 'confirmed']) && $nowM->gt($endDtM);
+                    $isLateM  = in_array($renter->status, ['running', 'confirmed']) && $nowM->gt($endDtM);
                     $lateStrM = null;
                     if ($isLateM) {
-                        $diffM = $endDtM->diff($nowM);
-                        $daysM = (int) $diffM->days;
+                        $diffM  = $endDtM->diff($nowM);
+                        $daysM  = (int) $diffM->days;
                         $hoursM = (int) $diffM->h;
-                        $minsM = (int) $diffM->i;
-
-                        if ($daysM > 0 && $hoursM > 0) {
-                            $lateStrM = "{$daysM} hari {$hoursM} jam";
-                        } elseif ($daysM > 0) {
-                            $lateStrM = "{$daysM} hari";
-                        } elseif ($hoursM > 0) {
-                            $lateStrM = "{$hoursM} jam";
-                        } else {
-                            $lateStrM = "{$minsM} menit";
-                        }
+                        $minsM  = (int) $diffM->i;
+                        if ($daysM > 0 && $hoursM > 0)  $lateStrM = "{$daysM} hari {$hoursM} jam";
+                        elseif ($daysM > 0)             $lateStrM = "{$daysM} hari";
+                        elseif ($hoursM > 0)            $lateStrM = "{$hoursM} jam";
+                        else                            $lateStrM = "{$minsM} menit";
                     }
                 @endphp
                 <div class="m-card">
-                    {{-- Card Head: customer + status --}}
                     <div class="m-card-head">
                         <div style="display:flex;align-items:center;gap:10px;min-width:0">
-                            <div class="cust-av" style="background:{{ $avc['bg'] }};color:{{ $avc['cl'] }}">
-                                {{ $ini }}</div>
+                            <div class="cust-av" style="background:{{ $avc['bg'] }};color:{{ $avc['cl'] }}">{{ $ini }}</div>
                             <div style="min-width:0">
                                 <div class="cust-name">{{ $renter->user->name }}</div>
-                                <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+                                <div style="display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap">
                                     <div class="bk-code" style="font-size:0.7rem">{{ $renter->booking_code }}</div>
                                     <span class="svc-tag">{{ str_replace('_', ' ', $renter->service_type) }}</span>
                                 </div>
@@ -1227,7 +1065,6 @@
                         <span class="badge b-{{ $renter->status }}" style="flex-shrink:0">{{ $slbl }}</span>
                     </div>
 
-                    {{-- Card Body: 2-col grid --}}
                     <div class="m-card-body">
                         <div>
                             <div class="m-field-label">Kendaraan</div>
@@ -1240,23 +1077,17 @@
                         </div>
                         <div>
                             <div class="m-field-label">Mulai</div>
-                            <div class="m-field-val">
-                                {{ \Carbon\Carbon::parse($renter->start_datetime)->format('d M Y') }}</div>
+                            <div class="m-field-val">{{ \Carbon\Carbon::parse($renter->start_datetime)->format('d M Y') }}</div>
                         </div>
                         <div>
                             <div class="m-field-label">Selesai</div>
-                            <div class="m-field-val">
-                                {{ \Carbon\Carbon::parse($renter->end_datetime)->format('d M Y') }}</div>
+                            <div class="m-field-val">{{ \Carbon\Carbon::parse($renter->end_datetime)->format('d M Y') }}</div>
                         </div>
-
-                        {{-- ── Field Terlambat (mobile) ── --}}
                         <div>
                             <div class="m-field-label">Terlambat</div>
                             @if ($renter->return_datetime)
-                                {{-- Dari DB --}}
                                 <div class="late-text">{{ $renter->return_datetime }}</div>
-                            @elseif($lateStrM)
-                                {{-- Realtime Carbon --}}
+                            @elseif ($lateStrM)
                                 <div class="late-text">{{ $lateStrM }}</div>
                             @else
                                 <div style="font-size:0.78rem;color:#9ca3af">-</div>
@@ -1264,66 +1095,49 @@
                         </div>
                     </div>
 
-                    {{-- Card Footer: actions --}}
                     <div class="m-card-foot">
-                        <div style="display:flex;gap:14px;align-items:center">
+                        <div class="m-actions-group">
                             <a href="{{ route('admin.renter.workflow', $renter->id) }}" class="m-action-link wf">
-                                <svg style="width:12px;height:12px;display:inline;margin-right:3px;vertical-align:-1px"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                <svg style="width:12px;height:12px;display:inline;margin-right:3px;vertical-align:-1px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
                                 Alur Kerja
                             </a>
                             <a href="{{ route('admin.renter.show', $renter->id) }}" class="m-action-link dt">
-                                <svg style="width:12px;height:12px;display:inline;margin-right:3px;vertical-align:-1px"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                <svg style="width:12px;height:12px;display:inline;margin-right:3px;vertical-align:-1px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
                                 Detail
                             </a>
                             <a href="{{ route('admin.renter.edit', $renter->id) }}" class="m-action-link ed">
-                                <svg style="width:12px;height:12px;display:inline;margin-right:3px;vertical-align:-1px"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                <svg style="width:12px;height:12px;display:inline;margin-right:3px;vertical-align:-1px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
                                 Edit
                             </a>
                         </div>
                         <button type="button" class="m-action-link dl"
                             onclick="openDel({{ $renter->id }},'{{ addslashes($renter->booking_code) }}')">
-                            <svg style="width:12px;height:12px;display:inline;margin-right:3px;vertical-align:-1px"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            <svg style="width:12px;height:12px;display:inline;margin-right:3px;vertical-align:-1px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                             Hapus
                         </button>
                     </div>
                 </div>
             @empty
-                <div
-                    style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:3rem 1.5rem;text-align:center">
+                <div style="background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:3rem 1.5rem;text-align:center">
                     <div class="empty-icon">
-                        <svg style="width:24px;height:24px;color:#9ca3af" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        <svg style="width:24px;height:24px;color:#9ca3af" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
-                    <div style="font-size:0.9rem;font-weight:700;color:#374151;margin-bottom:5px">Belum ada data
-                        penyewaan</div>
-                    <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:1rem">Data penyewaan akan muncul di sini
-                    </div>
+                    <div style="font-size:0.9rem;font-weight:700;color:#374151;margin-bottom:5px">Belum ada data penyewaan</div>
+                    <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:1rem">Data penyewaan akan muncul di sini</div>
                     <a href="{{ route('admin.renter.create') }}" class="btn-add" style="display:inline-flex">
-                        <svg style="width:13px;height:13px" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                d="M12 4v16m8-8H4" />
+                        <svg style="width:13px;height:13px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                         </svg>
                         Tambah Penyewa
                     </a>
@@ -1341,10 +1155,8 @@
     <div class="modal-overlay" id="delModal">
         <div class="modal-box">
             <div class="modal-icon">
-                <svg style="width:22px;height:22px;color:#ef4444" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <svg style="width:22px;height:22px;color:#ef4444" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
             </div>
             <div class="modal-title">Hapus Data Penyewaan?</div>
@@ -1370,7 +1182,7 @@
             document.getElementById('delModal').classList.remove('open');
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const delModal = document.getElementById('delModal');
             if (delModal) {
                 delModal.addEventListener('click', e => {
@@ -1385,7 +1197,6 @@
                 });
             }
 
-            // Close modal with Escape key
             document.addEventListener('keydown', e => {
                 if (e.key === 'Escape' && delModal && delModal.classList.contains('open')) {
                     closeDel();

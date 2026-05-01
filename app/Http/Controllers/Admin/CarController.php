@@ -8,9 +8,79 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 
 class CarController extends Controller
 {
+    /**
+     * Compress image using GD library and save to storage
+     */
+    private function compressImage(UploadedFile $file): string
+    {
+        $originalPath = $file->getPathname();
+        $extension = strtolower($file->getClientOriginalExtension());
+        
+        // Load image based on format
+        if ($extension === 'jpg' || $extension === 'jpeg') {
+            $source = @imagecreatefromjpeg($originalPath);
+        } elseif ($extension === 'png') {
+            $source = @imagecreatefrompng($originalPath);
+        } elseif ($extension === 'gif') {
+            $source = @imagecreatefromgif($originalPath);
+        } else {
+            // If unsupported, just store without compression
+            return $file->store('cars', 'public');
+        }
+        
+        if (!$source) {
+            // Fallback: if image load fails, store without compression
+            return $file->store('cars', 'public');
+        }
+        
+        // Get original dimensions
+        $width = imagesx($source);
+        $height = imagesy($source);
+        
+        // Calculate new dimensions (max 1920 wide, maintain aspect ratio)
+        $maxWidth = 1920;
+        if ($width > $maxWidth) {
+            $newWidth = $maxWidth;
+            $newHeight = (int)($height * ($maxWidth / $width));
+        } else {
+            $newWidth = $width;
+            $newHeight = $height;
+        }
+        
+        // Create resized image
+        $resized = imagecreatetruecolor($newWidth, $newHeight);
+        imagecopyresampled($resized, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+        
+        // Save compressed image
+        $filename = uniqid() . '.' . $extension;
+        $path = 'cars/' . $filename;
+        $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
+        
+        if ($extension === 'jpg' || $extension === 'jpeg') {
+            imagejpeg($resized, $tempPath, 75);
+        } elseif ($extension === 'png') {
+            imagepng($resized, $tempPath, 8);
+        } elseif ($extension === 'gif') {
+            imagegif($resized, $tempPath);
+        }
+        
+        // Move to storage
+        Storage::disk('public')->put($path, file_get_contents($tempPath));
+        
+        // Cleanup
+        if (file_exists($tempPath)) {
+            unlink($tempPath);
+        }
+        imagedestroy($source);
+        imagedestroy($resized);
+        
+        return $path;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -76,7 +146,7 @@ class CarController extends Controller
 
             // multiple images
             'images' => 'required|array|min:3',
-            'images.*' => 'image|mimes:jpg,jpeg,png|max:5120',
+            'images.*' => 'image|extensions:jpg,jpeg,png|max:8192',
         ]);
 
         DB::transaction(function () use ($request) {
@@ -97,7 +167,7 @@ class CarController extends Controller
 
             // simpan foto
             foreach ($request->file('images') as $image) {
-                $path = $image->store('cars', 'public');
+                $path = $this->compressImage($image);
 
                 CarImage::create([
                     'car_id' => $car->id,
@@ -145,8 +215,8 @@ class CarController extends Controller
             'fuel_type' => 'required|string|max:255',
             'price_24h' => 'required|numeric|min:0',
             'status' => 'required|in:available,booked,rented,maintenance',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|extensions:jpeg,png,jpg,gif|max:8192',
+            'images.*' => 'nullable|image|extensions:jpeg,png,jpg,gif|max:8192',
             'remove_images' => 'nullable|array',
             'remove_images.*' => 'exists:car_images,id',
         ]);
@@ -157,7 +227,7 @@ class CarController extends Controller
             if ($car->image && Storage::disk('public')->exists($car->image)) {
                 Storage::disk('public')->delete($car->image);
             }
-            $validated['image'] = $request->file('image')->store('cars', 'public');
+            $validated['image'] = $this->compressImage($request->file('image'));
         }
 
         $car->update($validated);
@@ -178,7 +248,7 @@ class CarController extends Controller
         // Upload additional images
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('cars', 'public');
+                $path = $this->compressImage($image);
                 $car->images()->create(['image_path' => $path]);
             }
         }
