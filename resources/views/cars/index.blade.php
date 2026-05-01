@@ -1,5 +1,4 @@
-@extends('layouts.app-no-footer')
-@section('content')
+<x-app-layout>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -628,6 +627,9 @@
         <div class="filter-bar">
             <form method="GET" action="{{ route('cars.index') }}" id="filterForm">
 
+                <input type="hidden" name="category"     id="inp_category"     value="{{ request('category','all') }}">
+                <input type="hidden" name="transmission" id="inp_transmission" value="{{ request('transmission','') }}">
+
                 {{-- MOBILE --}}
                 <div class="filter-mobile">
                     <div class="mobile-search-row">
@@ -637,6 +639,65 @@
                                    placeholder="Cari brand atau model..."
                                    value="{{ request('search', '') }}">
                         </div>
+                    </div>
+
+                    <div class="chip-scroll-outer">
+                    <div class="chip-scroll-row" id="mobileChips">
+
+                        @php
+                            $cats = [
+                                'all'                        => 'Semua',
+                                'MPV (keluarga)'             => 'MPV',
+                                'SUV (tangguh/medan berat)'  => 'SUV',
+                                'Hatchback (kompak)'         => 'Hatchback',
+                                'City Car (lincah di kota)'  => 'City Car',
+                                'Sedan (nyaman)'             => 'Sedan',
+                                'Crossover (kombinasi)'      => 'Crossover',
+                            ];
+                            $activeCat = request('category', 'all');
+                        @endphp
+
+                        <div class="chip-track track-cat" id="trackCat">
+                            <div class="chip-slider" id="sliderCat"></div>
+                            @foreach($cats as $val => $label)
+                                <button type="button"
+                                        class="filter-chip chip-category {{ $activeCat === $val ? 'chip-active' : '' }}"
+                                        data-val="{{ $val }}">
+                                    @if($val === 'all')<i class="fa-solid fa-border-all"></i>@endif
+                                    {{ $label }}
+                                </button>
+                            @endforeach
+                        </div>
+
+                        <div class="chip-divider"></div>
+
+                        @php
+                            $trans = ['' => 'Semua', 'automatic' => 'Matic', 'manual' => 'Manual'];
+                            $activeTrans = request('transmission', '');
+                        @endphp
+
+                        <div class="chip-track track-trans" id="trackTrans">
+                            <div class="chip-slider" id="sliderTrans"></div>
+                            @foreach($trans as $val => $label)
+                                <button type="button"
+                                        class="filter-chip chip-transmission {{ $activeTrans === $val ? 'chip-active' : '' }}"
+                                        data-val="{{ $val }}">
+                                    @if($val === 'automatic')<i class="fa-solid fa-robot"></i>
+                                    @elseif($val === 'manual')<i class="fa-solid fa-hand"></i>
+                                    @else<i class="fa-solid fa-sliders"></i>@endif
+                                    {{ $label }}
+                                </button>
+                            @endforeach
+                        </div>
+
+                        @if(request('category','all') !== 'all' || request('transmission','') !== '' || request('search','') !== '')
+                            <div class="chip-divider"></div>
+                            <button type="button" class="chip-clear" id="mobileClearBtn">
+                                <i class="fa-solid fa-xmark"></i> Reset
+                            </button>
+                        @endif
+
+                    </div>
                     </div>
                 </div>
 
@@ -648,6 +709,35 @@
                                placeholder="Cari brand atau model..."
                                value="{{ request('search', '') }}">
                     </div>
+
+                    <div class="dd-wrap" id="ddCategory">
+                        <button type="button" class="dd-btn">
+                            <span class="dd-label">{{ request('category','all') !== 'all' ? request('category') : 'Kategori' }}</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="dd-menu">
+                            <div class="dd-opt {{ request('category','all')=='all' ? 'selected' : '' }}" data-val="all" data-lbl="Kategori" data-inp="inp_category">Semua Kategori</div>
+                            @foreach(['MPV (keluarga)','SUV (tangguh/medan berat)','Hatchback (kompak)','City Car (lincah di kota)','Sedan (nyaman)','Crossover (kombinasi)'] as $cat)
+                                <div class="dd-opt {{ request('category','all')===$cat ? 'selected' : '' }}" data-val="{{ $cat }}" data-lbl="{{ $cat }}" data-inp="inp_category">{{ $cat }}</div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="dd-wrap" id="ddTransmission">
+                        <button type="button" class="dd-btn">
+                            <span class="dd-label">{{ request('transmission','') !== '' ? (request('transmission')==='automatic' ? 'Matic' : 'Manual') : 'Transmisi' }}</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="dd-menu">
+                            <div class="dd-opt {{ request('transmission','')=='' ? 'selected' : '' }}" data-val="" data-lbl="Transmisi" data-inp="inp_transmission">Semua Transmisi</div>
+                            <div class="dd-opt {{ request('transmission','')=='automatic' ? 'selected' : '' }}" data-val="automatic" data-lbl="Matic" data-inp="inp_transmission">Automatic (Matic)</div>
+                            <div class="dd-opt {{ request('transmission','')=='manual' ? 'selected' : '' }}" data-val="manual" data-lbl="Manual" data-inp="inp_transmission">Manual</div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="clear-btn" id="desktopClearBtn">
+                        <i class="fa-solid fa-xmark"></i> Bersihkan
+                    </button>
                 </div>
 
             </form>
@@ -698,7 +788,113 @@
     (function () {
         var form = document.getElementById('filterForm');
 
-        // Search input listener
+        function initSlider(trackId, sliderId, chipClass, inputId) {
+            var track  = document.getElementById(trackId);
+            var slider = document.getElementById(sliderId);
+            if (!track || !slider) return;
+
+            var chips         = Array.from(track.querySelectorAll('.' + chipClass));
+            var pendingSubmit = null;
+
+            function moveSlider(chip, animate) {
+                if (!chip) return;
+                var left  = chip.offsetLeft - 2;
+                var width = chip.offsetWidth;
+                if (!animate) {
+                    slider.style.transition = 'none';
+                    slider.style.width      = width + 'px';
+                    slider.style.transform  = 'translateX(' + left + 'px)';
+                    void slider.offsetWidth;
+                    slider.style.transition = '';
+                } else {
+                    slider.style.width     = width + 'px';
+                    slider.style.transform = 'translateX(' + left + 'px)';
+                }
+            }
+
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    var active = track.querySelector('.' + chipClass + '.chip-active');
+                    if (active) moveSlider(active, false);
+                });
+            });
+
+            chips.forEach(function (chip) {
+                chip.addEventListener('click', function () {
+                    if (pendingSubmit) clearTimeout(pendingSubmit);
+                    chips.forEach(function (c) { c.classList.remove('chip-active'); });
+                    chip.classList.add('chip-active');
+                    moveSlider(chip, true);
+                    chip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    document.getElementById(inputId).value = chip.dataset.val;
+                    pendingSubmit = setTimeout(function () { form.submit(); }, 380);
+                });
+            });
+
+            window.addEventListener('resize', function () {
+                var cur = track.querySelector('.' + chipClass + '.chip-active');
+                if (cur) moveSlider(cur, false);
+            });
+        }
+
+        initSlider('trackCat',   'sliderCat',   'chip-category',     'inp_category');
+        initSlider('trackTrans', 'sliderTrans',  'chip-transmission', 'inp_transmission');
+
+        var mobileClear = document.getElementById('mobileClearBtn');
+        if (mobileClear) {
+            mobileClear.addEventListener('click', function () {
+                document.getElementById('inp_category').value     = 'all';
+                document.getElementById('inp_transmission').value = '';
+                document.querySelectorAll('.search-input').forEach(function(i){ i.value = ''; });
+                form.submit();
+            });
+        }
+
+        document.querySelectorAll('.dd-wrap').forEach(function (wrap) {
+            var btn  = wrap.querySelector('.dd-btn');
+            var lbl  = wrap.querySelector('.dd-label');
+            var opts = wrap.querySelectorAll('.dd-opt');
+
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                document.querySelectorAll('.dd-wrap.open').forEach(function (w) {
+                    if (w !== wrap) w.classList.remove('open');
+                });
+                wrap.classList.toggle('open');
+            });
+
+            opts.forEach(function (opt) {
+                opt.addEventListener('click', function () {
+                    var inp = document.getElementById(opt.dataset.inp);
+                    if (inp) inp.value = opt.dataset.val;
+                    lbl.textContent = opt.dataset.lbl;
+                    opts.forEach(function (o) { o.classList.remove('selected'); });
+                    opt.classList.add('selected');
+                    wrap.classList.remove('open');
+                    form.submit();
+                });
+            });
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.dd-wrap')) {
+                document.querySelectorAll('.dd-wrap.open').forEach(function (w) {
+                    w.classList.remove('open');
+                });
+            }
+        });
+
+        var desktopClear = document.getElementById('desktopClearBtn');
+        if (desktopClear) {
+            desktopClear.addEventListener('click', function () {
+                document.getElementById('inp_category').value     = 'all';
+                document.getElementById('inp_transmission').value = '';
+                document.querySelectorAll('.search-input').forEach(function(i){ i.value = ''; });
+                form.submit();
+            });
+        }
+
         var st;
         document.querySelectorAll('.search-input').forEach(function (inp) {
             inp.addEventListener('input', function () {
@@ -710,4 +906,4 @@
     })();
     </script>
 
-@endsection
+</x-app-layout>
