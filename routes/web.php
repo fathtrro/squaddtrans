@@ -217,3 +217,26 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 ============================================================ */
 
 require __DIR__ . '/auth.php';
+
+/* ============================================================
+   STORAGE LINK ROUTE (For cPanel deployment without terminal)
+   Access: squadtranswisata.com/create-storage-link
+============================================================ */
+
+Route::get('/create-storage-link', function () {
+    try {
+        // Run the storage:link command
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Storage link created successfully!',
+            'output' => \Illuminate\Support\Facades\Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error: ' . $e->getMessage()
+        ], 500);
+    }
+});
