@@ -19,73 +19,78 @@ class CarController extends Controller
     {
         $extension = strtolower($file->getClientOriginalExtension());
 
-        // Check if GD extension is available
-        if (!extension_loaded('gd') || !function_exists('imagecreatefromjpeg')) {
-            // GD not available, store without compression
+        // Check if required PHP extensions are available
+        if (!extension_loaded('gd') || !extension_loaded('fileinfo')) {
+            // Extensions not available, store without compression
             return $file->store('cars', 'public');
         }
 
-        $originalPath = $file->getPathname();
+        try {
+            $originalPath = $file->getPathname();
 
-        // Load image based on format
-        if ($extension === 'jpg' || $extension === 'jpeg') {
-            $source = @imagecreatefromjpeg($originalPath);
-        } elseif ($extension === 'png') {
-            $source = @imagecreatefrompng($originalPath);
-        } elseif ($extension === 'gif') {
-            $source = @imagecreatefromgif($originalPath);
-        } else {
-            // If unsupported, just store without compression
+            // Load image based on format
+            if ($extension === 'jpg' || $extension === 'jpeg') {
+                $source = @imagecreatefromjpeg($originalPath);
+            } elseif ($extension === 'png') {
+                $source = @imagecreatefrompng($originalPath);
+            } elseif ($extension === 'gif') {
+                $source = @imagecreatefromgif($originalPath);
+            } else {
+                // If unsupported, just store without compression
+                return $file->store('cars', 'public');
+            }
+
+            if (!$source) {
+                // Fallback: if image load fails, store without compression
+                return $file->store('cars', 'public');
+            }
+
+            // Get original dimensions
+            $width = imagesx($source);
+            $height = imagesy($source);
+
+            // Calculate new dimensions (max 1920 wide, maintain aspect ratio)
+            $maxWidth = 1920;
+            if ($width > $maxWidth) {
+                $newWidth = $maxWidth;
+                $newHeight = (int)($height * ($maxWidth / $width));
+            } else {
+                $newWidth = $width;
+                $newHeight = $height;
+            }
+
+            // Create resized image
+            $resized = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($resized, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+            // Save compressed image
+            $filename = uniqid() . '.' . $extension;
+            $path = 'cars/' . $filename;
+            $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
+
+            if ($extension === 'jpg' || $extension === 'jpeg') {
+                imagejpeg($resized, $tempPath, 75);
+            } elseif ($extension === 'png') {
+                imagepng($resized, $tempPath, 8);
+            } elseif ($extension === 'gif') {
+                imagegif($resized, $tempPath);
+            }
+
+            // Move to storage
+            Storage::disk('public')->put($path, file_get_contents($tempPath));
+
+            // Cleanup
+            if (file_exists($tempPath)) {
+                unlink($tempPath);
+            }
+            imagedestroy($source);
+            imagedestroy($resized);
+
+            return $path;
+        } catch (\Throwable $e) {
+            // If any error occurs, fallback to simple storage
             return $file->store('cars', 'public');
         }
-
-        if (!$source) {
-            // Fallback: if image load fails, store without compression
-            return $file->store('cars', 'public');
-        }
-
-        // Get original dimensions
-        $width = imagesx($source);
-        $height = imagesy($source);
-
-        // Calculate new dimensions (max 1920 wide, maintain aspect ratio)
-        $maxWidth = 1920;
-        if ($width > $maxWidth) {
-            $newWidth = $maxWidth;
-            $newHeight = (int)($height * ($maxWidth / $width));
-        } else {
-            $newWidth = $width;
-            $newHeight = $height;
-        }
-
-        // Create resized image
-        $resized = imagecreatetruecolor($newWidth, $newHeight);
-        imagecopyresampled($resized, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-
-        // Save compressed image
-        $filename = uniqid() . '.' . $extension;
-        $path = 'cars/' . $filename;
-        $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
-
-        if ($extension === 'jpg' || $extension === 'jpeg') {
-            imagejpeg($resized, $tempPath, 75);
-        } elseif ($extension === 'png') {
-            imagepng($resized, $tempPath, 8);
-        } elseif ($extension === 'gif') {
-            imagegif($resized, $tempPath);
-        }
-
-        // Move to storage
-        Storage::disk('public')->put($path, file_get_contents($tempPath));
-
-        // Cleanup
-        if (file_exists($tempPath)) {
-            unlink($tempPath);
-        }
-        imagedestroy($source);
-        imagedestroy($resized);
-
-        return $path;
     }
 
     /**
