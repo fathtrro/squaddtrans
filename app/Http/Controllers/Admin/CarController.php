@@ -17,8 +17,15 @@ class CarController extends Controller
      */
     private function compressImage(UploadedFile $file): string
     {
-        $originalPath = $file->getPathname();
         $extension = strtolower($file->getClientOriginalExtension());
+
+        // Check if GD extension is available
+        if (!extension_loaded('gd') || !function_exists('imagecreatefromjpeg')) {
+            // GD not available, store without compression
+            return $file->store('cars', 'public');
+        }
+
+        $originalPath = $file->getPathname();
 
         // Load image based on format
         if ($extension === 'jpg' || $extension === 'jpeg') {
