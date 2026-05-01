@@ -19,7 +19,7 @@ class CarController extends Controller
     {
         $originalPath = $file->getPathname();
         $extension = strtolower($file->getClientOriginalExtension());
-        
+
         // Load image based on format
         if ($extension === 'jpg' || $extension === 'jpeg') {
             $source = @imagecreatefromjpeg($originalPath);
@@ -31,16 +31,16 @@ class CarController extends Controller
             // If unsupported, just store without compression
             return $file->store('cars', 'public');
         }
-        
+
         if (!$source) {
             // Fallback: if image load fails, store without compression
             return $file->store('cars', 'public');
         }
-        
+
         // Get original dimensions
         $width = imagesx($source);
         $height = imagesy($source);
-        
+
         // Calculate new dimensions (max 1920 wide, maintain aspect ratio)
         $maxWidth = 1920;
         if ($width > $maxWidth) {
@@ -50,16 +50,16 @@ class CarController extends Controller
             $newWidth = $width;
             $newHeight = $height;
         }
-        
+
         // Create resized image
         $resized = imagecreatetruecolor($newWidth, $newHeight);
         imagecopyresampled($resized, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-        
+
         // Save compressed image
         $filename = uniqid() . '.' . $extension;
         $path = 'cars/' . $filename;
         $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
-        
+
         if ($extension === 'jpg' || $extension === 'jpeg') {
             imagejpeg($resized, $tempPath, 75);
         } elseif ($extension === 'png') {
@@ -67,17 +67,17 @@ class CarController extends Controller
         } elseif ($extension === 'gif') {
             imagegif($resized, $tempPath);
         }
-        
+
         // Move to storage
         Storage::disk('public')->put($path, file_get_contents($tempPath));
-        
+
         // Cleanup
         if (file_exists($tempPath)) {
             unlink($tempPath);
         }
         imagedestroy($source);
         imagedestroy($resized);
-        
+
         return $path;
     }
 

@@ -1111,7 +1111,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         e.preventDefault(); uploadZone.classList.remove('dragover');
         if (e.dataTransfer.files.length) { docFile.files = e.dataTransfer.files; showDocPreview(e.dataTransfer.files[0]); }
     });
-    docFile.addEventListener('change', function() { 
+    docFile.addEventListener('change', function() {
         if (this.files.length) {
             const file = this.files[0];
             showDocPreview(file);
@@ -1167,7 +1167,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         e.preventDefault(); proofUploadZone.classList.remove('dragover');
         if (e.dataTransfer.files.length) { proofFile.files = e.dataTransfer.files; showProofPreview(e.dataTransfer.files[0]); }
     });
-    proofFile.addEventListener('change', function() { 
+    proofFile.addEventListener('change', function() {
         if (this.files.length) {
             const file = this.files[0];
             showProofPreview(file);
@@ -1201,7 +1201,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
 
         const grnVal = document.querySelector('input[name="guarantee_type"]:checked').value;
         const payVal = document.querySelector('input[name="payment_method"]:checked').value;
-        
+
         // Validate proof image only if payment method is transfer
         if (payVal === 'transfer') {
             const proofFile = document.getElementById('proofFile');
@@ -1277,7 +1277,7 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
             proofFile.focus();
             return;
         }
-        
+
         clearDraft();
         closeConfirm();
         document.getElementById('loadingOverlay').classList.add('active');
