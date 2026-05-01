@@ -129,16 +129,33 @@
         <div class="p-6 space-y-4">
             <div class="space-y-3">
                 <div class="flex justify-between text-sm">
-                    <span class="text-gray-600">Total Biaya Sewa</span>
+                    <span class="text-gray-600">Rental ({{ $booking->duration_in_days }} Hari)</span>
                     <span class="font-semibold text-gray-900">
-                        {{ $booking->formatted_total_price }}
+                        Rp {{ number_format($booking->total_price - 150000 - ($booking->total_price * 0.11), 0, ',', '.') }}
+                    </span>
+                </div>
+
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Layanan Pick-up Bandara</span>
+                    <span class="font-semibold text-gray-900">Rp 150.000</span>
+                </div>
+
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Asuransi Perjalanan</span>
+                    <span class="font-semibold text-green-600">Free</span>
+                </div>
+
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Pajak PPN (11%)</span>
+                    <span class="font-semibold text-gray-900">
+                        Rp {{ number_format($booking->total_price * 0.11, 0, ',', '.') }}
                     </span>
                 </div>
             </div>
 
             <div class="border-t-2 border-dashed border-gray-200 pt-4">
-                <div class="flex justify-between items-end">
-                    <span class="text-sm font-semibold text-gray-600">Total Pembayaran</span>
+                <div class="flex justify-between items-end mb-4">
+                    <span class="text-sm font-semibold text-gray-600">Total Tagihan</span>
                     <div class="text-right">
                         <div class="text-2xl font-bold text-orange-600">
                             {{ $booking->formatted_total_price }}
