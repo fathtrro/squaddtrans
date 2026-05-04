@@ -247,6 +247,37 @@
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <!-- Manual Penalty Section (Unified) -->
+                <div class="bg-purple-50 border-2 border-purple-200 rounded-lg p-4">
+                    <label class="block text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        💰 Denda (Manual)
+                    </label>
+                    <p class="text-xs text-gray-600 mb-3">Masukkan denda jika ada (kerusakan, keterlambatan, atau alasan lainnya).</p>
+                    <div class="flex gap-2">
+                        <div class="flex-1">
+                            <label class="text-xs font-medium text-gray-500 mb-1 block">Jumlah Denda (Rp)</label>
+                            <input type="text" id="manual_penalty_amount_display" 
+                                value="{{ old('manual_penalty_amount', '') ? number_format(old('manual_penalty_amount', ''), 0, ',', '.') : '' }}"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                placeholder="Contoh: 500.000">
+                            <input type="hidden" name="manual_penalty_amount" id="manual_penalty_amount" value="{{ old('manual_penalty_amount', '') }}">
+                        </div>
+                        <div class="flex-1">
+                            <label class="text-xs font-medium text-gray-500 mb-1 block">Alasan Denda</label>
+                            <input type="text" name="manual_penalty_description" id="manual_penalty_description" 
+                                value="{{ old('manual_penalty_description', '') }}"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                placeholder="Contoh: Kerusakan/Keterlambatan">
+                        </div>
+                    </div>
+                    @error('manual_penalty_amount')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                    @error('manual_penalty_description')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
         </div>
 
@@ -555,6 +586,40 @@
             // Trigger change event to update preview
             const event = new Event('change', { bubbles: true });
             inputElement.dispatchEvent(event);
+        }
+
+        // Format penalty amount with thousand separators
+        const penaltyDisplayInput = document.getElementById('manual_penalty_amount_display');
+        const penaltyHiddenInput = document.getElementById('manual_penalty_amount');
+
+        if (penaltyDisplayInput) {
+            penaltyDisplayInput.addEventListener('input', function(e) {
+                // Remove non-numeric characters
+                let value = this.value.replace(/[^\d]/g, '');
+                
+                // Format with thousand separators (Indonesian format)
+                if (value) {
+                    value = parseInt(value).toLocaleString('id-ID');
+                }
+                
+                // Update display
+                this.value = value;
+                
+                // Update hidden input with numeric value
+                penaltyHiddenInput.value = value.replace(/[^\d]/g, '');
+            });
+
+            penaltyDisplayInput.addEventListener('keypress', function(e) {
+                // Only allow numbers
+                if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+
+            // Initialize on page load
+            if (penaltyDisplayInput.value) {
+                penaltyHiddenInput.value = penaltyDisplayInput.value.replace(/[^\d]/g, '');
+            }
         }
     </script>
 

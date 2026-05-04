@@ -130,81 +130,83 @@
 
     <!-- Approval Modal -->
     <div id="approvalModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-lg max-w-md w-full">
-            <div class="px-6 py-4 border-b border-gray-100">
+        <div class="bg-white rounded-xl shadow-lg max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-100 flex-shrink-0">
                 <h2 class="text-lg font-bold text-gray-900">Approve Pembayaran Denda</h2>
             </div>
 
-            <form id="approvalForm" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
+            <form id="approvalForm" method="POST" enctype="multipart/form-data" class="flex flex-col flex-1 overflow-hidden">
                 @csrf
 
-                <div>
-                    <p class="text-sm text-gray-600">Tipe Denda</p>
-                    <p id="penaltyTypeDisplay" class="text-lg font-semibold text-gray-900 mt-1"></p>
-                </div>
+                <div class="p-6 space-y-4 overflow-y-auto flex-1">
+                    <div>
+                        <p class="text-sm text-gray-600">Tipe Denda</p>
+                        <p id="penaltyTypeDisplay" class="text-lg font-semibold text-gray-900 mt-1"></p>
+                    </div>
 
-                <div>
-                    <p class="text-sm text-gray-600">Jumlah</p>
-                    <p id="penaltyAmountDisplay" class="text-lg font-semibold text-gray-900 mt-1"></p>
-                </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Jumlah</p>
+                        <p id="penaltyAmountDisplay" class="text-lg font-semibold text-gray-900 mt-1"></p>
+                    </div>
 
-                <div>
-                    <label for="payment_method" class="block text-sm font-medium text-gray-900 mb-2">
-                        Metode Pembayaran *
-                    </label>
-                    <select name="payment_method" id="payment_method"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        required>
-                        <option value="">-- Pilih Metode --</option>
-                        <option value="transfer">Transfer Bank</option>
-                        <option value="cash">Tunai</option>
-                        <option value="check">Cek</option>
-                        <option value="other">Lainnya</option>
-                    </select>
-                </div>
+                    <div>
+                        <label for="payment_method" class="block text-sm font-medium text-gray-900 mb-2">
+                            Metode Pembayaran *
+                        </label>
+                        <select name="payment_method" id="payment_method"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                            required>
+                            <option value="">-- Pilih Metode --</option>
+                            <option value="transfer">Transfer Bank</option>
+                            <option value="cash">Tunai</option>
+                            <option value="check">Cek</option>
+                            <option value="other">Lainnya</option>
+                        </select>
+                    </div>
 
-                <div>
-                    <label for="bank_id" class="block text-sm font-medium text-gray-900 mb-2">
-                        Bank (jika transfer)
-                    </label>
-                    <select name="bank_id" id="bank_id"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
-                        <option value="">-- Pilih Bank --</option>
-                        {{-- Load from database --}}
-                        @foreach(\App\Models\BankAccount::where('is_active', true)->get() as $bank)
-                            <option value="{{ $bank->id }}">{{ $bank->bank_name }} ({{ $bank->account_number }})</option>
-                        @endforeach
-                    </select>
-                </div>
+                    <div>
+                        <label for="bank_id" class="block text-sm font-medium text-gray-900 mb-2">
+                            Bank (jika transfer)
+                        </label>
+                        <select name="bank_id" id="bank_id"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
+                            <option value="">-- Pilih Bank --</option>
+                            {{-- Load from database --}}
+                            @foreach(\App\Models\BankAccount::where('is_active', true)->get() as $bank)
+                                <option value="{{ $bank->id }}">{{ $bank->bank_name }} ({{ $bank->account_number }})</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div>
-                    <label for="proof_image" class="block text-sm font-medium text-gray-900 mb-2">
-                        Bukti Pembayaran
-                    </label>
-                    <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition-colors">
-                        <input type="file" name="proof_image" id="proof_image" accept="image/*"
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                        <div class="text-center" id="uploadPlaceholder">
-                            <svg class="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                            <p class="mt-1 text-xs text-gray-600">Upload bukti pembayaran</p>
+                    <div>
+                        <label for="proof_image" class="block text-sm font-medium text-gray-900 mb-2">
+                            Bukti Pembayaran
+                        </label>
+                        <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition-colors">
+                            <input type="file" name="proof_image" id="proof_image" accept="image/*"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="text-center" id="uploadPlaceholder">
+                                <svg class="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                <p class="mt-1 text-xs text-gray-600">Upload bukti pembayaran</p>
+                            </div>
+                        </div>
+                        <!-- Image Preview -->
+                        <div id="imagePreviewContainer" class="hidden mt-4">
+                            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                                <p class="text-sm font-medium text-gray-700 mb-3">Preview Bukti Pembayaran:</p>
+                                <img id="imagePreview" class="max-w-xs h-auto rounded-lg border border-gray-300" alt="Preview">
+                                <button type="button" onclick="removeImagePreview()"
+                                    class="mt-3 px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors font-medium">
+                                    Hapus Gambar
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <!-- Image Preview -->
-                    <div id="imagePreviewContainer" class="hidden mt-4">
-                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                            <p class="text-sm font-medium text-gray-700 mb-3">Preview Bukti Pembayaran:</p>
-                            <img id="imagePreview" class="max-w-xs h-auto rounded-lg border border-gray-300" alt="Preview">
-                            <button type="button" onclick="removeImagePreview()"
-                                class="mt-3 px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors font-medium">
-                                Hapus Gambar
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
-                <div class="flex gap-3 pt-4 border-t border-gray-100">
+                <div class="flex gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50 flex-shrink-0">
                     <button type="button" onclick="closeApprovalModal()"
                         class="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
                         Batal
@@ -217,8 +219,6 @@
             </form>
         </div>
     </div>
-
-</x-admin-layout>
 
 <script>
 function openApprovalModal(penaltyId, penaltyType, penaltyAmount) {
@@ -293,3 +293,5 @@ document.getElementById('payment_method').addEventListener('change', function() 
     }
 });
 </script>
+
+</x-admin-layout>

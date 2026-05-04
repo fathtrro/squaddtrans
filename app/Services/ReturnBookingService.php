@@ -42,25 +42,38 @@ class ReturnBookingService
                     $this->saveChecklistPhotos($afterChecklist, $photos);
                 }
 
-                // Step 3: Compare and find damages
+                // Step 3: Compare and find damages (but don't create penalties from it)
                 $damages = $this->analyzeDamages($booking, $afterChecklist);
 
-                // Step 4: Create penalties if damages found
+                // Step 4: Create penalties - only from manual input
                 $penalties = [];
-                if (!empty($damages)) {
-                    $penalties = $this->createPenalties($booking, $damages);
-                    // Update status to waiting for penalty payment
-                    $booking->update(['status' => Booking::STATUS_WAITING_PENALTY]);
-                } else {
-                    // No damages, directly to completed
-                    $booking->update(['status' => Booking::STATUS_COMPLETED]);
+                $hasPenalty = false;
+                
+                // Check manual penalty
+                if (!empty($data['manual_penalty_amount'])) {
+                    $penaltyAmount = (float) $data['manual_penalty_amount'];
+                    if ($penaltyAmount > 0) {
+                        $penalty = Penalty::create([
+                            'booking_id' => $booking->id,
+                            'type' => Penalty::TYPE_DAMAGE,
+                            'description' => $data['manual_penalty_description'] ?? 'Denda',
+                            'amount' => $penaltyAmount,
+                            'status' => Penalty::STATUS_UNPAID,
+                        ]);
+                        $penalties[] = $penalty;
+                        $hasPenalty = true;
+                    }
                 }
+                
+                // Always set to WAITING_PENALTY for admin verification
+                // Only admin can set COMPLETED after reviewing everything
+                $booking->update(['status' => Booking::STATUS_WAITING_PENALTY]);
 
                 return [
                     'success' => true,
-                    'message' => empty($damages)
-                        ? 'Proses return berhasil tanpa kerusakan. Booking selesai!'
-                        : 'Proses return berhasil. Denda ditemukan dan perlu dibayar.',
+                    'message' => !empty($penalties)
+                        ? 'Proses return berhasil. Denda tercatat dan perlu diapprove.'
+                        : 'Proses return berhasil. Menunggu verifikasi akhir admin.',
                     'penalties' => collect($penalties),
                     'damages' => $damages,
                     'after_checklist' => $afterChecklist,

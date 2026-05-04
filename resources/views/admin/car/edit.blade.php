@@ -615,22 +615,14 @@
                         </div>
                         <div class="card-body">
                             <div style="max-width:320px">
-                                <label class="form-label">Harga per 24 Jam <span class="req">*</span></label>
-                                <div class="input-prefix">
-                                    <span class="prefix">Rp</span>
-                                    <input type="number" name="price_24h"
-                                           value="{{ old('price_24h', $car->price_24h) }}"
-                                           min="0" step="1000"
-                                           class="form-input @error('price_24h') error @enderror"
-                                           placeholder="800000" required>
-                                </div>
-                                @error('price_24h')<div class="error-msg">⚠ {{ $message }}</div>@enderror
-                                <div class="info-strip" style="margin-top:10px">
-                                    <svg style="width:14px;height:14px;color:#16a34a;flex-shrink:0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    Harga sudah termasuk pajak dan asuransi dasar
-                                </div>
+                                <x-price-input
+                                    name="price_24h"
+                                    label="Harga per 24 Jam"
+                                    :value="old('price_24h', $car->price_24h)"
+                                    placeholder="Contoh: 800.000"
+                                    required
+                                    helpText="Harga sudah termasuk pajak dan asuransi dasar"
+                                />
                             </div>
                         </div>
                     </div>

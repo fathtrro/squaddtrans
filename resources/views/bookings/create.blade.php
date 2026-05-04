@@ -869,6 +869,17 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         { icon: 'fa-credit-card',   title: 'Pembayaran',  sub: 'Pilih metode dan masukkan DP' }
     ];
 
+    // ── Format Price (Rupiah with thousand separators) ─────
+    function formatPrice(value) {
+        if (typeof value !== 'number') value = Number(value) || 0;
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(value).replace('IDR', 'Rp').trim();
+    }
+
     let currentStep  = 0;
     let durationMode = paramMode || '24';
     let totalPrice   = paramTotalPrice || 0;
@@ -957,11 +968,12 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         if (currentStep === 2) {
             const payMethod = document.querySelector('input[name="payment_method"]:checked').value;
             if (payMethod === 'transfer' && !bankSelect.value) { setError('fieldBank'); return false; }
-            const dp = Number(dpInput.value) || 0;
+            const rawDP = dpInput.value.replace(/\D/g, '');
+            const dp = Number(rawDP) || 0;
             if (dp < minDP) { setError('fieldDP'); return false; }
             if (dp > totalPrice) {
                 setError('fieldDP');
-                document.getElementById('minDpErr').textContent = `DP tidak boleh lebih dari Rp ${totalPrice.toLocaleString('id-ID')}`;
+                document.getElementById('minDpErr').textContent = `DP tidak boleh lebih dari ${formatPrice(totalPrice)}`;
                 return false;
             }
             return true;
@@ -1008,13 +1020,14 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         if (paramMode) { modeInfo.style.display = 'flex'; document.getElementById('durationModeText').textContent = durationMode === '12' ? '12 Jam' : '24 Jam'; }
 
         document.getElementById('durDays').textContent        = durationMode === '12' ? '1/2' : days;
-        document.getElementById('durPricePerDay').textContent = 'Rp ' + (durationMode === '12' ? Math.round(PRICE_PER_DAY * 0.7) : PRICE_PER_DAY).toLocaleString('id-ID');
-        document.getElementById('durTotal').textContent       = 'Rp ' + totalPrice.toLocaleString('id-ID');
-        document.getElementById('minDpText').textContent      = 'Rp ' + minDP.toLocaleString('id-ID');
-        document.getElementById('minDpErr').textContent       = 'Rp ' + minDP.toLocaleString('id-ID');
+        document.getElementById('durPricePerDay').textContent = formatPrice(durationMode === '12' ? Math.round(PRICE_PER_DAY * 0.7) : PRICE_PER_DAY);
+        document.getElementById('durTotal').textContent       = formatPrice(totalPrice);
+        document.getElementById('minDpText').textContent      = formatPrice(minDP);
+        document.getElementById('minDpErr').textContent       = formatPrice(minDP);
 
         dpInput.setAttribute('max', totalPrice);
-        if (Number(dpInput.value) > totalPrice) dpInput.value = '';
+        const rawDPCheck = dpInput.value.replace(/\D/g, '');
+        if (Number(rawDPCheck) > totalPrice) dpInput.value = '';
 
         durationBox.classList.add('show');
         updatePaySummary();
@@ -1026,27 +1039,41 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
     alamatInput.addEventListener('input',  () => clearError('fieldAlamat'));
 
     function updatePaySummary() {
-        const dp = Number(dpInput.value) || 0;
-        document.getElementById('psTotalPrice').textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
-        document.getElementById('psDPPaid').textContent     = 'Rp ' + dp.toLocaleString('id-ID');
-        document.getElementById('psRemaining').textContent  = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID');
+        const rawDP = dpInput.value.replace(/\D/g, '');
+        const dp = Number(rawDP) || 0;
+        document.getElementById('psTotalPrice').textContent = formatPrice(totalPrice);
+        document.getElementById('psDPPaid').textContent     = formatPrice(dp);
+        document.getElementById('psRemaining').textContent  = formatPrice(totalPrice - dp);
     }
 
     dpInput.addEventListener('input', () => {
         clearError('fieldDP');
-        const dpValue = Number(dpInput.value) || 0;
+        // Extract numeric value only
+        let rawValue = dpInput.value.replace(/\D/g, '');
+        let dpValue = Number(rawValue) || 0;
+        
+        // Format display with thousand separators
+        if (rawValue) {
+            dpInput.value = Number(rawValue).toLocaleString('id-ID');
+        }
+        
         if (dpValue > totalPrice) {
             setError('fieldDP');
-            document.getElementById('minDpErr').textContent = `DP tidak boleh lebih dari Rp ${totalPrice.toLocaleString('id-ID')}`;
-            dpInput.value = totalPrice;
+            document.getElementById('minDpErr').textContent = `DP tidak boleh lebih dari ${formatPrice(totalPrice)}`;
         } else if (dpValue < minDP && dpValue > 0) {
             setError('fieldDP');
-            document.getElementById('minDpErr').textContent = `DP minimal Rp ${minDP.toLocaleString('id-ID')}`;
+            document.getElementById('minDpErr').textContent = `DP minimal ${formatPrice(minDP)}`;
         } else {
             clearError('fieldDP');
-            document.getElementById('minDpErr').textContent = `Rp ${minDP.toLocaleString('id-ID')}`;
+            document.getElementById('minDpErr').textContent = formatPrice(minDP);
         }
         updatePaySummary();
+    });
+
+    // Clean up formatted value before submission
+    dpInput.addEventListener('blur', () => {
+        const rawValue = dpInput.value.replace(/\D/g, '');
+        dpInput.value = rawValue || '';
     });
 
     // ── Card Radio ─────────────────────────────────────────
@@ -1213,7 +1240,8 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         }
         const grnMap = { ktp:'KTP', sim:'SIM', motor:'BPKB Motor' };
         const payMap = { cash:'Cash (Tunai)', transfer:'Transfer Bank' };
-        const dp = Number(dpInput.value) || 0;
+        const rawDP2 = dpInput.value.replace(/\D/g, '');
+        const dp = Number(rawDP2) || 0;
 
         function fmtDt(val) {
             if (!val) return '–';
@@ -1231,9 +1259,9 @@ select.form-input { appearance: none; -webkit-appearance: none; background-image
         document.getElementById('cfGuarantee').textContent  = grnMap[grnVal] || grnVal;
         document.getElementById('cfDoc').textContent        = docFile.files.length ? docFile.files[0].name : '–';
         document.getElementById('cfPayMethod').textContent  = payMap[payVal] || payVal;
-        document.getElementById('cfTotalPrice').textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
-        document.getElementById('cfDP').textContent         = 'Rp ' + dp.toLocaleString('id-ID');
-        document.getElementById('cfRemaining').textContent  = 'Rp ' + (totalPrice - dp).toLocaleString('id-ID');
+        document.getElementById('cfTotalPrice').textContent = formatPrice(totalPrice);
+        document.getElementById('cfDP').textContent         = formatPrice(dp);
+        document.getElementById('cfRemaining').textContent  = formatPrice(totalPrice - dp);
 
         const bankRow = document.getElementById('cfBankRow');
         if (payVal === 'transfer') {

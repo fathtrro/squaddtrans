@@ -27,6 +27,10 @@ class SubmitReturnRequest extends FormRequest
             'accessories' => ['required', 'string', 'min:5', 'max:500'],
             'notes' => ['nullable', 'string', 'max:1000'],
 
+            // Manual penalty (optional)
+            'manual_penalty_amount' => ['nullable', 'numeric', 'min:0'],
+            'manual_penalty_description' => ['nullable', 'string', 'max:255'],
+
             // Photo uploads
             'photos.damage.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'], // 5MB per file
             'photos.interior.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
@@ -51,6 +55,9 @@ class SubmitReturnRequest extends FormRequest
             'fuel_level.required' => 'Level bahan bakar harus diisi.',
             'accessories.required' => 'Status aksesori harus diisi.',
             'accessories.min' => 'Status aksesori minimal 5 karakter.',
+            'manual_penalty_amount.numeric' => 'Jumlah denda harus berupa angka.',
+            'manual_penalty_amount.min' => 'Jumlah denda tidak boleh negatif.',
+            'manual_penalty_description.max' => 'Keterangan denda maksimal 255 karakter.',
             'photos.*.image' => 'File harus berupa gambar.',
             'photos.*.mimes' => 'Format gambar harus jpeg, png, jpg, atau gif.',
             'photos.*.max' => 'Ukuran file tidak boleh lebih dari 5MB.',

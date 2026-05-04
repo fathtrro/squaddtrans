@@ -41,12 +41,14 @@ class PenaltyManagementService
                 $booking = $penalty->booking;
                 $unpaidPenalties = $booking->penalties()->where('status', Penalty::STATUS_UNPAID)->count();
 
-                // If no more unpaid penalties, update booking status to completed
-                if ($unpaidPenalties === 0) {
+                // If no more unpaid penalties AND after-checklist exists, update booking status to completed
+                if ($unpaidPenalties === 0 && $booking->hasAfterChecklist()) {
                     $booking->update(['status' => Booking::STATUS_COMPLETED]);
                     $statusMessage = 'Semua denda lunas. Booking selesai!';
                 } else {
-                    $statusMessage = "Masih ada {$unpaidPenalties} denda yang perlu dibayar.";
+                    $statusMessage = $unpaidPenalties > 0 
+                        ? "Masih ada {$unpaidPenalties} denda yang perlu dibayar."
+                        : "Denda dibayar, tapi tunggu verifikasi admin untuk finalisasi.";
                 }
 
                 return [

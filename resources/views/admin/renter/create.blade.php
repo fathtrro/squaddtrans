@@ -189,36 +189,25 @@
                     <div class="grid grid-cols-2 gap-5">
                         <!-- DP Amount -->
                         <div>
-                            <label for="dp_amount" class="block text-sm font-semibold text-gray-700 mb-2">Uang Muka (Rp) <span class="text-red-500">*</span></label>
-                            <input
-                                type="number"
-                                id="dp_amount"
+                            <x-price-input
                                 name="dp_amount"
-                                value="{{ old('dp_amount', 0) }}"
-                                step="1000"
-                                min="0"
-                                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent @error('dp_amount') border-red-500 @enderror"
-                                required>
-                            @error('dp_amount')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
+                                label="Uang Muka (DP)"
+                                :value="old('dp_amount', 0)"
+                                placeholder="Contoh: 500.000"
+                                required
+                                helpText="Minimal 30% dari total harga"
+                            />
                         </div>
 
                         <!-- Total Price -->
                         <div>
-                            <label for="total_price" class="block text-sm font-semibold text-gray-700 mb-2">Harga Total (Rp) <span class="text-red-500">*</span></label>
-                            <input
-                                type="number"
-                                id="total_price"
+                            <x-price-input
                                 name="total_price"
-                                value="{{ old('total_price', 0) }}"
-                                step="1000"
-                                min="0"
-                                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent @error('total_price') border-red-500 @enderror"
-                                required>
-                            @error('total_price')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
+                                label="Harga Total"
+                                :value="old('total_price', 0)"
+                                placeholder="Contoh: 1.500.000"
+                                required
+                            />
                         </div>
                     </div>
                 </div>
