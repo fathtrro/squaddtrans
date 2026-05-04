@@ -88,7 +88,7 @@
 <!-- Row 3 -->
 <div class="grid grid-cols-2 gap-4">
     <div>
-        <label class="text-sm font-medium">Password *</label>
+        <label class="text-sm font-medium">Password * (harap simpan password)</label>
         <div class="relative">
             <input name="password" type="password" id="registerPassword"
                 class="w-full rounded-lg border h-11 px-4 pr-10 mt-1 @error('password') border-red-500 @enderror"
