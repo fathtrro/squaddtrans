@@ -683,7 +683,7 @@ footer, header, nav { display: none !important; }
                 <div class="spec-cell">
                     <div class="spec-icon"><i class="fas fa-id-card"></i></div>
                     <div class="spec-lbl">Plat Nomor</div>
-                    <div class="spec-val">{{ $car->plate_number ?? $car->car_plate ?? '—' }}</div>
+                    <div class="spec-val">{{ strtoupper($car->plate_number ?? $car->car_plate ?? '—') }}</div>
                 </div>
                 <div class="spec-cell">
                     <div class="spec-icon"><i class="fas fa-calendar"></i></div>
