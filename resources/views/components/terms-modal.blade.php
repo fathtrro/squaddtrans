@@ -29,7 +29,7 @@
 
                     <p><strong>8.</strong>Segala apa yang disewa menurut perjanjian ini pihak penyewa, tidak berhak menjaminkan, memindahkan hak sewanya dan atau memindahkan pada pihak lain baik secara diam-diam maupun terang-terangan dan bilamana hal demikian terjadi maka penyewa wajib membayar denda sebesar 30x (30 kali dari besarnya sewa dan semua resiko yang timbul karena menjadi tanggung jawab pihak sewa).</p>
 
-                    <p><strong>9.</strong>Bilamana terjadi hal-hal tersebut dalam butir 5 dan butir 8 di atas tanpa pemberitahuan  terlebih dahulu dan pihak penyewa seberapa perlu pihak SQUAD TRANS diberi kuasa pula untuk dan atas namanya sendiri maupun terang-terangan, dan bilamana hal demikian terjadi maka pihak penyewa wajib membayar denda 3sebesar 30x (tiga puluh kali) dari besar sewa.</p>
+                    <p><strong>9.</strong>Bilamana terjadi hal-hal tersebut dalam butir 5 dan butir 8 di atas tanpa pemberitahuan  terlebih dahulu dan pihak penyewa seberapa perlu pihak SQUAD TRANS diberi kuasa pula untuk dan atas namanya sendiri maupun terang-terangan, dan bilamana hal demikian terjadi maka pihak penyewa wajib membayar denda sebesar 30x (tiga puluh kali) dari besar sewa.</p>
 
                     <p><strong>10.</strong>Semua resiko yang timbul karenanya menjadi tanggungan pihak penyewa apabila pihak penyewa tidak sanggup menyelesaikan biaya sewa atau biaya perbaikan maka SQUAD TRANS berhak menguasai dan menggunakan barang jaminan sesuai dengan jumlah tagihan dan meminta kekurangan (sewa / perbaikan) bilamana nilai jaminan tersebut tidak menacukupi.</p>
 
