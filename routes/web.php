@@ -218,6 +218,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 require __DIR__ . '/auth.php';
 
+Route::middleware(['auth', 'role:admin'])->get('/run-cache-clear', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+
+    return 'Cache cleared!';
+});
+
 /* ============================================================
    STORAGE LINK ROUTE (For cPanel deployment without terminal)
    Access: squadtranswisata.com/create-storage-link

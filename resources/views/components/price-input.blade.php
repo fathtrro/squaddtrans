@@ -1,6 +1,6 @@
-{{-- 
+{{--
     Price Input Component - Format harga dengan separator dan validasi
-    
+
     Props:
     - value: Initial price value
     - name: Input name attribute
@@ -13,6 +13,12 @@
     - textRight: Menampilkan format harga di kanan
 --}}
 
+@php
+    // Format value dengan pemisah ribuan
+    $numericValue = is_numeric($value ?? 0) ? (int)$value : 0;
+    $formattedValue = $numericValue > 0 ? number_format($numericValue, 0, ',', '.') : '';
+@endphp
+
 <div class="price-input-wrapper {{ $class ?? '' }}">
     @if($label ?? false)
     <label class="block text-sm font-semibold text-gray-700 mb-2">
@@ -22,13 +28,13 @@
         @endif
     </label>
     @endif
-    
+
     <div class="relative">
         <div class="absolute left-0 top-0 bottom-0 flex items-center pl-4 pointer-events-none">
             <span class="text-gray-500 font-semibold">Rp</span>
         </div>
-        
-        <input 
+
+        <input
             type="text"
             name="{{ $name }}"
             id="{{ $name }}"
@@ -39,14 +45,14 @@
             inputmode="numeric"
             data-price-input
         >
-        
+
         @if($textRight ?? false)
         <div class="absolute right-0 top-0 bottom-0 flex items-center pr-4 pointer-events-none">
             <span class="text-xs text-gray-400 price-preview">-</span>
         </div>
         @endif
     </div>
-    
+
     @if($helpText ?? false)
     <p class="text-xs text-gray-500 mt-2 flex items-center gap-1">
         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -55,7 +61,7 @@
         {{ $helpText }}
     </p>
     @endif
-    
+
     @error($name)
     <p class="text-xs text-red-500 mt-1 flex items-center gap-1">
         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -64,7 +70,7 @@
         {{ $message }}
     </p>
     @enderror
-    
+
     <!-- Hidden input untuk menyimpan nilai numerik -->
     <input type="hidden" name="{{ $name }}_numeric" id="{{ $name }}_numeric">
 </div>
@@ -74,22 +80,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputField = document.getElementById('{{ $name }}');
     const hiddenInput = document.getElementById('{{ $name }}_numeric');
     const pricePreview = inputField.parentElement.querySelector('.price-preview');
-    
+
     if (!inputField) return;
-    
+
     // Format input value on load
     formatPriceInput(inputField, hiddenInput, pricePreview);
-    
+
     // Format on input
     inputField.addEventListener('input', function(e) {
         formatPriceInput(this, hiddenInput, pricePreview);
     });
-    
+
     // Format on blur (cleanup)
     inputField.addEventListener('blur', function(e) {
         formatPriceInput(this, hiddenInput, pricePreview);
     });
-    
+
     // Prevent non-numeric characters
     inputField.addEventListener('keypress', function(e) {
         if (!/[0-9]/.test(e.key)) {
@@ -101,17 +107,17 @@ document.addEventListener('DOMContentLoaded', function() {
 function formatPriceInput(displayInput, hiddenInput, preview) {
     // Remove all non-numeric characters
     let value = displayInput.value.replace(/[^\d]/g, '');
-    
+
     // Update hidden input with raw value
     if (hiddenInput) {
         hiddenInput.value = value;
     }
-    
+
     // Format display value with thousand separators
     if (value) {
         const formatted = parseInt(value).toLocaleString('id-ID');
         displayInput.value = formatted;
-        
+
         // Update preview if exists
         if (preview) {
             preview.textContent = formatted;

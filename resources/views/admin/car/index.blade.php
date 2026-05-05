@@ -442,7 +442,7 @@
                         <div class="v-footer">
                             <div>
                                 <div class="v-price-label">24 Jam</div>
-                                <div class="v-price">Rp {{ number_format($car->price_24h, 0, ',', '.') }}</div>
+                                <div class="v-price">{!! \App\Helpers\PriceFormatter::display($car->price_24h) !!}</div>
                             </div>
                             <div class="v-actions">
                                 <a href="{{ route('admin.car.show', $car->id) }}" class="v-btn" title="Detail">

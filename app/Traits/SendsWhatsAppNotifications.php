@@ -15,8 +15,7 @@ trait SendsWhatsAppNotifications
             return;
         }
 
-        $phone = $target;
-        $phoneClean = preg_replace('/[^0-9+]/', '', $phone);
+        $phoneClean = preg_replace('/[^0-9+]/', '', $target);
 
         if (str_starts_with($phoneClean, '0')) {
             $phoneClean = '62' . substr($phoneClean, 1);
@@ -25,29 +24,32 @@ trait SendsWhatsAppNotifications
         }
 
         if (empty($phoneClean)) {
-            logger()->warning('Fonnte: Empty phone number after cleaning: ' . $phone);
+            logger()->warning('Fonnte: Invalid phone number: ' . $target);
             return;
         }
 
         try {
-            $response = Http::withHeaders(['Authorization' => env('FONNTE_API_TOKEN')])
-                ->asForm()
-                ->post('https://api.fonnte.com/send', [
-                    'target' => $phoneClean,
-                    'message' => $message,
-                    'source' => '6287739904530',
-                    'countryCode' => '62',
-                    'typing' => 'false',
-                    'schedule' => '0',
-                ]);
+            $response = Http::withHeaders([
+                'Authorization' => config('services.fonnte.token')
+            ])
+            ->withOptions([
+                'verify' => false
+            ])
+            ->timeout(30)
+            ->asForm()
+            ->post('https://api.fonnte.com/send', [
+                'target' => $phoneClean,
+                'message' => $message,
+            ]);
 
             if ($response->successful()) {
-                logger()->info('Fonnte message sent to: ' . $phoneClean);
+                logger()->info('Fonnte sent: ' . $phoneClean . ' | ' . $response->body());
             } else {
-                logger()->warning('Fonnte API error for ' . $phoneClean . ': ' . $response->status());
+                logger()->warning('Fonnte failed: ' . $phoneClean . ' | ' . $response->status() . ' | ' . $response->body());
             }
+
         } catch (\Throwable $e) {
-            logger()->warning('Fonnte error: ' . $e->getMessage());
+            logger()->error('Fonnte exception: ' . $e->getMessage());
         }
     }
 }

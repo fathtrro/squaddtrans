@@ -6,7 +6,7 @@ class PriceFormatter
 {
     /**
      * Format price to Indonesian Rupiah with thousand separators
-     * 
+     *
      * @param int|float $price
      * @param bool $withCurrency Include 'Rp' prefix
      * @return string
@@ -14,14 +14,14 @@ class PriceFormatter
     public static function format($price, bool $withCurrency = false): string
     {
         $formatted = number_format((int) $price, 0, ',', '.');
-        
+
         return $withCurrency ? "Rp {$formatted}" : $formatted;
     }
 
     /**
      * Parse formatted price string to integer
      * Removes all non-numeric characters except decimal point
-     * 
+     *
      * @param string $price Formatted price (e.g., "Rp 1.000.000" or "1.000.000")
      * @return int
      */
@@ -32,7 +32,7 @@ class PriceFormatter
 
     /**
      * Format for display with Rp prefix and thousand separators
-     * 
+     *
      * @param int|float $price
      * @return string
      */
@@ -43,7 +43,7 @@ class PriceFormatter
 
     /**
      * Format for HTML input field (without Rp prefix, with thousand separators)
-     * 
+     *
      * @param int|float $price
      * @return string
      */
@@ -54,7 +54,7 @@ class PriceFormatter
 
     /**
      * Format for form field real value (no separators, just number)
-     * 
+     *
      * @param int|float $price
      * @return int
      */
@@ -64,8 +64,32 @@ class PriceFormatter
     }
 
     /**
+     * Format price in compact form (e.g., "Rp 200K", "Rp 1.5JT")
+     *
+     * @param int|float $price
+     * @return string
+     */
+    public static function compact($price): string
+    {
+        $price = (int) $price;
+
+        if ($price >= 1000000) {
+            $juta = $price / 1000000;
+            $formatted = $juta == (int)$juta ? (int)$juta : number_format($juta, 1, ',', '');
+            return "Rp {$formatted}JT";
+        } elseif ($price >= 1000) {
+            $ribu = $price / 1000;
+            $formatted = $ribu == (int)$ribu ? (int)$ribu : number_format($ribu, 1, ',', '');
+            return "Rp {$formatted}K";
+        } else {
+            return "Rp {$price}";
+        }
+    }
+
+
+    /**
      * Get formatted range for display (e.g., "Rp 500.000 - Rp 1.000.000")
-     * 
+     *
      * @param int|float $minPrice
      * @param int|float $maxPrice
      * @return string
@@ -77,7 +101,7 @@ class PriceFormatter
 
     /**
      * Validate if string is valid price format
-     * 
+     *
      * @param string $price
      * @return bool
      */
@@ -89,7 +113,7 @@ class PriceFormatter
 
     /**
      * Format percentage of price (e.g., 30% from total)
-     * 
+     *
      * @param int|float $price
      * @param int|float $percentage
      * @return string

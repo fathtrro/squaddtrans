@@ -35,7 +35,7 @@
             <div class="space-y-2">
                 <p class="text-3xl font-bold text-gray-800">{{ $totalBookings }}</p>
                 <p class="text-sm text-gray-600">
-                    <span class="font-semibold text-green-600">{{ $completedBookings }} ✓</span> Selesai • 
+                    <span class="font-semibold text-green-600">{{ $completedBookings }} ✓</span> Selesai •
                     <span class="font-semibold text-red-600">{{ $cancelledBookings }} ✕</span> Batal
                 </p>
             </div>
@@ -119,26 +119,26 @@
                     <svg class="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
                         <!-- Background circle -->
                         <circle cx="100" cy="100" r="90" stroke="#F5F5F5" stroke-width="20" fill="none"/>
-                        
+
                         <!-- Rented (Yellow) -->
                         @php
-                            $rentedDegrees = ($carsRented / $totalCars) * 360;
+                            $rentedDegrees = $totalCars > 0 ? ($carsRented / $totalCars) * 360 : 0;
                             $rentedRadians = deg2rad($rentedDegrees);
                         @endphp
                         <circle cx="100" cy="100" r="90" stroke="#FBBF24" stroke-width="20" fill="none"
                                 stroke-dasharray="{{ $rentedDegrees * 1.57 / 180 }}, 564.6"
                                 stroke-linecap="round"/>
-                        
+
                         <!-- Available (Green) - offset by rented -->
                         @php
-                            $availableDegrees = ($carsAvailable / $totalCars) * 360;
+                            $availableDegrees = $totalCars > 0 ? ($carsAvailable / $totalCars) * 360 : 0;
                             $totalBefore = $rentedDegrees;
                         @endphp
                         <circle cx="100" cy="100" r="90" stroke="#10B981" stroke-width="20" fill="none"
                                 stroke-dasharray="{{ $availableDegrees * 1.57 / 180 }}, 564.6"
                                 stroke-dashoffset="-{{ $totalBefore * 1.57 / 180 }}"
                                 stroke-linecap="round"/>
-                        
+
                         <!-- Service (Red) -->
                         <circle cx="100" cy="100" r="90" stroke="#EF4444" stroke-width="20" fill="none"
                                 stroke-dasharray="{{ $servicePercentage * 5.64 / 100 }}, 564.6"

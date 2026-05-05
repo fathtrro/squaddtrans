@@ -18,8 +18,7 @@ abstract class Controller
             return;
         }
 
-        $phone = $target;
-        $phoneClean = preg_replace('/[^0-9+]/', '', $phone);
+        $phoneClean = preg_replace('/[^0-9+]/', '', $target);
 
         if (str_starts_with($phoneClean, '0')) {
             $phoneClean = '62' . substr($phoneClean, 1);
@@ -28,30 +27,32 @@ abstract class Controller
         }
 
         if (empty($phoneClean)) {
-            logger()->warning('Fonnte: Empty phone number after cleaning: ' . $phone);
+            logger()->warning('Fonnte: Empty phone number after cleaning: ' . $target);
             return;
         }
 
         try {
-            $response = Http::withHeaders(['Authorization' => env('FONNTE_API_TOKEN')])
-                ->asForm()
-                ->post('https://api.fonnte.com/send', [
-                    'target' => $phoneClean,
-                    'message' => $message,
-                    'source' => '6287739904530',
-                    'countryCode' => '62',
-                    'typing' => 'false',
-                    'schedule' => '0',
-                ]);
-            
-            // Log response
+            $response = Http::withHeaders([
+                'Authorization' => config('services.fonnte.token')
+            ])
+            ->withOptions([
+                'verify' => false
+            ])
+            ->timeout(30)
+            ->asForm()
+            ->post('https://api.fonnte.com/send', [
+                'target' => $phoneClean,
+                'message' => $message,
+            ]);
+
             if ($response->successful()) {
-                logger()->info('Fonnte message sent successfully to: ' . $phoneClean);
+                logger()->info('Fonnte success: ' . $phoneClean . ' | ' . $response->body());
             } else {
-                logger()->warning('Fonnte API error for ' . $phoneClean . ': ' . $response->status() . ' - ' . $response->body());
+                logger()->warning('Fonnte API error: ' . $phoneClean . ' | ' . $response->status() . ' | ' . $response->body());
             }
+
         } catch (\Throwable $e) {
-            logger()->warning('Fonnte notification error for ' . $phoneClean . ': ' . $e->getMessage());
+            logger()->error('Fonnte exception: ' . $phoneClean . ' | ' . $e->getMessage());
         }
     }
 }

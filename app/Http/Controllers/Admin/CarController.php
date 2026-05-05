@@ -173,7 +173,7 @@ class CarController extends Controller
                 'seats' => $request->seats,
                 'transmission' => $request->transmission,
                 'fuel_type' => $request->fuel_type,
-                'price_24h' => $request->price_24h,
+                'price_24h' => (int) preg_replace('/[^\d]/', '', $request->price_24h),
                 'status' => 'available',
             ]);
 
@@ -232,6 +232,9 @@ class CarController extends Controller
             'remove_images' => 'nullable|array',
             'remove_images.*' => 'exists:car_images,id',
         ]);
+
+        // Parse price_24h to remove formatting characters
+        $validated['price_24h'] = (int) preg_replace('/[^\d]/', '', $validated['price_24h']);
 
         // Upload new main image
         if ($request->hasFile('image')) {

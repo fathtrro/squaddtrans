@@ -349,6 +349,8 @@
                                         <option value="City Car (lincah di kota)" {{ old('category') == 'City Car (lincah di kota)' ? 'selected' : '' }}>🏙 City Car</option>
                                         <option value="Sedan (nyaman)" {{ old('category') == 'Sedan (nyaman)' ? 'selected' : '' }}>🚘 Sedan (nyaman)</option>
                                         <option value="Crossover (kombinasi)" {{ old('category') == 'Crossover (kombinasi)' ? 'selected' : '' }}>🚕 Crossover (kombinasi)</option>
+                                        <option value="Bus" {{ old('category') == 'Bus' ? 'selected' : '' }}>🚌 Bus</option>
+                                        <option value="Commercial" {{ old('category') == 'Commercial' ? 'selected' : '' }}>🚛 Truk</option>
                                     </select>
                                     @error('category')<div class="error-msg">⚠ {{ $message }}</div>@enderror
                                 </div>
